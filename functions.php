@@ -11,4 +11,5 @@
 	if (isset($_POST['component_type']) && isset($_POST['component_id'])) {
 		echo "deleted";
 	}
+
  ?>

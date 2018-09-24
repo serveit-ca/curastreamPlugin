@@ -4,49 +4,53 @@ Plugin Name: Curastream
 Description: Add Programs
 Author: Admin
 */
+// Used for page filtering 
+include("filtering.php");
+include("ajaxSaves.php");
+// Used for Ajax Saves to DB 
 
 // register_activation_hook( __FILE__, 'Curastream_install');
 function add_menu() {
     add_menu_page('Curastream','Curastream',
         'manage_options',
-        '',
+        'curastreamPlugin',
         'curastream_parent_page',
         '',
         2
     );
 }
 function add_submenu() {
-    add_submenu_page('','Body Parts','Body Parts',
+    add_submenu_page('curastreamPlugin','Body Parts','Body Parts',
         'manage_options',
         'curastream/body-parts.php',
         '',
         ''
     );
-    add_submenu_page('','How it happened','How it happened',
+    add_submenu_page('curastreamPlugin','How it happened','How it happened',
         'manage_options',
         'curastream/how_it.php',
         '',
         ''
     );
-    add_submenu_page('','Sport Occupation','Sport Occupation',
+    add_submenu_page('curastreamPlugin','Sport Occupation','Sport Occupation',
         'manage_options',
         'curastream/sport_occ.php',
         '',
         ''
     );
-    add_submenu_page('','Videos','Videos',
+    add_submenu_page('curastreamPlugin','Videos','Videos',
         'manage_options',
         'curastream/videos.php',
         '',
         ''
     );
-    add_submenu_page('','Programs','Programs',
+    add_submenu_page('curastreamPlugin','Programs','Programs',
         'manage_options',
         'curastream/program.php',
         '',
         ''
     );
-    add_submenu_page('','Custom Programs','Custom Programs',
+    add_submenu_page('curastreamPlugin','Custom Programs','Custom Programs',
         'manage_options',
         'curastream/customProgram.php',
         '',
@@ -62,6 +66,16 @@ function load_wp_media(){
 add_action( 'admin_menu', 'add_menu');
 add_action( 'admin_menu', 'add_submenu');
 add_action( 'admin_enqueue_scripts', 'load_wp_media' );
+
+add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
+/*Going to register the custom JavaScript and CSS File   */
+function register_scripts_with_jquery(){   
+    // Register the script like this for a plugin:
+   // wp_register_style( '')
+    wp_register_script( 'custom-program-script', plugins_url( 'assets/js/customProgram.js', __FILE__ ));
+    // For either a plugin or a theme, you can then enqueue the script:
+    wp_enqueue_script( 'custom-program-script' );
+}
 
 
 // api functions
@@ -1016,3 +1030,5 @@ register_rest_route( 'curastream/v1', '/full_body_training/', array(
     'callback' => 'full_body_training',
 ));
 });
+
+
