@@ -89,7 +89,7 @@ require_once('objects/program.php');
 	    global $wpdb;
 		$tableName = $wpdb->prefix . "cura_programs";
 
-	    $allPrograms = $wpdb->get_results("SELECT id, name, type, description, thumbnail, assoc_body_part_id, how_it_happen, sports_occupation FROM $tableName WHERE customProgram = 0 ORDER BY name ");
+	    $allPrograms = $wpdb->get_results("SELECT id, name, type, description, duration, thumbnail, assoc_body_part_id, how_it_happen, sports_occupation FROM $tableName WHERE customProgram = 0 ORDER BY name ");
 
 	    $userid = get_current_user_id();
 
@@ -100,6 +100,7 @@ require_once('objects/program.php');
 				$x->name = $aProgram->name;
 				$x->type = $aProgram->type;
 				$x->description = $aProgram->description;
+				$x->duration = $aProgram->duration;
 				$x->thumbnailUrl = $aProgram->thumbnail;
 				$x->current = $x->checkCurrent($userId, $aProgram->id);
 				$x->completed = $x->checkCompleted($userId, $aProgram->id);

@@ -5,6 +5,7 @@ public $id;
 public $name;
 public $type;
 public $description;
+public $duration;
 public $current;
 public $completed;
 public $thumbnailUrl;

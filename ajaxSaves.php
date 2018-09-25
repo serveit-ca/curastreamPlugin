@@ -50,7 +50,7 @@
 		$wpdb->insert( 
 			$tableName, 
 				array( 
-					'user_id' => $_POST['user_id'], 'saved_prog_id'	=> $_POST['program_id']// string
+					'user_id' => $_POST['user_id'], 'saved_prog_id'	=> $_POST['program_id'], 'saved_prog_name' => $_POST['saved_prog_name'], 'saved_prog_type'=> $_POST['saved_prog_type'], 'saved_prog_dur' => $_POST['saved_prog_dur']// string
 					) 
 					);
 		 wp_die();	
