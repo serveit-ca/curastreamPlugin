@@ -136,4 +136,11 @@ require_once('objects/program.php');
 					);
 	    }					            						        
 	}
+	// Get Program By ID
+	function test($progID){
+	global $wpdb;
+	$program_table = 'dev_cura_programs';
+	$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $progID" , ARRAY_A);
+	return $programs;
+}
     ?>

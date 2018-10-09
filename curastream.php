@@ -116,7 +116,7 @@ function get_body_parts() {
     $body_parts = $wpdb->get_results("SELECT id, name FROM $table");    
     if ( empty($body_parts)) {
         $response = array('status' => 'success', 'body_parts' => null);
-        return $data;
+        return $response;
     }
     $response = array('status' => 'success', 'body_parts' => $body_parts);
     return $response;
@@ -172,6 +172,26 @@ add_action( 'rest_api_init', function () {
     register_rest_route( 'curastream/v1', '/program/', array(
         'methods' => 'POST',
         'callback' => 'get_program',
+    ) );
+} );
+
+function get_program_by_Id($prog_id) {
+    global $wpdb;
+    $table = 'dev_cura_programs';
+    $program_id = $prog_id;
+    $programs = $wpdb->get_results("SELECT * FROM $table WHERE id = $program_id");        
+    
+    if ( empty($programs)) {
+        $data = array('Status' => 'failed', 'programs' => null);
+        return $data;
+    }
+    $data = array('Status' => 'success', 'programs' => $programs);
+    return $data;
+}
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'curastream/v1', '/program/', array(
+        'methods' => 'POST',
+        'callback' => 'get_program_by_Id',
     ) );
 } );
 

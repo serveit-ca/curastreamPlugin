@@ -58,3 +58,11 @@ input[name="injury"] {
 	width: 208px;
 	padding: 8px 10px;
 }
+
+.hidden {
+	display: none;
+}
+
+.customizehidden{
+	display: none;
+}
