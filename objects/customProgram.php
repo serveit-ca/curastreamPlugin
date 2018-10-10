@@ -7,6 +7,7 @@ class customProgram {
 	// Variable Declaration
 	public $progID;
 	public $body_parts;
+	public $progType;
 
 	// For Populate Form Function
 	public $program;
@@ -21,6 +22,22 @@ class customProgram {
 	public $howItHappen;
 	public $sportsOccupation;
 	public $thumbnail;
+
+	// Phase Variables
+	public $phaseName;
+	public $phaseIntro;
+	public $phaseDur;
+	public $phaseNotes;
+
+	//Phase Exercise
+	public $exerciseOrder;
+	public $exerciseSets;
+	public $exerciseRest;
+	public $exerciseVariation;
+	public $exerciseEquipment;
+	public $exerciseSpecial;
+	public $exerciseFile;
+
 
 
 	
@@ -67,7 +84,7 @@ class customProgram {
 		$sportsOccupation = $program['sports_occupation'];
 		$thumbnail = $program['thumbnail'];
 		// jquery to change value of all fields
-		echo($description);
+		//echo($description);
 	}
 	function createForm() {
 		global $wpdb;
@@ -432,18 +449,18 @@ class customProgram {
 				<div class="col-md-12">
 					<div class="form-group">
 						<label for="type">Type :</label>
-						<label class="radio_btn"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" >Rehab</label>
-						<label class="radio_btn"><input required type="radio" name="typeUpdate" id="prevention" value="Prevention" >Prevention</label>
-						<label class="radio_btn"><input required type="radio" name="typeUpdate" id="strength" value="Strength-Training" >Strength Training</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($progType == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="prevention" value="Prevention" <?php if($progType == 'Prevention'){echo 'checked ="checked"';} ?> >Prevention</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="strength" value="Strength-Training" <?php if($progType == 'Strength-Training'){echo 'checked ="checked"';} ?> >Strength Training</label>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<input type="hidden" name="progIdupdate">					
-						<input type="text" name="progNameupdate" class="form-control" required="required" placeholder="Name">					
+						<input id="nameBox" type="text" name="progNameupdate" class="form-control" required="required" placeholder="Name" <?php if($name){echo 'value ="$name"';} ?> >					
 					</div>
 					<div class="form-group">
-						<input type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1">									
+						<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($duration){echo 'value ="$duration"';} ?>>									
 					</div>
 					<div class="form-group">
 						<div>
@@ -484,16 +501,16 @@ class customProgram {
 				</div>
 				<div class="col-md-12">
 					<div class="form-group">
-						<textarea name="progDescUpdate" class="form-control" required="required" placeholder="Description" ></textarea>
+						<textarea id="descBox" name="progDescUpdate" class="form-control" required="required" placeholder="Description" <?php if($description){echo 'value ="$description"';} ?> ></textarea>
 					</div>
 					<div class="form-group">
-						<textarea name="progEquipUpdate" class="form-control" required="required" placeholder="Equipment" ></textarea>
+						<textarea id="equipBox" name="progEquipUpdate" class="form-control" required="required" placeholder="Equipment" <?php if($equipment){echo 'value ="$equipment"';} ?> ></textarea>
 					</div>
 					<div class="form-group" id="hideField1">					
-						<textarea name="progPlanUpdate" class="form-control" required="required" placeholder="Weekly Plan" ></textarea>
+						<textarea id="weekBox" name="progPlanUpdate" class="form-control" required="required" placeholder="Weekly Plan" <?php if($weeklyPlan){echo 'value ="$weeklyPlan"';} ?> ></textarea>
 					</div>
 					<div class="form-group" id="hideField2">
-						<textarea name="progLifestyleUpdate" class="form-control" required="required" placeholder="Lifestyle"></textarea>
+						<textarea id="lifeBox" name="progLifestyleUpdate" class="form-control" required="required" placeholder="Lifestyle" <?php if($lifeStyle){echo 'value ="$lifeStyle"';} ?> > </textarea>
 					</div>
 				</div>
 			</div>
@@ -511,18 +528,18 @@ class customProgram {
 											<div class="form-group">
 												<input class="deletePhase" type="hidden" name="" value="">
 												<input type="hidden" name="" value="">
-												<input type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" value="">
+												<input id="phaseName" type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" <?php if($phaseName){echo 'value ="$phaseName"';} ?> >
 											</div>
 											<div class="form-group">
-												<textarea type="text" name="" placeholder="Phase Introduction" class="form-control intro"></textarea>								
+												<textarea id="phaseIntro" type="text" name="" placeholder="Phase Introduction" class="form-control intro" <?php if($phaseIntro){echo 'value ="$phaseIntro"';} ?>></textarea>								
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<input type="text" required="required" name="" placeholder="Phase Duration" class="form-control duration" value="">
+												<input id="phaseDur" type="text" required="required" name="" placeholder="Phase Duration" class="form-control duration" <?php if($phaseDur){echo 'value ="$phaseDur"';} ?>>
 											</div>
 											<div class="form-group">
-												<textarea type="text" name="" placeholder="Phase Notes" class="form-control notes"></textarea>
+												<textarea id="phaseNotes" type="text" name="" placeholder="Phase Notes" class="form-control notes" <?php if($phaseNotes){echo 'value ="$phaseNotes"';} ?>></textarea>
 											</div>
 										</div>
 										<div class="col-md-12">										
@@ -539,22 +556,22 @@ class customProgram {
 																			<input type="hidden" class="name" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][name]" value="<?php echo $values['name'] ?>">															
 																		</div>
 																		<div class="form-group">
-																			<input required="required" class="form-control orderField" type="text"   name="orderField" value="" placeholder="Order">														
+																			<input required="required" class="form-control orderField" type="text"   name="orderField" <?php if($exerciseOrder){echo 'value ="$exerciseOrder"';} ?> placeholder="Order">														
 																		</div>
 																		<div class="form-group">	
-																			<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="setsReps" value="">
+																			<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="setsReps" <?php if($exerciseSets){echo 'value ="$exerciseSets"';} ?>>
 																		</div>											
 																		<div class="form-group">
-																			<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="rest" value="">
+																			<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="rest" <?php if($exerciseRest){echo 'value ="$exerciseRest"';} ?>>
 																		</div>
 																		<div class="form-group">
-																			<input required="required" class="form-control var" type="text"  placeholder="Variation" name="variation" value="">
+																			<input required="required" class="form-control var" type="text"  placeholder="Variation" name="variation" <?php if($exerciseVariation){echo 'value ="$exerciseVariation"';} ?>>
 																		</div>
 																		<div class="form-group">
-																			<textarea required="required" class="form-control equip"  placeholder="Equipment" name="equipmentText"></textarea>
+																			<textarea required="required" class="form-control equip"  placeholder="Equipment" name="equipmentText" <?php if($exerciseEquipment){echo 'value ="$exerciseEquipment"';} ?>></textarea>
 																		</div>
 																		<div class="form-group">
-																			<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="specialInstructionsText"></textarea>
+																			<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="specialInstructionsText" <?php if($exerciseSpecial){echo 'value ="$exerciseSpecial"';} ?>></textarea>
 																		</div>
 																	</div>
 																	<div class="col-md-6">		

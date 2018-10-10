@@ -34,53 +34,56 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 // Select a user or a group TODO - Add Group functionality 
 ?><!DOCTYPE HTML>
 <html>
-<script>
+	<head>
+	</head>
+	<script>
 
 
-	jQuery(document).ready(function(){
-		alert('test');
-		console.log("doc.ready");
-		jQuery("#selectUser").change(function(){ 
-			console.log("onchange");
-			jQuery(".baseProgram").removeClass("hidden");
-			console.log("user change");
+		jQuery(document).ready(function(){
+
+			console.log("doc.ready");
+			jQuery("#selectUser").change(function(){ 
+				console.log("onchange");
+				jQuery(".baseProgram").removeClass("hidden");
+				console.log("user change");
+			});
+			jQuery("#modifyExisting").click(function(){
+				jQuery(".modifyExistingProgram").removeClass("hidden");
+				
+				jQuery(".createNewForm").addClass("hidden");
+			});
+			jQuery("#createNew").click(function(){
+				console.log("createNew clicked");
+				jQuery(".createNewForm").removeClass("hidden");
+				jQuery(".modifyExistingForm").addClass("hidden");
+				jQuery(".modifyExistingProgram").addClass("hidden");
+			});
+			// jQuery('input:radio[name="typeUpdate"]').change(function(){
+			// 	if (this.checked && this.value == "Rehab"){
+			// 		console.log("Rehab checked");
+			// 		$customProgram->$progType = "Rehab";
+			// 	}
+			// 	if (this.checked && this.value == "Prevention"){
+			// 		console.log("Prevention checked");
+			// 		$customProgram->$progType = "Prevention";
+			// 	}
+			// 	if (this.checked && this.value == "Strength-Training"){
+			// 		console.log("Strength-Training checked");
+			// 		$customProgram->$progType = "Strength-Training";
+			// 	}
+
+			// });
+			jQuery("#customizeButton").click(function(){
+				jQuery(".modifyExistingForm").removeClass("hidden");
+				 
+			});
+
+
 		});
-		jQuery("#modifyExisting").click(function(){
-			jQuery(".modifyExistingProgram").removeClass("hidden");
-			
-			jQuery(".createNewForm").addClass("hidden");
-		});
-		jQuery("#createNew").click(function(){
-			console.log("createNew clicked");
-			jQuery(".createNewForm").removeClass("hidden");
-			jQuery(".modifyExistingForm").addClass("hidden");
-			jQuery(".modifyExistingProgram").addClass("hidden");
-		});
-		jQuery('input:radio[name="typeUpdate"]').change(function(){
-			if (this.checked && this.value == "Rehab"){
-				console.log("Rehab checked");
-				$customProgram->$progId = "Rehab";
-			}
-			if (this.checked && this.value == "Prevention"){
-				console.log("Prevention checked");
-				$customProgram->$progId = "Prevention";
-			}
-			if (this.checked && this.value == "Strength-Training"){
-				console.log("Strength-Training checked");
-				$customProgram->$progId = "Strength-Training";
-			}
-
-		});
-		jQuery("#customizeButton").click(function(){
-			jQuery(".modifyExistingForm").removeClass("hidden");
-			 
-		});
+	</script>
+	<body>
 
 
-	});
-</script>
-
-<head>
 <link rel="stylesheet" type="text/css" href="/curatream/assets/css/style.css" />
 </head>
 <body>
@@ -123,8 +126,8 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 	<div class="modifyExistingForm hidden">
 
 		<div>
-			<?php echo $customProgram->createForm();
-			 echo $customProgram->populateFormById("37"); ?>
+			<?php echo $customProgram->populateFormById("37"); 
+			echo $customProgram->createForm(); ?>
 		</div>
 	</div>
 

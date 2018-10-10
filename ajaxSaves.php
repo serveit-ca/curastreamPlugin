@@ -102,4 +102,15 @@
 
 	    add_action( 'wp_ajax_completeProgram', 'completeProgram' );
 	    add_action( 'wp_ajax_nopriv_completeProgram', 'completeProgram' );
+
+	    /* This Function is used to Save Radio Button Selections in Custom Programs */
+	    // function radioType(){
+	    // 	global $wpdb;
+
+	    // 	$tableName = $wpdb->prefix . "cura_user_programs";
+
+	    // 	$wpdb->update($tableName, 
+	    // 					array('type' => 'this.val'),
+	    // 				)
+	    // }
     ?>
