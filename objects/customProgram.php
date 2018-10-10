@@ -71,22 +71,25 @@ class customProgram {
 	function populateFormById($programID){
 		// SQL call based on ProgID
 		$program = test($programID);
+		$custom =  new customProgram();
 		//$program = json_decode($data, true);
-		$type = $program["type"];
-		$name = $program["name"];
-		$description = $program["description"];
-		$equipment = $program["equipment"];
-		$duration = $program['duration'];
-		$weeklyPlan = $program['weekly_plan'];
-		$lifeStyle = $program['life_style'];
-		$assocBodyPartId = $program['assoc_body_part_id'];
-		$howItHappen = $program['how_it_happen'];
-		$sportsOccupation = $program['sports_occupation'];
-		$thumbnail = $program['thumbnail'];
+		$custom->progType = $program["type"];
+		$custom->type = $program["type"];
+		$custom->name = $program["name"];
+		$custom->description = $program["description"];
+		$custom->equipment = $program["equipment"];
+		$custom->duration = $program['duration'];
+		$custom->weeklyPlan = $program['weekly_plan'];
+		$custom->lifeStyle = $program['life_style'];
+		$custom->assocBodyPartId = $program['assoc_body_part_id'];
+		$custom->howItHappen = $program['how_it_happen'];
+		$custom->sportsOccupation = $program['sports_occupation'];
+		$custom->thumbnail = $program['thumbnail'];
+		return $custom;
 		// jquery to change value of all fields
 		//echo($description);
 	}
-	function createForm() {
+	function createForm($aProgram) {
 		global $wpdb;
 
 		
@@ -449,9 +452,9 @@ class customProgram {
 				<div class="col-md-12">
 					<div class="form-group">
 						<label for="type">Type :</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($progType == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="prevention" value="Prevention" <?php if($progType == 'Prevention'){echo 'checked ="checked"';} ?> >Prevention</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="strength" value="Strength-Training" <?php if($progType == 'Strength-Training'){echo 'checked ="checked"';} ?> >Strength Training</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($aProgram->progType == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="prevention" value="Prevention" <?php if($aProgram->progType == 'Prevention'){echo 'checked ="checked"';} ?> >Prevention</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="strength" value="Strength-Training" <?php if($aProgram->progType == 'Strength-Training'){echo 'checked ="checked"';} ?> >Strength Training</label>
 					</div>
 				</div>
 				<div class="col-md-6">

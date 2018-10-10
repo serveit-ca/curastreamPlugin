@@ -74,7 +74,10 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 
 			// });
 			jQuery("#customizeButton").click(function(){
+
 				jQuery(".modifyExistingForm").removeClass("hidden");
+				console.log("clicking custom ");
+
 				 
 			});
 
@@ -126,8 +129,10 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 	<div class="modifyExistingForm hidden">
 
 		<div>
-			<?php echo $customProgram->populateFormById("37"); 
-			echo $customProgram->createForm(); ?>
+			Hello World
+			<?php $aProgram = $customProgram->populateFormById("37"); 
+			print_r($aProgram);
+			echo $customProgram->createForm($aProgram); ?>
 		</div>
 	</div>
 
