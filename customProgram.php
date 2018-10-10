@@ -124,7 +124,8 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 	</div>
 	<div class="createNewForm hidden">
 		<h3>3. Create a New Custom Program</h3>
-		<div> <?php echo $customProgram ->createForm(); ?> </div>
+		<div> <?php 
+			echo $customProgram ->createForm($customProgram); ?> </div>
 	</div>
 	<div class="modifyExistingForm hidden">
 
