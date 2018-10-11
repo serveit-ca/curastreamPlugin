@@ -6,7 +6,7 @@ class customProgram {
 
 	// Variable Declaration
 	public $progID;
-	public $body_parts;
+	
 	public $progType;
 
 	// For Populate Form Function
@@ -73,9 +73,11 @@ class customProgram {
 		$program = test($programID);
 		$custom =  new customProgram();
 		//$program = json_decode($data, true);
+		$custom->progID = $program["id"];
 		$custom->progType = $program["type"];
 		$custom->type = $program["type"];
 		$custom->name = $program["name"];
+		$custom->duration = $program["duration"];
 		$custom->description = $program["description"];
 		$custom->equipment = $program["equipment"];
 		$custom->duration = $program['duration'];
@@ -460,19 +462,19 @@ class customProgram {
 				<div class="col-md-6">
 					<div class="form-group">
 						<input type="hidden" name="progIdupdate">					
-						<input id="nameBox" type="text" name="progNameupdate" class="form-control" required="required" placeholder="Name" <?php if($name){echo 'value ="$name"';} ?> >					
+						<input id="nameBox" type="text" name="progNameupdate" class="form-control" required="required" placeholder="Name" <?php if($aProgram->name){echo 'value ="'.$aProgram->name.'"';} ?> />	
+									
 					</div>
 					<div class="form-group">
-						<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($duration){echo 'value ="$duration"';} ?>>									
+						<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($aProgram->duration){echo 'value ="'.$aProgram->duration.'"';} ?> />									
 					</div>
 					<div class="form-group">
 						<div>
 						   	<input type="button" name="upload-btn" id="upload-btn" class="button-secondary" value="Choose Image">
-						    <input type="text" name="thumbUpdate" required="required" id="image_url" class="regular-text form-control">
-							<!-- <span id="imageWrapperPull" class="glyphicon glyphicon-triangle-bottom" data-toggle="collapse" data-target="#imageWrapper"></span>
-							<div id="imageWrapper" class="collapse">
-								<img src="">
-							</div> -->
+						    <input type="text" name="thumbUpdate" required="required" id="image_url" class="regular-text form-control" <?php if($aProgram->name){echo 'value ="'.$aProgram->thumbnail.'"';} ?>>
+						 
+								<img <?php if($aProgram->thumbnail){echo 'src ="'.$aProgram->thumbnail.'"';} ?> />
+							
 						</div>
 						<!-- <input type="hidden" value="" name="thumbUpdate" class="form-control" required="required" placeholder="Duration" min="1">									 -->
 						<!-- <div class="imgDisplay"></div> -->
@@ -503,17 +505,17 @@ class customProgram {
 					</div>	
 				</div>
 				<div class="col-md-12">
-					<div class="form-group">
-						<textarea id="descBox" name="progDescUpdate" class="form-control" required="required" placeholder="Description" <?php if($description){echo 'value ="$description"';} ?> ></textarea>
+					<div class="form-group"> 
+						<textarea id="descBox" name="progDescUpdate" class="form-control" required="required" placeholder="Description" ><?php if($aProgram->description){echo $aProgram->description;} ?> </textarea>
 					</div>
 					<div class="form-group">
-						<textarea id="equipBox" name="progEquipUpdate" class="form-control" required="required" placeholder="Equipment" <?php if($equipment){echo 'value ="$equipment"';} ?> ></textarea>
+						<textarea id="equipBox" name="progEquipUpdate" class="form-control" required="required" placeholder="Equipment"> <?php if($aProgram->equipment){echo $aProgram->equipment;} ?> </textarea>
 					</div>
 					<div class="form-group" id="hideField1">					
-						<textarea id="weekBox" name="progPlanUpdate" class="form-control" required="required" placeholder="Weekly Plan" <?php if($weeklyPlan){echo 'value ="$weeklyPlan"';} ?> ></textarea>
+						<textarea id="weekBox" name="progPlanUpdate" class="form-control" required="required" placeholder="Weekly Plan"> <?php if($aProgram->weeklyPlan){echo $aProgram->weeklyPlan;} ?> </textarea>
 					</div>
 					<div class="form-group" id="hideField2">
-						<textarea id="lifeBox" name="progLifestyleUpdate" class="form-control" required="required" placeholder="Lifestyle" <?php if($lifeStyle){echo 'value ="$lifeStyle"';} ?> > </textarea>
+						<textarea id="lifeBox" name="progLifestyleUpdate" class="form-control" required="required" placeholder="Lifestyle"> <?php if($aProgram->lifeStyle){echo $aProgram->lifeStyle;} ?> </textarea>
 					</div>
 				</div>
 			</div>
@@ -531,10 +533,10 @@ class customProgram {
 											<div class="form-group">
 												<input class="deletePhase" type="hidden" name="" value="">
 												<input type="hidden" name="" value="">
-												<input id="phaseName" type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" <?php if($phaseName){echo 'value ="$phaseName"';} ?> >
+												<input id="phaseName" type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" <?php if($aProgram->phaseName){echo 'value ="$phaseName"';} ?> >
 											</div>
 											<div class="form-group">
-												<textarea id="phaseIntro" type="text" name="" placeholder="Phase Introduction" class="form-control intro" <?php if($phaseIntro){echo 'value ="$phaseIntro"';} ?>></textarea>								
+												<textarea id="phaseIntro" type="text" name="" placeholder="Phase Introduction" class="form-control intro" <?php if($aProgram->phaseIntro){echo 'value ="$phaseIntro"';} ?>></textarea>								
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -559,22 +561,22 @@ class customProgram {
 																			<input type="hidden" class="name" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][name]" value="<?php echo $values['name'] ?>">															
 																		</div>
 																		<div class="form-group">
-																			<input required="required" class="form-control orderField" type="text"   name="orderField" <?php if($exerciseOrder){echo 'value ="$exerciseOrder"';} ?> placeholder="Order">														
+																			<input required="required" class="form-control orderField" type="text"   name="orderField" <?php if($aProgram->exerciseOrder){echo 'value ="$exerciseOrder"';} ?> placeholder="Order">														
 																		</div>
 																		<div class="form-group">	
-																			<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="setsReps" <?php if($exerciseSets){echo 'value ="$exerciseSets"';} ?>>
+																			<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="setsReps" <?php if($aProgram->exerciseSets){echo 'value ="$exerciseSets"';} ?>>
 																		</div>											
 																		<div class="form-group">
-																			<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="rest" <?php if($exerciseRest){echo 'value ="$exerciseRest"';} ?>>
+																			<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="rest" <?php if($aProgram->exerciseRest){echo 'value ="$exerciseRest"';} ?>>
 																		</div>
 																		<div class="form-group">
-																			<input required="required" class="form-control var" type="text"  placeholder="Variation" name="variation" <?php if($exerciseVariation){echo 'value ="$exerciseVariation"';} ?>>
+																			<input required="required" class="form-control var" type="text"  placeholder="Variation" name="variation" <?php if($aProgram->exerciseVariation){echo 'value ="$exerciseVariation"';} ?>>
 																		</div>
 																		<div class="form-group">
-																			<textarea required="required" class="form-control equip"  placeholder="Equipment" name="equipmentText" <?php if($exerciseEquipment){echo 'value ="$exerciseEquipment"';} ?>></textarea>
+																			<textarea required="required" class="form-control equip"  placeholder="Equipment" name="equipmentText" <?php if($aProgram->exerciseEquipment){echo 'value ="$exerciseEquipment"';} ?>></textarea>
 																		</div>
 																		<div class="form-group">
-																			<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="specialInstructionsText" <?php if($exerciseSpecial){echo 'value ="$exerciseSpecial"';} ?>></textarea>
+																			<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="specialInstructionsText" <?php if($aProgram->exerciseSpecial){echo 'value ="$exerciseSpecial"';} ?>></textarea>
 																		</div>
 																	</div>
 																	<div class="col-md-6">		

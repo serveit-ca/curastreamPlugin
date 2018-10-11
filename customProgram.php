@@ -133,6 +133,7 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 			Hello World
 			<?php $aProgram = $customProgram->populateFormById("37"); 
 			print_r($aProgram);
+			echo $aProgram->description;
 			echo $customProgram->createForm($aProgram); ?>
 		</div>
 	</div>
