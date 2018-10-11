@@ -115,7 +115,7 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 		 			global $wpdb;
 		 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 ORDER BY name", ARRAY_A);
 		 			foreach ($programs as $key => $value) { ?>
-		 				<option value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>	
+		 				<option id="existingOption" value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>	
 		 			<?php } ?>
 		 </select>
 		 <div>
@@ -130,10 +130,11 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 	<div class="modifyExistingForm hidden">
 
 		<div>
-			Hello World
-			<?php $aProgram = $customProgram->populateFormById("37"); 
+			<?php 
+			$progIdByName = $customProgram->getProgramByName()
+			$aProgram = $customProgram->populateFormById("37"); 
 			print_r($aProgram);
-			echo $aProgram->description;
+			//echo $aProgram->description;
 			echo $customProgram->createForm($aProgram); ?>
 		</div>
 	</div>

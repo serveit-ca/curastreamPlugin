@@ -6,7 +6,6 @@ class customProgram {
 
 	// Variable Declaration
 	public $progID;
-	
 	public $progType;
 
 	// For Populate Form Function
@@ -61,16 +60,26 @@ class customProgram {
 	    
 	}
 
-	function test($progID){
+	// Get Program By Id
+	function getProgramById($progID){
 		global $wpdb;
 		$program_table = 'dev_cura_programs';
 		$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $progID" , ARRAY_A);
 		return $programs;
 	}
 
+	//Get Program by Name
+	function getProgramByName($progName){
+		global $wpdb;
+		$program_table = 'dev_cura_programs';
+		$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE name = $progName" , ARRAY_A);
+		return $programs;
+	}
+
+	// When Program Selected from List, Find and Populate By ID
 	function populateFormById($programID){
 		// SQL call based on ProgID
-		$program = test($programID);
+		$program = getProgramById($programID);
 		$custom =  new customProgram();
 		//$program = json_decode($data, true);
 		$custom->progID = $program["id"];
