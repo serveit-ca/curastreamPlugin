@@ -35,7 +35,6 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 ?><!DOCTYPE HTML>
 <html>
 	<head>
-	</head>
 	<script>
 
 
@@ -58,21 +57,6 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 				jQuery(".modifyExistingForm").addClass("hidden");
 				jQuery(".modifyExistingProgram").addClass("hidden");
 			});
-			// jQuery('input:radio[name="typeUpdate"]').change(function(){
-			// 	if (this.checked && this.value == "Rehab"){
-			// 		console.log("Rehab checked");
-			// 		$customProgram->$progType = "Rehab";
-			// 	}
-			// 	if (this.checked && this.value == "Prevention"){
-			// 		console.log("Prevention checked");
-			// 		$customProgram->$progType = "Prevention";
-			// 	}
-			// 	if (this.checked && this.value == "Strength-Training"){
-			// 		console.log("Strength-Training checked");
-			// 		$customProgram->$progType = "Strength-Training";
-			// 	}
-
-			// });
 			jQuery("#customizeButton").click(function(){
 
 				jQuery(".modifyExistingForm").removeClass("hidden");
@@ -84,12 +68,13 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 
 		});
 	</script>
+	</head>
 	<body>
 
 
-<link rel="stylesheet" type="text/css" href="/curatream/assets/css/style.css" />
-</head>
-<body>
+		<link rel="stylesheet" type="text/css" href="/curatream/assets/css/style.css" />
+
+
 	<!-- Part 1 -->
 	<div class="UserSelect">
 	<h1>Custom Program Creation</h1>
@@ -124,22 +109,24 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 	</div>
 	<div class="createNewForm hidden">
 		<h3>3. Create a New Custom Program</h3>
-		<div> <?php 
-			echo $customProgram ->createForm($customProgram); ?> </div>
+		<div> 
+			<?php echo $customProgram ->createForm($customProgram); ?> 
+		</div>
 	</div>
 	<div class="modifyExistingForm hidden">
 
 		<div>
 			<?php 
-			$progIdByName = $customProgram->getProgramByName()
-			$aProgram = $customProgram->populateFormById("37"); 
-			print_r($aProgram);
+			//$progIdByName = $customProgram->getProgramByName()
+			// $aProgram = $customProgram->populateFormById("37"); 
+			// print_r($aProgram);
 			//echo $aProgram->description;
 			echo $customProgram->createForm($aProgram); ?>
 		</div>
 	</div>
 
 </body>
+</html>
 
 <?php
 

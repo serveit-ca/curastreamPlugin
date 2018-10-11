@@ -9,6 +9,7 @@ class customProgram {
 	public $progType;
 
 	// For Populate Form Function
+	// Program Variables
 	public $program;
 	public $type;
 	public $name;
@@ -28,23 +29,22 @@ class customProgram {
 	public $phaseDur;
 	public $phaseNotes;
 
-	//Phase Exercise
+	// Exercise Variables
 	public $exerciseOrder;
 	public $exerciseSets;
 	public $exerciseRest;
 	public $exerciseVariation;
 	public $exerciseEquipment;
 	public $exerciseSpecial;
-	public $exerciseFile;
-
+	public $exerciseFileName;
+	public $exerciseFileURL;
 
 
 	
 	
 
 	
-	function prefix_enqueue() 
-	{       
+	function prefix_enqueue(){       
 	    // JS
 	    wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js');
 	    wp_register_script('loadUI', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
@@ -56,32 +56,19 @@ class customProgram {
 	    // CSS
 	    wp_register_style('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
 	    wp_enqueue_style('prefix_bootstrap');
-
-	    
 	}
 
-	// Get Program By Id
-	function getProgramById($progID){
-		global $wpdb;
-		$program_table = 'dev_cura_programs';
-		$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $progID" , ARRAY_A);
-		return $programs;
-	}
-
-	//Get Program by Name
-	function getProgramByName($progName){
-		global $wpdb;
-		$program_table = 'dev_cura_programs';
-		$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE name = $progName" , ARRAY_A);
-		return $programs;
-	}
+	
 
 	// When Program Selected from List, Find and Populate By ID
 	function populateFormById($programID){
-		// SQL call based on ProgID
-		$program = getProgramById($programID);
+
+		//Instantiate Object
 		$custom =  new customProgram();
-		//$program = json_decode($data, true);
+
+		// Get Program Object By Id
+		$program = getProgramById($programID); // filtering.php
+		//Assign Program Variables
 		$custom->progID = $program["id"];
 		$custom->progType = $program["type"];
 		$custom->type = $program["type"];
@@ -89,16 +76,165 @@ class customProgram {
 		$custom->duration = $program["duration"];
 		$custom->description = $program["description"];
 		$custom->equipment = $program["equipment"];
-		$custom->duration = $program['duration'];
-		$custom->weeklyPlan = $program['weekly_plan'];
-		$custom->lifeStyle = $program['life_style'];
-		$custom->assocBodyPartId = $program['assoc_body_part_id'];
-		$custom->howItHappen = $program['how_it_happen'];
-		$custom->sportsOccupation = $program['sports_occupation'];
-		$custom->thumbnail = $program['thumbnail'];
+		$custom->duration = $program["duration"];
+		$custom->weeklyPlan = $program["weekly_plan"];
+		$custom->lifeStyle = $program["life_style"];
+		$custom->assocBodyPartId = $program["assoc_body_part_id"];
+		$custom->howItHappen = $program["how_it_happen"];
+		$custom->sportsOccupation = $program["sports_occupation"];
+		$custom->thumbnail = $program["thumbnail"];
+
+		// Get Phases By ProgId
+		$phases = getPhasesByProgId($programID);
+		$phaseItems = array();
+		//Assign Phase Variables For each Phase
+		foreach ($phases as $row){
+			$phase = new customProgram();
+			$phase->phaseName = $row["name"];
+			$phase->phaseIntro = $row["intro"];
+			$phase->phaseDur = $row["duration"];
+			$phase->phaseNotes = $row["notes"];
+
+			//Assign to Array Row
+			$phaseItems[] = $phase;
+		}
+		//Assign Exercise Variables
+		$allExercises = array(); // 2d Array: allExercises[phase][exercise]
+		foreach ($phases as $outer){
+			$phaseExercises = array(); // All Exercises in a given phase
+			$exercises = getExercisesByPhaseId($outer["id"]);
+			print_r($exercises);
+			foreach($exercises as $inner){
+				//Assign Variables to Array Row
+				$exercise = new customProgram();
+				$exercise->exerciseOrder = $inner["order_field"];
+				$exercise->exerciseSets = $inner["sets_reps"];
+				$exercise->exerciseRest = $inner["rest"];
+				$exercise->exerciseVariation = $inner["variation"];
+				$exercise->exerciseEquipment = $inner["equipment"];
+				$exercise->exerciseSpecial = $inner["special_instructions"];
+				$exercise->exerciseFileName = $inner["file_name"];
+				$exercise->exerciseFileURL = $inner["file_url"];
+
+				//Assign Inner Array
+				$phaseExercises[] = $exercise;
+			}
+			//Assign Outer Array
+			$allExercises[] = $phaseExercises;
+		}
 		return $custom;
-		// jquery to change value of all fields
-		//echo($description);
+		
+	}
+	function createPhasesForm(){
+		?>
+			<div class="row">
+				<div class="col-md-12">
+					<!-- <button class="add_phase">Add Phase</button> -->
+					<div class="phases_edit">
+						<ul class="nav nav-tabs">
+							<li class="active phase" id="1"><a data-toggle="tab" class="phase" data-tab-index="1" href="#phase1"><span class="order">1</span><span class="deletePhase glyphicon glyphicon-trash" data-tab-index="1"></span></a></li> -->
+							<button id="add_multiple_phases">Add Another Phase</button>
+						</ul>
+						<div class="tab-content">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<input class="deletePhase" type="hidden" name="" value="">
+										<input type="hidden" name="" value="">
+										<input id="phaseName" type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" <?php if($aProgram->phaseName){echo 'value ="$phaseName"';} ?> >
+									</div>
+									<div class="form-group">
+										<textarea id="phaseIntro" type="text" name="" placeholder="Phase Introduction" class="form-control intro" <?php if($aProgram->phaseIntro){echo 'value ="$phaseIntro"';} ?>></textarea>								
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<input id="phaseDur" type="text" required="required" name="" placeholder="Phase Duration" class="form-control duration" <?php if($phaseDur){echo 'value ="$phaseDur"';} ?>>
+									</div>
+									<div class="form-group">
+										<textarea id="phaseNotes" type="text" name="" placeholder="Phase Notes" class="form-control notes" <?php if($phaseNotes){echo 'value ="$phaseNotes"';} ?>></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php
+	}
+	function createExerciseForm(){
+		?>
+			<div class="row">
+				<div class="col-md-12">									
+					<div class="exercises">									
+						<ul class="sortable">												
+							<li>
+								<input type="text" class="nameExerciseEdit" hidden value="">
+								<span class="exerciseName"><?php echo empty($values['name']) ? 'Exercise' : str_replace(array('\"', "\'"),array('"', "'"), $values['name']) ?></span> <!-- <span class="nameExerciseEdit glyphicon glyphicon-edit" data-tab-index="1" data-exercise-id="<?php //echo $values['id'] ?>"></span> --><span class="deleteExerciseEdit glyphicon glyphicon-trash" data-tab-index="1" data-exercise-id="<?php echo $values['id'] ?>"></span>
+								<div class="row">
+								<div class="col-md-6">
+								<div class="form-group">
+									<input type="hidden" class="id" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][exerciseId]" value="<?php echo $values['id'] ?>">
+									<input type="hidden" class="order" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][order]" value="<?php echo $values['order_no'] ?>">
+									<input type="hidden" class="name" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][name]" value="<?php echo $values['name'] ?>">															
+								</div>
+								<div class="form-group">
+									<input required="required" class="form-control orderField" type="text"   name="orderField" <?php if($aProgram->exerciseOrder){echo 'value ="$exerciseOrder"';} ?> placeholder="Order">												
+								</div>
+								<div class="form-group">	
+									<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="setsReps" <?php if($aProgram->exerciseSets){echo 'value ="$exerciseSets"';} ?>>
+								</div>											
+								<div class="form-group">
+									<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="rest" <?php if($aProgram->exerciseRest){echo 'value ="$exerciseRest"';} ?>>
+								</div>
+								<div class="form-group">
+									<input required="required" class="form-control var" type="text"  placeholder="Variation" name="variation" <?php if($aProgram->exerciseVariation){echo 'value ="$exerciseVariation"';} ?>>
+								</div>
+								<div class="form-group">
+									<textarea required="required" class="form-control equip"  placeholder="Equipment" name="equipmentText" <?php if($aProgram->exerciseEquipment){echo 'value ="$exerciseEquipment"';} ?>></textarea>
+								</div>
+								<div class="form-group">
+									<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="specialInstructionsText" <?php if($aProgram->exerciseSpecial){echo 'value ="$exerciseSpecial"';} ?>></textarea>
+								</div>
+							</div>
+							<div class="col-md-6">		
+								<select required="required" class="exerciseVideoUrlSource form-control">
+									<option>Select a Video</option>
+										<?php 
+										$videos = $wpdb->get_results("SELECT * FROM `dev_cura_exercise_videos` WHERE id > 0", ARRAY_A);
+										$getVideoForExer = $wpdb->get_col("SELECT exercise_video_url FROM `dev_cura_exercises` WHERE id = $exercise_Id");
+										print_r($getVideoForExer);
+										foreach ($videos as $key_v => $value_v) { ?>
+											<option value="<?php echo $value_v['url'] ?>" <?php echo ($value_v['url'] == $getVideoForExer[0]) ? 'selected' : '' ?>><?php echo $value_v['name'] ?></option>
+										<?php } ?>
+								</select>
+								<input type="hidden" class="exercise ex" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][exerciseUrl]" value="<?php echo $values['exercise_video_url'] ?>">
+								<span class="removeVideo glyphicon glyphicon-remove"></span>
+								<div class="addVideo">
+									<span class="glyphicon glyphicon-plus"></span>
+									<span class="showMessage">Click in this box to add Video</span>
+								</div>
+								<div class="file-upload-area">
+									<div class="row">
+										<div class="col-md-3">									
+								   			<input type="button" name="upload-btn" id="upload-file" class="button-secondary file-upload-btn" value="Choose File" data-exerFileUpload="0">
+										</div>
+										<div class="col-md-9">
+											<input type="hidden" placeholder="File URL" id="file_url" class="regular-text form-control file-upload-path" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][file_url]" data-exerFileName="0" value="<?php echo $values['file_url'] ?>">
+											<input type="text" placeholder="File Name" id="file_name" class="regular-text form-control file-upload-name" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][file_name]" data-exerFileName="0" value="">
+										</div>
+									</div>
+								</div>
+							</div>
+							<span class="glyphicon glyphicon-move"></span>
+							<span class="move"> Move this exercise to a desired order in the list</span>
+						</li>
+						<button class="add_exercise">Add Exercise</button>
+					</ul>											
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 	function createForm($aProgram) {
 		global $wpdb;
@@ -457,15 +593,15 @@ class customProgram {
 	}
 		</style>
 			
-				<div class="edit_form">
-		<form action="" method="POST" novalidate id="editForm">
+		<div class="edit_form">
+			<form action="" method="POST" id="editForm">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">
 						<label for="type">Type :</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($aProgram->progType == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="prevention" value="Prevention" <?php if($aProgram->progType == 'Prevention'){echo 'checked ="checked"';} ?> >Prevention</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="strength" value="Strength-Training" <?php if($aProgram->progType == 'Strength-Training'){echo 'checked ="checked"';} ?> >Strength Training</label>
+						<label class="radio_btn radio_btn_type"><input  type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($aProgram->progType == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
+						<label class="radio_btn radio_btn_type"><input  type="radio" name="typeUpdate" id="prevention" value="Prevention" <?php if($aProgram->progType == 'Prevention'){echo 'checked ="checked"';} ?> >Prevention</label>
+						<label class="radio_btn radio_btn_type"><input  type="radio" name="typeUpdate" id="strength" value="Strength-Training" <?php if($aProgram->progType == 'Strength-Training'){echo 'checked ="checked"';} ?> >Strength Training</label>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -528,104 +664,8 @@ class customProgram {
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<!-- <button class="add_phase">Add Phase</button> -->
-					<div class="phases_edit">
-						<ul class="nav nav-tabs">
-							<li class="active phase" id="1"><a data-toggle="tab" class="phase" data-tab-index="1" href="#phase1"><span class="order">1</span><span class="deletePhase glyphicon glyphicon-trash" data-tab-index="1"></span></a></li> -->
-							<button id="add_multiple_phases">Add Another Phase</button>
-						</ul>
-						<div class="tab-content">
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<input class="deletePhase" type="hidden" name="" value="">
-												<input type="hidden" name="" value="">
-												<input id="phaseName" type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" <?php if($aProgram->phaseName){echo 'value ="$phaseName"';} ?> >
-											</div>
-											<div class="form-group">
-												<textarea id="phaseIntro" type="text" name="" placeholder="Phase Introduction" class="form-control intro" <?php if($aProgram->phaseIntro){echo 'value ="$phaseIntro"';} ?>></textarea>								
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<input id="phaseDur" type="text" required="required" name="" placeholder="Phase Duration" class="form-control duration" <?php if($phaseDur){echo 'value ="$phaseDur"';} ?>>
-											</div>
-											<div class="form-group">
-												<textarea id="phaseNotes" type="text" name="" placeholder="Phase Notes" class="form-control notes" <?php if($phaseNotes){echo 'value ="$phaseNotes"';} ?>></textarea>
-											</div>
-										</div>
-										<div class="col-md-12">										
-											<div class="exercises">									
-												<ul class="sortable">												
-															<li>
-																<input type="text" class="nameExerciseEdit" hidden value="">
-																<span class="exerciseName"><?php echo empty($values['name']) ? 'Exercise' : str_replace(array('\"', "\'"),array('"', "'"), $values['name']) ?></span> <!-- <span class="nameExerciseEdit glyphicon glyphicon-edit" data-tab-index="1" data-exercise-id="<?php //echo $values['id'] ?>"></span> --><span class="deleteExerciseEdit glyphicon glyphicon-trash" data-tab-index="1" data-exercise-id="<?php echo $values['id'] ?>"></span>
-																<div class="row">
-																	<div class="col-md-6">
-																		<div class="form-group">
-																			<input type="hidden" class="id" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][exerciseId]" value="<?php echo $values['id'] ?>">
-																			<input type="hidden" class="order" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][order]" value="<?php echo $values['order_no'] ?>">
-																			<input type="hidden" class="name" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][name]" value="<?php echo $values['name'] ?>">															
-																		</div>
-																		<div class="form-group">
-																			<input required="required" class="form-control orderField" type="text"   name="orderField" <?php if($aProgram->exerciseOrder){echo 'value ="$exerciseOrder"';} ?> placeholder="Order">														
-																		</div>
-																		<div class="form-group">	
-																			<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="setsReps" <?php if($aProgram->exerciseSets){echo 'value ="$exerciseSets"';} ?>>
-																		</div>											
-																		<div class="form-group">
-																			<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="rest" <?php if($aProgram->exerciseRest){echo 'value ="$exerciseRest"';} ?>>
-																		</div>
-																		<div class="form-group">
-																			<input required="required" class="form-control var" type="text"  placeholder="Variation" name="variation" <?php if($aProgram->exerciseVariation){echo 'value ="$exerciseVariation"';} ?>>
-																		</div>
-																		<div class="form-group">
-																			<textarea required="required" class="form-control equip"  placeholder="Equipment" name="equipmentText" <?php if($aProgram->exerciseEquipment){echo 'value ="$exerciseEquipment"';} ?>></textarea>
-																		</div>
-																		<div class="form-group">
-																			<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="specialInstructionsText" <?php if($aProgram->exerciseSpecial){echo 'value ="$exerciseSpecial"';} ?>></textarea>
-																		</div>
-																	</div>
-																	<div class="col-md-6">		
-																		<select required="required" class="exerciseVideoUrlSource form-control">
-																			<option>Select a Video</option>
-																				<?php 
-																				$videos = $wpdb->get_results("SELECT * FROM `dev_cura_exercise_videos` WHERE id > 0", ARRAY_A);
-																				$getVideoForExer = $wpdb->get_col("SELECT exercise_video_url FROM `dev_cura_exercises` WHERE id = $exercise_Id");
-																				print_r($getVideoForExer);
-																					foreach ($videos as $key_v => $value_v) { ?>
-																						<option value="<?php echo $value_v['url'] ?>" <?php echo ($value_v['url'] == $getVideoForExer[0]) ? 'selected' : '' ?>><?php echo $value_v['name'] ?></option>
-																				<?php } ?>
-																		</select>
-																		<input type="hidden" class="exercise ex" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][exerciseUrl]" value="<?php echo $values['exercise_video_url'] ?>">
-																		<span class="removeVideo glyphicon glyphicon-remove"></span>
-																		<div class="addVideo">
-																			<span class="glyphicon glyphicon-plus"></span>
-																			<span class="showMessage">Click in this box to add Video</span>
-																		</div>
-																		<div class="file-upload-area">
-																			<div class="row">
-																				<div class="col-md-3">									
-																		   			<input type="button" name="upload-btn" id="upload-file" class="button-secondary file-upload-btn" value="Choose File" data-exerFileUpload="0">
-																				</div>
-																				<div class="col-md-9">
-																		    		<input type="hidden" placeholder="File URL" id="file_url" class="regular-text form-control file-upload-path" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][file_url]" data-exerFileName="0" value="<?php echo $values['file_url'] ?>">
-																		    		<input type="text" placeholder="File Name" id="file_name" class="regular-text form-control file-upload-name" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][file_name]" data-exerFileName="0" value="">
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																<span class="glyphicon glyphicon-move"></span>
-																<span class="move"> Move this exercise to a desired order in the list</span>
-															</li>
-													<button class="add_exercise">Add Exercise</button>
-												</ul>											
-											</div>
-										</div>
-									</div>
-								</div>
+
+								
 													
 						</div>	
 					</div>
@@ -633,7 +673,7 @@ class customProgram {
 						<input type="submit" value="Add Program" name="addProgram">
 						<a href="" class="cancel">Cancel</a>
 					</div>	
-				</div>				
+			</div>				
 		</form>
 	</div>
 			

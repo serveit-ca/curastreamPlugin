@@ -137,10 +137,39 @@ require_once('objects/program.php');
 	    }					            						        
 	}
 	// Get Program By ID
-	function test($progID){
-	global $wpdb;
-	$program_table = 'dev_cura_programs';
-	$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $progID" , ARRAY_A);
-	return $programs;
-}
+	// function test($progID){
+	// global $wpdb;
+	// $program_table = 'dev_cura_programs';
+	// $programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $progID" , ARRAY_A);
+	// return $programs;
+	function getProgramById($progID){
+		global $wpdb;
+		$program_table = 'dev_cura_programs';
+		$program = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $progID" , ARRAY_A);
+		return $program;
+	}
+
+	//Get Program by Name
+	function getProgramIdByName($progName){
+		global $wpdb;
+		$program_table = 'dev_cura_programs';
+		$programId = $wpdb->get_row("SELECT id FROM $program_table WHERE name = $progName" , ARRAY_A);
+		return $programId;
+	}
+
+	//Get Phases By Program Id
+	function getPhasesByProgId($progID){
+		global $wpdb;
+		$phase_table = 'dev_cura_phases';
+		$phases = $wpdb->get_results("SELECT * FROM $phase_table WHERE program_id = $progID" , ARRAY_A);
+		return $phases;
+	}
+
+	//Get Exercises By Phase Id
+	function getExercisesByPhaseId($phaseID){
+		global $wpdb;
+		$exercise_table = 'dev_cura_exercises';
+		$exercises = $wpdb->get_results("SELECT * FROM $exercise_table WHERE phase_id = $phaseID" , ARRAY_A);
+		return $exercises;
+	}
     ?>
