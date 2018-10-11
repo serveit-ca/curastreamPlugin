@@ -63,7 +63,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 	 <!-- Part 3 -->
 	<div class="modifyExistingProgram hidden">
 		<h3>3. Select an Exisitng Program</h3>
-	 	<select name="existingProgram">
+	 	<select name="existingProgram" id="existingProgram">
 		 		<?php 
 		 			global $wpdb;
 		 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 ORDER BY name", ARRAY_A);

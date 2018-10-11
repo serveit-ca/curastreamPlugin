@@ -1,4 +1,7 @@
 <?php 
+include ("objects/customProgram.php");
+$customProgram = new customProgram();
+$customProgram -> prefix_enqueue();
 
 /* The fuunction is used to add an exercise from a users favoriate */
 	function saveExercise(){
@@ -103,14 +106,17 @@
 	    add_action( 'wp_ajax_completeProgram', 'completeProgram' );
 	    add_action( 'wp_ajax_nopriv_completeProgram', 'completeProgram' );
 
-	    /* This Function is used to Save Radio Button Selections in Custom Programs */
-	    // function radioType(){
-	    // 	global $wpdb;
+	    /* This fucntion is sued to copy, save and dispaly a custom program */
+	      function copyAndDisplayCustomProgram($baseProgramId){
+	      	$customProgramData = "Hello World ";
+	      	$customProgramData .= $baseProgramId;
+	      		global $wpdb;
+	      		// get the current custom program 
+	      		// get all of the exercises 
+	      		// copy all of the custom program s
+	      		return customProgramData;
+	      }
 
-	    // 	$tableName = $wpdb->prefix . "cura_user_programs";
-
-	    // 	$wpdb->update($tableName, 
-	    // 					array('type' => 'this.val'),
-	    // 				)
-	    // }
+	    add_action( 'wp_ajax_copyAndDisplayCustomProgram', 'copyAndDisplayCustomProgram' );
+	    add_action( 'wp_ajax_nopriv_copyAndDisplayCustomProgram', 'copyAndDisplayCustomProgram' );
     ?>

@@ -27,9 +27,10 @@ if(JS_DEBUG){console.log("Welcome to the Custom Program Builder Script");}
 		});
 // Used to customize a custom program 
 	jQuery("#customizeButton").on('click', function(event){
+		if(JS_DEBUG){console.log("Clicking Custom");}
 		// get the ID of the current Program 
-		if(JS_DEBUG){console.log("Clicking Custom");}
-		if(JS_DEBUG){console.log("Clicking Custom");}
+		var programID = jQuery("#existingProgram option:selected").val()
+		if(JS_DEBUG){console.log("We want to customize the course "+ programID );}
 		// Get the custom program from the AJAX PHP Form 
 		// This should be returning HTML object 
 		// Find the HTML Object where we want to load the form into 
