@@ -72,10 +72,13 @@ add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
 function register_scripts_with_jquery(){   
     // Register the script like this for a plugin:
    // wp_register_style( '')
-    wp_register_script( 'custom-program-script', plugins_url( 'assets/js/customProgram.js', __FILE__ ));
+    wp_register_style( 'curastreamStyle', plugins_url( 'assets/css/style.css', __FILE__ ));
+    wp_enqueue_style( 'curastreamStyle');
+    wp_register_script( 'custom-program-script', plugins_url( 'assets/js/customProgram.js', __FILE__ ), "", "", true);
     // For either a plugin or a theme, you can then enqueue the script:
     wp_enqueue_script( 'custom-program-script' );
 }
+
 
 
 // api functions

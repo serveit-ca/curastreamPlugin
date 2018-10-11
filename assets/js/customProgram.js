@@ -5,6 +5,40 @@ var JS_DEBUG = true;
 
 if(JS_DEBUG){console.log("Welcome to the Custom Program Builder Script");}
 
+// Used to show the select use box iwhen creating a custom program jQuery(".radio_btn_type").on('click', function(event){
+	jQuery("#selectUser").on('change', function(event){
+		console.log("hello");
+		if(JS_DEBUG){console.log("onchange");}
+		jQuery(".baseProgram").removeClass("hidden");
+		if(JS_DEBUG){console.log("user change");}
+	});
+// Used to load the mobidy existing when creating a custom program 
+	jQuery("#modifyExisting").on('click', function(event){
+			console.log("hello");
+		jQuery(".modifyExistingProgram").removeClass("hidden");
+		jQuery(".createNewForm").addClass("hidden");
+	});
+// Used to create a new program 
+		jQuery("#createNew").on('click', function(event){
+			if(JS_DEBUG){console.log("createNew clicked");}
+			jQuery(".createNewForm").removeClass("hidden");
+			jQuery(".modifyExistingForm").addClass("hidden");
+			jQuery(".modifyExistingProgram").addClass("hidden");
+		});
+// Used to customize a custom program 
+	jQuery("#customizeButton").on('click', function(event){
+		// get the ID of the current Program 
+		if(JS_DEBUG){console.log("Clicking Custom");}
+		if(JS_DEBUG){console.log("Clicking Custom");}
+		// Get the custom program from the AJAX PHP Form 
+		// This should be returning HTML object 
+		// Find the HTML Object where we want to load the form into 
+		// Load the form in the html object 
+		
+		jQuery(".modifyExistingForm").removeClass("hidden");
+	
+	});
+
 //For Program Type Radio Buttons
 jQuery(".radio_btn_type").on('click', function(event){
 	//Get Data
@@ -27,7 +61,7 @@ jQuery(".radio_btn_type").on('click', function(event){
 });
 
 //For Program Name Box
-jQuery("#nameBox")on('focusout', function(event){
+jQuery("#nameBox").on('focusout', function(event){
 	//Get Data
 	var prog_name = jQuery(this).val();
 	//Asign Data for Database
@@ -48,7 +82,7 @@ jQuery("#nameBox")on('focusout', function(event){
 });
 
 //For Program duration Box
-jQuery("#durBox")on('focusout', function(event){
+jQuery("#durBox").on('focusout', function(event){
 	//Get Data
 	var prog_dur = jQuery(this).val();
 	//Asign Data for Database
@@ -69,7 +103,7 @@ jQuery("#durBox")on('focusout', function(event){
 });
 
 //For Program Description Box
-jQuery("#descBox")on('focusout', function(event){
+jQuery("#descBox").on('focusout', function(event){
 	//Get Data
 	var prog_desc = jQuery(this).val();
 	//Asign Data for Database
@@ -90,7 +124,7 @@ jQuery("#descBox")on('focusout', function(event){
 });
 
 //For Program Equipment Box
-jQuery("#equipBox")on('focusout', function(event){
+jQuery("#equipBox").on('focusout', function(event){
 	//Get Data
 	var prog_equip = jQuery(this).val();
 	//Asign Data for Database
@@ -111,7 +145,7 @@ jQuery("#equipBox")on('focusout', function(event){
 });
 
 //For Program Weekly Plan Box
-jQuery("#weekBox")on('focusout', function(event){
+jQuery("#weekBox").on('focusout', function(event){
 	//Get Data
 	var prog_week = jQuery(this).val();
 	//Asign Data for Database
@@ -132,7 +166,7 @@ jQuery("#weekBox")on('focusout', function(event){
 });
 
 //For Program Lifestyle Box
-jQuery("#lifeBox")on('focusout', function(event){
+jQuery("#lifeBox").on('focusout', function(event){
 	//Get Data
 	var prog_life = jQuery(this).val();
 	//Asign Data for Database
@@ -153,7 +187,7 @@ jQuery("#lifeBox")on('focusout', function(event){
 });
 
 //For Phase Name Box
-jQuery("#phaseName")on('focusout', function(event){
+jQuery("#phaseName").on('focusout', function(event){
 	//Get Data
 	var phase_name = jQuery(this).val();
 	//Asign Data for Database
@@ -174,7 +208,7 @@ jQuery("#phaseName")on('focusout', function(event){
 });
 
 //For Phase Name Box
-jQuery("#phaseName")on('focusout', function(event){
+jQuery("#phaseName").on('focusout', function(event){
 	//Get Data
 	var phase_name = jQuery(this).val();
 	//Asign Data for Database
@@ -195,7 +229,7 @@ jQuery("#phaseName")on('focusout', function(event){
 });
 
 //For Phase Intro
-jQuery("#phaseIntro")on('focusout', function(event){
+jQuery("#phaseIntro").on('focusout', function(event){
 	//Get Data
 	var phase_intro = jQuery(this).val();
 	//Asign Data for Database
@@ -216,7 +250,7 @@ jQuery("#phaseIntro")on('focusout', function(event){
 });
 
 //For Phase Duration
-jQuery("#phaseDur")on('focusout', function(event){
+jQuery("#phaseDur").on('focusout', function(event){
 	//Get Data
 	var phase_dur = jQuery(this).val();
 	//Asign Data for Database
@@ -237,7 +271,7 @@ jQuery("#phaseDur")on('focusout', function(event){
 });
 
 //For Phase Notes
-jQuery("#phaseNotes")on('focusout', function(event){
+jQuery("#phaseNotes").on('focusout', function(event){
 	//Get Data
 	var phase_notes = jQuery(this).val();
 	//Asign Data for Database

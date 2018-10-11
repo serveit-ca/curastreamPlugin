@@ -15,80 +15,33 @@ $allUsers = get_users(array(
     'meta_key' => 'first_name',
     'orderby'  => 'meta_value',
 ));
-if(WP_DEBUG){	echo("<br/>All Users Array Size:".sizeof($allUsers));}
+if(WP_DEBUG){	//echo("<br/>All Users Array Size:".sizeof($allUsers));
+}
 
 // Create an empty array of Active users 
 $activeUsers = array();
 // Add active users to the array
 foreach($allUsers as $user){
-if(WP_DEBUG){		echo ("<br/>".$user->ID.$user->user_login);}
+if(WP_DEBUG){		//echo ("<br/>".$user->ID.$user->user_login);
+}
 	if (user_can($user->ID, 'mepr-active')){
-if(WP_DEBUG){			echo("<br/>Active User".$user->user_login);}
+if(WP_DEBUG){		//	echo("<br/>Active User".$user->user_login);
+}
 		array_push($activeUsers,$user);
 	}else{
-if(WP_DEBUG){			echo ("<br/> Error".$user->user_login);}
+if(WP_DEBUG){			//echo ("<br/> Error".$user->user_login);
+}
 	}
-if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
+if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
+}
 }
 // Get a list of groups 
 // Select a user or a group TODO - Add Group functionality 
-?><!DOCTYPE HTML>
+?>
+<!DOCTYPE HTML>
 <html>
 	<head>
 	</head>
-	<script>
-
-
-		jQuery(document).ready(function(){
-
-			console.log("doc.ready");
-			jQuery("#selectUser").change(function(){ 
-				console.log("onchange");
-				jQuery(".baseProgram").removeClass("hidden");
-				console.log("user change");
-			});
-			jQuery("#modifyExisting").click(function(){
-				jQuery(".modifyExistingProgram").removeClass("hidden");
-				
-				jQuery(".createNewForm").addClass("hidden");
-			});
-			jQuery("#createNew").click(function(){
-				console.log("createNew clicked");
-				jQuery(".createNewForm").removeClass("hidden");
-				jQuery(".modifyExistingForm").addClass("hidden");
-				jQuery(".modifyExistingProgram").addClass("hidden");
-			});
-			// jQuery('input:radio[name="typeUpdate"]').change(function(){
-			// 	if (this.checked && this.value == "Rehab"){
-			// 		console.log("Rehab checked");
-			// 		$customProgram->$progType = "Rehab";
-			// 	}
-			// 	if (this.checked && this.value == "Prevention"){
-			// 		console.log("Prevention checked");
-			// 		$customProgram->$progType = "Prevention";
-			// 	}
-			// 	if (this.checked && this.value == "Strength-Training"){
-			// 		console.log("Strength-Training checked");
-			// 		$customProgram->$progType = "Strength-Training";
-			// 	}
-
-			// });
-			jQuery("#customizeButton").click(function(){
-
-				jQuery(".modifyExistingForm").removeClass("hidden");
-				console.log("clicking custom ");
-
-				 
-			});
-
-
-		});
-	</script>
-	<body>
-
-
-<link rel="stylesheet" type="text/css" href="/curatream/assets/css/style.css" />
-</head>
 <body>
 	<!-- Part 1 -->
 	<div class="UserSelect">
@@ -131,17 +84,13 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 
 		<div>
 			<?php 
-			$progIdByName = $customProgram->getProgramByName()
-			$aProgram = $customProgram->populateFormById("37"); 
-			print_r($aProgram);
+			//$progIdByName = $customProgram->getProgramByName()
+			//$aProgram = $customProgram->populateFormById("37"); 
+			//print_r($aProgram);
 			//echo $aProgram->description;
-			echo $customProgram->createForm($aProgram); ?>
+			//echo $customProgram->createForm($aProgram); ?>
 		</div>
 	</div>
 
 </body>
-
-<?php
-
-
-?>
+</html>
