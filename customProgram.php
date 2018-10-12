@@ -110,7 +110,13 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 	<div class="createNewForm hidden">
 		<h3>3. Create a New Custom Program</h3>
 		<div> 
-			<?php echo $customProgram ->createForm($customProgram); ?> 
+			<?php
+			 echo $customProgram ->createForm($customProgram);
+			 echo $customProgram ->createPhasesForm($customProgram);
+			 echo $customProgram ->createExerciseForm($customProgram);
+			 ?> 
+				 </form>
+			</div>
 		</div>
 	</div>
 	<div class="modifyExistingForm hidden">
@@ -118,8 +124,8 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 		<div>
 			<?php 
 			//$progIdByName = $customProgram->getProgramByName()
-			// $aProgram = $customProgram->populateFormById("37"); 
-			// print_r($aProgram);
+			$aProgram = $customProgram->populateFormById("37"); 
+			print_r($aProgram);
 			//echo $aProgram->description;
 			echo $customProgram->createForm($aProgram); ?>
 		</div>

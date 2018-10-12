@@ -90,6 +90,7 @@ class customProgram {
 		//Assign Phase Variables For each Phase
 		foreach ($phases as $row){
 			$phase = new customProgram();
+			createPhasesForm($this);
 			$phase->phaseName = $row["name"];
 			$phase->phaseIntro = $row["intro"];
 			$phase->phaseDur = $row["duration"];
@@ -125,44 +126,46 @@ class customProgram {
 		return $custom;
 		
 	}
-	function createPhasesForm(){
+	function createPhasesForm($aProgram){
 		?>
 			<div class="row">
-				<div class="col-md-12">
-					<!-- <button class="add_phase">Add Phase</button> -->
-					<div class="phases_edit">
-						<ul class="nav nav-tabs">
-							<li class="active phase" id="1"><a data-toggle="tab" class="phase" data-tab-index="1" href="#phase1"><span class="order">1</span><span class="deletePhase glyphicon glyphicon-trash" data-tab-index="1"></span></a></li> -->
-							<button id="add_multiple_phases">Add Another Phase</button>
-						</ul>
-						<div class="tab-content">
-							<div class="row">
-								<div class="col-md-6">
-									<div class="form-group">
-										<input class="deletePhase" type="hidden" name="" value="">
-										<input type="hidden" name="" value="">
-										<input id="phaseName" type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" <?php if($aProgram->phaseName){echo 'value ="$phaseName"';} ?> >
+
+					<div class="col-md-12">
+						<!-- <button class="add_phase">Add Phase</button> -->
+						<div class="phases_edit">
+							<ul class="nav nav-tabs">
+								<li class="active phase" id="1"><a data-toggle="tab" class="phase" data-tab-index="1" href="#phase1"><span class="order">1</span><span class="deletePhase glyphicon glyphicon-trash" data-tab-index="1"></span></a></li> -->
+								<button id="add_multiple_phases">Add Another Phase</button>
+							</ul>
+							<div class="tab-content">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<input class="deletePhase" type="hidden" name="" value="">
+											<input type="hidden" name="" value="">
+											<input id="phaseName" type="text" name="" placeholder="Phase Name" required="required" class="form-control nameEdit" <?php if($aProgram->phaseName){echo 'value ="$phaseName"';} ?> >
+										</div>
+										<div class="form-group">
+											<textarea id="phaseIntro" type="text" name="" placeholder="Phase Introduction" class="form-control intro" <?php if($aProgram->phaseIntro){echo 'value ="$phaseIntro"';} ?>></textarea>								
+										</div>
 									</div>
-									<div class="form-group">
-										<textarea id="phaseIntro" type="text" name="" placeholder="Phase Introduction" class="form-control intro" <?php if($aProgram->phaseIntro){echo 'value ="$phaseIntro"';} ?>></textarea>								
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<input id="phaseDur" type="text" required="required" name="" placeholder="Phase Duration" class="form-control duration" <?php if($phaseDur){echo 'value ="$phaseDur"';} ?>>
-									</div>
-									<div class="form-group">
-										<textarea id="phaseNotes" type="text" name="" placeholder="Phase Notes" class="form-control notes" <?php if($phaseNotes){echo 'value ="$phaseNotes"';} ?>></textarea>
+									<div class="col-md-6">
+										<div class="form-group">
+											<input id="phaseDur" type="text" required="required" name="" placeholder="Phase Duration" class="form-control duration" <?php if($phaseDur){echo 'value ="$phaseDur"';} ?>>
+										</div>
+										<div class="form-group">
+											<textarea id="phaseNotes" type="text" name="" placeholder="Phase Notes" class="form-control notes" <?php if($phaseNotes){echo 'value ="$phaseNotes"';} ?>></textarea>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		<?php
 	}
-	function createExerciseForm(){
+	function createExerciseForm($aProgram){
 		?>
 			<div class="row">
 				<div class="col-md-12">									
@@ -606,7 +609,7 @@ class customProgram {
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
-						<input type="hidden" name="progIdupdate">					
+						<input type="hidden" name="progIdupdate" />					
 						<input id="nameBox" type="text" name="progNameupdate" class="form-control" required="required" placeholder="Name" <?php if($aProgram->name){echo 'value ="'.$aProgram->name.'"';} ?> />	
 									
 					</div>
@@ -667,15 +670,13 @@ class customProgram {
 
 								
 													
-						</div>	
-					</div>
+					
 					<div class="form-group addProgram" style="clear: both;">
 						<input type="submit" value="Add Program" name="addProgram">
 						<a href="" class="cancel">Cancel</a>
 					</div>	
-			</div>				
-		</form>
-	</div>
+						
+		
 			
 			<?php
 		}
