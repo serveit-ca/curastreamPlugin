@@ -257,7 +257,7 @@ jQuery("#phaseNotes").on('focusout', function(event){
 	});
 });
 
-//For Phase Notes
+//For Exercise Name
 jQuery(".exerciseName").on('focusout', function(event){
 	//Get Data
 	var exercise_name = jQuery(this).val();
@@ -265,6 +265,132 @@ jQuery(".exerciseName").on('focusout', function(event){
 	var data = {
 		'action': 'exerciseName',
 		'exercise_name': exercise_name
+	};
+	//Post to Ajax
+	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
+		//Error Checking
+		if(!response.trim()){
+			console.log("Success!"+response);
+		}
+		else{
+			console.log("Error"+response);
+		}
+	});
+});
+
+//For Exercise Order
+jQuery("#exerciseOrder").on('focusout', function(event){
+	//Get Data
+	var exercise_order = jQuery(this).val();
+	//Asign Data for Database
+	var data = {
+		'action': 'exerciseOrder',
+		'exercise_order': exercise_order
+	};
+	//Post to Ajax
+	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
+		//Error Checking
+		if(!response.trim()){
+			console.log("Success!"+response);
+		}
+		else{
+			console.log("Error"+response);
+		}
+	});
+});
+
+//For Exercise Sets
+jQuery("#exerciseSets").on('focusout', function(event){
+	//Get Data
+	var exercise_order = jQuery(this).val();
+	//Asign Data for Database
+	var data = {
+		'action': 'exerciseSets',
+		'exercise_sets': exercise_sets
+	};
+	//Post to Ajax
+	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
+		//Error Checking
+		if(!response.trim()){
+			console.log("Success!"+response);
+		}
+		else{
+			console.log("Error"+response);
+		}
+	});
+});
+
+//For Exercise Rest
+jQuery("#exerciseRest").on('focusout', function(event){
+	//Get Data
+	var exercise_rest = jQuery(this).val();
+	//Asign Data for Database
+	var data = {
+		'action': 'exerciseRest',
+		'exercise_rest': exercise_rest
+	};
+	//Post to Ajax
+	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
+		//Error Checking
+		if(!response.trim()){
+			console.log("Success!"+response);
+		}
+		else{
+			console.log("Error"+response);
+		}
+	});
+});
+
+//For Exercise Variation
+jQuery("#exerciseVariation").on('focusout', function(event){
+	//Get Data
+	var exercise_variation = jQuery(this).val();
+	//Asign Data for Database
+	var data = {
+		'action': 'exerciseVariation',
+		'exercise_variation': exercise_variation
+	};
+	//Post to Ajax
+	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
+		//Error Checking
+		if(!response.trim()){
+			console.log("Success!"+response);
+		}
+		else{
+			console.log("Error"+response);
+		}
+	});
+});
+
+//For Exercise Equipment
+jQuery("#exerciseEquipment").on('focusout', function(event){
+	//Get Data
+	var exercise_equipment = jQuery(this).val();
+	//Asign Data for Database
+	var data = {
+		'action': 'exerciseEquipment',
+		'exercise_equipment': exercise_equipment
+	};
+	//Post to Ajax
+	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
+		//Error Checking
+		if(!response.trim()){
+			console.log("Success!"+response);
+		}
+		else{
+			console.log("Error"+response);
+		}
+	});
+});
+
+//For Exercise Special
+jQuery("#exerciseSpecial").on('focusout', function(event){
+	//Get Data
+	var exercise_special = jQuery(this).val();
+	//Asign Data for Database
+	var data = {
+		'action': 'exerciseSpecial',
+		'exercise_special': exercise_special
 	};
 	//Post to Ajax
 	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
