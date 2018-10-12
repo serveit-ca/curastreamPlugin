@@ -90,12 +90,13 @@ class customProgram {
 		//Assign Phase Variables For each Phase
 		foreach ($phases as $row){
 			$phase = new customProgram();
-			//$phase->createPhasesForm($phase);
+			
 			$phase->phaseName = $row["name"];
 			$phase->phaseIntro = $row["intro"];
 			$phase->phaseDur = $row["duration"];
 			$phase->phaseNotes = $row["notes"];
-
+			$phase->createPhasesForm($phase);
+			print_r($phase);
 			//Assign to Array Row
 			$phaseItems[] = $phase;
 		}
@@ -104,7 +105,7 @@ class customProgram {
 		foreach ($phases as $outer){
 			$phaseExercises = array(); // All Exercises in a given phase
 			$exercises = getExercisesByPhaseId($outer["id"]);
-			print_r($exercises);
+			//print_r($exercises);
 			foreach($exercises as $inner){
 				//Assign Variables to Array Row
 				$exercise = new customProgram();
@@ -173,13 +174,13 @@ class customProgram {
 						<ul class="sortable">												
 							<li>
 								<input type="text" class="nameExerciseEdit" hidden value="">
-								<span class="exerciseName"><?php echo empty($values['name']) ? 'Exercise' : str_replace(array('\"', "\'"),array('"', "'"), $values['name']) ?></span> <!-- <span class="nameExerciseEdit glyphicon glyphicon-edit" data-tab-index="1" data-exercise-id="<?php //echo $values['id'] ?>"></span> --><span class="deleteExerciseEdit glyphicon glyphicon-trash" data-tab-index="1" data-exercise-id="<?php echo $values['id'] ?>"></span>
+								<span class="exerciseName"></span> <!-- <span class="nameExerciseEdit glyphicon glyphicon-edit" data-tab-index="1" data-exercise-id="<?php //echo $values['id'] ?>"></span> --><span class="deleteExerciseEdit glyphicon glyphicon-trash" data-tab-index="1" data-exercise-id=""></span>
 								<div class="row">
 								<div class="col-md-6">
 								<div class="form-group">
-									<input type="hidden" class="id" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][exerciseId]" value="<?php echo $values['id'] ?>">
-									<input type="hidden" class="order" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][order]" value="<?php echo $values['order_no'] ?>">
-									<input type="hidden" class="name" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][name]" value="<?php echo $values['name'] ?>">															
+									<input type="hidden" class="id" name="phase[][exercise][][exerciseId]" value="">
+									<input type="hidden" class="order" name="phase[][exercise][][order]" value="">
+									<input type="hidden" class="name" name="phase[][exercise][][name]" value="">															
 								</div>
 								<div class="form-group">
 									<input id="exerciseOrder" required="required" class="form-control orderField" type="text"   name="orderField" <?php if($aProgram->exerciseOrder){echo 'value ="$exerciseOrder"';} ?> placeholder="Order">												
@@ -204,6 +205,7 @@ class customProgram {
 								<select required="required" class="exerciseVideoUrlSource form-control">
 									<option>Select a Video</option>
 										<?php 
+										global $wpdb;
 										$videos = $wpdb->get_results("SELECT * FROM `dev_cura_exercise_videos` WHERE id > 0", ARRAY_A);
 										$getVideoForExer = $wpdb->get_col("SELECT exercise_video_url FROM `dev_cura_exercises` WHERE id = $exercise_Id");
 										print_r($getVideoForExer);

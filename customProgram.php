@@ -124,10 +124,11 @@ if(WP_DEBUG){		echo("<br/>Array Size:".sizeof($activeUsers));}
 		<div>
 			<?php 
 			//$progIdByName = $customProgram->getProgramByName()
-			$aProgram = $customProgram->populateFormById("37"); 
+			
 			print_r($aProgram);
 			//echo $aProgram->description;
-			echo $customProgram->createForm($aProgram); ?>
+			echo $customProgram->createForm($aProgram);
+			$aProgram = $customProgram->populateFormById("37");  ?>
 		</div>
 	</div>
 
