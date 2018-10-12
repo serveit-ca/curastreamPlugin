@@ -27,7 +27,7 @@ jQuery(".radio_btn_type").on('click', function(event){
 });
 
 //For Program Name Box
-jQuery("#nameBox")on('focusout', function(event){
+jQuery("#nameBox").on('focusout', function(event){
 	//Get Data
 	var prog_name = jQuery(this).val();
 	//Asign Data for Database
@@ -48,7 +48,7 @@ jQuery("#nameBox")on('focusout', function(event){
 });
 
 //For Program duration Box
-jQuery("#durBox")on('focusout', function(event){
+jQuery("#durBox").on('focusout', function(event){
 	//Get Data
 	var prog_dur = jQuery(this).val();
 	//Asign Data for Database
@@ -69,7 +69,7 @@ jQuery("#durBox")on('focusout', function(event){
 });
 
 //For Program Description Box
-jQuery("#descBox")on('focusout', function(event){
+jQuery("#descBox").on('focusout', function(event){
 	//Get Data
 	var prog_desc = jQuery(this).val();
 	//Asign Data for Database
@@ -90,7 +90,7 @@ jQuery("#descBox")on('focusout', function(event){
 });
 
 //For Program Equipment Box
-jQuery("#equipBox")on('focusout', function(event){
+jQuery("#equipBox").on('focusout', function(event){
 	//Get Data
 	var prog_equip = jQuery(this).val();
 	//Asign Data for Database
@@ -111,7 +111,7 @@ jQuery("#equipBox")on('focusout', function(event){
 });
 
 //For Program Weekly Plan Box
-jQuery("#weekBox")on('focusout', function(event){
+jQuery("#weekBox").on('focusout', function(event){
 	//Get Data
 	var prog_week = jQuery(this).val();
 	//Asign Data for Database
@@ -132,7 +132,7 @@ jQuery("#weekBox")on('focusout', function(event){
 });
 
 //For Program Lifestyle Box
-jQuery("#lifeBox")on('focusout', function(event){
+jQuery("#lifeBox").on('focusout', function(event){
 	//Get Data
 	var prog_life = jQuery(this).val();
 	//Asign Data for Database
@@ -153,7 +153,7 @@ jQuery("#lifeBox")on('focusout', function(event){
 });
 
 //For Phase Name Box
-jQuery("#phaseName")on('focusout', function(event){
+jQuery("#phaseName").on('focusout', function(event){
 	//Get Data
 	var phase_name = jQuery(this).val();
 	//Asign Data for Database
@@ -174,7 +174,7 @@ jQuery("#phaseName")on('focusout', function(event){
 });
 
 //For Phase Name Box
-jQuery("#phaseName")on('focusout', function(event){
+jQuery("#phaseName").on('focusout', function(event){
 	//Get Data
 	var phase_name = jQuery(this).val();
 	//Asign Data for Database
@@ -195,7 +195,7 @@ jQuery("#phaseName")on('focusout', function(event){
 });
 
 //For Phase Intro
-jQuery("#phaseIntro")on('focusout', function(event){
+jQuery("#phaseIntro").on('focusout', function(event){
 	//Get Data
 	var phase_intro = jQuery(this).val();
 	//Asign Data for Database
@@ -216,7 +216,7 @@ jQuery("#phaseIntro")on('focusout', function(event){
 });
 
 //For Phase Duration
-jQuery("#phaseDur")on('focusout', function(event){
+jQuery("#phaseDur").on('focusout', function(event){
 	//Get Data
 	var phase_dur = jQuery(this).val();
 	//Asign Data for Database
@@ -237,13 +237,34 @@ jQuery("#phaseDur")on('focusout', function(event){
 });
 
 //For Phase Notes
-jQuery("#phaseNotes")on('focusout', function(event){
+jQuery("#phaseNotes").on('focusout', function(event){
 	//Get Data
 	var phase_notes = jQuery(this).val();
 	//Asign Data for Database
 	var data = {
 		'action': 'phaseDur',
 		'phase_notes': phase_notes
+	};
+	//Post to Ajax
+	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
+		//Error Checking
+		if(!response.trim()){
+			console.log("Success!"+response);
+		}
+		else{
+			console.log("Error"+response);
+		}
+	});
+});
+
+//For Phase Notes
+jQuery(".exerciseName").on('focusout', function(event){
+	//Get Data
+	var exercise_name = jQuery(this).val();
+	//Asign Data for Database
+	var data = {
+		'action': 'exerciseName',
+		'exercise_name': exercise_name
 	};
 	//Post to Ajax
 	jQuery.post(window.location.origin+"/wp-admin/admin-ajax.php", data, function(response){
