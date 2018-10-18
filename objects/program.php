@@ -142,6 +142,8 @@ public $dateModified;
     		"customProgram" => "1"
     	), array( // Where Clause
     	 	"id" = $programId));
+
+    	return "Success: Program with Id: " . $programId . " Made Custom";
     }
 
     //Checks Each argument to see if it is set, and if so updates the program row in the database with this information
@@ -238,6 +240,7 @@ public $dateModified;
     	 	"id" = $programId));
 	    }
 
+	    return "Success: Program with Id: " . $programId . " Updated";
 
     }
 
@@ -326,6 +329,8 @@ public $dateModified;
     		array( // Where Clause
     	 	"id" = $exerciseId));
 	    }
+
+	    return "Success: Exercise with Id: " . $exerciseId . " Updated";
     }
 
     public function updatePhase($name, $duration, $intro, $notes, $updated_on, $phaseId){
@@ -372,6 +377,8 @@ public $dateModified;
     		array( // Where Clause
     	 	"id" = $phaseId));
 	    }
+
+	    return "Success: Phase with Id: " . $phaseId . " Updated";
     }
 
     public function deleteExercise($exerciseId){
@@ -381,6 +388,8 @@ public $dateModified;
     	$wpdb->delete($tableName, array(
     		"id" => $exerciseId
     	));
+
+    	return "Success: Exercise with Id: " . $exerciseId . " Deleted";
 
     }
 
