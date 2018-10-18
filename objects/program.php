@@ -134,8 +134,14 @@ public $dateModified;
     	return "Success: Phase " . $phaseName . " Created";
     }
 
-    public function makeCustom(){
+    public function makeCustom($programId){
+    	global $wpdb;
+    	$tableName = $wpdb->prefix . "cura_user_programs";
 
+    	$wpdb->update($tableName, array(
+    		"customProgram" => "1"
+    	), array( // Where Clause
+    	 	"id" = $programId));
     }
 
     public function updateProgram(){
@@ -150,7 +156,13 @@ public $dateModified;
 
     }
 
-    public function deleteExercise(){
+    public function deleteExercise($exerciseId){
+    	global $wpdb;
+    	$tableName = $wpdb->prefix . "cura_user_exercises";
+
+    	$wpdb->delete($tableName, array(
+    		"id" => $exerciseId
+    	));
 
     }
 
