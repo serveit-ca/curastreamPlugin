@@ -114,12 +114,24 @@ public $dateModified;
 		} 
     }
 
-    public function createProgram(){
+    public function createProgram($progName){
+    	global $wpdb;
+    	$tableName = $wpdb->prefix . "cura_user_programs";
 
+    	$wpdb->insert($tableName, array(
+    		"name" => $progName));
+
+    	return "Success: Program " . $progName . " Created";
     }
 
-    public function createPhase(){
+    public function createPhase($phaseName){
+    	global $wpdb;
+    	$tableName = $wpdb->prefix . "cura_user_phases";
 
+    	$wpdb->insert($tableName, array(
+    		"name" => $phaseName));
+
+    	return "Success: Phase " . $phaseName . " Created";
     }
 
     public function makeCustom(){
