@@ -5,8 +5,8 @@ class customProgram {
 
 
 	// Variable Declaration
-	public $progID;
-	public $progType;
+	public $progID; // id 
+	public $progType; // type
 
 	// For Populate Form Function
 	public $program;
@@ -37,28 +37,7 @@ class customProgram {
 	public $exerciseSpecial;
 	public $exerciseFile;
 
-
-
 	
-	
-
-	
-	function prefix_enqueue() 
-	{       
-	    // JS
-	    wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js');
-	    wp_register_script('loadUI', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
-	    wp_register_script('loadselect2', site_url('/wp-content/plugins/Curastream/select2/dist/js/select2.min.js'));
-	    wp_enqueue_script('prefix_bootstrap');
-	    wp_enqueue_script('loadUI');
-	    wp_enqueue_script('loadselect2');
-
-	    // CSS
-	    wp_register_style('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
-	    wp_enqueue_style('prefix_bootstrap');
-
-	    
-	}
 
 	// Get Program By Id
 	function getProgramById($progID){
@@ -100,36 +79,33 @@ class customProgram {
 		// jquery to change value of all fields
 		//echo($description);
 	}
-	function createForm($aProgram) {
-		global $wpdb;
-	?>
-			
-				<div class="edit_form">
-		<form action="" method="POST" novalidate id="editForm">
-			<div class="row">
+
+	function createProgramMetaImputForm($programObject){
+		?>
+		<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">
 						<label for="type">Type :</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($aProgram->progType == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="prevention" value="Prevention" <?php if($aProgram->progType == 'Prevention'){echo 'checked ="checked"';} ?> >Prevention</label>
-						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="strength" value="Strength-Training" <?php if($aProgram->progType == 'Strength-Training'){echo 'checked ="checked"';} ?> >Strength Training</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($programObject->progType == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="prevention" value="Prevention" <?php if($programObject->progType == 'Prevention'){echo 'checked ="checked"';} ?> >Prevention</label>
+						<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" id="strength" value="Strength-Training" <?php if($programObject->progType == 'Strength-Training'){echo 'checked ="checked"';} ?> >Strength Training</label>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<input type="hidden" name="progIdupdate">					
-						<input id="nameBox" type="text" name="progNameupdate" class="form-control" required="required" placeholder="Name" <?php if($aProgram->name){echo 'value ="'.$aProgram->name.'"';} ?> />	
+						<input id="nameBox" type="text" name="progNameupdate" class="form-control" required="required" placeholder="Name" <?php if($programObject->name){echo 'value ="'.$programObject->name.'"';} ?> />	
 									
 					</div>
 					<div class="form-group">
-						<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($aProgram->duration){echo 'value ="'.$aProgram->duration.'"';} ?> />									
+						<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($programObject->duration){echo 'value ="'.$programObject->duration.'"';} ?> />									
 					</div>
 					<div class="form-group">
 						<div>
 						   	<input type="button" name="upload-btn" id="upload-btn" class="button-secondary" value="Choose Image">
-						    <input type="text" name="thumbUpdate" required="required" id="image_url" class="regular-text form-control" <?php if($aProgram->name){echo 'value ="'.$aProgram->thumbnail.'"';} ?>>
+						    <input type="text" name="thumbUpdate" required="required" id="image_url" class="regular-text form-control" <?php if($programObject->name){echo 'value ="'.$programObject->thumbnail.'"';} ?>>
 						 
-								<img <?php if($aProgram->thumbnail){echo 'src ="'.$aProgram->thumbnail.'"';} ?> />
+								<img <?php if($programObject->thumbnail){echo 'src ="'.$programObject->thumbnail.'"';} ?> />
 							
 						</div>
 						<!-- <input type="hidden" value="" name="thumbUpdate" class="form-control" required="required" placeholder="Duration" min="1">									 -->
@@ -162,19 +138,26 @@ class customProgram {
 				</div>
 				<div class="col-md-12">
 					<div class="form-group"> 
-						<textarea id="descBox" name="progDescUpdate" class="form-control" required="required" placeholder="Description" ><?php if($aProgram->description){echo $aProgram->description;} ?> </textarea>
+						<textarea id="descBox" name="progDescUpdate" class="form-control" required="required" placeholder="Description" ><?php if($programObject->description){echo $programObject->description;} ?> </textarea>
 					</div>
 					<div class="form-group">
-						<textarea id="equipBox" name="progEquipUpdate" class="form-control" required="required" placeholder="Equipment"> <?php if($aProgram->equipment){echo $aProgram->equipment;} ?> </textarea>
+						<textarea id="equipBox" name="progEquipUpdate" class="form-control" required="required" placeholder="Equipment"> <?php if($programObject->equipment){echo $programObject->equipment;} ?> </textarea>
 					</div>
 					<div class="form-group" id="hideField1">					
-						<textarea id="weekBox" name="progPlanUpdate" class="form-control" required="required" placeholder="Weekly Plan"> <?php if($aProgram->weeklyPlan){echo $aProgram->weeklyPlan;} ?> </textarea>
+						<textarea id="weekBox" name="progPlanUpdate" class="form-control" required="required" placeholder="Weekly Plan"> <?php if($programObject->weeklyPlan){echo $programObject->weeklyPlan;} ?> </textarea>
 					</div>
 					<div class="form-group" id="hideField2">
-						<textarea id="lifeBox" name="progLifestyleUpdate" class="form-control" required="required" placeholder="Lifestyle"> <?php if($aProgram->lifeStyle){echo $aProgram->lifeStyle;} ?> </textarea>
+						<textarea id="lifeBox" name="progLifestyleUpdate" class="form-control" required="required" placeholder="Lifestyle"> <?php if($programObject->lifeStyle){echo $programObject->lifeStyle;} ?> </textarea>
 					</div>
 				</div>
 			</div>
+			<?php
+	}
+
+	function createForm($aProgram) {
+		global $wpdb;
+	?>
+			
 			<div class="row">
 				<div class="col-md-12">
 					<!-- <button class="add_phase">Add Phase</button> -->
@@ -288,5 +271,4 @@ class customProgram {
 		}
 		
 }
-
 		

@@ -4,10 +4,9 @@
 var JS_DEBUG = true;
 
 if(JS_DEBUG){console.log("Welcome to the Custom Program Builder Script");}
-
-// Used to show the select use box iwhen creating a custom program jQuery(".radio_btn_type").on('click', function(event){
+///////////////////////// Fuctions used on  the Custom Program Creation Page ///////////////////////
+// Used to show the select use box iwhen creating a custom program
 	jQuery("#selectUser").on('change', function(event){
-		console.log("hello");
 		if(JS_DEBUG){console.log("onchange");}
 		jQuery(".baseProgram").removeClass("hidden");
 		if(JS_DEBUG){console.log("user change");}
@@ -32,13 +31,26 @@ if(JS_DEBUG){console.log("Welcome to the Custom Program Builder Script");}
 		var programID = jQuery("#existingProgram option:selected").val()
 		if(JS_DEBUG){console.log("We want to customize the course "+ programID );}
 		// Get the custom program from the AJAX PHP Form 
-		// This should be returning HTML object 
+		var data = {
+		'action': 'createAndDisplayCustomProgram',
+		'baseProgramId': programID
+	};
+	//	jQuery.ajax({async:false, type:'get',data, dataType:'text',url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+
+	// Post to Ajax
+	jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Copied Program - "+response);
+			var resultObj = jQuery.parseJSON(response);
 		// Find the HTML Object where we want to load the form into 
-		// Load the form in the html object 
+		jQuery(".alertArea").append('<div class="alertLog">'+resultObj.status+'</div>');
+		// Load the form in the html object
 		
-		jQuery(".modifyExistingForm").removeClass("hidden");
-	
+		}
 	});
+		jQuery(".modifyExistingForm").removeClass("hidden");
+
+});
 
 //For Program Type Radio Buttons
 jQuery(".radio_btn_type").on('click', function(event){

@@ -420,3 +420,8 @@ th#title {
 th#sports {
     width: 21%;
 }
+
+/*Styling for the Alert area*/
+.alertArea{
+	background-color: pink;
+}

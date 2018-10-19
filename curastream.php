@@ -8,6 +8,24 @@ Author: Admin
 include("filtering.php");
 include("ajaxSaves.php");
 // Used for Ajax Saves to DB 
+function curastream_add_bootstrap() 
+    {       
+        // JS
+        wp_register_script('prefix_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
+        wp_register_script('loadUI', 'https://code.jquery.com/jquery-3.3.1.min.js');
+        wp_register_script('loadAJAX', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
+        wp_register_script('loadselect2', site_url('/wp-content/plugins/Curastream/select2/dist/js/select2.min.js'));
+        wp_enqueue_script('prefix_bootstrap');
+        wp_enqueue_script('loadUI');
+        wp_enqueue_script('loadAJAX');
+        wp_enqueue_script('loadselect2');
+        // CSS
+        wp_register_style('prefix_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', false, NULL, 'all');
+        wp_enqueue_style('prefix_bootstrap');
+
+        
+    }
+add_action('admin_enqueue_scripts', 'curastream_add_bootstrap');
 
 // register_activation_hook( __FILE__, 'Curastream_install');
 function add_menu() {
@@ -686,82 +704,6 @@ register_rest_route( 'curastream/v1', '/mark-phase-active/', array(
 });
 
 
-// api for getting ongoing program, i.e. getting the program after if has been saved dev_cura_user_programs
-
-// function ongoing_program(){
-//     header('Access-Control-Allow-Origin: *');
-//     $data = file_get_contents("php://input");
-//     $data = json_decode($data,TRUE);
-//     global $wpdb;
-//     // program id
-//     $progId = $data['program_id'];
-//     // id of the logged in user
-//     $userId = wp_get_current_user()->ID;
-//     // table where user programs are stored
-//     $dev_cura_user_programs = $wpdb->prefix . 'cura_user_programs';
-//     // tablw where user phases are stored
-//     $dev_cura_user_phases = $wpdb->prefix . 'cura_user_phases';
-//     // first check if the program is saved in the users program table
-//     $isProgramSaved = $wpdb->get_results("SELECT * FROM $dev_cura_user_programs WHERE id = $progId");
-//         if ($isProgramSaved && $userId !=0 && isset($progId)) {
-//             // check if the program is of Rehab type because phase restrictions only apply to the rehab type program
-//             $progType = $isProgramSaved[0]->saved_prog_type;
-//             if ($progType == 'rehab' || $progType == 'Rehab') {
-//                 // get the program info first
-//                 $dev_cura_programs = $wpdb->prefix . 'cura_programs';
-//                 $dev_cura_phases = $wpdb->prefix . 'cura_phases';
-//                 $dev_cura_exercises = $wpdb->prefix . 'cura_exercises';
-//                 $program = $wpdb->get_results("SELECT id, type, name, description, equipment, duration, weekly_plan, life_style  FROM $dev_cura_programs WHERE id = $progId");
-//                 // if the program is saved as users ongoing program
-                
-//                 $phases = array();
-//                 $phasesInProgram = $wpdb->get_results("SELECT id, name FROM $dev_cura_phases WHERE program_id = $progId");
-//                 foreach ($phasesInProgram as $key => $value) {
-//                     $phases[$key]['phase_id'] = $value->id;
-//                     $phases[$key]['phase_name'] = $value->name;
-//                 }
-//                 // check if the phase is already started in user phase table.
-//                 $userPhases = $wpdb->get_results("SELECT id FROM $dev_cura_user_phases WHERE prog_id = $progId AND user_id = $userId");
-//                 if (count($userPhases) < 1) {
-//                     // return "less than one";
-//                     $exercisesInOngoingPhases = array();
-//                     $ongoingPhasesInProgram = $wpdb->get_results("SELECT * FROM $dev_cura_phases WHERE program_id = $progId ORDER BY id LIMIT 1");                
-//                     foreach ($ongoingPhasesInProgram as $keys => $values) {
-//                         $ongoingPhasesInProgram[$keys] = $wpdb->get_results("SELECT id, name, duration, intro, notes FROM $dev_cura_phases WHERE id = $values->phase_id"); 
-//                         $exercisesInOngoingPhases[] = $wpdb->get_results("SELECT id, name, duration, intro, notes FROM $dev_cura_exercises WHERE phase_id = $values->phase_id");
-//                     }
-//                 }
-//                 else
-//                 {
-//                     // return "more than one";
-//                     $exercisesInOngoingPhases = array();
-//                     $ongoingPhasesInProgram = array();
-//                     $ongoingPhases = $wpdb->get_results("SELECT phase_id FROM $dev_cura_user_phases WHERE user_id = $userId AND prog_id = $progId");        
-//                     foreach ($ongoingPhases as $keys => $values) {
-//                         $ongoingPhasesInProgram[] = $wpdb->get_results("SELECT id, name, duration, intro, notes FROM $dev_cura_phases WHERE id = $values->phase_id"); 
-//                         $ongoingPhasesInProgram[] = $wpdb->get_results("SELECT * FROM $dev_cura_exercises WHERE phase_id = $values->phase_id"); 
-//                     }
-//                 }
-//                 // returning response
-//                 $programDetails = array();
-//                 $programDetails['status'] = "success";
-//                 $programDetails['program'] = $program;
-//                 $programDetails['phases'] = $ongoingPhasesInProgram;
-//                 // $programDetails['ongoing_phases'] = 
-//                 return $programDetails;
-//             }
-//             else
-//             {
-//                 return "program info all";
-//             }
-//         }
-//         else
-//         {
-//             $response['status'] = "success";
-//             $response['message'] = "Program not saved";
-//         }
-//     // return $phases;
-// }
 
 /* 
 function to get the phases in a program

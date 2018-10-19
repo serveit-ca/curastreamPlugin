@@ -1,7 +1,4 @@
 <?php 
-include ("objects/customProgram.php");
-$customProgram = new customProgram();
-$customProgram -> prefix_enqueue();
 
 /* The fuunction is used to add an exercise from a users favoriate */
 	function saveExercise(){
@@ -107,16 +104,16 @@ $customProgram -> prefix_enqueue();
 	    add_action( 'wp_ajax_nopriv_completeProgram', 'completeProgram' );
 
 	    /* This fucntion is sued to copy, save and dispaly a custom program */
-	      function copyAndDisplayCustomProgram($baseProgramId){
-	      	$customProgramData = "Hello World ";
-	      	$customProgramData .= $baseProgramId;
-	      		global $wpdb;
+	      function createAndDisplayCustomProgram(){
+	      	$status= "Success";
+	      	$customProgramData = "Hello World - Old Program ID: ".$_POST['baseProgramId'];
 	      		// get the current custom program 
 	      		// get all of the exercises 
 	      		// copy all of the custom program s
-	      		return customProgramData;
+	      		echo json_encode(array('status'=> $status, 'data' => $customProgramData));
+	      		wp_die();	
 	      }
 
-	    add_action( 'wp_ajax_copyAndDisplayCustomProgram', 'copyAndDisplayCustomProgram' );
-	    add_action( 'wp_ajax_nopriv_copyAndDisplayCustomProgram', 'copyAndDisplayCustomProgram' );
+	    add_action( 'wp_ajax_createAndDisplayCustomProgram', 'createAndDisplayCustomProgram' );
+	    add_action( 'wp_ajax_nopriv_createAndDisplayCustomProgram', 'createAndDisplayCustomProgram' );
     ?>
