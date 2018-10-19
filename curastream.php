@@ -74,6 +74,12 @@ function add_submenu() {
         '',
         ''
     );
+    add_submenu_page('curastreamPlugin','Testing','Testing',
+        'manage_options',
+        'curastream/testing.php',
+        '',
+        ''
+    );
 }
 
 function load_wp_media(){
