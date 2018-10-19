@@ -425,3 +425,19 @@ th#sports {
 .alertArea{
 	background-color: pink;
 }
+.imageThumb{
+	height:200px;
+}
+.labelTxt{
+	font-weight: 600
+}
+.modifyExistingForm{
+	margin-top:25px;
+}
+.phaseContainer{
+	margin-top:25px;
+}
+.phaseHeader{
+	background-color: #00b1b3;
+	padding: 0px 10px 10px;
+}

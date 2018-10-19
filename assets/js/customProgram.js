@@ -40,12 +40,16 @@ if(JS_DEBUG){console.log("Welcome to the Custom Program Builder Script");}
 	// Post to Ajax
 	jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
 		// This should be returnin"g HTML object 
-			console.log("Copied Program - "+response);
-			var resultObj = jQuery.parseJSON(response);
+			//console.log("Copied Program - "+response);
+			var resultObj = response;
+			console.log(resultObj);
 		// Find the HTML Object where we want to load the form into 
-		jQuery(".alertArea").append('<div class="alertLog">'+resultObj.status+'</div>');
+		if(resultObj !=null){
+			jQuery(".alertArea").append('<div class="alertLog">Custom Program Created</div>');
 		// Load the form in the html object
-		
+		//console.log(resultObj);
+			jQuery(".modifyExistingForm").html(resultObj);
+			}	
 		}
 	});
 		jQuery(".modifyExistingForm").removeClass("hidden");

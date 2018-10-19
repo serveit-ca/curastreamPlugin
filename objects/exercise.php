@@ -1,7 +1,6 @@
 <?php
 class exercise
 {
-public $name;
 public $description;
 public $favorate;
 public $videoId;
@@ -9,6 +8,20 @@ public $bodyPart;
 public $category;
 public $thumbnailUrl;
 
+public $id;     
+public $name;              
+public $phase_id;             
+public $order_no;            
+public $order_field;          
+public $rest;                 
+public $sets_reps;            
+public $variation;           
+public $equipment;           
+public $special_instructions; 
+public $exercise_video_url;   
+public $file_url;             
+public $file_name;                    
+public $customExercise;
 
     public  function __construct() {
     }

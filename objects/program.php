@@ -6,18 +6,28 @@ public $name;
 public $type;
 public $description;
 public $duration;
+public $equipment;
+public $weeklyPlan;
+public $lifeStyle;
+public $assocBodyPartId;
 public $current;
 public $completed;
 public $thumbnailUrl;
 public $body_part;
 public $sport_occupation;
 public $injury_cause;
+public $howItHappen;
+public $sportsOccupation;
+public $thumbnail;
+public $state;
+public $createdOn;
+public $updatedOn;
+public $custom;
 
 public $programId;
 public $programName;
 public $phases;
 public $exercises;
-public $custom;
 public $dateCreated;
 public $dateModified;
 
@@ -25,6 +35,32 @@ public $dateModified;
 
     public  function __construct() {
     }
+
+    	// Get Program By Id
+	public function getProgramById($programId){
+		global $wpdb;
+		$program_table = 'dev_cura_programs';
+		$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $programId" , ARRAY_A);
+
+		$this->id = $programs["id"];
+		$this->name = $programs["name"];
+		$this->type = $programs["type"];
+		$this->description = $programs["description"];
+		$this->duration = $programs["duration"];
+		$this->equipment = $programs["equipment"];
+		$this->duration = $programs['duration'];
+		$this->weeklyPlan = $programs['weekly_plan'];
+		$this->lifeStyle = $programs['life_style'];
+		$this->body_part = $programs['assoc_body_part_id'];
+		$this->howItHappen = $programs['how_it_happen'];
+		$this->sportsOccupation = $programs['sports_occupation'];
+		$this->thumbnail = $programs['thumbnail'];
+		$this->state = $programs['state'];
+		$this->createdOn = $programs['created_on'];
+		$this->updatedOn = $programs['updated_on'];
+		$this->custom = $programs['customProgram'];
+		return $this;
+	}
 
     public function checkCurrent($userId, $programId){
     	 global $wpdb;
@@ -82,27 +118,49 @@ public $dateModified;
 		} 
     }
 
-    // Gets All Phases from Database
+    // Gets All Phases from Database and retrun an array of phase objects
     public function getAllPhases(){
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 
 		$phaseResults = $wpdb->get_results("SELECT * FROM $tableName");
-		if (count($phaseResults) > 0){ // If at least 1 Phase then return the object
-			return $phaseResults;
-		} 
-    }
+		
+		 $phases = array();
+        foreach ($phaseResults as $row) {
+            $phase = new phase();
+            $phase->id = $row['id'];
+			$phase->programId = $row['program_id'];
+			$phase->name = $row['name'];
+			$phase->duration = $row['duration'];
+			$phase->intro = $row['intro'];
+			$phase->notes = $row['notes'];
+			$phases[] = $phase;
+        }
+			return $phases;
+		}
+    
 
     //Gets All Phases for a Given Program
     public function getPhasesByProgramId($programId){
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 
-		$phaseResults = $wpdb->get_results("SELECT * FROM $tableName WHERE program_id = $programId");
-		if (count($phaseResults) > 0){ // If at least 1 Phase then return the object
-			return $phaseResults;
-		} 
-    }
+		$phaseResults = $wpdb->get_results("SELECT * FROM $tableName WHERE program_id = $programId", ARRAY_A);
+		 $allPhases = array();
+        foreach ($phaseResults as $row) {
+            $aPhase = new phase();
+            $aPhase->id = $row['id'];
+			$aPhase->programId = $row['program_id'];
+			$aPhase->name = $row['name'];
+			$aPhase->duration = $row['duration'];
+			$aPhase->intro = $row['intro'];
+			$aPhase->notes = $row['notes'];
+			$allPhases[] = $aPhase;
+        }
+			return $allPhases;
+		}
+
+
 
     public function getAPhaseById($phaseId){
     	global $wpdb;
@@ -113,6 +171,34 @@ public $dateModified;
 			return $phaseResults;
 		} 
     }
+
+    //Gets All Phases for a Given Program
+    public function getExercisesByPhaseId($phaseId){
+    	global $wpdb;
+		$tableName = $wpdb->prefix . "cura_exercises";
+
+		$exerciseResults = $wpdb->get_results("SELECT * FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no", ARRAY_A);
+		 $allExercises = array();
+        foreach ($exerciseResults as $row) {
+            $aExercise = new exercise();
+            $aExercise->id = $row['id'];
+			$aExercise->name = $row['name'];
+			$aExercise->phase_id = $row['phase_id'];
+			$aExercise->order_no = $row['order_no'];
+			$aExercise->order_field = $row['order_field'];
+			$aExercise->rest = $row['rest'];
+			$aExercise->sets_reps = $row['sets_reps'];
+			$aExercise->variation = $row['variation'];
+			$aExercise->equipment = $row['equipment'];
+			$aExercise->special_instructions = $row['special_instructions'];
+			$aExercise->exercise_video_url = $row['exercise_video_url'];
+			$aExercise->file_url = $row['file_url'];
+			$aExercise->file_name = $row['file_name'];
+			$aExercise->customExercise = $row['customExercise'];
+			$allExercises[] = $aExercise;
+        }
+			return $allExercises;
+		}
 
     public function createProgram($progName){
     	global $wpdb;

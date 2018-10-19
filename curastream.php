@@ -12,11 +12,11 @@ function curastream_add_bootstrap()
     {       
         // JS
         wp_register_script('prefix_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
-        wp_register_script('loadUI', 'https://code.jquery.com/jquery-3.3.1.min.js');
+       // wp_register_script('loadUI', 'https://code.jquery.com/jquery-3.3.1.min.js');
         wp_register_script('loadAJAX', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
         wp_register_script('loadselect2', site_url('/wp-content/plugins/Curastream/select2/dist/js/select2.min.js'));
         wp_enqueue_script('prefix_bootstrap');
-        wp_enqueue_script('loadUI');
+        //wp_enqueue_script('loadUI');
         wp_enqueue_script('loadAJAX');
         wp_enqueue_script('loadselect2');
         // CSS

@@ -1,8 +1,4 @@
 <?php
-
- 
-
-
  
 $allUsers = get_users(array(
     'meta_key' => 'first_name',
