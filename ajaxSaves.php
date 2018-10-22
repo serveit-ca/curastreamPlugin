@@ -1,4 +1,10 @@
 <?php 
+require_once ("objects/program.php");
+$programs = new program();
+require_once ("objects/customProgramCreation.php");
+$customCreation = new customProgramCreation();
+require_once ("objects/phase.php");
+require_once ("objects/exercise.php");
 
 /* The fuunction is used to add an exercise from a users favoriate */
 	function saveExercise(){
@@ -102,4 +108,37 @@
 
 	    add_action( 'wp_ajax_completeProgram', 'completeProgram' );
 	    add_action( 'wp_ajax_nopriv_completeProgram', 'completeProgram' );
+
+	    /* This fucntion is sued to copy, save and dispaly a custom program */
+	      function createAndDisplayCustomProgram(){
+	      	global $programs;
+	      	global $customCreation;
+	      	$status= "Success";
+	      	$customProgramData = "Hello World - Old Program ID: ".$_POST['baseProgramId'];
+	      		// get the current custom program 
+	      		$customProgram = $programs->getProgramById($_POST['baseProgramId']);
+	      		$customProgramForm = $customCreation->createProgramMetaImputForm($customProgram);
+	      		echo $customProgramForm;
+	      		// get all of the phases 
+	      		$phases = $programs->getPhasesByProgramId($_POST['baseProgramId']);
+	      		foreach ($phases as $aPhase){
+	      			echo '<div class="phaseContainer">';
+	      		    echo $customCreation->displayPhase($aPhase);
+	      		    // Get the Exercise 
+	      		    $exercises = $programs->getExercisesByPhaseId($aPhase->id);
+	      		    // got through each exercise 
+	      		    foreach ($exercises as $exercise){
+	      		    // Print out the exercise 
+	      		    	echo $customCreation->displayExercise($exercise);
+	      		    }
+	      		 	echo '</div>';
+	      		 }
+	      		 	echo "<button>Assign Custom Progrm to User</button>";		
+	      		// get all of the exercises 
+	      		// copy all of the custom program 
+	      		wp_die();	
+	      }
+
+	    add_action( 'wp_ajax_createAndDisplayCustomProgram', 'createAndDisplayCustomProgram' );
+	    add_action( 'wp_ajax_nopriv_createAndDisplayCustomProgram', 'createAndDisplayCustomProgram' );
     ?>
