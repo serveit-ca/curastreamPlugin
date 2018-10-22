@@ -287,17 +287,18 @@ public $dateModified;
     		return $error;
    		 }
    		 else{
-   		 	return "Success: Program with Name: " . $programName . " Created";
+   		 	return "Success: Program with Name: " . $progName . " Created";
    		 
    		 }
     }
 
-    public function createExercise($exerciseName){
+    public function createExercise($exerciseName, $phaseId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_exercises";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $exerciseName));
+    		"name" => $exerciseName,
+    		"phase_id" => $phaseId));
 
     	if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
@@ -309,12 +310,13 @@ public $dateModified;
    		 }
     }
 
-    public function createPhase($phaseName){
+    public function createPhase($phaseName, $progId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_phases";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $phaseName));
+    		"name" => $phaseName,
+    		"program_id" => $progId));
 
     	if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
@@ -653,34 +655,42 @@ public $dateModified;
     }
 
     public function duplicateProgram($oldProgId, $userId){
-
+    	global $wpdb;
+    	$program = new program();
     	//Get Original Program
-    	$originalProgram = getProgramById($oldProgId);
+    	$originalProgram = $program->getProgramById($oldProgId);
     	// get the username based on the program id 
-
+    	$user = get_user_by("ID" , $userId);
+    	$userName = $user['first_name'] . " " . $user['last_name'];
     	// create a new name with CP - Old Program Name - Username 
-
+    	$newProgName = "CP - " . $originalProgram->name . " - " . $userName;
     	//create a new program with the new name 
-
+    	$program->createProgram($newProgName);
     	// get the new program id 
-
+    	$newProgramId = $wpdb->insert_id;
     	// assign the meta data using updateProgram
-
+    	$program->updateProgram($originalProgram->type, $originalProgram->description, $originalProgram->equipment, $originalProgram->duration, $originalProgram->weekly_plan, $originalProgram->life_style, $originalProgram->assoc_body_part_id,  $originalProgram->how_it_happen, $originalProgram->sports_occupation, $originalProgram->thumbnail, $originalProgram->state, $originalProgram->updated_on, $newProgId);
     	// get all of the phases of the old program 
-
+    	$phases = $program->getPhasesByProgramId($oldProgId);
     		// Iterate through each phase
-
-    			// get the phase meta 
-
-    			// create a new phoase based on the new program id 
-
-    				// get each exercise from the old phase 
-
-    				// create a new exercise baed on the new phoase id 
-
-
-
-    	return $newProgramID
+    	foreach ($phase as $row) {
+    		// create a new phase based on the new program id
+    		$program->createPhase($row['name'] , $newProgramId);
+    		// assign the meta data using updatePhase
+    		$recentPhase = $wpdb->insert_id;
+    		$program->updatePhase($row['name'], $row['duration'], $row['intro'], $row['notes'], $row['updated_on'], $recentPhase);
+    		// get each exercise from the old phase 
+    		$exercises = $program->getExercisesByPhaseId($recentPhase);
+    		// create a new exercise based on the new phoase id
+    		foreach ($exercises as $exrow) {
+    		 	$program->createExercise($exrow['name'] , $recentPhase);
+    		 	// assign the meta data using updateExercise
+    		 	$recentExercise = $wpdb->insert_id;
+    		 	$program->updateExercise($exrow['order_no'], $exrow['order_field'], $exrow['name'], $exrow['rest'], $exrow['sets_reps'], $exrow['variation'], $exrow['equipment'], $exrow['special_instructions'], $exrow['exercise_video_url'], $exrow['file_url'], $exrow['file_name'], $recentExercise);
+    		 } 
+    	}
+    	return $newProgramID;
+    
 
     	/* //Get That Program's Phases
     	$originalPhases = getPhasesByProgramId($oldProgId);
