@@ -386,8 +386,8 @@ span.body-parts {
 th#parts {
     width: 18%;
 }
-span.exerciseName {
-    font-size: 18px;
+.exerciseName {
+    font-size: 24;
     font-weight: bold;
 }
 .overlayAction {
@@ -440,4 +440,25 @@ th#sports {
 .phaseHeader{
 	background-color: #00b1b3;
 	padding: 0px 10px 10px;
+	margin-bottom: 20px;
 }
+.exercises{
+    padding: 20px;
+    background: rgba(125, 125, 125, 0.17);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.exerciseLabel{
+	margin-right:10px;
+}
+.exerciseVideo{
+	height: 300px;
+	display: block;
+}
+.videoContainer{
+	margin-top:50px;
+}
+.exerciseDetails{
+	display: flex;
+}
+

@@ -22,8 +22,8 @@ function curastream_add_bootstrap()
         // CSS
         wp_register_style('prefix_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', false, NULL, 'all');
         wp_enqueue_style('prefix_bootstrap');
-
-        
+        wp_register_style('font_awesome', 'https://use.fontawesome.com/releases/v5.4.1/css/all.css', false, NULL, 'all');
+        wp_enqueue_style('font_awesome');
     }
 add_action('admin_enqueue_scripts', 'curastream_add_bootstrap');
 

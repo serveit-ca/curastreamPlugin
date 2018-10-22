@@ -132,25 +132,25 @@ public $dateModified;
 		$tableName = $wpdb->prefix . "cura_exercises";
 
 		$exerciseResults = $wpdb->get_results("SELECT * FROM $tableName ORDER BY name", ARRAY_A);
-		$exercises = array();
+		$exercies = array();
         foreach ($exerciseResults as $row) {
             $anExercise = new exercise();
-			$anExercise->id = $exerciseResults['id'];
-			$anExercise->name = $exerciseResults['name'];
-			$anExercise->phase_id = $exerciseResults['phase_id'];
-			$anExercise->order_no = $exerciseResults['order_no'];
-			$anExercise->order_field = $exerciseResults['order_field'];
-			$anExercise->rest = $exerciseResults['rest'];
-			$anExercise->sets_reps = $exerciseResults['sets_reps'];
-			$anExercise->variation = $exerciseResults['variation'];
-			$anExercise->equipment = $exerciseResults['equipment'];
-			$anExercise->special_instructions = $exerciseResults['special_instructions'];
-			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-			$anExercise->file_url = $exerciseResults['file_url'];
-			$anExercise->file_name = $exerciseResults['file_name'];
-			$exercises[] = $program;
+			$anExercise->id = $row['id'];
+			$anExercise->name = $row['name'];
+			$anExercise->phase_id = $row['phase_id'];
+			$anExercise->order_no = $row['order_no'];
+			$anExercise->order_field = $row['order_field'];
+			$anExercise->rest = $row['rest'];
+			$anExercise->sets_reps = $row['sets_reps'];
+			$anExercise->variation = $row['variation'];
+			$anExercise->equipment = $row['equipment'];
+			$anExercise->special_instructions = $row['special_instructions'];
+			$anExercise->exercise_video_url = $row['exercise_video_url'];
+			$anExercise->file_url = $row['file_url'];
+			$anExercise->file_name = $row['file_name'];
+			$exercies[] = $anExercise;
         }
-			return $exercises;
+			return $exercies;
     }
 
 
@@ -246,9 +246,10 @@ public $dateModified;
     //Gets All Phases for a Given Program
     public function getExercisesByPhaseId($phaseId){
     	global $wpdb;
-		$tableName = $wpdb->prefix . "cura_exercises";
+		$tableNameA = $wpdb->prefix . "cura_exercises e";
+		$tableNameB = $wpdb->prefix . "cura_exercise_videos v";
 
-		$exerciseResults = $wpdb->get_results("SELECT * FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no", ARRAY_A);
+		$exerciseResults = $wpdb->get_results("SELECT e.id, e.name, e.phase_id, e.order_no, e.order_field, e.rest, e.sets_reps, e.variation, e.equipment, e.special_instructions, e.exercise_video_url, e.file_url, e.file_name, e.customExercise, v.videoThumbnail FROM $tableNameA , $tableNameB WHERE phase_id = $phaseId AND v.id = e.exercise_video_id ORDER BY order_no", ARRAY_A);
 		 $allExercises = array();
         foreach ($exerciseResults as $row) {
             $aExercise = new exercise();
@@ -266,6 +267,9 @@ public $dateModified;
 			$aExercise->file_url = $row['file_url'];
 			$aExercise->file_name = $row['file_name'];
 			$aExercise->customExercise = $row['customExercise'];
+			$aExercise->thumbnailUrl = $row['videoThumbnail'];
+			$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
+
 			$allExercises[] = $aExercise;
         }
 			return $allExercises;
@@ -650,7 +654,7 @@ public $dateModified;
 
     public function duplicateProgram($oldProgId, $userId){
     	//Get Original Program
-    	$originalProgram = getProgramById($oldProgId):
+    	$originalProgram = getProgramById($oldProgId);
     	//Get That Program's Phases
     	$originalPhases = getPhasesByProgramId($oldProgId);
     	//Get Those Phases Exercises
@@ -658,7 +662,7 @@ public $dateModified;
     	$i = 0;
     	foreach($originalPhases as $row){
     		$originalExercises[i] = getExercisesByPhaseId($row['id']);
-    		i++;
+    		$i++;
     	}
 
     	//Make New Program with Same Name
@@ -671,7 +675,28 @@ public $dateModified;
 
     }
 
-    
+    public function updateDatabase(){
+     	$allExercises = $this->getAllExercises();
+     	$log = "";
+	    foreach ($allExercises as $exercise){
+	    		global $wpdb;
+			$tableName = $wpdb->prefix . "cura_exercise_videos";
+
+			$exerciseResults = $wpdb->get_row("SELECT * FROM $tableName WHERE url like '$exercise->exercise_video_url'",ARRAY_A);
+			$log.= "New Exercise";
+			$log.= $exerciseResults['id'];
+			$log.= $exerciseResults['url'];
+			$log.= $exercise->exercise_video_url;
+	
+			$value = array('exercise_video_id'=>$exerciseResults['id']);
+			$where = array('exercise_video_url'=>$exercise->exercise_video_url);
+			$log.=implode("",$value);
+			$log.=implode("",$where);
+			$log.="<br /><br />";
+			$update = $wpdb->update("dev_cura_exercises",$value,$where);
+	    }
+	    return $log;
+	}
 }
 
 ?>

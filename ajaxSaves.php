@@ -133,13 +133,9 @@ require_once ("objects/exercise.php");
 	      		    }
 	      		 	echo '</div>';
 	      		 }
-	      		 	echo "<button>Assign Custom Progrm to User</button>";
-	      		
-	      		
+	      		 	echo "<button>Assign Custom Progrm to User</button>";		
 	      		// get all of the exercises 
-	      		// copy all of the custom program s
-
-	      		 
+	      		// copy all of the custom program 
 	      		wp_die();	
 	      }
 

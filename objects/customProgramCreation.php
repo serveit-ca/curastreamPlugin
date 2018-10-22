@@ -38,7 +38,8 @@ class customProgramCreation {
 
  /*This function is used to generate the Program Meta Data  */
 	public function createProgramMetaImputForm($programObject){
-		?>
+		var_dump($programObject);?>
+
 		<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">
@@ -158,73 +159,58 @@ class customProgramCreation {
 			</div>
 	<?php
 	}
-	public function displayExercise($exerciseObject){
-		?> 
-	<!-- Start of Exercise -->									
-			<div class="exercises" data-phaseId="<?php echo $exerciseObject->phase_id; ?>">		<ul class="sortable">												
-							<li>
-							<span class="exerciseName"><?php echo $exerciseObject->name; ?></span> 
-
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<input type="text" class="order" name="order" value="<?php echo $exerciseObject->order_no; ?>">
-										</div>
-										<div class="form-group">
-											<input required="required" class="form-control orderField" type="text"   name="orderField" <?php echo $exerciseObject->order_field ?> placeholder="Order">														
-										</div>
-										<div class="form-group">	
-											<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="setsReps" <?php echo $exerciseObject->sets_reps ?>>
-										</div>											
-										<div class="form-group">
-											<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="rest" <?php echo $exerciseObject->rest ?>>
-										</div>
-										<div class="form-group">
-											<input required="required" class="form-control var" type="text"  placeholder="Variation" name="variation" <?php echo $exerciseObject->variation ?>>
-										</div>
-										<div class="form-group">
-											<textarea required="required" class="form-control equip"  placeholder="Equipment" name="equipmentText" <?php echo $exerciseObject->equiptment ?>></textarea>
-										</div>
-										<div class="form-group">
-											<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="specialInstructionsText" <?php echo $exerciseObject->special_instructions ?>></textarea>
-										</div>
-									</div>
-									<div class="col-md-6">		
-										<!-- <select required="required" class="exerciseVideoUrlSource form-control">
-											<option>Select a Video</option>
-												<?php 
-												//$videos = $wpdb->get_results("SELECT * FROM `dev_cura_exercise_videos` WHERE id > 0", ARRAY_A);
-												//$getVideoForExer = $wpdb->get_col("SELECT exercise_video_url FROM `dev_cura_exercises` WHERE id = $exercise_Id");
-												//print_r($getVideoForExer);
-												//	foreach ($videos as $key_v => $value_v) { ?>
-														<!-- <option value="<?php //echo $value_v['url'] ?>" <?php// echo ($value_v['url'] == $getVideoForExer[0]) ? 'selected' : '' ?>><?php //echo $value_v['name'] ?></option> 
-												<?php// } ?>
-										</select> -->
-										<input type="hidden" class="exercise ex" name="phase[<?php echo $key ?>][exercise][<?php echo $keys ?>][exerciseUrl]" value="<?php echo $exerciseObject->exercise_video_url ?>">
-										<span class="removeVideo glyphicon glyphicon-remove"></span>
-										<div class="addVideo">
-											<span class="glyphicon glyphicon-plus"></span>
-											<span class="showMessage">Click in this box to add Video</span>
-										</div>
-										<div class="file-upload-area">
-											<div class="row">
-												<div class="col-md-3">									
-										   			<input type="button" name="upload-btn" id="upload-file" class="button-secondary file-upload-btn" value="Choose File" data-exerFileUpload="0">
-												</div>
-												<div class="col-md-9">
-										    		<input type="hidden" placeholder="File URL" id="file_url" class="regular-text form-control file-upload-path" name="" data-exerFileName="0" value="">
-										    		
-												</div>
-											</div>
-										</div>
-									</div>
-								<span class="glyphicon glyphicon-move"></span>
-								<span class="move"> Move this exercise to a desired order in the list</span>
-							</li>
-				</ul>											
+	public function displayExercise($exerciseObject){?> 					
+<div class="exercises" data-phaseId="<?php echo $exerciseObject->phase_id; ?>" data-orderNumber="<?php echo $exerciseObject->order_no; ?>">
+	<div class="row">
+		<div class="col-md-1">
+			<i class="fas fa-2x fa-angle-double-up"></i>
+		</div>
+		<div class="col-md-10">
+		<div class="exerciseName"><?php echo $exerciseObject->name; ?></div> 
+		</div>
+		<div class="col-md-1 text-right">
+			<i class="fas fa-2x fa-arrows-alt-v"></i>
+		</div>
+	</div>
+	<div class="row exerciseDetails">
+		<div class="col-md-6">
+			<div class="form-group">
+				<span class="exerciseLabel labelTxt">Order</span>
+				<input type="text" class="order" name="order" value="<?php echo $exerciseObject->order_field; ?>">
 			</div>
-		<!-- End of Exercise -->
-		<?php
+			<div class="form-group">	
+				<span class="exerciseLabel labelTxt">Sets x Rep</span>
+				<input required="required" class="form-control set" type="text" name="setsReps" value="<?php echo $exerciseObject->sets_reps; ?>">
+			</div>											
+			<div class="form-group">
+				<span class="exerciseLabel labelTxt">Rest</span>
+				<input required="required" class="form-control rest" type="text" name="rest" value="<?php echo $exerciseObject->rest; ?>">
+			</div>
+			<div class="form-group">
+				<span class="exerciseLabel labelTxt">Variations</span>
+				<input required="required" class="form-control var" type="text" name="variation" value="<?php echo $exerciseObject->variation; ?>">
+			</div>
+			<div class="form-group">
+				<span class="exerciseLabel labelTxt">Equipment</span>
+				<textarea required="required" class="form-control equip" name="equipmentText"><?php echo $exerciseObject->equipment; ?></textarea>
+			</div>
+			<div class="form-group">
+				<span class="exerciseLabel labelTxt">Special Instructions</span>
+				<textarea required="required" class="form-control ins"  name="specialInstructionsText" ><?php echo $exerciseObject->special_instructions; ?></textarea>
+			</div>
+		</div>
+		<div class="col-md-6">		
+			<div class="videoContainer">
+				<span class="exerciseLabel labelTxt">Video</span>
+				<div class="exercise-container" data-videoId="<?php echo $exerciseObject->videoId; ?>">
+				<img class="exerciseVideo" src="<?php echo $exerciseObject->thumbnailUrl; ?>"/>
+				</div>
+			</div>	
+		</div>
+									
+</div>
+</div>
+<?php
 	}
 		
 }
