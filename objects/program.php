@@ -681,26 +681,6 @@ public $dateModified;
     		 } 
     	}
     	return $newProgramId;
-    
-
-    	/* //Get That Program's Phases
-    	$originalPhases = getPhasesByProgramId($oldProgId);
-    	//Get Those Phases Exercises
-    	$originalExercises = array();
-    	$i = 0;
-    	foreach($originalPhases as $row){
-    		$originalExercises[i] = getExercisesByPhaseId($row->id']);
-    		$i++;
-    	}
-
-    	//Make New Program with Same Name
-    	createProgram($orignalProgram['name']);
-    	$newProgId = $wpdb->insert_id;
-    	//Update that program using inputs from the old programs outputs
-    	updateProgram($originalProgram['type'], $originalProgram['description'], $originalProgram['equipment'], $originalProgram['duration'], $originalProgram['weekly_plan'], $originalProgram['life_style'], $originalProgram['assoc_body_part_id'],  $originalProgram['how_it_happen'], $originalProgram['sports_occupation'], $originalProgram['thumbnail'], $originalProgram['state'], $originalProgram['updated_on'], $newProgId);
-    	//Copy the same for phases.
-    	//Copy the same for exercises
-		*/
     }
 
     public function updateDatabase(){
