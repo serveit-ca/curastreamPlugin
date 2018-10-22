@@ -26,7 +26,6 @@ public $state;
 public $createdOn;
 public $updatedOn;
 public $custom;
-
 public $programId;
 public $programName;
 public $phases;
@@ -669,7 +668,22 @@ public $dateModified;
     	// get the new program id 
     	$newProgramId = $wpdb->insert_id;
     	// assign the meta data using updateProgram
-    	$program->updateProgram($originalProgram->type, $originalProgram->description, $originalProgram->equipment, $originalProgram->duration, $originalProgram->weekly_plan, $originalProgram->life_style, $originalProgram->assoc_body_part_id,  $originalProgram->how_it_happen, $originalProgram->sports_occupation, $originalProgram->thumbnail, $originalProgram->state, $originalProgram->updated_on, $newProgId);
+    	foreach ($originalProgram as $progrow) {
+			$program->type = $progrow['type'];
+			$program->description = $progrow['description'];
+			$program->duration = $progrow['duration'];
+			$program->equipment = $progrow['equipment'];
+			$program->weeklyPlan = $progrow['weekly_plan'];
+			$program->lifeStyle = $progrow['life_style'];
+			$program->assocBodyPartId = $progrow['assoc_body_part_id'];
+			$program->howItHappen = $progrow['how_it_happen'];
+			$program->sportsOccupation = $progrow['sports_occupation'];
+			$program->thumbnail = $progrow['thumbnail'];
+			$program->state = $progrow['state'];
+			$program->updatedOn = $progrow['updated_on'];
+
+    	}
+    	$program->updateProgram($program->type, $program->description, $program->equipment, $program->duration, $program->weeklyPlan, $program->lifeStyle, $program->assocBodyPartId, $program->howItHappen, $program->sportsOccupation, $program->thumbnail, $program->state, $program->updatedOn, $newProgId);
     	// get all of the phases of the old program 
     	$phases = $program->getPhasesByProgramId($oldProgId);
     		// Iterate through each phase
