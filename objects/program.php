@@ -671,7 +671,7 @@ public $dateModified;
     		$recentPhase = $wpdb->insert_id;
     		$this->updatePhase($row->name, $row->duration, $row->intro, $row->notes, $recentPhase);
     		// get each exercise from the old phase 
-    		$exercises = $this->getExercisesByPhaseId($recentPhase);
+    		$exercises = $this->getExercisesByPhaseId($row->id);
     		// create a new exercise based on the new phoase id
     		foreach ($exercises as $exrow) {
     		 	$this->createExercise($exrow->name , $recentPhase);
