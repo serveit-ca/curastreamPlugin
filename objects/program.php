@@ -653,9 +653,36 @@ public $dateModified;
     }
 
     public function duplicateProgram($oldProgId, $userId){
+
     	//Get Original Program
     	$originalProgram = getProgramById($oldProgId);
-    	//Get That Program's Phases
+    	// get the username based on the program id 
+
+    	// create a new name with CP - Old Program Name - Username 
+
+    	//create a new program with the new name 
+
+    	// get the new program id 
+
+    	// assign the meta data using updateProgram
+
+    	// get all of the phases of the old program 
+
+    		// Iterate through each phase
+
+    			// get the phase meta 
+
+    			// create a new phoase based on the new program id 
+
+    				// get each exercise from the old phase 
+
+    				// create a new exercise baed on the new phoase id 
+
+
+
+    	return $newProgramID
+
+    	/* //Get That Program's Phases
     	$originalPhases = getPhasesByProgramId($oldProgId);
     	//Get Those Phases Exercises
     	$originalExercises = array();
@@ -672,7 +699,7 @@ public $dateModified;
     	updateProgram($originalProgram['type'], $originalProgram['description'], $originalProgram['equipment'], $originalProgram['duration'], $originalProgram['weekly_plan'], $originalProgram['life_style'], $originalProgram['assoc_body_part_id'],  $originalProgram['how_it_happen'], $originalProgram['sports_occupation'], $originalProgram['thumbnail'], $originalProgram['state'], $originalProgram['updated_on'], $newProgId);
     	//Copy the same for phases.
     	//Copy the same for exercises
-
+		*/
     }
 
     public function updateDatabase(){
