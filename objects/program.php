@@ -760,7 +760,7 @@ public $dateModified;
 			//Loop Order[Final] to Order [Initial-1]
 			foreach ($phases as $row) {
 				// If Order is Between Initial -1  and Final Inclusive
-				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){{
+				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current Phase Order_no -1
 					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
 					echo "Phase: " . $row->name . " Moved Backward.";
