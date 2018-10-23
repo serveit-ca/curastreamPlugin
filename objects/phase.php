@@ -7,7 +7,7 @@ public $name;
 public $duration;
 public $intro;
 public $notes;
-public $order;
+public $order_no;
 
 public  function __construct() {
     }

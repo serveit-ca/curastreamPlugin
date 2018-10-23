@@ -540,7 +540,7 @@ public $dateModified;
    		 }
     }
 
-    public function updatePhase($name, $duration, $intro, $notes, $phaseId){
+    public function updatePhase($name, $duration, $intro, $notes, $order_no, $phaseId){
 
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_phases";
@@ -573,6 +573,14 @@ public $dateModified;
 	    if (isset($notes) && !is_null($notes)){
 	    	$wpdb->update($tableName, array(
     		"notes" => $notes),
+    		array( // Where Clause
+    	 	"id" => $phaseId));
+	    }
+
+	    //Check and Update order_no
+	    if (isset($order_no) && !is_null($order_no)){
+	    	$wpdb->update($tableName, array(
+    		"order_no" => $order_no),
     		array( // Where Clause
     	 	"id" => $phaseId));
 	    }
@@ -704,6 +712,27 @@ public $dateModified;
 			$update = $wpdb->update("dev_cura_exercises",$value,$where);
 	    }
 	    return $log;
+	}
+
+	public function updateDatabasePhases(){
+		//Get All Programs
+		$allPrograms = $this->getAllPrograms();
+		//For Each Program
+		foreach ($allPrograms as $progrow) {
+			// Get all That Programs Phases
+			$programPhases = $this->getPhasesByProgramId($progrow->id);
+			// Counter variable to 1
+			$orderCount = 1;
+			//For Each Phase
+			foreach ($programPhases as $phaserow) {
+				//Phase[count] order_no = count;
+				$this->updatePhase(NULL, NULL, NULL, NULL, $orderCount, $phaserow->id);
+				echo "Phase " . $phaserow->name . " Updated with Order Number: " . $phaserow->order_no;
+				//Increment Count
+				$orderCount++;
+			}
+		}
+			
 	}
 }
 
