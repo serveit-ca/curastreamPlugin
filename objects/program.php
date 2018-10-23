@@ -217,6 +217,7 @@ public $dateModified;
 			$aPhase->duration = $row['duration'];
 			$aPhase->intro = $row['intro'];
 			$aPhase->notes = $row['notes'];
+			$aPhase->order_no = $row['order_no'];
 			$allPhases[] = $aPhase;
         }
 			return $allPhases;
@@ -238,6 +239,7 @@ public $dateModified;
 			$aPhase->duration = $row['duration'];
 			$aPhase->intro = $row['intro'];
 			$aPhase->notes = $row['notes'];
+			$aPhase->order_no = $row['order_no'];
 			return $aPhase;
 		}
     }
@@ -733,6 +735,78 @@ public $dateModified;
 			}
 		}
 			
+	}
+
+	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
+		//Get All Phases By Prod Id
+		$phases = $this->getPhasesByProgramId($programId);
+		// Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
+		$direction = $finalOrder - $initialOrder;
+		//If Forward
+		if(is_numeric($direction) && $direction > 0){
+			// Loop Order[Initial +1 ] To Order[Final]
+			foreach ($phases as $row) {
+				// If Order is Between Initial +1 and Final Inclusive
+				if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
+					// Current Phase Order_no -1
+					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
+					echo "Phase: " . $row->name . " Moved Forward.";
+				}//End If	
+			}// End Loop
+		}// End If
+
+		//Elseif Backward
+		elseif (is_numeric($direction) && $direction < 0) {
+			//Loop Order[Final] to Order [Initial-1]
+			foreach ($phases as $row) {
+				// If Order is Between Initial -1  and Final Inclusive
+				if($row->order_no < $initialOrder-1 && $row->order_no < $finalOrder){
+					// Current Phase Order_no -1
+					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
+					echo "Phase: " . $row->name . " Moved Backward.";
+				}//End If	
+			}// End Loop
+		}//End Elseif
+
+		//Assign Phase to be Moved Final Order_No
+		$this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
+		return "Success Phase Moved"; 
+	}
+
+	public function moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder){
+		//Get All Exercises By Prod Id
+		$exercises = $this->getExercisesByPhaseId($phaseId);
+		// Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
+		$direction = $finalOrder - $initialOrder;
+		//If Forward
+		if(is_numeric($direction) && $direction > 0){
+			// Loop Order[Initial +1 ] To Order[Final]
+			foreach ($exercises as $row) {
+				// If Order is Between Initial +1 and Final Inclusive
+				if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
+					// Current exercise Order_no -1
+					$this->updateExercise($row->order_no-1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
+					echo "exercise: " . $row->name . " Moved Forward.";
+				}//End If	
+			}// End Loop
+		}// End If
+
+		//Elseif Backward
+		elseif (is_numeric($direction) && $direction < 0) {
+			//Loop Order[Final] to Order [Initial-1]
+			foreach ($exercises as $row) {
+				// If Order is Between Initial -1  and Final Inclusive
+				if($row->order_no < $initialOrder-1 && $row->order_no < $finalOrder){
+					// Current exercise Order_no -1
+					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
+					echo "exercise: " . $row->name . " Moved Backward.";
+				}//End If	
+			}// End Loop
+		}//End Elseif
+
+		//Assign exercise to be Moved Final Order_No
+		$this->updateExercise($finalOrder, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
+		return "Success exercise Moved"; 
 	}
 }
 
