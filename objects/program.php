@@ -26,7 +26,6 @@ public $state;
 public $createdOn;
 public $updatedOn;
 public $custom;
-
 public $programId;
 public $programName;
 public $phases;
@@ -249,7 +248,7 @@ public $dateModified;
 		$tableNameA = $wpdb->prefix . "cura_exercises e";
 		$tableNameB = $wpdb->prefix . "cura_exercise_videos v";
 
-		$exerciseResults = $wpdb->get_results("SELECT e.id, e.name, e.phase_id, e.order_no, e.order_field, e.rest, e.sets_reps, e.variation, e.equipment, e.special_instructions, e.exercise_video_url, e.file_url, e.file_name, e.customExercise, v.videoThumbnail FROM $tableNameA , $tableNameB WHERE phase_id = $phaseId AND v.id = e.exercise_video_id ORDER BY order_no", ARRAY_A);
+		$exerciseResults = $wpdb->get_results("SELECT e.id, e.name, e.phase_id, e.order_no, e.order_field, e.rest, e.sets_reps, e.variation, e.equipment, e.special_instructions, e.exercise_video_url, e.file_url, e.file_name, v.videoThumbnail FROM $tableNameA , $tableNameB WHERE phase_id = $phaseId AND v.id = e.exercise_video_id ORDER BY order_no", ARRAY_A);
 		 $allExercises = array();
         foreach ($exerciseResults as $row) {
             $aExercise = new exercise();
@@ -266,7 +265,6 @@ public $dateModified;
 			$aExercise->exercise_video_url = $row['exercise_video_url'];
 			$aExercise->file_url = $row['file_url'];
 			$aExercise->file_name = $row['file_name'];
-			$aExercise->customExercise = $row['customExercise'];
 			$aExercise->thumbnailUrl = $row['videoThumbnail'];
 			$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
 
@@ -287,17 +285,18 @@ public $dateModified;
     		return $error;
    		 }
    		 else{
-   		 	return "Success: Program with Name: " . $programName . " Created";
+   		 	return "Success: Program with Name: " . $progName . " Created";
    		 
    		 }
     }
 
-    public function createExercise($exerciseName){
+    public function createExercise($exerciseName, $phaseId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_exercises";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $exerciseName));
+    		"name" => $exerciseName,
+    		"phase_id" => $phaseId));
 
     	if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
@@ -309,12 +308,13 @@ public $dateModified;
    		 }
     }
 
-    public function createPhase($phaseName){
+    public function createPhase($phaseName, $progId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_phases";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $phaseName));
+    		"name" => $phaseName,
+    		"program_id" => $progId));
 
     	if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
@@ -339,7 +339,7 @@ public $dateModified;
     }
 
     //Checks Each argument to see if it is set, and if so updates the program row in the database with this information
-    public function updateProgram($type, $description, $equipment, $duration, $weekly_plan, $life_style, $assoc_body_part_id,  $how_it_happen, $sports_occupation, $thumbnail, $state, $updated_on, $programId){
+    public function updateProgram($type, $description, $equipment, $duration, $weekly_plan, $life_style, $assoc_body_part_id,  $how_it_happen, $sports_occupation, $thumbnail, $state, $programId){
 
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_programs";
@@ -540,7 +540,7 @@ public $dateModified;
    		 }
     }
 
-    public function updatePhase($name, $duration, $intro, $notes, $updated_on, $phaseId){
+    public function updatePhase($name, $duration, $intro, $notes, $order_no, $phaseId){
 
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_phases";
@@ -577,10 +577,10 @@ public $dateModified;
     	 	"id" => $phaseId));
 	    }
 
-	    //Check and Update updated_on
-	    if (isset($updated_on) && !is_null($updated_on)){
+	    //Check and Update order_no
+	    if (isset($order_no) && !is_null($order_no)){
 	    	$wpdb->update($tableName, array(
-    		"updated_on" => $updated_on),
+    		"order_no" => $order_no),
     		array( // Where Clause
     	 	"id" => $phaseId));
 	    }
@@ -653,26 +653,42 @@ public $dateModified;
     }
 
     public function duplicateProgram($oldProgId, $userId){
+    	global $wpdb;
     	//Get Original Program
-    	$originalProgram = getProgramById($oldProgId);
-    	//Get That Program's Phases
-    	$originalPhases = getPhasesByProgramId($oldProgId);
-    	//Get Those Phases Exercises
-    	$originalExercises = array();
-    	$i = 0;
-    	foreach($originalPhases as $row){
-    		$originalExercises[i] = getExercisesByPhaseId($row['id']);
-    		$i++;
+    	$originalProgram = $this->getProgramById($oldProgId);
+    	// get the username based on the program id 
+    	$user = get_user_by("ID" , $userId);
+    	print_r($user);
+    	$userName = $user->display_name;
+    	// create a new name with CP - Old Program Name - Username 
+    	$newProgramName = "CP - " . $originalProgram->name . " - " . $userName;
+    	//create a new program with the new name 
+    	$this->createProgram($newProgramName);
+    	// get the new program id 
+    	$newProgramId = $wpdb->insert_id;
+    	$this->makeCustom($newProgramId);
+    	// assign the meta data using updateProgram
+    	$this->updateProgram($this->type, $this->description, $this->equipment, $this->duration, $this->weeklyPlan, $this->lifeStyle, $this->assocBodyPartId, $this->howItHappen, $this->sportsOccupation, $this->thumbnail, $this->state, $this->updatedOn, $newProgramId);
+    	// get all of the phases of the old program 
+    	$phases = $this->getPhasesByProgramId($oldProgId);
+    		// Iterate through each phase
+    	foreach ($phases as $row) {
+    		// create a new phase based on the new program id
+    		$this->createPhase($row->name , $newProgramId);
+    		// assign the meta data using updatePhase
+    		$recentPhase = $wpdb->insert_id;
+    		$this->updatePhase($row->name, $row->duration, $row->intro, $row->notes, $recentPhase);
+    		// get each exercise from the old phase 
+    		$exercises = $this->getExercisesByPhaseId($row->id);
+    		// create a new exercise based on the new phoase id
+    		foreach ($exercises as $exrow) {
+    		 	$this->createExercise($exrow->name , $recentPhase);
+    		 	// assign the meta data using updateExercise
+    		 	$recentExercise = $wpdb->insert_id;
+    		 	$this->updateExercise($exrow->order_no, $exrow->order_field, $exrow->name, $exrow->rest, $exrow->sets_reps, $exrow->variation, $exrow->equipment, $exrow->special_instructions, $exrow->exercise_video_url, $exrow->file_url, $exrow->file_name, $recentExercise);
+    		 } 
     	}
-
-    	//Make New Program with Same Name
-    	createProgram($orignalProgram['name']);
-    	$newProgId = $wpdb->insert_id;
-    	//Update that program using inputs from the old programs outputs
-    	updateProgram($originalProgram['type'], $originalProgram['description'], $originalProgram['equipment'], $originalProgram['duration'], $originalProgram['weekly_plan'], $originalProgram['life_style'], $originalProgram['assoc_body_part_id'],  $originalProgram['how_it_happen'], $originalProgram['sports_occupation'], $originalProgram['thumbnail'], $originalProgram['state'], $originalProgram['updated_on'], $newProgId);
-    	//Copy the same for phases.
-    	//Copy the same for exercises
-
+    	return $newProgramId;
     }
 
     public function updateDatabase(){
@@ -696,6 +712,27 @@ public $dateModified;
 			$update = $wpdb->update("dev_cura_exercises",$value,$where);
 	    }
 	    return $log;
+	}
+
+	public function updateDatabasePhases(){
+		//Get All Programs
+		$allPrograms = $this->getAllPrograms();
+		//For Each Program
+		foreach ($allPrograms as $progrow) {
+			// Get all That Programs Phases
+			$programPhases = $this->getPhasesByProgramId($progrow->id);
+			// Counter variable to 1
+			$orderCount = 1;
+			//For Each Phase
+			foreach ($programPhases as $phaserow) {
+				//Phase[count] order_no = count;
+				$this->updatePhase(NULL, NULL, NULL, NULL, $orderCount, $phaserow->id);
+				echo "Phase " . $phaserow->name . " Updated with Order Number: " . $phaserow->order_no;
+				//Increment Count
+				$orderCount++;
+			}
+		}
+			
 	}
 }
 
