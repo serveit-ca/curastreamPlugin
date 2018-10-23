@@ -760,7 +760,7 @@ public $dateModified;
 			//Loop Order[Final] to Order [Initial-1]
 			foreach ($phases as $row) {
 				// If Order is Between Initial -1  and Final Inclusive
-				if($row->order_no < $initialOrder-1 && $row->order_no < $finalOrder){
+				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){{
 					// Current Phase Order_no -1
 					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
 					echo "Phase: " . $row->name . " Moved Backward.";
@@ -787,7 +787,10 @@ public $dateModified;
 					// Current exercise Order_no -1
 					$this->updateExercise($row->order_no-1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
 					echo "exercise: " . $row->name . " Moved Forward.";
-				}//End If	
+				}//End If
+				else{
+					echo "exercise: " . $row->name . " Not Changed.";
+				}	
 			}// End Loop
 		}// End If
 
@@ -796,11 +799,14 @@ public $dateModified;
 			//Loop Order[Final] to Order [Initial-1]
 			foreach ($exercises as $row) {
 				// If Order is Between Initial -1  and Final Inclusive
-				if($row->order_no < $initialOrder-1 && $row->order_no < $finalOrder){
+				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current exercise Order_no -1
-					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
+					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
 					echo "exercise: " . $row->name . " Moved Backward.";
 				}//End If	
+				else{
+					echo "exercise: " . $row->name . " Not Changed.";
+				}
 			}// End Loop
 		}//End Elseif
 
