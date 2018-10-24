@@ -27,6 +27,22 @@ function curastream_add_bootstrap()
     }
 add_action('admin_enqueue_scripts', 'curastream_add_bootstrap');
 
+add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
+/*Going to register the custom JavaScript and CSS File   */
+function register_scripts_with_jquery(){   
+    // Register the script like this for a plugin:
+   // wp_register_style( '')
+    wp_register_style( 'curastreamStyle', plugins_url( 'assets/css/style.css', __FILE__ ));
+    wp_enqueue_style( 'curastreamStyle');
+      wp_register_script( 'custom-programAJAX-script', plugins_url( 'assets/js/customProgramAJAX.js', __FILE__ ), "", "", true);
+    // For either a plugin or a theme, you can then enqueue the script:
+    wp_enqueue_script( 'custom-programAJAX-script' );
+    wp_register_script( 'custom-programUI-script', plugins_url( 'assets/js/customProgramUI.js', __FILE__ ), "", "", true);
+    // For either a plugin or a theme, you can then enqueue the script:
+    wp_enqueue_script( 'custom-programUI-script' );
+  
+}
+
 // register_activation_hook( __FILE__, 'Curastream_install');
 function add_menu() {
     add_menu_page('Curastream','Curastream',
@@ -91,17 +107,6 @@ add_action( 'admin_menu', 'add_menu');
 add_action( 'admin_menu', 'add_submenu');
 add_action( 'admin_enqueue_scripts', 'load_wp_media' );
 
-add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
-/*Going to register the custom JavaScript and CSS File   */
-function register_scripts_with_jquery(){   
-    // Register the script like this for a plugin:
-   // wp_register_style( '')
-    wp_register_style( 'curastreamStyle', plugins_url( 'assets/css/style.css', __FILE__ ));
-    wp_enqueue_style( 'curastreamStyle');
-    wp_register_script( 'custom-program-script', plugins_url( 'assets/js/customProgram.js', __FILE__ ), "", "", true);
-    // For either a plugin or a theme, you can then enqueue the script:
-    wp_enqueue_script( 'custom-program-script' );
-}
 
 
 

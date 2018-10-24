@@ -38,7 +38,7 @@ class customProgramCreation {
 
  /*This function is used to generate the Program Meta Data  */
 	public function createProgramMetaImputForm($programObject){
-		var_dump($programObject);?>
+		?>
 
 		<div class="row">
 				<div class="col-md-12">
@@ -156,20 +156,34 @@ class customProgramCreation {
 							<textarea id="phaseNotes" name="phaseNotes" class="form-control"  placeholder="Phase Notes"> <?php if($phaseObject->notes){echo $phaseObject->notes;} ?></textarea>
 					</div>
 				</div>
+				<div class="row phaseControl">
+				<div class="col-md-1">
+					<i class="phaseMove fas fa-2x fa-arrows-alt-v"></i>
+					<i class="phaseExpandHide fas fa-2x fa-angle-double-up"></i>
+					
+				</div>
+				<div class="col-md-10">
+				</div>
+				<div class="col-md-1 text-right">
+					<i class="fas fa-2x fa-times"></i>
+				</div>
+				</div>
 			</div>
 	<?php
 	}
 	public function displayExercise($exerciseObject){?> 					
 <div class="exercises" data-phaseId="<?php echo $exerciseObject->phase_id; ?>" data-orderNumber="<?php echo $exerciseObject->order_no; ?>">
-	<div class="row">
+	<div class="row exerciseHeader">
 		<div class="col-md-1">
-			<i class="fas fa-2x fa-angle-double-up"></i>
+			<i class="exerciseMove fas fa-2x fa-arrows-alt-v"></i>
+			<i class="exerciseExpandHide fas fa-2x fa-angle-double-up"></i>
 		</div>
 		<div class="col-md-10">
 		<div class="exerciseName"><?php echo $exerciseObject->name; ?></div> 
 		</div>
 		<div class="col-md-1 text-right">
-			<i class="fas fa-2x fa-arrows-alt-v"></i>
+			<i class="fas fa-2x fa-times"></i>
+
 		</div>
 	</div>
 	<div class="row exerciseDetails">
@@ -212,6 +226,34 @@ class customProgramCreation {
 </div>
 <?php
 	}
+	public function addPhase(){?> 
+		<div class="addPhaseContainer">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div class="addPhase">
+						<i class="fas fa-plus"></i> Phase
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	<?php	}
+	public function addExercise(){?> 
+		<div class="addExerciseContainer">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div class="addExercise">
+						<i class=" fas fa-plus"></i> Exercise
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	<?php
+	
+	}	
 		
 }
 		

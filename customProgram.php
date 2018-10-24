@@ -28,6 +28,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 // Select a user or a group TODO - Add Group functionality 
 ?>
 	<div class="container-fluid customProgramContainer">
+		
 		<div class="row">
 			<div class="col-md-7">
 				<!-- Part 1 -->
@@ -45,7 +46,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 				<!-- Part 2 -->
 				<div class="baseProgram hidden" > 
 					<h3>2. Do you want to modify a existing program or create a new one?</h3>
-					<button id="modifyExisting">Modify Existing</button><button id="createNew">Create New Program </button>
+					<button class="button-secondary custom-btn"id="modifyExisting">Modify Existing</button><button class="button-secondary custom-btn" id="createNew">Create New Program </button>
 				</div>
 				 <!-- Part 3 -->
 				<div class="modifyExistingProgram hidden">
@@ -59,7 +60,9 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 					 			<?php } ?>
 					 </select>
 					 <div>
-					 	<button id="customizeButton">Customize</button>
+					 	<button class="button-secondary custom-btn"id="ContineModification">Continue Modifying
+					 	</button>
+					 	<button class="button-secondary custom-btn"id="CopyAndCustomize">Copy & Customize</button>
 					 </div>
 				</div>
 			</div>
