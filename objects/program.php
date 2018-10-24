@@ -874,6 +874,22 @@ public $dateModified;
     		"id" => $exerciseId
     	));
 	}
+
+	public function getHighestPhaseOrder($programId){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_phases";
+		// Reorder This Phase to The Top
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE program_id = $programId ORDER BY order_no DESC LIMIT 1");
+		return $finalOrder->order_no;
+	}
+
+	public function getHighestExerciseOrder($phaseId){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_exercises";
+		// Reorder This Exercise to the Top
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1");
+		return $finalOrder->order_no;
+	}
 }
 
 ?>

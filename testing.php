@@ -6,7 +6,7 @@ require_once ("objects/exercise.php");
 $programs = new program();
 //$testing = $programs->getPhasesByProgramId(37);
 //print_r($testing);
-$testing = $programs->deletePhaseUpdateOrder(58, 113, 3);
+$testing = $programs->getHighestPhaseOrder(58);
 print_r($testing);
 //$testing = $programs->updatePhase("name", "duration", "intro", "notes", "updated_on", 408);
 //echo $testing;
