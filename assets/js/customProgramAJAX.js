@@ -2,64 +2,13 @@ var JS_DEBUG = true;
 
 if(JS_DEBUG){console.log("Welcome to the Custom ProgramAJAX Builder Script");}
 
-// Used to customize a custom program 
-	jQuery("#CopyAndCustomize").on('click', function(event){
-		if(JS_DEBUG){console.log("Clicking Custom");}
-		// get the ID of the current Program 
-		var programID = jQuery("#existingProgram option:selected").val()
-		if(JS_DEBUG){console.log("We want to customize the course "+ programID );}
-		// Get the custom program from the AJAX PHP Form 
-		var data = {
-		'action': 'createAndDisplayCustomProgram',
-		'baseProgramId': programID
-	};
-	//	jQuery.ajax({async:false, type:'get',data, dataType:'text',url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
-	// Post to Ajax
-	jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
-		// This should be returnin"g HTML object 
-			//console.log("Copied Program - "+response);
-			var resultObj = response;
-			//console.log(resultObj);
-		// Find the HTML Object where we want to load the form into 
-		if(resultObj !=null){
-			jQuery(".alertArea").append('<div class="alertLog">Custom Program Created</div>');
-		// Load the form in the html object
-		//console.log(resultObj);
-			jQuery(".modifyExistingForm").html(resultObj);
-			}	
-		}
-	});
-		jQuery(".modifyExistingForm").removeClass("hidden");
 
-});
 
 
 function addPhaseAJAX(phaseName, programID, initialOrder, finalOrder){
+	var resultObj;
 if(JS_DEBUG){console.log("Adding a new Phase AJAX");}
-	var data = {
-		'action': 'addPhaseToProgram',
-		'baseProgramId': programID,
-		'initialOrder': initialOrder,
-		'finalOrder': finalOrder
-	};
-	// Post to Ajax
-	jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
-		// This should be returnin"g HTML object 
-			//console.log("Copied Program - "+response);
-			var resultObj = response;
-			//console.log(resultObj);
-		// Find the HTML Object where we want to load the form into 
-		if(resultObj !=null){
-			jQuery(".alertArea").append('<div class="alertLog">Phase Added</div>');
-		// Load the form in the html object
-		//console.log(resultObj);
-			return resultObj;
-			}else{
-				jQuery(".alertArea").append('<div class="alertLog">Error: Phase Not Added</div>');
-				return "error";
-			}	
-		}
-	});
+
 }
 
 // //For Program Type Radio Buttons
