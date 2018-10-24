@@ -447,7 +447,7 @@ public $dateModified;
     }
 
     //Checks Each argument to see if it is set, and if so updates the program row in the database with this information
-    public function updateExercise($order_no, $order_field, $name, $rest, $sets_reps, $variation, $equipment, $special_instructions, $exercise_video_url, $file_url, $file_name, $exerciseId){
+    public function updateExercise($order_no, $phase_id, $order_field, $name, $rest, $sets_reps, $variation, $equipment, $special_instructions, $exercise_video_url, $file_url, $file_name, $exerciseId){
 
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_exercises";
@@ -460,6 +460,13 @@ public $dateModified;
     	 	"id" => $exerciseId));
 	    }
 
+	    //Check and Update phase_id
+	    if (isset($phase_id) && !is_null($phase_id)){
+	    	$wpdb->update($tableName, array(
+    		"phase_id" => $phase_id),
+    		array( // Where Clause
+    	 	"id" => $exerciseId));
+	    }
 	    //Check and Update order_field
 	    if (isset($order_field) && !is_null($order_field)){
 	    	$wpdb->update($tableName, array(
@@ -785,7 +792,7 @@ public $dateModified;
 				// If Order is Between Initial +1 and Final Inclusive
 				if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
 					// Current exercise Order_no -1
-					$this->updateExercise($row->order_no-1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
+					$this->updateExercise($row->order_no-1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
 					echo "exercise: " . $row->name . " Moved Forward.";
 				}//End If
 				else{
@@ -801,7 +808,7 @@ public $dateModified;
 				// If Order is Between Initial -1  and Final Inclusive
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current exercise Order_no -1
-					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
+					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
 					echo "exercise: " . $row->name . " Moved Backward.";
 				}//End If	
 				else{
@@ -811,7 +818,7 @@ public $dateModified;
 		}//End Elseif
 
 		//Assign exercise to be Moved Final Order_No
-		$this->updateExercise($finalOrder, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
+		$this->updateExercise($finalOrder, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
 		return "Success exercise Moved"; 
 	}
 
@@ -825,18 +832,47 @@ public $dateModified;
 		// Get Highest Order Number
 		$highestNewOrder = $wpdb->get_row("SELECT MAX (order_no) FROM $tableName WHERE phase_id = $targetPhase->id"); 
 		// Get Phase From Old Exercise
-		$oldPhase = $this->getAPhaseById($$exercise->phase_id);
+		$oldPhase = $this->getAPhaseById($exercise->phase_id);
 		// Get the Highest Order Number From Old Phase
 		$highestOldOrder = $wpdb->get_row("SELECT MAX (order_no) FROM $tableName WHERE phase_id = $oldPhase->id"); 
 		//Reorder Old Phase's Exercises This Exercise to the top to be "popped"
 		$this->moveExerciseOrder($oldPhase->id, $exerciseId, $exercise->order_no, $highestOldOrder);
 		// Apply New Phase and Order to Exercise
-		$this->updateExercise($highestNewOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
+		$this->updateExercise($highestNewOrder+1, $targetPhaseId, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
 		// Move Exercise if Needed 
 		$this->moveExerciseOrder($targetPhaseId, $exerciseId, $exercise->order_no, $targetPosition);
 		return $exercise;
+	}
 
+	public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_phases";
+		// Reorder This Phase to The Top
+		$finalOrder = $wpdb->get_row("SELECT FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
+		echo $finalOrder;
+		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder);
+		// Delete all Exercises in Phase
+		$wpdb->delete("dev_cura_exercises", array(
+    		"phase_id" => $phaseId
+    	));
+		// Delete Phase
+		$wpdb->delete($tableName, array(
+    		"id" => $phaseId
+    	));
+    	return "Phase Id: " . $phaseId . " Deleted";
+	}
 
+	public function deleteExerciseUpdateOrder($phaseId, $exerciseId, $initialOrder){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_exercises";
+		// Reorder This Exercise to the Top
+		$finalOrder = $wpdb->get_row("SELECT FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
+		echo $finalOrder;
+		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder);
+		// Deleted This Exercise
+		$wpdb->delete("dev_cura_exercises", array(
+    		"id" => $exerciseId
+    	));
 	}
 }
 
