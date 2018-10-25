@@ -850,11 +850,11 @@ public $dateModified;
 		// Get Exercise to be Moved
 		$exercise = $this->getAnExerciseById($exerciseId);
 		// Get Highest Order Number
-		$highestNewOrder = $wpdb->get_row("SELECT MAX (order_no) FROM $tableName WHERE phase_id = $targetPhase->id"); 
+		$highestNewOrder = $this->getHighestExerciseOrder($targetPhaseId); 
 		// Get Phase From Old Exercise
 		$oldPhase = $this->getAPhaseById($exercise->phase_id);
 		// Get the Highest Order Number From Old Phase
-		$highestOldOrder = $wpdb->get_row("SELECT MAX (order_no) FROM $tableName WHERE phase_id = $oldPhase->id"); 
+		$highestOldOrder = $this->getHighestExerciseOrder($oldPhase); 
 		//Reorder Old Phase's Exercises This Exercise to the top to be "popped"
 		$this->moveExerciseOrder($oldPhase->id, $exerciseId, $exercise->order_no, $highestOldOrder);
 		// Apply New Phase and Order to Exercise
@@ -868,9 +868,9 @@ public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 		// Reorder This Phase to The Top
-		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE program_id = $programId ORDER BY order_no DESC LIMIT 1");
-		echo $finalOrder->order_no;
-		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder->order_no);
+		$finalOrder = $this->getHighestPhaseOrder($programId);
+		echo $finalOrder;
+		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder);
 		// Delete all Exercises in Phase
 		$wpdb->delete("dev_cura_exercises", array(
     		"phase_id" => $phaseId
@@ -880,6 +880,19 @@ public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
     		"id" => $phaseId
     	));
     	return "Phase Id: " . $phaseId . " Deleted";
+	}
+
+	public function deleteExerciseUpdateOrder($phaseId, $exerciseId, $initialOrder){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_exercises";
+		// Reorder This Exercise to the Top
+		$finalOrder = $this->getHighestExerciseOrder($phaseId);
+		echo $finalOrder->order_no;
+		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder);
+		// Deleted This Exercise
+		$wpdb->delete("dev_cura_exercises", array(
+    		"id" => $exerciseId
+    	));
 	}
 
 
