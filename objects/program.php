@@ -777,7 +777,7 @@ public $dateModified;
 				if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
 					// Current Phase Order_no -1
 					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
-					echo "Phase: " . $row->name . " Moved Forward.";
+					echo "Phase: " . $row->name . " Moved Backward.";
 				}//End If	
 			}// End Loop
 		}// End If
@@ -790,7 +790,7 @@ public $dateModified;
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current Phase Order_no -1
 					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
-					echo "Phase: " . $row->name . " Moved Backward.";
+					echo "Phase: " . $row->name . " Moved Forward.";
 				}//End If	
 			}// End Loop
 		}//End Elseif
@@ -813,7 +813,7 @@ public $dateModified;
 				if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
 					// Current exercise Order_no -1
 					$this->updateExercise($row->order_no-1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
-					echo "exercise: " . $row->name . " Moved Forward.";
+					echo "exercise: " . $row->name . " Moved Backward.";
 				}//End If
 				else{
 					echo "exercise: " . $row->name . " Not Changed.";
@@ -829,7 +829,7 @@ public $dateModified;
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current exercise Order_no -1
 					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
-					echo "exercise: " . $row->name . " Moved Backward.";
+					echo "exercise: " . $row->name . " Moved Forward.";
 				}//End If	
 				else{
 					echo "exercise: " . $row->name . " Not Changed.";
@@ -864,13 +864,13 @@ public $dateModified;
 		return $exercise;
 	}
 
-	public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
+public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 		// Reorder This Phase to The Top
-		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
-		echo $finalOrder;
-		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder);
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE program_id = $programId ORDER BY order_no DESC LIMIT 1");
+		echo $finalOrder->order_no;
+		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder->order_no);
 		// Delete all Exercises in Phase
 		$wpdb->delete("dev_cura_exercises", array(
     		"phase_id" => $phaseId
@@ -882,18 +882,21 @@ public $dateModified;
     	return "Phase Id: " . $phaseId . " Deleted";
 	}
 
-	public function deleteExerciseUpdateOrder($phaseId, $exerciseId, $initialOrder){
+
+	public function getHighestPhaseOrder($programId){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_phases";
+		// Reorder This Phase to The Top
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE program_id = $programId ORDER BY order_no DESC LIMIT 1");
+		return $finalOrder->order_no;
+	}
+
+	public function getHighestExerciseOrder($phaseId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
-		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
-		echo "FO: " . $finalOrder->order_no;
-
-		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder->order_no);
-		// Deleted This Exercise
-		$wpdb->delete("dev_cura_exercises", array(
-    		"id" => $exerciseId
-    	));
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1");
+		return $finalOrder->order_no;
 	}
 }
 
