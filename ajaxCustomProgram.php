@@ -145,7 +145,7 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_modifyExisitngProgram', 'modifyExisitngProgram' );
 	    add_action( 'wp_ajax_nopriv_modifyExisitngProgram', 'modifyExisitngProgram');
 
-
+	    // This Function updates the meta data for a program
 	    function updateAProgram(){
 	    	global $programs;
 	    	global $customCreation;
@@ -159,6 +159,7 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_updateAProgram', 'updateAProgram' );
 	    add_action( 'wp_ajax_nopriv_updateAProgram', 'updateAProgram');
 
+	    // This Function updates the meta data for a phase
 	    function updateAPhase(){
 	    	global $programs;
 	    	global $customCreation;
@@ -171,5 +172,49 @@ require_once ("objects/exercise.php");
 
 	    add_action( 'wp_ajax_updateAPhase', 'updateAPhase' );
 	    add_action( 'wp_ajax_nopriv_updateAPhase', 'updateAPhase');
+
+	    // This Function updates the meta data for an exercise
+	    function updateAnExercise(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->updateProgram($_POST['order_no'], $_POST['phase_id'], $_POST['order_field'], $_POST['name'], $_POST['rest'], $_POST['sets_reps'], $_POST['variation'],  $_POST['equipment'], $_POST['special_instructions'], $_POST['exercise_video_url'], $_POST['file_url'], $_POST['file_name'], $_POST['exerciseId']);
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_updateAnExercise', 'updateAnExercise' );
+	    add_action( 'wp_ajax_nopriv_updateAnExercise', 'updateAnExercise');
+
+	    //This Function Deletes a Target Phase and all Exercises Under it
+	    function deleteReorderPhase(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->deletePhaseUpdateOrder($_POST['programId'], $_POST['phaseId'], $_POST['initialOrder'])
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_deleteReorderPhase', 'deleteReorderPhase' );
+	    add_action( 'wp_ajax_nopriv_deleteReorderPhase', 'deleteReorderPhase');
+
+	    //This Function Deletes a Target Exercise and Properly Reorders the remaining in the phase
+	    function deleteReorderExercise(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->deletePhaseUpdateOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder'])
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_deleteReorderExercise', 'deleteReorderExercise' );
+	    add_action( 'wp_ajax_nopriv_deleteReorderExercise', 'deleteReorderExercise');
 
     ?>
