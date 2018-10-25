@@ -476,6 +476,11 @@ th#sports {
 	margin-bottom:10px;
 	cursor:pointer;
 }
+.addExerciseShow{
+	margin-top:10px;
+	margin-bottom:10px;
+	cursor:pointer;
+}
 .custom-btn{
     height: 37px!important;
     background-color: #00b1b3!important;
@@ -485,4 +490,12 @@ th#sports {
 }
 .exerciseHeader{
 	margin-bottom:10px;
+}
+.addExerciseContent{
+	    padding: 20px;
+    background: rgba(125, 125, 125, 0.17);
+    border-radius: 5px;
+    margin-top:10px;
+    margin-bottom:10px;
+
 }

@@ -165,7 +165,7 @@ class customProgramCreation {
 				<div class="col-md-10">
 				</div>
 				<div class="col-md-1 text-right">
-					<i class="fas fa-2x fa-times"></i>
+					<i class="removePhase fas fa-2x fa-times"></i>
 				</div>
 				</div>
 			</div>
@@ -182,7 +182,7 @@ class customProgramCreation {
 		<div class="exerciseName"><?php echo $exerciseObject->name; ?></div> 
 		</div>
 		<div class="col-md-1 text-right">
-			<i class="fas fa-2x fa-times"></i>
+			<i class="removeExercise fas fa-2x fa-times"></i>
 
 		</div>
 	</div>
@@ -240,12 +240,32 @@ class customProgramCreation {
 
 	<?php	}
 	public function addExercise(){?> 
-		<div class="addExerciseContainer">
+		<div class="container-fluid addExerciseContainer">
 			<div class="row">
 				<div class="col-md-12 text-center">
-					<div class="addExercise">
+					<div class="addExerciseShow">
 						<i class=" fas fa-plus"></i> Exercise
 					</div>
+				</div>
+			</div>
+		</div>
+	<?php }
+	
+	public function addExerciseChooser($exercises){?> 
+		<div class="container-fluid selectExercise addExerciseContent">
+			<div class="row">
+				<div class="col-md-1"></div>
+				<div class="col-md-10 text-center">
+					<h3>Choose an Exercise To Add</h3>
+						<select class="enableSelect2 addExerciseSelecter">
+							<?php foreach($exercises as $exercise){echo("<option value=\"".$exercise->id."\">".$exercise->name."</option>");}?>
+						</select>
+					<div class="addExercise">
+							<button class="button-secondary custom-btn addExercise">Add Selected Exercise </button>
+					</div>
+				</div>
+				<div class="col-md-1 text-right">
+					<i class="closeAddExercise fas fa-2x fa-times"></i>
 				</div>
 			</div>
 		</div>

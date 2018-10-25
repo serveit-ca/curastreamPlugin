@@ -28,14 +28,14 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 // Select a user or a group TODO - Add Group functionality 
 ?>
 	<div class="container-fluid customProgramContainer">
-		
+
 		<div class="row">
 			<div class="col-md-7">
 				<!-- Part 1 -->
 				<div class="UserSelect">
 				<h1>Custom Program Creation</h1>
 				<h3>1. Lets Select a User or a Group (Coming Soon)</h3>
-					<select id="selectUser" name="activeUser">
+					<select id="selectUser" class="enableSelect2" name="activeUser">
 						<option>Please Select a User</option>
 						<?php foreach($activeUsers as $aUser){echo("<option value=\"".$aUser->ID."\">".$aUser->first_name." ".$aUser->last_name."</option>");}?>
 					</select>
@@ -51,13 +51,11 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 				 <!-- Part 3 -->
 				<div class="modifyExistingProgram hidden">
 					<h3>3. Select an Exisitng Program</h3>
-				 	<select name="existingProgram" id="existingProgram">
+				 	<select name="existingProgram" class="enableSelect2" id="existingProgram">
 					 		<?php 
 					 			global $wpdb;
 					 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 ORDER BY name", ARRAY_A);
-					 			foreach ($programs as $key => $value) { ?>
-					 				<option id="existingOption" value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>	
-					 			<?php } ?>
+					 			foreach ($programs as $key => $value) { echo("<option value=\"".$value['id'] ."\">".$value['name']."</option>");}?>
 					 </select>
 					 <div>
 					 	<button class="button-secondary custom-btn"id="ContineModification">Continue Modifying

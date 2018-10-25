@@ -151,6 +151,26 @@ public $dateModified;
         }
 			return $exercies;
     }
+      // Get all Exercises From Database
+    public function getAllExerciseVideos(){
+    	global $wpdb;
+		$tableName = $wpdb->prefix . "cura_exercise_videos";
+
+		$exerciseResults = $wpdb->get_results("SELECT * FROM $tableName ORDER BY name");
+		$exercies = array();
+        foreach ($exerciseResults as $row) {
+            $anExercise = new exercise();
+			$anExercise->id = $row->id;
+			$anExercise->name = $row->name;
+			$anExercise->description = $row->description;
+			$anExercise->bodyPart = $row->assoc_body_parts_name;
+			$anExercise->category = $row->category_name;
+			$anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
+			$anExercise->thumbnailUrl = $row->videoThumbnail;
+			$exercies[] = $anExercise;
+        }
+			return $exercies;
+    }
 
 
     // Gets a Single Exercise by That Exercises Id
@@ -848,7 +868,7 @@ public $dateModified;
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 		// Reorder This Phase to The Top
-		$finalOrder = $wpdb->get_row("SELECT FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
 		echo $finalOrder;
 		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder);
 		// Delete all Exercises in Phase
@@ -866,9 +886,10 @@ public $dateModified;
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
-		$finalOrder = $wpdb->get_row("SELECT FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
-		echo $finalOrder;
-		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder);
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1,1");
+		echo "FO: " . $finalOrder->order_no;
+
+		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder->order_no);
 		// Deleted This Exercise
 		$wpdb->delete("dev_cura_exercises", array(
     		"id" => $exerciseId

@@ -150,7 +150,14 @@ require_once ("objects/exercise.php");
 	      	global $programs;
 	      	global $customCreation;
 	      	$status= "Success";
+	      
+
 	      	// create an empty phase
+	      	// TODO Call Create Phase Function 
+	      		// ID will be returned 
+	      		// update Phase Put the info in there 
+	      		// get Highest Order Number 
+	      		// Move phase to ideal location 
 	      	$newPhase = new phase();
 	      		// get all of the phases 
 	      			echo $customCreation->addPhase();
@@ -166,5 +173,42 @@ require_once ("objects/exercise.php");
 
 	    add_action( 'wp_ajax_addPhaseToProgram', 'addPhaseToProgram' );
 	    add_action( 'wp_ajax_nopriv_addPhaseToProgram', 'addPhaseToProgram' );
+	    	    	    /* This fucntion is sued to copy, save and dispaly a custom program */
+	      function addExerciseToPhase(){
+	      	global $programs;
+	      	global $customCreation;
+	      	$status= "Success";
+	      	// create an empty phase
+	      	// TODO Call Create exercise
+	      		// ID will be returned 
+	      		// update exercise Put the info in there 
+	      		// get Highest Order Number 
+	      		// Move exercise to ideal location 
+	      	$newExercise = new exercise();
+	      		// get all of the phases 
+	      		    echo $customCreation->addExercise();
+	      			echo $customCreation->displayExercise($newExercise);
+	      			echo $customCreation->addExercise();
+
+	      		wp_die();	
+	      }
+
+	    add_action( 'wp_ajax_addExerciseToPhase', 'addExerciseToPhase' );
+	    add_action( 'wp_ajax_nopriv_addExerciseToPhase', 'addExerciseToPhase' );
+
+// This function loads the exercise chooser 
+	    function addExerciseChooser(){
+	      	global $programs;
+	      	global $customCreation;
+	      	$exerciseVideos = $programs->getAllExerciseVideos();
+	   
+	      	echo $customCreation->addExerciseChooser($exerciseVideos);
+
+	      		wp_die();	
+	      }
+
+	    add_action( 'wp_ajax_addExerciseChooser', 'addExerciseChooser' );
+	    add_action( 'wp_ajax_nopriv_addExerciseChooser', 'addExerciseChooser' );
+
 
     ?>
