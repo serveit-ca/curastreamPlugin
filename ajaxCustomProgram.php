@@ -217,4 +217,33 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_deleteReorderExercise', 'deleteReorderExercise' );
 	    add_action( 'wp_ajax_nopriv_deleteReorderExercise', 'deleteReorderExercise');
 
+	    // This function moves a phase to a new position under a program.
+	    function movePhase(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->movePhaseOrder($_POST['programId'], $_POST['phaseId'], $_POST['initialOrder'], $_POST['finalOrder'])
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_movePhase', 'movePhase' );
+	    add_action( 'wp_ajax_nopriv_movePhase', 'movePhase');
+
+	    // This function moves an exercise to a new position under a phase
+	    function moveExercise(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->moveExerciseOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder'], $_POST['finalOrder'])
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_moveExercise', 'movemoveExercise' );
+	    add_action( 'wp_ajax_nopriv_moveExercise', 'moveExercise');
     ?>
