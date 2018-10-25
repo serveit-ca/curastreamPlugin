@@ -301,13 +301,14 @@ public $dateModified;
 
     	$wpdb->insert($tableName, array(
     		"name" => $progName));
+    	$lastId = $wpdb->insert_id;
 
     	if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
     		return $error;
    		 }
    		 else{
-   		 	return "Success: Program with Name: " . $progName . " Created";
+   		 	return $lastId;
    		 
    		 }
     }

@@ -12,8 +12,10 @@ require_once ("objects/exercise.php");
 	      	global $programs;
 	      	global $customCreation;
 	      	$status= "Success";
-	      		// get the current custom program 
-	      		$customProgram = $programs->getProgramById($_POST['baseProgramId']);
+	      		// get the original program 
+	      		$originalProgram = $programs->getProgramById($_POST['baseProgramId']);
+	      		// create duplicate
+	      		$customProgram = $programs->duplicateProgram($_POST['baseProgramId'], $_POST['userId']);
 	      		$customProgramForm = $customCreation->createProgramMetaImputForm($customProgram);
 	      		echo $customProgramForm;
 	      		// get all of the phases 
@@ -109,7 +111,65 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_addExerciseChooser', 'addExerciseChooser' );
 	    add_action( 'wp_ajax_nopriv_addExerciseChooser', 'addExerciseChooser' );
 
-	    
+	    // This function creates a new program
 
+	    function createNewProgram(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$newProgramId = $programs->createProgram($_POST['programName']);
+	    	$newProgram = $programs->getProgramById($newProgramId);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($customProgram);
+	      		echo $customProgramForm;
+	      		echo $customCreation->addPhase();
+	      		echo $customCreation->addExercise();
+	      		wp_die();
+	    }
+
+	    add_action( 'wp_ajax_createNewProgram', 'createNewProgram' );
+	    add_action( 'wp_ajax_nopriv_createNewProgram', 'createNewProgram');
+
+	    function modifyExisitngProgram(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$modifyProgram = $programs->getProgramById($_POST['programId']);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
+	      		echo $customProgramForm;
+
+	      		wp_die();
+	    }
+
+	    add_action( 'wp_ajax_modifyExisitngProgram', 'modifyExisitngProgram' );
+	    add_action( 'wp_ajax_nopriv_modifyExisitngProgram', 'modifyExisitngProgram');
+
+
+	    function updateAProgram(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->updateProgram($_POST['type'], $_POST['description'], $_POST['equipment'], $_POST['duration'], $_POST['weekly_plan'], $_POST['life_style'], $_POST['assoc_body_part_id'],  $_POST['how_it_happen'], $_POST['sports_occupation'], $_POST['thumbnail'], $_POST['state'], $_POST['programId']);
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_updateAProgram', 'updateAProgram' );
+	    add_action( 'wp_ajax_nopriv_updateAProgram', 'updateAProgram');
+
+	    function updateAPhase(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->updatePhase($_POST['name'], $_POST['duration'], $_POST['intro'], $_POST['notes'], $_POST['order_no'], $_POST['phaseId']);
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_updateAPhase', 'updateAPhase' );
+	    add_action( 'wp_ajax_nopriv_updateAPhase', 'updateAPhase');
 
     ?>
