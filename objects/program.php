@@ -846,22 +846,18 @@ public $dateModified;
 	public function moveExerciseToNewPhase($exerciseId, $targetPhaseId, $targetPosition){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercises";
-		// Get Target Phase
-		$targetPhase = $this->getAPhaseById($targetPhaseId);
 		// Get Exercise to be Moved
 		$exercise = $this->getAnExerciseById($exerciseId);
 		// Get Highest Order Number
 		$highestNewOrder = $this->getHighestExerciseOrder($targetPhaseId); 
-		// Get Phase From Old Exercise
-		$oldPhase = $this->getAPhaseById($exercise->phase_id);
 		// Get the Highest Order Number From Old Phase
-		$highestOldOrder = $this->getHighestExerciseOrder($oldPhase); 
+		$highestOldOrder = $this->getHighestExerciseOrder($exercise->phase_id); 
 		//Reorder Old Phase's Exercises This Exercise to the top to be "popped"
-		$this->moveExerciseOrder($oldPhase->id, $exerciseId, $exercise->order_no, $highestOldOrder);
+		$this->moveExerciseOrder($exercise->phase_id, $exerciseId, $exercise->order_no, $highestOldOrder);
 		// Apply New Phase and Order to Exercise
 		$this->updateExercise($highestNewOrder+1, $targetPhaseId, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
 		// Move Exercise if Needed 
-		$this->moveExerciseOrder($targetPhaseId, $exerciseId, $exercise->order_no, $targetPosition);
+		$this->moveExerciseOrder($targetPhaseId, $exerciseId, $highestNewOrder+1, $targetPosition);
 		return $exercise;
 	}
 
