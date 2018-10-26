@@ -896,6 +896,30 @@ public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
     	));
 	}
 
+	public function deleteProgramUpdateOrder($programId){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_programs";
+		// Get the phases under that program
+		$phases = $this->getPhasesByProgramId($programId);
+		// Delete Each of those phases and the exercise under them.
+		foreach ($phases as $row) {
+			$this->deletePhaseUpdateOrder($programId, $row->id, $row->order_no);
+		}
+
+		$wpdb->delete($tableName, array(
+    		"id" => $programId
+    	));
+
+    	if($this->printError($wpdb) != "No Error"){
+    		$error = $this->printError($wpdb);
+    		return $error;
+   		 }
+   		 else{
+   		 	return "Success: Program with Id: " . $programId . " Deleted";
+   		 
+   		 }
+	}
+
 
 	public function getHighestPhaseOrder($programId){
 		global $wpdb;

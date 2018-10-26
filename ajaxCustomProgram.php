@@ -217,6 +217,23 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_deleteReorderExercise', 'deleteReorderExercise' );
 	    add_action( 'wp_ajax_nopriv_deleteReorderExercise', 'deleteReorderExercise');
 
+	    //This Function Deletes a Target Program, and the phases and exercises underneath.
+
+	    function deleteReorderProgram(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->deleteProgramUpdateOrder($_POST['programId']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_deleteReorderProgram', 'deleteReorderProgram' );
+	    add_action( 'wp_ajax_nopriv_deleteReorderProgram', 'deleteReorderProgram');
+
+
 	    // This function moves a phase to a new position under a program.
 	    function movePhase(){
 	    	global $programs;
@@ -246,4 +263,6 @@ require_once ("objects/exercise.php");
 
 	    add_action( 'wp_ajax_moveExercise', 'movemoveExercise' );
 	    add_action( 'wp_ajax_nopriv_moveExercise', 'moveExercise');
+
+
     ?>
