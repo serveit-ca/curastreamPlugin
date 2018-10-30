@@ -261,8 +261,24 @@ require_once ("objects/exercise.php");
 	    	wp_die();
 	    }
 
-	    add_action( 'wp_ajax_moveExercise', 'movemoveExercise' );
+	    add_action( 'wp_ajax_moveExercise', 'moveExercise' );
 	    add_action( 'wp_ajax_nopriv_moveExercise', 'moveExercise');
+
+	    // This function assigns a program to a User for the App
+
+	    function assignProgram(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->assignProgramToUser($_POST['programId'], $_POST['userId']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_assignProgram', 'assignProgram' );
+	    add_action( 'wp_ajax_nopriv_assignProgram', 'assignProgram');
 
 
     ?>

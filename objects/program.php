@@ -932,6 +932,20 @@ public $dateModified;
 		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1");
 		return $finalOrder->order_no;
 	}
+
+	public function assignProgramToUser($programId, $userId){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_user_programs";
+		$program = $this->getProgramById($programId);
+		$wpdb->insert($tableName, array(
+    		"user_id" => $userId,
+    		"saved_prog_type" => $program->type,
+    		"saved_prog_dur" => $program->duration,
+    		"saved_prog_id" => $programId,
+    		"saved_prog_name" => $program->name,
+    		));
+		return "Success: Program with Id: " . $programId . " Assigned to user with Id " . $userId;
+	}
 }
 
 ?>
