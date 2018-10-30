@@ -76,19 +76,19 @@ public $dateModified;
 		return $this;
 	}
 
-    public function checkCurrent($userId, $programId){
-    	 global $wpdb;
+	public function checkCurrent($userId, $programId){
+    	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_programs";
     	$current = false;
-  
 	    $currentResult = $wpdb->get_results("SELECT id FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programId AND completed = 0");
 	    if (count($currentResult)> 0){
 	    	$current = true;
 		}
 		return $current;
     }
-    public function checkCompleted($userId, $programId){
-   		 global $wpdb;
+
+	public function checkCompleted($userId, $programId){
+   		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_programs";
     	$completed = false;
   
@@ -861,7 +861,7 @@ public $dateModified;
 		return $exercise;
 	}
 
-public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
+	public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 		// Reorder This Phase to The Top

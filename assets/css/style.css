@@ -487,6 +487,7 @@ th#sports {
     border: 0!important;
     color: #fff!important;
     min-width: 108px!important;
+    text-transform: uppercase;
 }
 .exerciseHeader{
 	margin-bottom:10px;

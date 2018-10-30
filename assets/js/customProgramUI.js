@@ -9,28 +9,71 @@ jQuery(document).ready(function() {
     jQuery('.enableSelect2').select2();
 });
 
-///////////////////////// Fuctions used on  the Custom Program Creation Page ///////////////////////
-// Used to show the select use box iwhen creating a custom program
+///////////////////////// Fuctions used on the Custom Program Creation Page - Top Buttons ///////////////////////
+// These fucntions are used to display the differnt button options on the Custom Programs page 
+// when you start to edit or customize a program 
 
-	jQuery("#selectUser").on('change', function(event){
-		if(JS_DEBUG){console.log("onchange");}
-		jQuery(".baseProgram").removeClass("hidden");
-		if(JS_DEBUG){console.log("user change");}
-	});
-// Used to load the mobidy existing when creating a custom program 
-	jQuery("#modifyExisting").on('click', function(event){
-			console.log("hello");
-		jQuery(".modifyExistingProgram").removeClass("hidden");
-		jQuery(".createNewForm").addClass("hidden");
-	});
-// Used to create a new program 
-		jQuery("#createNew").on('click', function(event){
-			if(JS_DEBUG){console.log("createNew clicked");}
-			jQuery(".createNewForm").removeClass("hidden");
-			jQuery(".modifyExistingForm").addClass("hidden");
-			jQuery(".modifyExistingProgram").addClass("hidden");
-		});
+	jQuery(".generalProgram").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 1: Clicked General Program Button ");}
+		jQuery(".general_newModify").removeClass("hidden");
+		jQuery(".custom_newModify").addClass("hidden");
+		jQuery(".customProgram_selectUser").addClass("hidden");
+		jQuery(".custom_modifyExisting").addClass("hidden");
+		jQuery(".customProgram_modifyExisting").addClass("hidden");
+		jQuery(".customProgram_createNewOrCopy").addClass("hidden");
 
+	});
+
+jQuery(".generalProgram_createNew").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 2: Clicked Create General Program Button");}
+		jQuery(".gernalProgram_createNewOrCopy").removeClass("hidden");
+		jQuery(".gernalProgram_modifyExisting").addClass("hidden");
+	});
+
+jQuery(".generalProgram_modifyExisting").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 2: Clicked Exit Existing Custom Program Button");}
+		jQuery(".gernalProgram_modifyExisting").removeClass("hidden");
+		jQuery(".gernalProgram_createNewOrCopy").addClass("hidden");
+
+	});
+jQuery(".customProgram").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 1: Clicked Custom Program Button");}
+		jQuery(".custom_newModify").removeClass("hidden");
+		jQuery(".general_newModify").addClass("hidden");
+		jQuery(".gernalProgram_createNewOrCopy").addClass("hidden");
+		jQuery(".gernalProgram_modifyExisting").addClass("hidden");
+	});
+jQuery(".custom_createNew").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 2: Clicked Create Custom Program Button");}
+		jQuery(".customProgram_selectUser").removeClass("hidden");
+		jQuery(".customProgram_modifyExisting").addClass("hidden");
+	});
+jQuery(".custom_modifyExisting").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 2: Clicked Edit Existing Custom Program Button");}
+		jQuery(".customProgram_modifyExisting").removeClass("hidden");
+		jQuery(".customProgram_selectUser").addClass("hidden");
+		jQuery(".customProgram_createNewOrCopy").addClass("hidden");
+	});
+jQuery(".customProgram_selectUser").on('change', function(event){
+		if(JS_DEBUG){console.log("Step 2: Clicked Edit Existing Custom Program Button");}
+		jQuery(".customProgram_createNewOrCopy").removeClass("hidden");
+	});
+///////////////////////// Fuctions used on the Custom Program Creation Page - Call to Actions ///////////////////////
+jQuery("#generalProgram_startfromScratch").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 3: Clicked Start a Gernal Program from generalProgram_startfromScratch");}
+		jQuery(".alertArea").append('<div class="alertLog">Creating a General Program from Scratch</div>');
+		//TODO: Add Logic in here 
+
+	}); 
+
+jQuery("#generalProgram_copyAndedit").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 3: Clicked Copy an Existing Program and edit from  generalProgram_copyAndedit");}
+		var programID = jQuery(".generalProgramexistingProgram").val();
+		console.log("Program ID"+ programID);
+		jQuery(".alertArea").append('<div class="alertLog">Creating a General Program from the existing program</div>');
+		//TODO: Add Logic in here 
+		
+	}); 
 
 jQuery(".addPhase").live('click', function(event){
 		if(JS_DEBUG){console.log("Adding a new Phase");}
@@ -151,12 +194,38 @@ jQuery(".addExercise").live('click', function(event){
 });
 // Used to hide an exercise details 
 jQuery(".exerciseExpandHide").live('click', function(event){
-	if(JS_DEBUG){console.log("Going to hide or show an Exercise");}
+	if(JS_DEBUG){console.log("Going to hide or show a Exercise");}
 	jQuery(this).parent().parent().next(".exerciseDetails").toggle();
 	if(jQuery(this).hasClass("fa-angle-double-up")){
 		jQuery(this).removeClass("fa-angle-double-up");
 		jQuery(this).addClass("fa-angle-double-down");
 	}else if(jQuery(this).hasClass("fa-angle-double-down")){
+		jQuery(this).removeClass("fa-angle-double-down");
+		jQuery(this).addClass("fa-angle-double-up");
+	}
+});
+jQuery(".phaseExpandHide").live('click', function(event){
+	if(JS_DEBUG){console.log("Entering the Hide Show Phaese Function");}
+	if(jQuery(this).hasClass("fa-angle-double-up")){
+	if(JS_DEBUG){console.log("Going to hide all Exercises in Phase");}
+	jQuery(this).parent().parent().parent().nextAll(".exercises").each(function() {
+		console.log("Found an Exercise");
+		jQuery(this).children(".exerciseDetails").hide();
+		 jQuery(this).children(".exerciseHeader").children(".col-md-1").children(".exerciseExpandHide").removeClass("fa-angle-double-up");
+		 jQuery(this).children(".exerciseHeader").children(".col-md-1").children(".exerciseExpandHide").addClass("fa-angle-double-down");
+
+	});
+		jQuery(this).removeClass("fa-angle-double-up");
+		jQuery(this).addClass("fa-angle-double-down");
+	}else if(jQuery(this).hasClass("fa-angle-double-down")){
+	if(JS_DEBUG){console.log("Going to show all Exercises in Phase");}
+		jQuery(this).parent().parent().parent().nextAll(".exercises").each(function() {
+			console.log("Found an Exercise");
+			jQuery(this).children(".exerciseDetails").show();
+			 jQuery(this).children(".exerciseHeader").children(".col-md-1").children(".exerciseExpandHide").removeClass("fa-angle-double-down");
+			 jQuery(this).children(".exerciseHeader").children(".col-md-1").children(".exerciseExpandHide").addClass("fa-angle-double-up");
+
+		});
 		jQuery(this).removeClass("fa-angle-double-down");
 		jQuery(this).addClass("fa-angle-double-up");
 	}
@@ -198,4 +267,27 @@ jQuery(".removeExercise").live('click', function(event){
 
 });
 
-	// Used to close a 
+	// Used to show an exercise video 
+	/* This function shows the videos when the video has been clicked */
+jQuery('.exercise-container').live('click', function(event){
+	console.log("Exercise Clicked");
+	console.log($(this).attr("data-videoId"));
+	// Lets initiate the video 
+	// This is the URL of the video you want to load
+        var videoUrl = 'https://www.vimeo.com/'+$(this).attr("data-videoId");
+        console.log("Video URL: "+videoUrl);
+         // This is the oEmbed endpoint for Vimeo (we're using JSON)
+        // (Vimeo also supports oEmbed discovery. See the PHP example.)
+        var endpoint = 'https://www.vimeo.com/api/oembed.json';
+        // Tell Vimeo what function to call
+        var callback = 'embedVideo';
+         // Put together the URL
+        var url = endpoint + '?url=' + encodeURIComponent(videoUrl) + '&callback=' + callback + '&width=640';
+
+       jQuery.getJSON('https://www.vimeo.com/api/oembed.json?url=' + encodeURIComponent(videoUrl) + '&autoplay=1&callback=?', function(data){
+       	console.log("Updating Video")
+       	jQuery(this).html(""); 
+        jQuery(this).html(data.html); 
+		});
+});
+

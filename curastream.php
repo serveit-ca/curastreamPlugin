@@ -17,6 +17,10 @@ function curastream_add_bootstrap_And_Other()
         //wp_enqueue_script('loadUI');
         wp_enqueue_script('loadAJAX');
         wp_enqueue_script('loadselect2');
+
+        wp_register_script('oembed', plugins_url( '/assets/js/oembed.js', __FILE__ ));
+        //wp_enqueue_script('loadUI');
+        wp_enqueue_script('oembed');
         // CSS
          wp_register_style('select2Style', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css', false, NULL, 'all');
           wp_enqueue_style('select2Style');
@@ -81,7 +85,7 @@ function add_submenu() {
         '',
         ''
     );
-    add_submenu_page('curastreamPlugin','Custom Programs','Custom Programs',
+    add_submenu_page('curastreamPlugin','Program Aministration','Program Aministration',
         'manage_options',
         'curastream/customProgram.php',
         '',
