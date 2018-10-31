@@ -116,11 +116,9 @@ require_once ("objects/exercise.php");
 	    function createNewProgram(){
 	    	global $programs;
 	    	global $customCreation;
-	    	$status = "Success";
-
 	    	$newProgramId = $programs->createProgram($_POST['programName']);
 	    	$newProgram = $programs->getProgramById($newProgramId);
-	    	$customProgramForm = $customCreation->createProgramMetaImputForm($customProgram);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram);
 	      		echo $customProgramForm;
 	      		echo $customCreation->addPhase();
 	      		echo $customCreation->addExercise();
@@ -149,9 +147,7 @@ require_once ("objects/exercise.php");
 	    function updateAProgram(){
 	    	global $programs;
 	    	global $customCreation;
-	    	$status = "Success";
-
-	    	$programs->updateProgram($_POST['type'], $_POST['description'], $_POST['equipment'], $_POST['duration'], $_POST['weekly_plan'], $_POST['life_style'], $_POST['assoc_body_part_id'],  $_POST['how_it_happen'], $_POST['sports_occupation'], $_POST['thumbnail'], $_POST['state'], $_POST['programId']);
+	    	$programs->updateProgram($_POST['name'], $_POST['type'], $_POST['description'], $_POST['equipment'], $_POST['duration'], $_POST['weekly_plan'], $_POST['life_style'], $_POST['assoc_body_part_id'],  $_POST['how_it_happen'], $_POST['sports_occupation'], $_POST['thumbnail'], $_POST['state'], $_POST['programId']);
 	    	echo "Success";
 	    	wp_die();
 	    }
@@ -193,7 +189,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 
-	    	$programs->deletePhaseUpdateOrder($_POST['programId'], $_POST['phaseId'], $_POST['initialOrder'])
+	    	$programs->deletePhaseUpdateOrder($_POST['programId'], $_POST['phaseId'], $_POST['initialOrder']);
 
 	    	echo "Success";
 	    	wp_die();
@@ -208,7 +204,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 
-	    	$programs->deletePhaseUpdateOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder'])
+	    	$programs->deletePhaseUpdateOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder']);
 
 	    	echo "Success";
 	    	wp_die();
@@ -240,7 +236,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 
-	    	$programs->movePhaseOrder($_POST['programId'], $_POST['phaseId'], $_POST['initialOrder'], $_POST['finalOrder'])
+	    	$programs->movePhaseOrder($_POST['programId'], $_POST['phaseId'], $_POST['initialOrder'], $_POST['finalOrder']);
 
 	    	echo "Success";
 	    	wp_die();
@@ -255,7 +251,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 
-	    	$programs->moveExerciseOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder'], $_POST['finalOrder'])
+	    	$programs->moveExerciseOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder'], $_POST['finalOrder']);
 
 	    	echo "Success";
 	    	wp_die();

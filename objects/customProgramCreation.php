@@ -40,7 +40,7 @@ class customProgramCreation {
 	public function createProgramMetaImputForm($programObject){
 			?>
 
-			<div class="row">
+			<div class="row" id="theProgramMetaId" data-programId="<?php echo $programObject->id?>">
 					<div class="col-md-12">
 						<div class="form-group">
 							<div class="labelTxt"> Type </div>
@@ -60,11 +60,14 @@ class customProgramCreation {
 							<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($programObject->duration){echo 'value ="'.$programObject->duration.'"';} ?> />									
 						</div>
 						<div class="form-group">
-							<div>
+							<div id="meta-box-id">
 								<div class="labelTxt">Thumbnail </div>
 							 	<img class="imageThumb"<?php if($programObject->thumbnail){echo 'src ="'.$programObject->thumbnail.'"';} ?> />
-							     <input type="button" name="upload-btn" id="upload-btn" class="button-secondary" value="Change Image"> 
-							     <input type="button" name="upload-btn" id="upload-btn" class="button-secondary" value="Delete Image">
+							     <?php if($programObject->thumbnail){?><input type="button" name="upload_image_btn" id="upload_image_btn" class="button-secondary custom-btn" value="Change Image"/> <?php }else {?> <input type="button" name="add_image_btn" id="add_image_btn" class="button-secondary custom-btn" value="Add Image"/>
+<?php }?>
+							     <input type="button" name="delete_image_btn" id="delete_image_btn" class="button-secondary custom-btn" value="Delete Image">
+							      <input type="input" name="myprefix_image_id" id="myprefix_image_id" value="<?php echo esc_attr( $image_id ); ?>" class="regular-text" />
+
 
 									<div><?php echo $programObject->thumbnail;?></div>
 								

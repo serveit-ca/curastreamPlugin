@@ -362,10 +362,18 @@ public $dateModified;
     }
 
     //Checks Each argument to see if it is set, and if so updates the program row in the database with this information
-    public function updateProgram($type, $description, $equipment, $duration, $weekly_plan, $life_style, $assoc_body_part_id,  $how_it_happen, $sports_occupation, $thumbnail, $state, $programId){
+    public function updateProgram($name, $type, $description, $equipment, $duration, $weekly_plan, $life_style, $assoc_body_part_id,  $how_it_happen, $sports_occupation, $thumbnail, $state, $programId){
 
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_programs";
+
+    	//Check and Update Type
+	    if (isset($name) && !is_null($name)){
+	    	$wpdb->update($tableName, array(
+    		"name" => $name),
+    		array( // Where Clause
+    	 	"id" => $programId));
+	    }
 
     	//Check and Update Type
 	    if (isset($type) && !is_null($type)){
@@ -698,7 +706,7 @@ public $dateModified;
     	$newProgramId = $wpdb->insert_id;
     	$this->makeCustom($newProgramId);
     	// assign the meta data using updateProgram
-    	$this->updateProgram($this->type, $this->description, $this->equipment, $this->duration, $this->weeklyPlan, $this->lifeStyle, $this->assocBodyPartId, $this->howItHappen, $this->sportsOccupation, $this->thumbnail, $this->state, $this->updatedOn, $newProgramId);
+    	$this->updateProgram($this->name, $this->type, $this->description, $this->equipment, $this->duration, $this->weeklyPlan, $this->lifeStyle, $this->assocBodyPartId, $this->howItHappen, $this->sportsOccupation, $this->thumbnail, $this->state, $this->updatedOn, $newProgramId);
     	// get all of the phases of the old program 
     	$phases = $this->getPhasesByProgramId($oldProgId);
     		// Iterate through each phase

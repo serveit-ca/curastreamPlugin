@@ -7,6 +7,7 @@ Author: Admin
 // Used for page filtering 
 include("filtering.php");
 include("ajaxSaves.php");
+include("ajaxCustomProgram.php");
 // Used for Ajax Saves to DB 
 function curastream_add_bootstrap_And_Other() 
     {       
@@ -32,6 +33,17 @@ function curastream_add_bootstrap_And_Other()
 add_action('admin_enqueue_scripts', 'curastream_add_bootstrap_And_Other');
 
 add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
+// Add Media Image Script 
+// As you are dealing with plugin settings,
+// I assume you are in admin side
+
+function load_wp_media_files() {
+    // Enqueue WordPress media scripts
+    wp_enqueue_media();
+    // Enqueue custom script that will interact with wp.media
+  }
+
+add_action( 'admin_enqueue_scripts', 'load_wp_media_files' );
 /*Going to register the custom JavaScript and CSS File   */
 function register_scripts_with_jquery(){   
     // Register the script like this for a plugin:

@@ -4,6 +4,8 @@ $allUsers = get_users(array(
     'meta_key' => 'first_name',
     'orderby'  => 'meta_value',
 ));
+ 
+
 if(WP_DEBUG){	//echo("<br/>All Users Array Size:".sizeof($allUsers));
 }
 
@@ -103,6 +105,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 					<h3>3. How do you want to start creating your new general program?</h3>
 					<div class="row">
 						<div class="col-md-6">
+							<input id="generalProgram_StartFromScratchName" type="text" name="generalProgram_StartFromScratchName" class="form-control" required="required" placeholder="Program Name"/>	
 						</div>
 						<div class="col-md-6">
 						 
@@ -118,6 +121,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 					</div>
 					<div class="row">
 						<div class="col-md-6">
+
 						 	<button class="button-secondary custom-btn"id="generalProgram_startfromScratch">Start a General Program from Scratch
 						 	</button>
 						 </div>
@@ -160,7 +164,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 			
 			</div>
 			<div class="col-md-5">
-				<div class="alertArea text-right">
+				<div class="alertArea">
 					<h4>Program Builder Status Log</h4>
 				</div>
 			</div>
