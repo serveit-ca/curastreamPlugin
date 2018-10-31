@@ -92,9 +92,39 @@ jQuery("#generalProgram_startfromScratch").on('click', function(event){
 		}
 	}); 
 
+jQuery("#generalProgram_edit").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 3: Clicked edit a general Program generalProgram_edit");}
+		var programID = jQuery("#generalExistingProgramEdit").val();
+		console.log("Program ID"+ programID);
+		
+		jQuery(".alertArea").append('<div class="alertLog alertNotice">Editing the general program with the id of '+programID+'</div>');
+		//TODO: Add Logic in here 
+		var data = {
+		'action': 'modifyExisitngProgram',
+		'programId': programID
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			//console.log("Data: "+ data);
+			//console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response !=null){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">General Program with id of '+ programID +' loaded</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage
+			jQuery(".programEditingArea").html(response);
+		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program not loaded - Error code: AJAX - modifyExisitngProgram</div>');
+			}
+		}
+		});
+	}); 
+
 jQuery("#generalProgram_copyAndedit").on('click', function(event){
 		if(JS_DEBUG){console.log("Step 3: Clicked Copy an Existing Program and edit from  generalProgram_copyAndedit");}
-		var programID = jQuery(".generalProgramexistingProgram").val();
+		var programID = jQuery("#generalProgramexistingProgram").children("option:selected").val();
 		console.log("Program ID"+ programID);
 		
 		jQuery(".alertArea").append('<div class="alertLog">Creating a General Program from the existing program</div>');

@@ -136,7 +136,23 @@ require_once ("objects/exercise.php");
 	    	$modifyProgram = $programs->getProgramById($_POST['programId']);
 	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
 	      		echo $customProgramForm;
-
+	      	$phases = $programs->getPhasesByProgramId($_POST['programId']);
+	      		foreach ($phases as $aPhase){
+	      			echo $customCreation->addPhase();
+	      			echo '<div class="phaseContainer">';
+	      		    echo $customCreation->displayPhase($aPhase);
+	      		    // Get the Exercise 
+	      		    $exercises = $programs->getExercisesByPhaseId($aPhase->id);
+	      		    // got through each exercise 
+	      		    foreach ($exercises as $exercise){
+	      		    // Print out the exercise 
+	      		    	echo $customCreation->addExercise();
+	      		    	echo $customCreation->displayExercise($exercise);
+	      		    }
+	      		   	 echo $customCreation->addExercise();
+	      		 	echo '</div>';
+	      		 }
+	      		 echo $customCreation->addPhase();
 	      		wp_die();
 	    }
 

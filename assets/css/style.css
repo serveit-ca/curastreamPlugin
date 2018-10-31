@@ -527,3 +527,6 @@ th#sports {
 .thumbnailImg{
 	width:100%;
 }
+.enableSelect2{
+min-width:250px;
+}

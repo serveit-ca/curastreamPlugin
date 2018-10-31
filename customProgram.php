@@ -70,11 +70,11 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 				</div>
 				<div class="gernalProgram_modifyExisting hidden">
 					<h3>3. Select an exisitng general program to edit</h3>
-				 	<select name="existingProgram" class="enableSelect2" id="existingProgram">
+				 	<select name="generalExistingProgramEdit" class="enableSelect2" id="generalExistingProgramEdit" >
 					 		<?php 
 					 			global $wpdb;
 					 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 ORDER BY name", ARRAY_A);
-					 			foreach ($programs as $key => $value) { echo("<option value=\"".$value['id'] ."\">".$value['name']."</option>");}?>
+					 			foreach ($programs as $key => $value) { echo("<option value=\"".$value['id'] ."\">".$value['name']." </option>");}?>
 					 </select>
 					 <div>
 					 	<button class="button-secondary custom-btn"id="generalProgram_edit">Edit General Program 
@@ -83,7 +83,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 				</div>
 				<div class="customProgram_modifyExisting hidden">
 					<h3>3. Select an exisitng custom program to edit</h3>
-				 	<select name="existingProgram" class="enableSelect2" id="existingProgram">
+				 	<select name="customExistingProgramEdit" class="enableSelect2" id="customExistingProgramEdit">
 					 		<?php 
 					 			global $wpdb;
 					 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 AND customProgram = 1 ORDER BY name", ARRAY_A);
