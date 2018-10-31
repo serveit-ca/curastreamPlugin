@@ -40,6 +40,8 @@ add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
 function load_wp_media_files() {
     // Enqueue WordPress media scripts
     wp_enqueue_media();
+    wp_enqueue_script( 'wp-api' );
+
     // Enqueue custom script that will interact with wp.media
   }
 

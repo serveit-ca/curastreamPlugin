@@ -337,8 +337,25 @@ jQuery('input[name=typeUpdate]').live('change', function(event){
 		// Find the HTML Object where we want to load the form into 
 		if(response.trim() =="Success"){
 			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program type updated to '+programType+' in database</div>');
-		// Load the form in the html object
-		// insert a new phase into the webpage		
+		if(programType.toLowerCase() === "rehab"){
+			console.log("Program type detected as Rehab Program");
+			jQuery('#bodyPartGroup').removeClass( 'hidden' );
+			jQuery('#howItHappenedGroup').removeClass( 'hidden' );
+			jQuery('#sportsAndOccupationGroup').addClass( 'hidden' );
+
+		}else if (programType.toLowerCase() === "prevention"){
+			console.log("Program type detected as Prevention Program");
+			jQuery('#bodyPartGroup').removeClass( 'hidden' );
+			jQuery('#howItHappenedGroup').addClass( 'hidden' );
+			jQuery('#sportsAndOccupationGroup').addClass( 'hidden' );
+		}else if (programType.toLowerCase() === "strength-training"){
+			console.log("Program type detected as strenth Program");
+			jQuery('#bodyPartGroup').addClass( 'hidden' );
+			jQuery('#howItHappenedGroup').addClass( 'hidden' );
+			jQuery('#sportsAndOccupationGroup').removeClass( 'hidden' );
+
+		}	
+
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError"> Program type not updated - Error code: AJAX - updateAProgram</div>');
 			}
@@ -405,7 +422,10 @@ jQuery('input[name=progDurationUpdate]').live('blur', function(event){
 
 });
 
-      jQuery('input[name=add_image_btn]').live('click', function(event) {
+jQuery('input[name=add_image_btn]').live('click', function(event) {
+      jQuery(".alertArea").append('<div class="alertLog alertNotice">Adding a thumbnail to the program</div>');
+      var programId = jQuery("#theProgramMetaId").attr("data-programId");
+
     event.preventDefault();
     var frame
     // If the media frame already exists, reopen it.
@@ -426,22 +446,40 @@ jQuery('input[name=progDurationUpdate]').live('blur', function(event){
     
     // When an image is selected in the media frame...
     frame.on( 'select', function() {
-    	console.log("Image Clicked");
-      
+
       // Get media attachment details from the frame state
       var attachment = frame.state().get('selection').first().toJSON();
 
       // Send the attachment URL to our custom image input field.
-      imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100%;"/>' );
+      jQuery(".imageContainer").append( '<img class="thumbnailImg"src="'+attachment.url+'" alt="" />' );
 
-      // Send the attachment id to our hidden input
-      imgIdInput.val( attachment.id );
-
-      // Hide the add image link
-      addImgLink.addClass( 'hidden' );
-
-      // Unhide the remove image link
-      delImgLink.removeClass( 'hidden' );
+      // Save to the database  the attachment id to our hidden input
+     	var data = {
+		'action': 'updateAProgram',
+		'thumbnail': attachment.url,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program thumbnail '+attachment.url+' has been added to this program</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+		   // Hide the add image link
+      jQuery('input[name=add_image_btn]').addClass( 'hidden' );
+      // unhide the change image button 
+      jQuery('input[name=change_image_btn]').removeClass( 'hidden' );
+      // unhide the delete image button 
+      jQuery('input[name=delete_image_btn]').removeClass( 'hidden' );
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program thumbnail not added - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
     });
 
     // Finally, open the modal on click
@@ -450,3 +488,314 @@ jQuery('input[name=progDurationUpdate]').live('blur', function(event){
      });
 
 
+jQuery('input[name=change_image_btn]').live('click', function(event) {
+      jQuery(".alertArea").append('<div class="alertLog alertNotice">Changing a thumbnail for the program</div>');
+      var programId = jQuery("#theProgramMetaId").attr("data-programId");
+
+    event.preventDefault();
+    var frame
+    // If the media frame already exists, reopen it.
+    if ( frame ) {
+      frame.open();
+      return;
+    }
+    
+    // Create a new media frame
+    frame = wp.media({
+      title: 'Select or Upload Media Of Your Chosen Persuasion',
+      button: {
+        text: 'Use this media'
+      },
+      multiple: false  // Set to true to allow multiple files to be selected
+    });
+
+    
+    // When an image is selected in the media frame...
+    frame.on( 'select', function() {
+
+      // Get media attachment details from the frame state
+      var attachment = frame.state().get('selection').first().toJSON();
+
+      // Send the attachment URL to our custom image input field.
+      jQuery(".imageContainer").html( '<img class="thumbnailImg"src="'+attachment.url+'" alt="" />' );
+
+      // Save to the database  the attachment id to our hidden input
+     	var data = {
+		'action': 'updateAProgram',
+		'thumbnail': attachment.url,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program thumbnail '+attachment.url+' has been changed for this program</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program thumbnail not changed - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+    });
+
+    // Finally, open the modal on click
+    frame.open();
+
+     });
+
+jQuery('input[name=delete_image_btn]').live('click', function(event) {
+	    jQuery(".alertArea").append('<div class="alertLog alertNotice">Deleting a thumbnail for the program</div>');
+
+	 var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	 var data = {
+		'action': 'updateAProgram',
+		'thumbnail': "",
+		'programId': programId
+		};
+		jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program thumbnail has been deleted for this program</div>');
+			jQuery(".imageContainer").html(" ");
+
+			jQuery('input[name=add_image_btn]').removeClass( 'hidden' );
+    		jQuery('input[name=change_image_btn]').addClass( 'hidden' );
+      		jQuery('input[name=delete_image_btn]').addClass( 'hidden' );
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program thumbnail not deleted - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+     });
+
+jQuery('textarea[name=progDescUpdate]').live('blur', function(event){
+	console.log("Program Description Change Detected");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programDescription = jQuery(this).val();
+	console.log("Program Description changing to: "+ programDescription+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program description changing to: '+programDescription+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'description': programDescription,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program description updated to '+programDescription+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program description not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('textarea[name=progEquipUpdate]').live('blur', function(event){
+	console.log("Program equitpment Change Detected");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programEquipment = jQuery(this).val();
+	console.log("Program equitpment changing to: "+ programEquipment+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program equipment changing to: '+programEquipment+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'equipment': programEquipment,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program equipment updated to '+programEquipment+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program equipment not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('textarea[name=progPlanUpdate]').live('blur', function(event){
+	console.log("Program weekly plan Change Detected");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programWeekly = jQuery(this).val();
+	console.log("Program weekly plan changing to: "+ programWeekly+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program weekly plan changing to: '+programWeekly+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'weekly_plan': programWeekly,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program weekly plan updated to '+programWeekly+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program weekly plan not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('textarea[name=progLifestyleUpdate]').live('blur', function(event){
+	console.log("Program lifestyle Change Detected");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programLifestyle = jQuery(this).val();
+	console.log("Program lifestyle changing to: "+ programLifestyle+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program lifestyle changing to: '+programLifestyle+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'life_style': programLifestyle,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program lifestyle updated to '+programLifestyle+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program lifestyle not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('input[name=bodypart]').live('change', function(event){
+	console.log("Program Body Part Change Detected");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programBodyPart = ""
+	jQuery('input[name=bodypart]:checked').each(function (){
+		if(programBodyPart){
+			programBodyPart +=", ";
+		}
+		programBodyPart += jQuery(this).val();
+		console.log(programBodyPart);
+	});
+	console.log("Program body parts updating to: "+ programBodyPart+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program body parts updating to: '+programBodyPart+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'assoc_body_part_id': programBodyPart,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program body parts updated to '+programBodyPart+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program body part not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('input[name=howithappened]').live('change', function(event){
+	console.log("Program how it happened Change Detected");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programhowithappened = ""
+	jQuery('input[name=howithappened]:checked').each(function (){
+		if(programhowithappened){
+			programhowithappened +=", ";
+		}
+		programhowithappened += jQuery(this).val();
+		console.log(programhowithappened);
+	});
+	console.log("Program how it happened updating to: "+ programhowithappened+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program how it happened updating to: '+programhowithappened+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'how_it_happen': programhowithappened,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program how it happened updated to '+programhowithappened+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program how it happened not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('input[name=sportsandoccupation]').live('change', function(event){
+	console.log("Program Sports and Occupations Change Detected");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programSportsAndOccupations = ""
+	jQuery('input[name=sportsandoccupation]:checked').each(function (){
+		if(programSportsAndOccupations){
+			programSportsAndOccupations +=", ";
+		}
+		programSportsAndOccupations += jQuery(this).val();
+		console.log(programSportsAndOccupations);
+	});
+	console.log("Program Sports and Occupations updating to: "+ programSportsAndOccupations+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program Sports and Occupations updating to: '+programSportsAndOccupations+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'sports_occupation': programSportsAndOccupations,
+		'programId': programId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program Sports and Occupations updated to '+programSportsAndOccupations+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program Sports and Occupations not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});

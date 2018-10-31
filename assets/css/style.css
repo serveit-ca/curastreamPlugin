@@ -65,7 +65,7 @@ input[name="injury"] {
 }
 
 .hidden {
-	display: none;
+	display: none !important;
 }
 
 .customizehidden{
@@ -518,4 +518,12 @@ th#sports {
     margin-top:10px;
     margin-bottom:10px;
 
+}
+.imageContainer{
+	  width: 250px;
+	  overflow: hidden;
+	  margin-bottom:10px;
+}
+.thumbnailImg{
+	width:100%;
 }

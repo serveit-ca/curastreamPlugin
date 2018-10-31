@@ -60,22 +60,26 @@ class customProgramCreation {
 							<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($programObject->duration){echo 'value ="'.$programObject->duration.'"';} ?> />									
 						</div>
 						<div class="form-group">
-							<div id="meta-box-id">
+							<div>
 								<div class="labelTxt">Thumbnail </div>
-							 	<img class="imageThumb"<?php if($programObject->thumbnail){echo 'src ="'.$programObject->thumbnail.'"';} ?> />
-							     <?php if($programObject->thumbnail){?><input type="button" name="upload_image_btn" id="upload_image_btn" class="button-secondary custom-btn" value="Change Image"/> <?php }else {?> <input type="button" name="add_image_btn" id="add_image_btn" class="button-secondary custom-btn" value="Add Image"/>
-<?php }?>
-							     <input type="button" name="delete_image_btn" id="delete_image_btn" class="button-secondary custom-btn" value="Delete Image">
-							      <input type="input" name="myprefix_image_id" id="myprefix_image_id" value="<?php echo esc_attr( $image_id ); ?>" class="regular-text" />
+								<div class="imageContainer">
+									<?php if($programObject->thumbnail){?>
+							 		<img class="thumbnailImg"<?php echo 'src ="'.$programObject->thumbnail.'"'; ?> />
+							 		<?php } ?>
+								</div>
+							     
+							    <input type="button" name="add_image_btn" id="add_image_btn" class="button-secondary custom-btn <?php if($programObject->thumbnail){?>hidden<?php }?>" value="Add Image"/>
+							    
+							    <input type="button" name="change_image_btn" id="change_image_btn" class="button-secondary custom-btn <?php if(is_null($programObject->thumbnail)){?>hidden<?php }?>" value="Change Image"/> 
 
 
-									<div><?php echo $programObject->thumbnail;?></div>
-								
+							     <input type="button" name="delete_image_btn" id="delete_image_btn" class="button-secondary custom-btn <?php if(is_null($programObject->thumbnail)){?>hidden<?php }?>" value="Delete Image">
+							     								
 							</div>
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="form-group">
+						<div id="bodyPartGroup" class="form-group"<?php if($programObject->type == "Strength-Training" ){ echo "hidden";}?>">
 								<div class="labelTxt"> Body Parts </div>
 								<?php $body_parts = get_all_body_parts(); 
 								 foreach ($body_parts as $body_part){
@@ -91,7 +95,7 @@ class customProgramCreation {
 								<?php } ?>
 						</div>
 
-						<div class="form-group <?php if($programObject->type == "Prevention" || $programObject->type == "Strength-Training" ){ echo "hidden";}?>">
+						<div id="howItHappenedGroup" class="form-group <?php if($programObject->type == "Prevention" || $programObject->type == "Strength-Training" ){ echo "hidden";}?>">
 								<div class="labelTxt"> How It Happened </div>
 								<?php $howItHappeneds = get_all_injury_reasons();
 								 foreach ($howItHappeneds as $howItHappened){ 
@@ -103,14 +107,14 @@ class customProgramCreation {
 								 			break;
 								 		}
 								 	}
-								?><input type="checkbox" name="bodypart" value="<?php echo $howItHappened->name;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $howItHappened->name;?></input>
+								?><input type="checkbox" name="howithappened" value="<?php echo $howItHappened->name;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $howItHappened->name;?></input>
 								<?php } ?>
 						</div>
-						<div class="form-group <?php if($programObject->type == "Rehab"){ echo "hidden";}?>">
+						<div id="sportsAndOccupationGroup"class="form-group <?php if($programObject->type == "Rehab" || $programObject->type == "Prevention"){ echo "hidden";}?>">
 							<div class="labelTxt"> Sports and Occupations </div>
 							<?php $sportsOccupations = get_all_occupations();
 								foreach ($sportsOccupations as $sportsOccupation){
-									?><input type="checkbox" name="bodypart" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
+									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
 								<?php } ?>
 						</div>	
 					</div>
@@ -120,7 +124,7 @@ class customProgramCreation {
 							<textarea id="descBox" name="progDescUpdate" class="form-control" required="required" placeholder="Description" ><?php if($programObject->description){echo $programObject->description;} ?> </textarea>
 						</div>
 						<div class="form-group">
-							<div class="labelTxt">Equiptment</div>
+							<div class="labelTxt">Equipment</div>
 							<textarea id="equipBox" name="progEquipUpdate" class="form-control" required="required" placeholder="Equipment"> <?php if($programObject->equipment){echo $programObject->equipment;} ?> </textarea>
 						</div>
 						<div class="form-group" id="hideField1">	
