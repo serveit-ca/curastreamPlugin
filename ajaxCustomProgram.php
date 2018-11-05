@@ -61,7 +61,7 @@ require_once ("objects/exercise.php");
 	      	$newPhase = new phase();
 	      		// get all of the phases 
 	      			echo $customCreation->addPhase();
-	      			echo '<div class="phaseContainer">';
+	      			echo '<div class="phaseContainer" data-phase-order="<?php $newPhase->order_no?>">';
 	      		    echo $customCreation->displayPhase($newPhase);
 	      		    // Add ability to Add an Exercise
 	      		    	echo $customCreation->addExercise();
@@ -121,7 +121,6 @@ require_once ("objects/exercise.php");
 	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram);
 	      		echo $customProgramForm;
 	      		echo $customCreation->addPhase();
-	      		echo $customCreation->addExercise();
 	      		wp_die();
 	    }
 

@@ -79,7 +79,7 @@ class customProgramCreation {
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div id="bodyPartGroup" class="form-group"<?php if($programObject->type == "Strength-Training" ){ echo "hidden";}?>">
+						<div id="bodyPartGroup" class="form-group<?php if($programObject->type == "Strength-Training" ){ echo "hidden";}?>">
 								<div class="labelTxt"> Body Parts </div>
 								<?php $body_parts = get_all_body_parts(); 
 								 foreach ($body_parts as $body_part){

@@ -134,10 +134,14 @@ jQuery("#generalProgram_copyAndedit").on('click', function(event){
 
 jQuery(".addPhase").live('click', function(event){
 		if(JS_DEBUG){console.log("Adding a new Phase");}
-		var programID = jQuery("#existingProgram option:selected").val();
-
+		var programID = jQuery("#generalExistingProgramEdit").val();
+		console.log("Program ID"+ programID);
+		var finalOrder = jQuery(this).parent().parent().parent().prev().attr('data-phase-order');
+		console.log("Phase Final Order"+finalOrder);
+		if(finalOrder == "undefined"){
+			finalOrder = 1
+		}
 		// TODO Determine the location of the new phase 
-		var finalOrder =4;
 		var currentElement = jQuery(this);
 		// add a new phase to the database ajax and reorder
 		var data = {
