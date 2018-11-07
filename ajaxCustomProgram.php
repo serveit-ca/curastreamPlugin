@@ -49,19 +49,17 @@ require_once ("objects/exercise.php");
 	      function addPhaseToProgram(){
 	      	global $programs;
 	      	global $customCreation;
-	      	$status= "Success";
-	      
+	      	// create a new phase
+	      	$newPhaseId = $programs->createPhase("New Phase", $_POST['programId']);
+	      	echo $newPhaseId;
+	      	// Order the Phase to the final order 
+	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,-1,$_POST['finalOrder']);
 
-	      	// create an empty phase
-	      	// TODO Call Create Phase Function 
-	      		// ID will be returned 
-	      		// update Phase Put the info in there 
-	      		// get Highest Order Number 
-	      		// Move phase to ideal location 
-	      	$newPhase = new phase();
+	      	 
+	      	$newPhase = $programs->getAPhaseById($newPhaseId);
 	      		// get all of the phases 
 	      			echo $customCreation->addPhase();
-	      			echo '<div class="phaseContainer" data-phase-order="<?php $newPhase->order_no?>">';
+	      			echo '<div class="phaseContainer" data-phase-order="'.$newPhase->order_no.'">';
 	      		    echo $customCreation->displayPhase($newPhase);
 	      		    // Add ability to Add an Exercise
 	      		    	echo $customCreation->addExercise();

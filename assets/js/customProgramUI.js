@@ -137,10 +137,13 @@ jQuery(".addPhase").live('click', function(event){
 		var programID = jQuery("#generalExistingProgramEdit").val();
 		console.log("Program ID"+ programID);
 		var finalOrder = jQuery(this).parent().parent().parent().prev().attr('data-phase-order');
-		console.log("Phase Final Order"+finalOrder);
-		if(finalOrder == "undefined"){
+		console.log("Phase Order Lookup"+finalOrder);
+		if(typeof finalOrder === "undefined"){
 			finalOrder = 1
+		}else{
+			finalOrder++; 
 		}
+		console.log("Phase Final Order"+finalOrder);
 		// TODO Determine the location of the new phase 
 		var currentElement = jQuery(this);
 		// add a new phase to the database ajax and reorder
@@ -155,12 +158,12 @@ jQuery(".addPhase").live('click', function(event){
 			//console.log("Copied Program - "+response);
 			resultObj = response;
 			//console.log(resultObj);
-			console.log(data);
+			//console.log(data);
 		// Find the HTML Object where we want to load the form into 
 		if(resultObj !=null){
 			jQuery(".alertArea").append('<div class="alertLog">Phase Added</div>');
 		// Load the form in the html object
-		console.log(resultObj);
+		//console.log(resultObj);
 		// insert a new phase into the webpage
 		console.log(currentElement);
 		currentElement.parent().parent().parent().before(resultObj);
@@ -832,4 +835,118 @@ jQuery('input[name=sportsandoccupation]').live('change', function(event){
 		}
 		});
 
+});
+jQuery('input[name=phaseName]').live('blur', function(event){
+	console.log("Phase Name Change Detected");
+	var phaseId = jQuery(this).parent().parent().parent().attr("data-phase-id");
+	console.log("PhaseID"+phaseId);
+	var phaseName = jQuery(this).val();
+	console.log("Phase Name changing to: "+ phaseName+ "for Phase Id: " + phaseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Phase name changing to: '+phaseName+'</div>');
+	var data = {
+		'action': 'updateAPhase',
+		'name': phaseName,
+		'phaseId': phaseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase name updated to '+phaseName+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Phase name not updated - Error code: AJAX - updateAPhase</div>');
+			}
+		}
+		});
+});
+
+jQuery('input[name=phaseDuration]').live('blur', function(event){
+	console.log("Phase Duration Change Detected");
+	var phaseId = jQuery(this).parent().parent().parent().attr("data-phase-id");
+	console.log("PhaseID"+phaseId);
+	var phaseDuration = jQuery(this).val();
+	console.log("Phase duration changing to: "+ phaseDuration+ "for Phase Id: " + phaseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Phase duration changing to: '+phaseDuration+'</div>');
+	var data = {
+		'action': 'updateAPhase',
+		'duration': phaseDuration,
+		'phaseId': phaseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase duration updated to '+phaseDuration+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Phase duration not updated - Error code: AJAX - updateAPhase</div>');
+			}
+		}
+		});
+
+});
+jQuery('textarea[name=phaseIntro]').live('blur', function(event){
+	console.log("Phase intro Change Detected");
+	var phaseId = jQuery(this).parent().parent().parent().attr("data-phase-id");
+	console.log("PhaseID"+phaseId);
+	var phaseIntro = jQuery(this).val();
+	console.log("Phase intro changing to: "+ phaseIntro+ "for Phase Id: " + phaseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Phase duration changing to: '+phaseIntro+'</div>');
+	var data = {
+		'action': 'updateAPhase',
+		'intro': phaseIntro,
+		'phaseId': phaseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase intro updated to '+phaseIntro+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Phase intro not updated - Error code: AJAX - updateAPhase</div>');
+			}
+		}
+		});
+});
+jQuery('textarea[name=phaseNotes]').live('blur', function(event){
+	console.log("Phase notes Change Detected");
+	var phaseId = jQuery(this).parent().parent().parent().attr("data-phase-id");
+	console.log("PhaseID"+phaseId);
+	var phaseNotes = jQuery(this).val();
+	console.log("Phase notes changing to: "+ phaseNotes+ "for Phase Id: " + phaseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Phase notes changing to: '+phaseNotes+'</div>');
+	var data = {
+		'action': 'updateAPhase',
+		'notes': phaseNotes,
+		'phaseId': phaseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase notes updated to '+phaseNotes+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Phase notes not updated - Error code: AJAX - updateAPhase</div>');
+			}
+		}
+		});
 });

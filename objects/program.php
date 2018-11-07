@@ -249,9 +249,8 @@ public $dateModified;
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 
-		$phaseResults = $wpdb->get_results("SELECT * FROM $tableName WHERE id = $phaseId", ARRAY_A);
+		$row = $wpdb->get_row("SELECT * FROM $tableName WHERE id = $phaseId", ARRAY_A);
 		
-		foreach ($phaseResults as $row) {
 			$aPhase = new phase();
             $aPhase->id = $row['id'];
 			$aPhase->programId = $row['program_id'];
@@ -261,7 +260,6 @@ public $dateModified;
 			$aPhase->notes = $row['notes'];
 			$aPhase->order_no = $row['order_no'];
 			return $aPhase;
-		}
     }
 
     //Gets All Phases for a Given Program
@@ -344,8 +342,9 @@ public $dateModified;
     		return $error;
    		 }
    		 else{
-   		 	return "Success: Phase with Name: " . $phaseName . " Created";
-   		 
+   		 	// get the latest phase 
+   		 	$newPhase = $wpdb->get_row("SELECT id FROM $tableName ORDER BY id DESC LIMIT 0,1");
+			return $newPhase->id;
    		 }
     }
 
@@ -786,7 +785,7 @@ public $dateModified;
 				if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
 					// Current Phase Order_no -1
 					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
-					echo "Phase: " . $row->name . " Moved Backward.";
+					//echo "Phase: " . $row->name . " Moved Backward.";
 				}//End If	
 			}// End Loop
 		}// End If
@@ -799,7 +798,7 @@ public $dateModified;
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current Phase Order_no -1
 					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
-					echo "Phase: " . $row->name . " Moved Forward.";
+					//echo "Phase: " . $row->name . " Moved Forward.";
 				}//End If	
 			}// End Loop
 		}//End Elseif
