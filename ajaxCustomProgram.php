@@ -289,6 +289,7 @@ require_once ("objects/exercise.php");
 	    	global $programs;
 	    	global $customCreation;
 	    	$status = "Success";
+	    	$programs->makeCustom($_POST['programId']);
 	    	$programs->assignProgramToUser($_POST['programId'], $_POST['userId']);
 
 	    	echo "Success";
