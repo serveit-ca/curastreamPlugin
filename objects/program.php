@@ -89,7 +89,7 @@ public $dateModified;
 
 	public function checkCompleted($userId, $programId){
    		global $wpdb;
-		$tableName = $wpdb->prefix . "cura_programs";
+		$tableName = $wpdb->prefix . "cura_user_programs";
     	$completed = false;
   
 	    $completedResults = $wpdb->get_results("SELECT id FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programId AND completed = 1");
@@ -311,20 +311,28 @@ public $dateModified;
    		 }
     }
 
-    public function createExercise($exerciseName, $phaseId){
+    public function createExercise($exerciseId, $phaseId){
     	global $wpdb;
+    	$tableName = $wpdb->prefix . "cura_exercise_videos";
+    	$exerciseVid = $wpdb->get_row("SELECT id, name, url FROM $tableName WHERE id = $exerciseId");
+
     	$tableName = $wpdb->prefix . "cura_exercises";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $exerciseName,
-    		"phase_id" => $phaseId));
+    		"name" => $exerciseVid->name,
+    		"phase_id" => $phaseId,
+    		"exercise_video_id" => $exerciseVid->id,
+    		"exercise_video_url" => $exerciseVid->url
+    		));
+    	  $lastId = $wpdb->insert_id;
+
 
     	if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
     		return $error;
    		 }
    		 else{
-   		 	return "Success: Exercise with Name: " . $exerciseName . " Created";
+			  return $lastId;
    		 
    		 }
     }
@@ -776,33 +784,37 @@ public $dateModified;
 		//Get All Phases By Prod Id
 		$phases = $this->getPhasesByProgramId($programId);
 		// Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
-		$direction = $finalOrder - $initialOrder;
-		//If Forward
-		if(is_numeric($direction) && $direction > 0){
-			// Loop Order[Initial +1 ] To Order[Final]
-			foreach ($phases as $row) {
-				// If Order is Between Initial +1 and Final Inclusive
-				if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
-					// Current Phase Order_no -1
-					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
-					//echo "Phase: " . $row->name . " Moved Backward.";
-				}//End If	
-			}// End Loop
-		}// End If
+		$currentMaxPhase = $this->getHighestPhaseOrder($programId);
+		if($finalOrder > $currentMaxPhase){
+			//echo "No Need to Move phases - Adding to End";
+		}else{
+			$direction = $finalOrder - $initialOrder;
+			//If Forward
+			if(is_numeric($direction) && $direction > 0){
+				// Loop Order[Initial +1 ] To Order[Final]
+				foreach ($phases as $row) {
+					// If Order is Between Initial +1 and Final Inclusive
+					if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
+						// Current Phase Order_no -1
+						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
+						//echo "Phase: " . $row->name . " Moved Backward.";
+					}//End If	
+				}// End Loop
+			}// End If
 
-		//Elseif Backward
-		elseif (is_numeric($direction) && $direction < 0) {
-			//Loop Order[Final] to Order [Initial-1]
-			foreach ($phases as $row) {
-				// If Order is Between Initial -1  and Final Inclusive
-				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
-					// Current Phase Order_no -1
-					$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
-					//echo "Phase: " . $row->name . " Moved Forward.";
-				}//End If	
-			}// End Loop
-		}//End Elseif
-
+			//Elseif Backward
+			elseif (is_numeric($direction) && $direction < 0) {
+				//Loop Order[Final] to Order [Initial-1]
+				foreach ($phases as $row) {
+					// If Order is Between Initial -1  and Final Inclusive
+					if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
+						// Current Phase Order_no -1
+						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
+						//echo "Phase: " . $row->name . " Moved Forward.";
+					}//End If	
+				}// End Loop
+			}//End Elseif
+		}
 		//Assign Phase to be Moved Final Order_No
 		$this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
 		return "Success Phase Moved"; 

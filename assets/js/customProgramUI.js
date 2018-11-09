@@ -134,17 +134,18 @@ jQuery("#generalProgram_copyAndedit").on('click', function(event){
 
 jQuery(".addPhase").live('click', function(event){
 		if(JS_DEBUG){console.log("Adding a new Phase");}
-		var programID = jQuery("#generalExistingProgramEdit").val();
+		jQuery(".alertArea").append('<div class="alertLog alertNotice">Adding a new Phase</div>');
+
+		var programID = jQuery("#theProgramMetaId").attr('data-programid');
 		console.log("Program ID"+ programID);
 		var finalOrder = jQuery(this).parent().parent().parent().prev().attr('data-phase-order');
-		console.log("Phase Order Lookup"+finalOrder);
+		console.log("Previous Phase Order Lookup"+finalOrder);
 		if(typeof finalOrder === "undefined"){
-			finalOrder = 1
+			finalOrder = 0
 		}else{
 			finalOrder++; 
 		}
 		console.log("Phase Final Order"+finalOrder);
-		// TODO Determine the location of the new phase 
 		var currentElement = jQuery(this);
 		// add a new phase to the database ajax and reorder
 		var data = {
@@ -161,26 +162,84 @@ jQuery(".addPhase").live('click', function(event){
 			//console.log(data);
 		// Find the HTML Object where we want to load the form into 
 		if(resultObj !=null){
-			jQuery(".alertArea").append('<div class="alertLog">Phase Added</div>');
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase Added</div>');
 		// Load the form in the html object
 		//console.log(resultObj);
 		// insert a new phase into the webpage
 		console.log(currentElement);
 		currentElement.parent().parent().parent().before(resultObj);
 		currentElement.parent().parent().parent().remove();
+		updatePhaseOrder();
 			}else{
-				jQuery(".alertArea").append('<div class="alertLog">Error: Phase Not Added</div>');
+				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Added</div>');
 			}
 		}
 	});
 });
-// used to remove a phase 
 jQuery(".removePhase").live('click', function(event){
-	if(JS_DEBUG){console.log("Going to remove a phase");}
-	jQuery(this).parent().parent().parent().parent().prev(".addPhaseContainer").remove();
-	//jQuery(this).parent().parent().parent().next(".addExerciseContainer").remove();
-	jQuery(this).parent().parent().parent().parent().remove(); 
+		if(JS_DEBUG){console.log("Removing a  Phase");}
+		jQuery(".alertArea").append('<div class="alertLog alertNotice">Removing a Phase </div>');
+		var phaseToDelete = jQuery(this);
+		
+		var programID = jQuery("#theProgramMetaId").attr('data-programid');
+		console.log("Program ID"+ programID);
+		var phaseOrder = jQuery(this).parent().parent().parent().parent().attr('data-phase-order');
+		console.log("Phase Order Lookup"+phaseOrder);
+		var phaseId = jQuery(this).parent().parent().parent().attr('data-phase-id');
+
+		console.log("Phase Final Order"+phaseOrder);
+		// add a new phase to the database ajax and reorder
+		var data = {
+		'action': 'deleteReorderPhase',
+		'programId': programID,
+		'phaseId': phaseId,
+		'initialOrder' : phaseOrder
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			resultObj = response;
+		// Find the HTML Object where we want to load the form into 
+		if(resultObj !=null){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase Removed</div>');
+		phaseToDelete.parent().parent().parent().parent().prev(".addPhaseContainer").remove();
+		phaseToDelete.parent().parent().parent().parent().remove(); 
+		updatePhaseOrder();
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Removed</div>');
+			}
+		}
+	});
 });
+
+// update phase Order 
+function updatePhaseOrder(){
+	console.log("Update Phase Order");
+	order = 0
+	jQuery(".phaseContainer").each(function(){
+		console.log("Current Phase Order:"+jQuery(this).attr('data-phase-order'));
+		console.log("New Phase Order:"+order);
+		jQuery(this).attr('data-phase-order',order);
+		var phaseID = jQuery(this).children('.phaseHeader').attr('data-phase-id');
+		console.log("Phase Id:"+phaseID);
+		// Remove this logic when Kaiden fixes the phase 
+			var data = {
+			'action': 'updateAPhase',
+			'phaseId': phaseID,
+			'order_no': order
+			};
+			// ensure the datasbse has been updated
+			jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){	
+				resultObj = response;
+				}
+			});
+		// Remove to here 
+		order ++;
+	});
+}
+
+
+
 // Show Exercise Selected 
 jQuery(".addExerciseShow").live('click', function(event){
 	if(JS_DEBUG){console.log("Going to show the Add an Exercise");}
@@ -195,9 +254,9 @@ jQuery(".addExerciseShow").live('click', function(event){
 if(resultObj !=null){
 			jQuery(".alertArea").append('<div class="alertLog">Loading Avaiable Exercise Videos</div>');
 		// Load the form in the html object
-		console.log(resultObj);
+		//console.log(resultObj);
 		// insert a new phase into the webpage
-		console.log(currentElement);
+		//console.log(currentElement);
 		currentElement.parent().parent().parent().after(resultObj);
 		currentElement.parent().parent().parent().hide();
 					    jQuery('.enableSelect2').select2();
@@ -219,11 +278,17 @@ jQuery(".closeAddExercise").live('click', function(event){
 // Add an Exercise to Jquery 
 jQuery(".addExercise").live('click', function(event){
 		if(JS_DEBUG){console.log("Adding a new Exercise");}
-		var programID = jQuery("#existingProgram option:selected").val();
+		var programID = jQuery("#theProgramMetaId").attr('data-programid');
+		console.log("Program ID "+programID);
 		// determine the phase of the new exercise 
-		var phaseId = 10;
+		var phaseId = jQuery(this).parent().parent().parent().parent().parent(".phaseContainer").children(".phaseHeader").attr("data-phase-id");
+		console.log( jQuery(this).parent().parent().parent().parent().parent().parent(".phaseContainer"));
+		console.log("Phase ID "+phaseId);
+		var exerciseID = jQuery(".addExerciseSelecter").val();
+		console.log("Exercise ID "+exerciseID);
+
 		// determine the location of the new exercise
-		var finalOrder = 5+1;
+		var finalOrder =0;
 		// add a new exercise to the database ajax
 		var currentElement = jQuery(this);
 		// add a new phase to the database ajax and reorder
@@ -242,9 +307,9 @@ jQuery(".addExercise").live('click', function(event){
 		if(resultObj !=null){
 			jQuery(".alertArea").append('<div class="alertLog">Exercise Added</div>');
 		// Load the form in the html object
-		console.log(resultObj);
+		//console.log(resultObj);
 		// insert a new phase into the webpage
-		console.log(currentElement);
+		//console.log(currentElement);
 		currentElement.parent().parent().parent().before(resultObj);
 		currentElement.parent().parent().parent().remove();
 			}else{

@@ -263,7 +263,7 @@ class customProgramCreation {
 							<select class="enableSelect2 addExerciseSelecter">
 								<?php foreach($exercises as $exercise){echo("<option value=\"".$exercise->id."\">".$exercise->name."</option>");}?>
 							</select>
-						<div class="addExercise">
+						<div class="addExerciseContainer">
 								<button class="button-secondary custom-btn addExercise">Add Selected Exercise </button>
 						</div>
 					</div>

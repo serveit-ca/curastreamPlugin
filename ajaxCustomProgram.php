@@ -51,9 +51,9 @@ require_once ("objects/exercise.php");
 	      	global $customCreation;
 	      	// create a new phase
 	      	$newPhaseId = $programs->createPhase("New Phase", $_POST['programId']);
-	      	echo $newPhaseId;
+	      	// echo $newPhaseId;
 	      	// Order the Phase to the final order 
-	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,-1,$_POST['finalOrder']);
+	      	echo ($programs->movePhaseOrder($_POST['programId'],$newPhaseId,-1,$_POST['finalOrder']));
 
 	      	 
 	      	$newPhase = $programs->getAPhaseById($newPhaseId);
@@ -200,7 +200,6 @@ require_once ("objects/exercise.php");
 	    function deleteReorderPhase(){
 	    	global $programs;
 	    	global $customCreation;
-	    	$status = "Success";
 
 	    	$programs->deletePhaseUpdateOrder($_POST['programId'], $_POST['phaseId'], $_POST['initialOrder']);
 
