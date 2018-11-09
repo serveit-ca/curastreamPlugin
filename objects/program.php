@@ -350,7 +350,6 @@ public function createExerciseByName($name, $phaseId){
     		));
     	  $lastId = $wpdb->insert_id;
 
-
     	if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
     		return $error;
@@ -763,7 +762,7 @@ public function duplicateGeneralProgram($existingProgram){
     	}
     	return $newProgramId;
     }
-    public function duplicateProgram($oldProgId, $userId){
+    public function duplicateCustomProgram($oldProgId, $userId){
     	global $wpdb;
     	//Get Original Program
     	$originalProgram = $this->getProgramById($oldProgId);
@@ -785,18 +784,16 @@ public function duplicateGeneralProgram($existingProgram){
     		// Iterate through each phase
     	foreach ($phases as $row) {
     		// create a new phase based on the new program id
-    		$this->createPhase($row->name , $newProgramId);
-    		// assign the meta data using updatePhase
-    		$recentPhase = $wpdb->insert_id;
-    		$this->updatePhase($row->name, $row->duration, $row->intro, $row->notes, $recentPhase);
+    		$recentPhase = $this->createPhase($row->name , $newProgramId);
+    		// Now we update It 
+    		$this->updatePhase($row->name, $row->duration, $row->intro, $row->notes, $row->order_no,  $recentPhase);
     		// get each exercise from the old phase 
     		$exercises = $this->getExercisesByPhaseId($row->id);
     		// create a new exercise based on the new phoase id
     		foreach ($exercises as $exrow) {
-    		 	$this->createExercise($exrow->name , $recentPhase);
-    		 	// assign the meta data using updateExercise
-    		 	$recentExercise = $wpdb->insert_id;
-    		 	$this->updateExercise($exrow->order_no, $exrow->order_field, $exrow->name, $exrow->rest, $exrow->sets_reps, $exrow->variation, $exrow->equipment, $exrow->special_instructions, $exrow->exercise_video_url, $exrow->file_url, $exrow->file_name, $recentExercise);
+    			echo $recentPhase;
+			$recentExercise = $this->createExerciseByName($exrow->name , $recentPhase);
+    		 	$this->updateExercise($exrow->order_no,$recentPhase, $exrow->order_field, $exrow->name, $exrow->rest, $exrow->sets_reps, $exrow->variation, $exrow->equipment, $exrow->special_instructions, $exrow->exercise_video_url, $exrow->file_url, $exrow->file_name, $exrow->exercise_video_id, $recentExercise);
     		 } 
     	}
     	return $newProgramId;

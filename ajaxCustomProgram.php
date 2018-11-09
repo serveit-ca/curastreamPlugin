@@ -75,7 +75,7 @@ require_once ("objects/exercise.php");
 	      	// create an new exercisec
 	      	$newExerciseId = $programs->createExercise($_POST['exerciseId'],$_POST['phaseId']);
 	      	// order the exercise
-	      	 $programs->moveExerciseOrder($_POST['phaseId'],$_POST['exerciseId'],-1,$_POST['finalOrder']);
+	      	// $programs->moveExerciseOrder($_POST['phaseId'],$_POST['exerciseId'],-1,$_POST['finalOrder']);
 	      		// update exercise Put the info in there 
 	      		// get Highest Order Number 
 	      		// Move exercise to ideal location 
@@ -120,6 +120,21 @@ require_once ("objects/exercise.php");
 
 	    add_action( 'wp_ajax_createNewProgram', 'createNewProgram' );
 	    add_action( 'wp_ajax_nopriv_createNewProgram', 'createNewProgram');
+
+	    function createNewCustomProgram(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$newProgramId = $programs->createProgram($_POST['programName']);
+	    	$programs->makeCustom($newProgramId);
+	    	$newProgram = $programs->getProgramById($newProgramId);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram);
+	      		echo $customProgramForm;
+	      		echo $customCreation->addPhase();
+	      		wp_die();
+	    }
+
+	    add_action( 'wp_ajax_createNewCustomProgram', 'createNewCustomProgram' );
+	    add_action( 'wp_ajax_nopriv_createNewCustomProgram', 'createNewCustomProgram');
 
 	    function modifyExisitngProgram(){
 	    	global $programs;
@@ -274,7 +289,6 @@ require_once ("objects/exercise.php");
 	    	global $programs;
 	    	global $customCreation;
 	    	$status = "Success";
-
 	    	$programs->assignProgramToUser($_POST['programId'], $_POST['userId']);
 
 	    	echo "Success";

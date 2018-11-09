@@ -79,11 +79,20 @@ class customProgramCreation {
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="form-group">
-							<div class="labelTxt"> Program State </div>
-							<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" value="1" id="Production" <?php if($programObject->state == '1'){echo 'checked ="checked"';} ?> >Production</label>
-							<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" id="Development" value="0" <?php if($programObject->state == '0'){echo 'checked ="checked"';} ?> >Development</label>
-							<p>Note: If the Program State is Active, it will show up in the programs list on the website </p>
+						<div class="row">
+							<div class="col-md-6">
+							<div class="form-group">
+								<div class="labelTxt"> Program State </div>
+								<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" value="1" id="Production" <?php if($programObject->state == '1'){echo 'checked ="checked"';} ?> >Production</label>
+								<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" id="Development" value="0" <?php if($programObject->state == '0'){echo 'checked ="checked"';} ?> >Development</label>
+								<p>Note: If the Program State is Active, it will show up in the programs list on the website </p>
+							</div>
+							</div>
+							<div class="col-md-6">
+								<?php if($programObject->custom == '1'){
+									?><div class ="Assign Container">  <input type="button" name="assignCustomProgram" id="assignCustomProgram" class="button-secondary custom-btn" value="Assign Custom Program"></div><?php
+								} ?>
+							</div>
 						</div>
 						<div id="bodyPartGroup" class="form-group<?php if($programObject->type == "Strength-Training" ){ echo "hidden";}?>">
 								<div class="labelTxt"> Body Parts </div>

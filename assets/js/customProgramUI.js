@@ -91,6 +91,36 @@ jQuery("#generalProgram_startfromScratch").on('click', function(event){
 			jQuery(".alertArea").append('<div class="alertLog alertError">Please ender a program name</div>');		
 		}
 	}); 
+jQuery("#customProgram_startfromScratch").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 4: Clicked Start a Custom Program from customProgram_startfromScratch");}
+		
+		var userName = jQuery("#selectUser").select2('data');
+
+		jQuery(".alertArea").append('<div class="alertLog alertNotice">Creating a custom program from scratch for: '+userName+'</div>');
+		var programName = "Custom Program for "+userName[0].text; 
+		console.log(programName); 
+		var data = {
+		'action': 'createNewCustomProgram',
+		'programName': programName
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			//console.log("Data: "+ data);
+			//console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response !=null){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">New program '+programName+' created</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage
+			jQuery(".programEditingArea").html(response);
+		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program not created - Error code: AJAX - createNewProgram</div>');
+			}
+		}
+		});
+	}); 
 
 jQuery("#generalProgram_edit").on('click', function(event){
 		if(JS_DEBUG){console.log("Step 3: Clicked edit a general Program generalProgram_edit");}
@@ -1301,6 +1331,38 @@ jQuery('textarea[name=specialInstructionsText]').live('blur', function(event){
 		// Load the form in the html object
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError">Exercise special instructions did not updated - Error code: AJAX - updateAExercise</div>');
+			}
+		}
+		});
+});
+
+// Assign Custom Program 
+
+jQuery('#assignCustomProgram').live('blur', function(event){
+	console.log("Going to Assign a Custom Program");
+	var programId = jQuery("#theProgramMetaId").attr("data-programid");
+	console.log("programId"+programId);
+	var userId = jQuery('#selectUser').val();
+	var button = jQuery(this);
+	// console.log("Exercise special instructions changing to: "+ exerciseSpecial+ "for Exercise Id: " + exerciseId);
+	// jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise special instructions  changing to: '+exerciseSpecial+'</div>');
+	var data = {
+		'action': 'assignProgram',
+		'programId': programId,
+		'userId': userId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			// jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise special instructions updated to '+exerciseSpecial+' in database</div>');
+			jQuery(button).val("Remove Program From User");
+		// Load the form in the html object
+			}else{
+				// jQuery(".alertArea").append('<div class="alertLog alertError">Exercise special instructions did not updated - Error code: AJAX - updateAExercise</div>');
 			}
 		}
 		});
