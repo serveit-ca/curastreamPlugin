@@ -79,6 +79,12 @@ class customProgramCreation {
 						</div>
 					</div>
 					<div class="col-md-6">
+						<div class="form-group">
+							<div class="labelTxt"> Program State </div>
+							<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" value="1" id="Production" <?php if($programObject->state == '1'){echo 'checked ="checked"';} ?> >Production</label>
+							<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" id="Development" value="0" <?php if($programObject->state == '0'){echo 'checked ="checked"';} ?> >Development</label>
+							<p>Note: If the Program State is Active, it will show up in the programs list on the website </p>
+						</div>
 						<div id="bodyPartGroup" class="form-group<?php if($programObject->type == "Strength-Training" ){ echo "hidden";}?>">
 								<div class="labelTxt"> Body Parts </div>
 								<?php $body_parts = get_all_body_parts(); 
@@ -111,7 +117,13 @@ class customProgramCreation {
 								<?php } ?>
 						</div>
 						<div id="sportsAndOccupationGroup"class="form-group <?php if($programObject->type == "Rehab" || $programObject->type == "Prevention"){ echo "hidden";}?>">
-							<div class="labelTxt"> Sports and Occupations </div>
+							<div class="labelTxt"> Sports </div>
+							<?php $sportsOccupations = get_all_sports();
+								foreach ($sportsOccupations as $sportsOccupation){
+									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
+								<?php } ?>
+							<div class="labelTxt"><br /></div>
+							<div class="labelTxt"> Occupations </div>
 							<?php $sportsOccupations = get_all_occupations();
 								foreach ($sportsOccupations as $sportsOccupation){
 									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
@@ -163,8 +175,8 @@ class customProgramCreation {
 					</div>
 					<div class="row phaseControl">
 					<div class="col-md-1">
-						<i class="phaseMove fas fa-2x fa-arrows-alt-v"></i>
-						<i class="phaseExpandHide fas fa-2x fa-angle-double-up"></i>
+						<!-- <i class="phaseMove fas fa-2x fa-arrows-alt-v"></i> -->
+						<!-- <i class="phaseExpandHide fas fa-2x fa-angle-double-up"></i> -->
 						
 					</div>
 					<div class="col-md-10">
@@ -177,10 +189,10 @@ class customProgramCreation {
 	<?php }
 
 	public function displayExercise($exerciseObject){?> 					
-		<div class="exercises" data-phaseId="<?php echo $exerciseObject->phase_id; ?>" data-orderNumber="<?php echo $exerciseObject->order_no; ?>">
+		<div class="exercises" data-phaseId="<?php echo $exerciseObject->phase_id; ?>" data-exerciseID="<?php echo $exerciseObject->id; ?>" data-orderNumber="<?php echo $exerciseObject->order_no; ?>">
 			<div class="row exerciseHeader">
 				<div class="col-md-1">
-					<i class="exerciseMove fas fa-2x fa-arrows-alt-v"></i>
+					<!-- <i class="exerciseMove fas fa-2x fa-arrows-alt-v"></i> -->
 					<i class="exerciseExpandHide fas fa-2x fa-angle-double-up"></i>
 				</div>
 				<div class="col-md-10">

@@ -98,7 +98,6 @@ jQuery("#generalProgram_edit").on('click', function(event){
 		console.log("Program ID"+ programID);
 		
 		jQuery(".alertArea").append('<div class="alertLog alertNotice">Editing the general program with the id of '+programID+'</div>');
-		//TODO: Add Logic in here 
 		var data = {
 		'action': 'modifyExisitngProgram',
 		'programId': programID
@@ -124,12 +123,32 @@ jQuery("#generalProgram_edit").on('click', function(event){
 
 jQuery("#generalProgram_copyAndedit").on('click', function(event){
 		if(JS_DEBUG){console.log("Step 3: Clicked Copy an Existing Program and edit from  generalProgram_copyAndedit");}
-		var programID = jQuery("#generalProgramexistingProgram").children("option:selected").val();
+		var programID = jQuery("#generalProgramexistingProgram").val();
 		console.log("Program ID"+ programID);
 		
 		jQuery(".alertArea").append('<div class="alertLog">Creating a General Program from the existing program</div>');
-		//TODO: Add Logic in here 
+		// Copy the program and display
+		var data = {
+		'action': 'copyAndEditGeneralExisting',
+		'existingProgram': programID
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			//console.log("Data: "+ data);
+			//console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response !=null){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">General Program with id of '+ programID +' loaded</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage
+			jQuery(".programEditingArea").html(response);
 		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program not loaded - Error code: AJAX - modifyExisitngProgram</div>');
+			}
+		}
+		});
 	}); 
 
 jQuery(".addPhase").live('click', function(event){
@@ -183,9 +202,9 @@ jQuery(".removePhase").live('click', function(event){
 		
 		var programID = jQuery("#theProgramMetaId").attr('data-programid');
 		console.log("Program ID"+ programID);
-		var phaseOrder = jQuery(this).parent().parent().parent().parent().attr('data-phase-order');
+		var phaseOrder = jQuery(this).closest(".phaseContainer").attr('data-phase-order');
 		console.log("Phase Order Lookup"+phaseOrder);
-		var phaseId = jQuery(this).parent().parent().parent().attr('data-phase-id');
+		var phaseId = jQuery(this).closest(".phaseHeader").attr('data-phase-id');
 
 		console.log("Phase Final Order"+phaseOrder);
 		// add a new phase to the database ajax and reorder
@@ -281,20 +300,28 @@ jQuery(".addExercise").live('click', function(event){
 		var programID = jQuery("#theProgramMetaId").attr('data-programid');
 		console.log("Program ID "+programID);
 		// determine the phase of the new exercise 
-		var phaseId = jQuery(this).parent().parent().parent().parent().parent(".phaseContainer").children(".phaseHeader").attr("data-phase-id");
-		console.log( jQuery(this).parent().parent().parent().parent().parent().parent(".phaseContainer"));
+		var phaseId = jQuery(this).closest(".phaseContainer").children(".phaseHeader").attr("data-phase-id");
 		console.log("Phase ID "+phaseId);
 		var exerciseID = jQuery(".addExerciseSelecter").val();
 		console.log("Exercise ID "+exerciseID);
 
 		// determine the location of the new exercise
-		var finalOrder =0;
+		var finalOrder = jQuery(this).closest(".exercises").attr('data-phase-order');
+		console.log("Previous Phase Order Lookup"+finalOrder);
+		if(typeof finalOrder === "undefined"){
+			finalOrder = 0
+		}else{
+			finalOrder++; 
+		}
+		console.log(finalOrder);
 		// add a new exercise to the database ajax
 		var currentElement = jQuery(this);
+		var parentElement = jQuery(this).closest(".phaseContainer");
 		// add a new phase to the database ajax and reorder
 		var data = {
 		'action': 'addExerciseToPhase',
-		'programId': programID,
+		'programID': programID,
+		'exerciseId': exerciseID,
 		'phaseId': phaseId,
 		'finalOrder':finalOrder	};
 		// ensure the datasbse has been updated
@@ -310,17 +337,45 @@ jQuery(".addExercise").live('click', function(event){
 		//console.log(resultObj);
 		// insert a new phase into the webpage
 		//console.log(currentElement);
-		currentElement.parent().parent().parent().before(resultObj);
-		currentElement.parent().parent().parent().remove();
+		currentElement.parent().parent().parent().parent().before(resultObj);
+		currentElement.parent().parent().parent().parent().remove();
+		updateExerciseOrder(parentElement);
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog">Error: Exercise Not Added</div>');
 			}
 		}
 	});
-		// get a new phase object via aJAX 
-		// get a new add phase button via Ajax 
-		// insert a new phase into the webpage
+
 });
+
+function updateExerciseOrder(location){
+	console.log("Update Exercise Order");
+	order = 0
+	console.log(jQuery(location));
+
+	jQuery(location).children(".exercises").each(function(){
+
+		console.log("Current Exercise Order:"+jQuery(this).attr('data-ordernumber'));
+		console.log("New Exercise Order:"+order);
+		jQuery(this).attr('data-ordernumber',order);
+		var exerciseID = jQuery(this).attr('data-exerciseID')
+		console.log("Exercise Id:"+exerciseID);
+		// Remove this logic when Kaiden fixes the exercise 
+			var data = {
+			'action': 'updateAnExercise',
+			'exerciseId': exerciseID,
+			'order_no': order
+			};
+			// ensure the datasbse has been updated
+			jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){	
+				resultObj = response;
+				}
+			});
+		// Remove to here 
+		order ++;
+	});
+}
+
 // Used to hide an exercise details 
 jQuery(".exerciseExpandHide").live('click', function(event){
 	if(JS_DEBUG){console.log("Going to hide or show a Exercise");}
@@ -361,10 +416,43 @@ jQuery(".phaseExpandHide").live('click', function(event){
 });
 // Used to remove an exercise 
 jQuery(".removeExercise").live('click', function(event){
-	if(JS_DEBUG){console.log("Going to Remove an Exercise");}
-	jQuery(this).parent().parent().parent().prev(".addExerciseContainer").remove();
-	jQuery(this).parent().parent().parent().remove();
+		if(JS_DEBUG){console.log("Removing an exercise");}
+		jQuery(".alertArea").append('<div class="alertLog alertNotice">Removing an exercise </div>');
+		var exerciseToDelete = jQuery(this);
+		var parentElement = jQuery(this).closest(".phaseContainer");
+
+		
+		var exerciseId = jQuery(this).closest(".exercises").attr('data-exerciseid');
+		console.log("Exercise ID"+ exerciseId);
+		var exerciseOrder = jQuery(this).closest(".exercises").attr('data-ordernumber');
+		console.log("Exercise Order Lookup"+exerciseOrder);
+		var phaseId = jQuery(this).closest(".exercises").attr('data-phaseid');
+
+		console.log("Exercse Phase ID "+phaseId);
+		// add a new phase to the database ajax and reorder
+		var data = {
+		'action': 'deleteReorderExercise',
+		'exerciseId': exerciseId,
+		'phaseId': phaseId,
+		'initialOrder' : exerciseOrder
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			resultObj = response;
+		// Find the HTML Object where we want to load the form into 
+		if(resultObj !=null){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase Removed</div>');
+		exerciseToDelete.parent().parent().parent().prev(".addExerciseContainer").remove();
+		exerciseToDelete.parent().parent().parent().remove();
+		updateExerciseOrder(parentElement);
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Removed</div>');
+			}
+		}
+	});
 });
+
 // Used to customize a custom program 
 	jQuery("#CopyAndCustomize").on('click', function(event){
 		if(JS_DEBUG){console.log("Clicking Custom");}
@@ -400,7 +488,8 @@ jQuery(".removeExercise").live('click', function(event){
 	/* This function shows the videos when the video has been clicked */
 jQuery('.exercise-container').live('click', function(event){
 	console.log("Exercise Clicked");
-	console.log($(this).attr("data-videoId"));
+	console.log(jQuery(this).attr("data-videoId"));
+	var exerciseContainer = jQuery(this);
 	// Lets initiate the video 
 	// This is the URL of the video you want to load
         var videoUrl = 'https://www.vimeo.com/'+$(this).attr("data-videoId");
@@ -415,8 +504,8 @@ jQuery('.exercise-container').live('click', function(event){
 
        jQuery.getJSON('https://www.vimeo.com/api/oembed.json?url=' + encodeURIComponent(videoUrl) + '&autoplay=1&callback=?', function(data){
        	console.log("Updating Video")
-       	jQuery(this).html(""); 
-        jQuery(this).html(data.html); 
+       	exerciseContainer.html(""); 
+        exerciseContainer.html(data.html); 
 		});
 });
 
@@ -460,6 +549,34 @@ jQuery('input[name=typeUpdate]').live('change', function(event){
 
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError"> Program type not updated - Error code: AJAX - updateAProgram</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('input[name=stateUpdate]').live('change', function(event){
+	console.log("Program state change detected!");
+	var programId = jQuery("#theProgramMetaId").attr("data-programId");
+	var programState = jQuery(this).val();
+	console.log("Type Radio Button Changed to: "+ programState+ "for Program Id: " + programId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Changeing program state to: '+programState+'</div>');
+	var data = {
+		'action': 'updateAProgram',
+		'state': programState,
+		'programId': programId
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program state updated to '+programState+' in database</div>');
+		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program state not updated - Error code: AJAX - updateAProgram</div>');
 			}
 		}
 		});
@@ -1011,6 +1128,179 @@ jQuery('textarea[name=phaseNotes]').live('blur', function(event){
 		// insert a new phase into the webpage		
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError"> Phase notes not updated - Error code: AJAX - updateAPhase</div>');
+			}
+		}
+		});
+});
+
+jQuery('input[name=order]').live('blur', function(event){
+	console.log("Exercise Order Change Detected");
+	var exerciseId = jQuery(this).closest(".exercises").attr("data-exerciseid");
+	console.log("exerciseId"+exerciseId);
+	var exerciseOrder= jQuery(this).val();
+	console.log("Exercise Order changing to: "+ exerciseOrder+ "for Exercise Id: " + exerciseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise Order  changing to: '+exerciseOrder+'</div>');
+	var data = {
+		'action': 'updateAnExercise',
+		'order_field': exerciseOrder,
+		'exerciseId': exerciseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise Order updated to '+exerciseOrder+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Exercise Order not updated - Error code: AJAX - updateAExercise</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('input[name=setsReps]').live('blur', function(event){
+	console.log("Exercise setsReps Change Detected");
+	var exerciseId = jQuery(this).closest(".exercises").attr("data-exerciseid");
+	console.log("exerciseId"+exerciseId);
+	var exerciseSetRep= jQuery(this).val();
+	console.log("Exercise setsReps changing to: "+ exerciseSetRep+ "for Exercise Id: " + exerciseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise Sets and Reps changing to: '+exerciseSetRep+'</div>');
+	var data = {
+		'action': 'updateAnExercise',
+		'sets_reps': exerciseSetRep,
+		'exerciseId': exerciseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise Sets and Reps updated to '+exerciseSetRep+' in database</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Exercise Sets and Reps did not updated - Error code: AJAX - updateAExercise</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('input[name=rest]').live('blur', function(event){
+	console.log("Exercise rest Change Detected");
+	var exerciseId = jQuery(this).closest(".exercises").attr("data-exerciseid");
+	console.log("exerciseId"+exerciseId);
+	var exerciseRest= jQuery(this).val();
+	console.log("Exercise rest changing to: "+ exerciseRest+ "for Exercise Id: " + exerciseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise rest changing to: '+exerciseRest+'</div>');
+	var data = {
+		'action': 'updateAnExercise',
+		'rest': exerciseRest,
+		'exerciseId': exerciseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise rest updated to '+exerciseRest+' in database</div>');
+		// Load the form in the html object
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Exercise rest did not updated - Error code: AJAX - updateAExercise</div>');
+			}
+		}
+		});
+
+});
+
+jQuery('input[name=variation]').live('blur', function(event){
+	console.log("Exercise variation Change Detected");
+	var exerciseId = jQuery(this).closest(".exercises").attr("data-exerciseid");
+	console.log("exerciseId"+exerciseId);
+	var exerciseVariation= jQuery(this).val();
+	console.log("Exercise variation changing to: "+ exerciseVariation+ "for Exercise Id: " + exerciseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise variation changing to: '+exerciseVariation+'</div>');
+	var data = {
+		'action': 'updateAnExercise',
+		'variation': exerciseVariation,
+		'exerciseId': exerciseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise variation updated to '+exerciseVariation+' in database</div>');
+		// Load the form in the html object
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Exercise variation did not updated - Error code: AJAX - updateAExercise</div>');
+			}
+		}
+		});
+});
+
+jQuery('textarea[name=equipmentText]').live('blur', function(event){
+	console.log("Exercise equipment Change Detected");
+	var exerciseId = jQuery(this).closest(".exercises").attr("data-exerciseid");
+	console.log("exerciseId"+exerciseId);
+	var exerciseEquipment= jQuery(this).val();
+	console.log("Exercise equipment changing to: "+ exerciseEquipment+ "for Exercise Id: " + exerciseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise equipment changing to: '+exerciseEquipment+'</div>');
+	var data = {
+		'action': 'updateAnExercise',
+		'equipment': exerciseEquipment,
+		'exerciseId': exerciseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise equipment updated to '+exerciseEquipment+' in database</div>');
+		// Load the form in the html object
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Exercise equipment did not updated - Error code: AJAX - updateAExercise</div>');
+			}
+		}
+		});
+});
+
+jQuery('textarea[name=specialInstructionsText]').live('blur', function(event){
+	console.log("Exercise Special Instructions Change Detected");
+	var exerciseId = jQuery(this).closest(".exercises").attr("data-exerciseid");
+	console.log("exerciseId"+exerciseId);
+	var exerciseSpecial= jQuery(this).val();
+	console.log("Exercise special instructions changing to: "+ exerciseSpecial+ "for Exercise Id: " + exerciseId);
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise special instructions  changing to: '+exerciseSpecial+'</div>');
+	var data = {
+		'action': 'updateAnExercise',
+		'special_instructions': exerciseSpecial,
+		'exerciseId': exerciseId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise special instructions updated to '+exerciseSpecial+' in database</div>');
+		// Load the form in the html object
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError">Exercise special instructions did not updated - Error code: AJAX - updateAExercise</div>');
 			}
 		}
 		});

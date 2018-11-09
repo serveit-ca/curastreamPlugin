@@ -6,7 +6,7 @@ require_once ("objects/exercise.php");
 $programs = new program();
 //$testing = $programs->getPhasesByProgramId(37);
 //print_r($testing);
-$testing = $programs->createExercise(85,580);
+$testing = $programs->duplicateGeneralProgram(54);
 print_r($testing);
 //$testing2 = $programs->getAPhaseById(437);
 //print_r($testing2);

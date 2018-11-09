@@ -8,18 +8,17 @@ require_once ("objects/exercise.php");
 
 
 /* This fucntion is sued to copy, save and dispaly a custom program */
-	      function createAndDisplayCustomProgram(){
+	      function copyAndEditGeneralExisting(){
 	      	global $programs;
 	      	global $customCreation;
 	      	$status= "Success";
 	      		// get the original program 
-	      		$originalProgram = $programs->getProgramById($_POST['baseProgramId']);
-	      		// create duplicate
-	      		$customProgram = $programs->duplicateProgram($_POST['baseProgramId'], $_POST['userId']);
-	      		$customProgramForm = $customCreation->createProgramMetaImputForm($customProgram);
+	      		$newProgramId = $programs->duplicateGeneralProgram($_POST['existingProgram']);
+	      		
+	      		$modifyProgram = $programs->getProgramById($newProgramId);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
 	      		echo $customProgramForm;
-	      		// get all of the phases 
-	      		$phases = $programs->getPhasesByProgramId($_POST['baseProgramId']);
+	      	$phases = $programs->getPhasesByProgramId($newProgramId);
 	      		foreach ($phases as $aPhase){
 	      			echo $customCreation->addPhase();
 	      			echo '<div class="phaseContainer">';
@@ -36,14 +35,11 @@ require_once ("objects/exercise.php");
 	      		 	echo '</div>';
 	      		 }
 	      		 echo $customCreation->addPhase();
-	      		 	echo "<button>Assign Custom Progrm to User</button>";		
-	      		// get all of the exercises 
-	      		// copy all of the custom program 
-	      		wp_die();	
-	      }
+	      		wp_die();	      
+	      	}
 
-	    add_action( 'wp_ajax_createAndDisplayCustomProgram', 'createAndDisplayCustomProgram' );
-	    add_action( 'wp_ajax_nopriv_createAndDisplayCustomProgram', 'createAndDisplayCustomProgram' );
+	    add_action( 'wp_ajax_copyAndEditGeneralExisting', 'copyAndEditGeneralExisting' );
+	    add_action( 'wp_ajax_copyAndEditGeneralExisting', 'copyAndEditGeneralExisting' );
 
 	     /* This fucntion is sued to copy, save and dispaly a custom program */
 	      function addPhaseToProgram(){
@@ -53,7 +49,7 @@ require_once ("objects/exercise.php");
 	      	$newPhaseId = $programs->createPhase("New Phase", $_POST['programId']);
 	      	// echo $newPhaseId;
 	      	// Order the Phase to the final order 
-	      	echo ($programs->movePhaseOrder($_POST['programId'],$newPhaseId,-1,$_POST['finalOrder']));
+	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,-1,$_POST['finalOrder']);
 
 	      	 
 	      	$newPhase = $programs->getAPhaseById($newPhaseId);
@@ -76,14 +72,14 @@ require_once ("objects/exercise.php");
 	      function addExerciseToPhase(){
 	      	global $programs;
 	      	global $customCreation;
-	      	$status= "Success";
-	      	// create an empty phase
-	      	// TODO Call Create exercise
-	      		// ID will be returned 
+	      	// create an new exercisec
+	      	$newExerciseId = $programs->createExercise($_POST['exerciseId'],$_POST['phaseId']);
+	      	// order the exercise
+	      	 $programs->moveExerciseOrder($_POST['phaseId'],$_POST['exerciseId'],-1,$_POST['finalOrder']);
 	      		// update exercise Put the info in there 
 	      		// get Highest Order Number 
 	      		// Move exercise to ideal location 
-	      	$newExercise = new exercise();
+	      	$newExercise =  $programs->getAnExerciseById($newExerciseId);
 	      		// get all of the phases 
 	      		    echo $customCreation->addExercise();
 	      			echo $customCreation->displayExercise($newExercise);
@@ -188,7 +184,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 
-	    	$programs->updateProgram($_POST['order_no'], $_POST['phase_id'], $_POST['order_field'], $_POST['name'], $_POST['rest'], $_POST['sets_reps'], $_POST['variation'],  $_POST['equipment'], $_POST['special_instructions'], $_POST['exercise_video_url'], $_POST['file_url'], $_POST['file_name'], $_POST['exerciseId']);
+	    	$programs->updateExercise($_POST['order_no'], $_POST['phase_id'], $_POST['order_field'], $_POST['name'], $_POST['rest'], $_POST['sets_reps'], $_POST['variation'],  $_POST['equipment'], $_POST['special_instructions'], $_POST['exercise_video_url'], $_POST['file_url'], $_POST['file_name'], $_POST['exerciseId']);
 	    	echo "Success";
 	    	wp_die();
 	    }
@@ -216,7 +212,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 
-	    	$programs->deletePhaseUpdateOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder']);
+	    	$programs->deleteExerciseUpdateOrder($_POST['phaseId'], $_POST['exerciseId'], $_POST['initialOrder']);
 
 	    	echo "Success";
 	    	wp_die();
