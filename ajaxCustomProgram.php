@@ -47,9 +47,10 @@ require_once ("objects/exercise.php");
 	      	global $customCreation;
 	      	// create a new phase
 	      	$newPhaseId = $programs->createPhase("New Phase", $_POST['programId']);
-	      	// echo $newPhaseId;
+	      	$highestOrder = $programs->getHighestPhaseOrder($_POST['programId']);
+	      	$programs->updatePhase($programs->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $newPhaseId));
 	      	// Order the Phase to the final order 
-	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,-1,$_POST['finalOrder']);
+	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,$highestOrder,$_POST['finalOrder']);
 
 	      	 
 	      	$newPhase = $programs->getAPhaseById($newPhaseId);
@@ -299,5 +300,91 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_assignProgram', 'assignProgram' );
 	    add_action( 'wp_ajax_nopriv_assignProgram', 'assignProgram');
 
+	    // This function makes a custom program a general program
 
+	    function makeProgGeneral(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->makeGeneral($_POST['programId']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_makeProgGeneral', 'makeProgGeneral');
+	    add_action( 'wp_ajax_nopriv_makeProgGeneral', 'makeProgGeneral');
+
+
+	    //This Program returns all body parts as an assoc array
+	    function getBodyParts(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->getAllBodyParts();
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_getBodyParts', 'getBodyParts');
+	    add_action( 'wp_ajax_nopriv_getBodyParts', 'getBodyParts');
+
+	    function getInjuries(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->getAllInjuries();
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_getInjuries', 'getInjuries');
+	    add_action( 'wp_ajax_nopriv_getInjuries', 'getInjuries');
+
+	    function getSports(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->getAllSports();
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_getSports', 'getSports');
+	    add_action( 'wp_ajax_nopriv_getSports', 'getSports');
+
+	    function getOccupations(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->getAllOccupations();
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_getOccupations', 'getOccupations');
+	    add_action( 'wp_ajax_nopriv_getOccupations', 'getOccupations');
+
+	    function getSportsOccupations(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->getAllSportsOccupations();
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_getSportsOccupations', 'getSportsOccupations');
+	    add_action( 'wp_ajax_nopriv_getSportsOccupations', 'getSportsOccupations');
     ?>

@@ -151,7 +151,53 @@ public $dateModified;
         }
 			return $exercies;
     }
-      // Get all Exercises From Database
+
+    	// Gets all Body Parts returns as assoc array
+
+    public function getAllBodyParts(){
+    	global $wpdb; // this is how you get access to the database
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        
+        
+        $body_parts = $wpdb->get_results("SELECT id, name FROM $tableName ORDER BY name");
+        return $body_parts;
+    }
+
+    function getAllInjuries(){
+    	global $wpdb; // this is how you get access to the database
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+        $injuries = $wpdb->get_results( "SELECT id, name FROM $tableName ORDER BY name");
+        return $injuries;
+    }
+
+    function getAllSports(){
+    	global $wpdb; // this is how you get access to the database
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        $sports = $wpdb->get_results("SELECT id, name FROM $tableName WHERE type like 'sport' ORDER BY name");
+    
+        return $sports;
+    }
+
+    function getAllOccupations(){
+    	global $wpdb; // this is how you get access to the database
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        $occupations = $wpdb->get_results("SELECT id, name FROM $tableName WHERE type like 'occupation' ORDER BY name");
+    
+        return $occupations;
+    }
+
+    function getAllSportsOccupations(){
+    	global $wpdb; // this is how you get access to the database
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        $sports_occupations = $wpdb->get_results("SELECT id, name FROM $tableName ORDER BY name");
+    
+        return $sports_occupations;
+    }
+
+
+      
+    
+    // Get all Exercises From Database
     public function getAllExerciseVideos(){
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercise_videos";
@@ -385,6 +431,18 @@ public function createExerciseByName($name, $phaseId){
 
     	$wpdb->update($tableName, array(
     		"customProgram" => "1"
+    	), array( // Where Clause
+    	 	"id" => $programId));
+
+    	return "Success: Program with Id: " . $programId . " Made Custom";
+    }
+
+    public function makeGeneral($programId){
+    	global $wpdb;
+    	$tableName = $wpdb->prefix . "cura_programs";
+
+    	$wpdb->update($tableName, array(
+    		"customProgram" => "0"
     	), array( // Where Clause
     	 	"id" => $programId));
 
