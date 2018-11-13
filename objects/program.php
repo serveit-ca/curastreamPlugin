@@ -125,6 +125,32 @@ public $dateModified;
 			return $programs;
     }
 
+    public function getAllActiveGenericPrograms(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_programs";
+
+        $programResults = $wpdb->get_results("SELECT * FROM $tableName WHERE customProgram = 0 AND state = 0 ORDER BY name", ARRAY_A);
+
+        $programs = array();
+        foreach ($programResults as $row) {
+            $program = new program();
+            $program->id = $row['id'];
+            $program->name = $row['name'];
+            $program->description = $row['description'];
+            $program->equipment = $row['equipment'];
+            $program->duration = $row['duration'];
+            $program->weekly_plan = $row['weekly_plan'];
+            $program->life_style = $row['life_style'];
+            $program->assoc_body_part_id = $row['assoc_body_part_id'];
+            $program->how_it_happen = $row['how_it_happen'];
+            $program->sports_occupation = $row['sports_occupation'];
+            $program->thumbnail = $row['thumbnail'];
+            $program->state = $row['state'];
+            $programs[] = $program;
+        }
+            return $programs;
+    }
+
     // Get all Exercises From Database
     public function getAllExercises(){
     	global $wpdb;
