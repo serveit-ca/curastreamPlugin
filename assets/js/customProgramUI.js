@@ -218,7 +218,7 @@ jQuery(".addPhase").live('click', function(event){
 		console.log(currentElement);
 		currentElement.parent().parent().parent().before(resultObj);
 		currentElement.parent().parent().parent().remove();
-		updatePhaseOrder();
+		//updatePhaseOrder();
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Added</div>');
 			}
@@ -253,7 +253,7 @@ jQuery(".removePhase").live('click', function(event){
 			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase Removed</div>');
 		phaseToDelete.parent().parent().parent().parent().prev(".addPhaseContainer").remove();
 		phaseToDelete.parent().parent().parent().parent().remove(); 
-		updatePhaseOrder();
+		//updatePhaseOrder();
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Removed</div>');
 			}

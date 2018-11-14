@@ -48,7 +48,7 @@ require_once ("objects/exercise.php");
 	      	// create a new phase
 	      	$newPhaseId = $programs->createPhase("New Phase", $_POST['programId']);
 	      	$highestOrder = $programs->getHighestPhaseOrder($_POST['programId']);
-	      	$programs->updatePhase($programs->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $newPhaseId));
+	      	$programs->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $newPhaseId);
 	      	// Order the Phase to the final order 
 	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,$highestOrder,$_POST['finalOrder']);
 
