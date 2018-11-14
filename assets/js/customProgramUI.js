@@ -188,13 +188,13 @@ jQuery(".addPhase").live('click', function(event){
 		var programID = jQuery("#theProgramMetaId").attr('data-programid');
 		console.log("Program ID"+ programID);
 		var finalOrder = jQuery(this).parent().parent().parent().prev().attr('data-phase-order');
-		console.log("Previous Phase Order Lookup"+finalOrder);
+		console.log("Previous Phase Order Lookup "+finalOrder);
 		if(typeof finalOrder === "undefined"){
 			finalOrder = 1
 		}else{
 			finalOrder++; 
 		}
-		console.log("Phase Final Order"+finalOrder);
+		console.log("Phase Final Order "+finalOrder);
 		var currentElement = jQuery(this);
 		// add a new phase to the database ajax and reorder
 		var data = {
@@ -218,7 +218,7 @@ jQuery(".addPhase").live('click', function(event){
 		console.log(currentElement);
 		currentElement.parent().parent().parent().before(resultObj);
 		currentElement.parent().parent().parent().remove();
-		//updatePhaseOrder();
+		updatePhaseOrder();
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Added</div>');
 			}
@@ -253,7 +253,7 @@ jQuery(".removePhase").live('click', function(event){
 			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase Removed</div>');
 		phaseToDelete.parent().parent().parent().parent().prev(".addPhaseContainer").remove();
 		phaseToDelete.parent().parent().parent().parent().remove(); 
-		//updatePhaseOrder();
+		updatePhaseOrder();
 			}else{
 				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Removed</div>');
 			}
@@ -271,18 +271,6 @@ function updatePhaseOrder(){
 		jQuery(this).attr('data-phase-order',order);
 		var phaseID = jQuery(this).children('.phaseHeader').attr('data-phase-id');
 		console.log("Phase Id:"+phaseID);
-		// Remove this logic when Kaiden fixes the phase 
-			var data = {
-			'action': 'updateAPhase',
-			'phaseId': phaseID,
-			'order_no': order
-			};
-			// ensure the datasbse has been updated
-			jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){	
-				resultObj = response;
-				}
-			});
-		// Remove to here 
 		order ++;
 	});
 }
