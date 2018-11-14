@@ -324,7 +324,7 @@ jQuery(".addExercise").live('click', function(event){
 		console.log("Exercise ID "+exerciseID);
 
 		// determine the location of the new exercise
-		var finalOrder = jQuery(this).closest(".exercises").attr('data-phase-order');
+		var finalOrder = jQuery(this).closest(".exercises").attr('data-ordernumber');
 		console.log("Previous Phase Order Lookup"+finalOrder);
 		if(typeof finalOrder === "undefined"){
 			finalOrder = 1
