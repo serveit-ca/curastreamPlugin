@@ -48,9 +48,9 @@ require_once ("objects/exercise.php");
 	      	// create a new phase
 	      	$newPhaseId = $programs->createPhase("New Phase", $_POST['programId']);
 	      	$highestOrder = $programs->getHighestPhaseOrder($_POST['programId']);
-	      	$programs->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $newPhaseId);
+	      	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $newPhaseId);
 	      	// Order the Phase to the final order 
-	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,$highestOrder,$_POST['finalOrder']);
+	      	$programs->movePhaseOrder($_POST['programId'],$newPhaseId,$highestOrder+1,$_POST['finalOrder']);
 
 	      	 
 	      	$newPhase = $programs->getAPhaseById($newPhaseId);
@@ -75,6 +75,9 @@ require_once ("objects/exercise.php");
 	      	global $customCreation;
 	      	// create an new exercisec
 	      	$newExerciseId = $programs->createExercise($_POST['exerciseId'],$_POST['phaseId']);
+	      	$highestOrder = $programs->getHighestExerciseOrder($_POST['phaseId']);
+	      	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
+	      	$programs->moveExerciseOrder($_POST['phaseId'],$newExerciseId,$highestOrder+1,$_POST['finalOrder']);
 	      	// order the exercise
 	      	// $programs->moveExerciseOrder($_POST['phaseId'],$_POST['exerciseId'],-1,$_POST['finalOrder']);
 	      		// update exercise Put the info in there 
