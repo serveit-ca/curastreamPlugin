@@ -190,7 +190,7 @@ jQuery(".addPhase").live('click', function(event){
 		var finalOrder = jQuery(this).parent().parent().parent().prev().attr('data-phase-order');
 		console.log("Previous Phase Order Lookup"+finalOrder);
 		if(typeof finalOrder === "undefined"){
-			finalOrder = 0
+			finalOrder = 1
 		}else{
 			finalOrder++; 
 		}
