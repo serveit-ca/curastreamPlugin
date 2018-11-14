@@ -264,7 +264,7 @@ jQuery(".removePhase").live('click', function(event){
 // update phase Order 
 function updatePhaseOrder(){
 	console.log("Update Phase Order");
-	order = 0
+	order = 1
 	jQuery(".phaseContainer").each(function(){
 		console.log("Current Phase Order:"+jQuery(this).attr('data-phase-order'));
 		console.log("New Phase Order:"+order);
@@ -339,7 +339,7 @@ jQuery(".addExercise").live('click', function(event){
 		var finalOrder = jQuery(this).closest(".exercises").attr('data-phase-order');
 		console.log("Previous Phase Order Lookup"+finalOrder);
 		if(typeof finalOrder === "undefined"){
-			finalOrder = 0
+			finalOrder = 1
 		}else{
 			finalOrder++; 
 		}
