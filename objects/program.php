@@ -473,6 +473,7 @@ public function createExerciseByName($name, $phaseId){
 
     	$wpdb->update($tableName, array(
     		"customProgram" => "0"
+            "tempUserId" => "";
     	), array( // Where Clause
     	 	"id" => $programId));
 
