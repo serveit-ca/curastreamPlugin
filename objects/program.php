@@ -31,6 +31,7 @@ public $phases;
 public $exercises;
 public $dateCreated;
 public $dateModified;
+public $tempUserId;
 
 
 
@@ -72,6 +73,7 @@ public $dateModified;
 		$this->createdOn = $programs['created_on'];
 		$this->updatedOn = $programs['updated_on'];
 		$this->custom = $programs['customProgram'];
+        $this->tempUserId = $programs['tempUserId'];
 		return $this;
 	}
 
@@ -472,6 +474,7 @@ public function createExerciseByName($name, $phaseId){
 
     	$wpdb->update($tableName, array(
     		"customProgram" => "0"
+            "tempUserId" => "";
     	), array( // Where Clause
     	 	"id" => $programId));
 
@@ -479,7 +482,7 @@ public function createExerciseByName($name, $phaseId){
     }
 
     //Checks Each argument to see if it is set, and if so updates the program row in the database with this information
-    public function updateProgram($name, $type, $description, $equipment, $duration, $weekly_plan, $life_style, $assoc_body_part_id,  $how_it_happen, $sports_occupation, $thumbnail, $state, $programId){
+    public function updateProgram($name, $type, $description, $equipment, $duration, $weekly_plan, $life_style, $assoc_body_part_id,  $how_it_happen, $sports_occupation, $thumbnail, $state, $tempUserId, $programId){
 
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_programs";
@@ -580,6 +583,14 @@ public function createExerciseByName($name, $phaseId){
     		array( // Where Clause
     	 	"id" => $programId));
 	    }
+
+        //Check and Update tempUserId
+        if (isset($tempUserId) && !is_null($tempUserId)){
+            $wpdb->update($tableName, array(
+            "tempUserId" => $tempUserId),
+            array( // Where Clause
+            "id" => $programId));
+        }
 
 	    if($this->printError($wpdb) != "No Error"){
     		$error = $this->printError($wpdb);
@@ -828,7 +839,7 @@ public function duplicateGeneralProgram($existingProgram){
     	echo $newProgramId;
     	// var_dump($originalProgram);
 
-    	echo ($this->updateProgram($newProgramName, $this->type, $this->description, $this->equipment, $this->duration, $this->weeklyPlan, $this->lifeStyle, $this->body_part, $this->howItHappen, $this->sportsOccupation, $this->thumbnail, $this->state, $newProgramId));
+    	echo ($this->updateProgram($newProgramName, $this->type, $this->description, $this->equipment, $this->duration, $this->weeklyPlan, $this->lifeStyle, $this->body_part, $this->howItHappen, $this->sportsOccupation, $this->thumbnail, $this->state, $this->tempUserId, $newProgramId));
     	// get all of the phases of the old program 
     	$phases = $this->getPhasesByProgramId($existingProgram);
     		// Iterate through each phase
@@ -865,7 +876,7 @@ public function duplicateGeneralProgram($existingProgram){
     	$newProgramId = $wpdb->insert_id;
     	$this->makeCustom($newProgramId);
     	// assign the meta data using updateProgram
-    	$this->updateProgram($this->name, $this->type, $this->description, $this->equipment, $this->duration, $this->weeklyPlan, $this->lifeStyle, $this->assocBodyPartId, $this->howItHappen, $this->sportsOccupation, $this->thumbnail, $this->state, $this->updatedOn, $newProgramId);
+    	$this->updateProgram($this->name, $this->name, $this->type, $this->description, $this->equipment, $this->duration, $this->weekly_plan, $this->life_style, $this->assoc_body_part_id,  $this->how_it_happen, $this->sports_occupation, $this->thumbnail, $this->state, $this->tempUserId, $newProgramId);
     	// get all of the phases of the old program 
     	$phases = $this->getPhasesByProgramId($oldProgId);
     		// Iterate through each phase
@@ -1112,6 +1123,7 @@ public function duplicateGeneralProgram($existingProgram){
     		"saved_prog_dur" => $program->duration,
     		"saved_prog_id" => $programId,
     		"saved_prog_name" => $program->name,
+            "tempUserId" =>"";
     		));
 		return "Success: Program with Id: " . $programId . " Assigned to user with Id " . $userId;
 	}
