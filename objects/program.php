@@ -473,8 +473,8 @@ public function createExerciseByName($name, $phaseId){
     	$tableName = $wpdb->prefix . "cura_programs";
 
     	$wpdb->update($tableName, array(
-    		"customProgram" => "0"
-            "tempUserId" => "";
+    		"customProgram" => "0",
+            "tempUserId" => ""
     	), array( // Where Clause
     	 	"id" => $programId));
 
@@ -1123,7 +1123,7 @@ public function duplicateGeneralProgram($existingProgram){
     		"saved_prog_dur" => $program->duration,
     		"saved_prog_id" => $programId,
     		"saved_prog_name" => $program->name,
-            "tempUserId" =>"";
+            "tempUserId" =>""
     		));
 		return "Success: Program with Id: " . $programId . " Assigned to user with Id " . $userId;
 	}
