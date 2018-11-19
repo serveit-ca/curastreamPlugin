@@ -7,25 +7,56 @@ Author: Admin
 // Used for page filtering 
 include("filtering.php");
 include("ajaxSaves.php");
+include("ajaxCustomProgram.php");
 // Used for Ajax Saves to DB 
-function curastream_add_bootstrap() 
+function curastream_add_bootstrap_And_Other() 
     {       
         // JS
-        wp_register_script('prefix_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js');
        // wp_register_script('loadUI', 'https://code.jquery.com/jquery-3.3.1.min.js');
         wp_register_script('loadAJAX', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
-        wp_register_script('loadselect2', site_url('/wp-content/plugins/Curastream/select2/dist/js/select2.min.js'));
-        wp_enqueue_script('prefix_bootstrap');
+        wp_register_script('loadselect2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js');
         //wp_enqueue_script('loadUI');
         wp_enqueue_script('loadAJAX');
         wp_enqueue_script('loadselect2');
+
+        wp_register_script('oembed', plugins_url( '/assets/js/oembed.js', __FILE__ ));
+        //wp_enqueue_script('loadUI');
+        wp_enqueue_script('oembed');
         // CSS
+         wp_register_style('select2Style', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css', false, NULL, 'all');
+          wp_enqueue_style('select2Style');
         wp_register_style('prefix_bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', false, NULL, 'all');
         wp_enqueue_style('prefix_bootstrap');
         wp_register_style('font_awesome', 'https://use.fontawesome.com/releases/v5.4.1/css/all.css', false, NULL, 'all');
         wp_enqueue_style('font_awesome');
     }
-add_action('admin_enqueue_scripts', 'curastream_add_bootstrap');
+add_action('admin_enqueue_scripts', 'curastream_add_bootstrap_And_Other');
+
+add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
+// Add Media Image Script 
+// As you are dealing with plugin settings,
+// I assume you are in admin side
+
+function load_wp_media_files() {
+    // Enqueue WordPress media scripts
+    wp_enqueue_media();
+    wp_enqueue_script( 'wp-api' );
+
+    // Enqueue custom script that will interact with wp.media
+  }
+
+add_action( 'admin_enqueue_scripts', 'load_wp_media_files' );
+/*Going to register the custom JavaScript and CSS File   */
+function register_scripts_with_jquery(){   
+    // Register the script like this for a plugin:
+   // wp_register_style( '')
+    wp_register_style( 'curastreamStyle', plugins_url( 'assets/css/style.css', __FILE__ ));
+    wp_enqueue_style( 'curastreamStyle');
+    wp_register_script( 'custom-programUI-script', plugins_url( 'assets/js/customProgramUI.js', __FILE__ ), "", "", true);
+    // For either a plugin or a theme, you can then enqueue the script:
+    wp_enqueue_script( 'custom-programUI-script' );
+  
+}
 
 // register_activation_hook( __FILE__, 'Curastream_install');
 function add_menu() {
@@ -68,7 +99,7 @@ function add_submenu() {
         '',
         ''
     );
-    add_submenu_page('curastreamPlugin','Custom Programs','Custom Programs',
+    add_submenu_page('curastreamPlugin','Program Aministration','Program Aministration',
         'manage_options',
         'curastream/customProgram.php',
         '',
@@ -91,17 +122,6 @@ add_action( 'admin_menu', 'add_menu');
 add_action( 'admin_menu', 'add_submenu');
 add_action( 'admin_enqueue_scripts', 'load_wp_media' );
 
-add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
-/*Going to register the custom JavaScript and CSS File   */
-function register_scripts_with_jquery(){   
-    // Register the script like this for a plugin:
-   // wp_register_style( '')
-    wp_register_style( 'curastreamStyle', plugins_url( 'assets/css/style.css', __FILE__ ));
-    wp_enqueue_style( 'curastreamStyle');
-    wp_register_script( 'custom-program-script', plugins_url( 'assets/js/customProgram.js', __FILE__ ), "", "", true);
-    // For either a plugin or a theme, you can then enqueue the script:
-    wp_enqueue_script( 'custom-program-script' );
-}
 
 
 

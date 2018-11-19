@@ -65,7 +65,7 @@ input[name="injury"] {
 }
 
 .hidden {
-	display: none;
+	display: none !important;
 }
 
 .customizehidden{
@@ -423,7 +423,26 @@ th#sports {
 
 /*Styling for the Alert area*/
 .alertArea{
-	background-color: pink;
+	margin:20px;
+	padding:5px 20px;
+	border-style:solid;
+	border-width: 1px;
+	border-color:#959595;
+	height:400px;
+	overflow-y:scroll;
+}
+.alertSuccess{
+	background-color:#90EE90;
+	margin-bottom:2px;
+
+}
+.alertError{
+	background-color:#F08080;
+	margin-bottom:2px;
+}
+.alertNotice{
+	background-color:#FFFFE0;
+	margin-bottom:2px;
 }
 .imageThumb{
 	height:200px;
@@ -434,19 +453,19 @@ th#sports {
 .modifyExistingForm{
 	margin-top:25px;
 }
+.phaseControl{
+	margin-top:10px;
+}
 .phaseContainer{
-	margin-top:25px;
 }
 .phaseHeader{
+	padding:20px;
 	background-color: #00b1b3;
-	padding: 0px 10px 10px;
-	margin-bottom: 20px;
 }
 .exercises{
     padding: 20px;
     background: rgba(125, 125, 125, 0.17);
     border-radius: 5px;
-    margin-bottom: 20px;
 }
 .exerciseLabel{
 	margin-right:10px;
@@ -461,4 +480,53 @@ th#sports {
 .exerciseDetails{
 	display: flex;
 }
+.addPhase{
+	margin-bottom:5px;
+	cursor:pointer;
+}
+.phaseExpandHide{
+	margin-left:10px;
+}
+.exerciseExpandHide{
+	margin-left:10px;
+}
+.addExercise{
+	margin-top:10px;
+	margin-bottom:10px;
+	cursor:pointer;
+}
+.addExerciseShow{
+	margin-top:10px;
+	margin-bottom:10px;
+	cursor:pointer;
+}
+.custom-btn{
+    height: 37px!important;
+    background-color: #00b1b3!important;
+    border: 0!important;
+    color: #fff!important;
+    min-width: 108px!important;
+    text-transform: uppercase;
+}
+.exerciseHeader{
+	margin-bottom:10px;
+}
+.addExerciseContent{
+	    padding: 20px;
+    background: rgba(125, 125, 125, 0.17);
+    border-radius: 5px;
+    margin-top:10px;
+    margin-bottom:10px;
 
+}
+.imageContainer{
+	  width: 250px;
+	  overflow: hidden;
+	  margin-bottom:10px;
+}
+.thumbnailImg{
+	width:100%;
+}
+.enableSelect2{
+min-width:250px;
+}
