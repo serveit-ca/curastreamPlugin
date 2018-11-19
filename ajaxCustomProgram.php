@@ -79,7 +79,6 @@ require_once ("objects/exercise.php");
 	      	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
 	      	$programs->moveExerciseOrder($_POST['phaseId'],$newExerciseId,$highestOrder+1,$_POST['finalOrder']);
 	      	// order the exercise
-	      	// $programs->moveExerciseOrder($_POST['phaseId'],$_POST['exerciseId'],-1,$_POST['finalOrder']);
 	      		// update exercise Put the info in there 
 	      		// get Highest Order Number 
 	      		// Move exercise to ideal location 

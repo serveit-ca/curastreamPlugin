@@ -324,6 +324,7 @@ jQuery(".addExercise").live('click', function(event){
 		console.log("Exercise ID "+exerciseID);
 
 		// determine the location of the new exercise
+		console.log(jQuery(this).closest(".addExerciseContent"));
 		var finalOrder = jQuery(this).closest(".exercises").attr('data-ordernumber');
 		console.log("Previous Phase Order Lookup"+finalOrder);
 		if(typeof finalOrder === "undefined"){
@@ -331,7 +332,7 @@ jQuery(".addExercise").live('click', function(event){
 		}else{
 			finalOrder++; 
 		}
-		console.log(finalOrder);
+		console.log("Final Order "+finalOrder);
 		// add a new exercise to the database ajax
 		var currentElement = jQuery(this);
 		var parentElement = jQuery(this).closest(".phaseContainer");
@@ -368,7 +369,7 @@ jQuery(".addExercise").live('click', function(event){
 
 function updateExerciseOrder(location){
 	console.log("Update Exercise Order");
-	order = 0
+	order = 1
 	console.log(jQuery(location));
 
 	jQuery(location).children(".exercises").each(function(){

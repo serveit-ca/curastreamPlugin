@@ -264,7 +264,7 @@ class customProgramCreation {
 	<?php }
 		
 	public function addExercise(){?> 
-			<div class="container-fluid addExerciseContainer">
+			<div class="container-fluid addExerciseMainContainer">
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<div class="addExerciseShow">

@@ -1,5 +1,4 @@
 <?php
-
 require_once("phase.php");
 require_once("exercise.php");
 class program
@@ -128,7 +127,7 @@ public $tempUserId;
 			return $programs;
     }
 
-    public function getAllActiveGenericPrograms(){
+    public function getAllActiveGenericPrograms($userId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_programs";
 
@@ -150,6 +149,8 @@ public $tempUserId;
             $program->sports_occupation = $row['sports_occupation'];
             $program->thumbnail = $row['thumbnail'];
             $program->state = $row['state'];
+            $program->current = $program->checkCurrent($userId, $row['id']);
+            $program->completed = $program->checkCompleted($userId, $row['id']);
             $programs[] = $program;
         }
             return $programs;
