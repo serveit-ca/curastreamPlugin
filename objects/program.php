@@ -472,8 +472,8 @@ public function createExerciseByName($name, $phaseId){
     	$tableName = $wpdb->prefix . "cura_programs";
 
     	$wpdb->update($tableName, array(
-    		"customProgram" => "0"
-            "tempUserId" => "";
+    		"customProgram" => "0",
+            "tempUserId" => ""
     	), array( // Where Clause
     	 	"id" => $programId));
 
@@ -1122,11 +1122,61 @@ public function duplicateGeneralProgram($existingProgram){
     		"saved_prog_dur" => $program->duration,
     		"saved_prog_id" => $programId,
     		"saved_prog_name" => $program->name,
-            "tempUserId" =>"";
+            "tempUserId" =>""
     		));
 		return "Success: Program with Id: " . $programId . " Assigned to user with Id " . $userId;
 	}
 
+    public function getProgramStatus($programId, $userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_programs";
+        $progCustom = $wpdb->get_row("SELECT customProgram FROM $tableName WHERE id = $programId");
+        if(!is_null($progCustom)){
+            if($progCustom->customProgram == 1){ // Program is Custom Check for Assigned and Completed
+
+                $tableName = $wpdb->prefix . "cura_user_programs";
+                $progStatus = $wpdb->get_row("SELECT completed FROM $tableName WHERE saved_prog_id = $programId AND user_id = $userId");
+
+                if(is_null($progStatus)){
+                    return "Error: All Custom Programs Should Be Assigned";
+                }
+
+                else{
+
+                    if($progStatus->completed == 1){
+                        return "Custom Completed";
+                    }
+                    else{
+                        return "Custom Assigned";
+                    }
+                }
+
+            }
+            else{ // Program is General Check for non-assigned, assigned and completed
+                $tableName = $wpdb->prefix . "cura_user_programs";
+                $progStatus = $wpdb->get_row("SELECT completed FROM $tableName WHERE saved_prog_id = $programId AND user_id = $userId");
+
+                if(is_null($progStatus)){ // An entry with that user id and program id doesnt exist, therefore is at least assigned
+
+                    return "General Non-Assigned";
+                    
+                }
+                else{
+                    
+                    if($progStatus->completed == 1){
+                        return "General Completed";
+                    }
+                    else{ // Not Completed
+                        return "General Assigned";
+                    }
+                }
+            }
+        }
+        else{
+            return "Error: This Program Does Not Exist";
+        }
+        
+    }
 }
 
 ?>

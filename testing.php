@@ -3,41 +3,49 @@
 require_once ("objects/program.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
+$programs = new program();
 
-$newProg = $programs->createProgram("Testphp Prog9");
-$newPhaseId = $programs->createPhase("Testphp Phase2", $newProg);
+$programs->makeCustom(15);
+$status = $programs->getProgramStatus(15, 5);
 
-$newExerciseId = $programs->createExercise(434, $newPhaseId);
-$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
-echo "HO: " .  $highestOrder;
-$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
-// Order the Exercise to the final order 
-$programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,1);
-
-// New Exercise
-$newExerciseId = $programs->createExercise(434, $newPhaseId);
-$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
-echo "HO: " .  $highestOrder;
-$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
-// Order the Exercise to the final order 
-$programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,2);
+echo "Status: " .$status;
 
 
-// New Exercise
-$newExerciseId = $programs->createExercise(434, $newPhaseId);
-$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
-echo "HO: " .  $highestOrder;
-$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
-// Order the Exercise to the final order 
-$programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,3);
+//Testing for Move Exercise/Phase Code
+// $newProg = $programs->createProgram("Testphp Prog9");
+// $newPhaseId = $programs->createPhase("Testphp Phase2", $newProg);
 
-// New Exercise
-$newExerciseId = $programs->createExercise(434, $newPhaseId);
-$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
-echo "HO: " .  $highestOrder;
-$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
-// Order the Exercise to the final order 
-$programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,2);
+// $newExerciseId = $programs->createExercise(434, $newPhaseId);
+// $highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
+// echo "HO: " .  $highestOrder;
+// $programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
+// // Order the Exercise to the final order 
+// $programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,1);
+
+// // New Exercise
+// $newExerciseId = $programs->createExercise(434, $newPhaseId);
+// $highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
+// echo "HO: " .  $highestOrder;
+// $programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
+// // Order the Exercise to the final order 
+// $programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,2);
+
+
+// // New Exercise
+// $newExerciseId = $programs->createExercise(434, $newPhaseId);
+// $highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
+// echo "HO: " .  $highestOrder;
+// $programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
+// // Order the Exercise to the final order 
+// $programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,3);
+
+// // New Exercise
+// $newExerciseId = $programs->createExercise(434, $newPhaseId);
+// $highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
+// echo "HO: " .  $highestOrder;
+// $programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);
+// // Order the Exercise to the final order 
+// $programs->moveExerciseOrder($newPhaseId,$newExerciseId,$highestOrder+1,2);
 
 ?>
 
