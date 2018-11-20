@@ -1178,6 +1178,116 @@ public function duplicateGeneralProgram($existingProgram){
         }
         
     }
+
+    public function getGeneralProgramsAssignedToUser($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName ORDER BY name");
+
+        $programs = array();
+        $tableName = $wpdb->prefix . "cura_programs";
+        foreach ($programResults as $row) {
+
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 0");
+
+            $program = new program();
+            $program->id = $aProgram->id;
+            $program->name = $aProgram->name;
+            $program->type = $aProgram->type;
+            $program->description = $aProgram->description;
+            $program->equipment = $aProgram->equipment;
+            $program->duration = $aProgram->duration;
+            $program->weekly_plan = $aProgram->weekly_plan;
+            $program->life_style = $aProgram->life_style;
+            $program->assoc_body_part_id = $aProgram->assoc_body_part_id;
+            $program->how_it_happen = $aProgram->how_it_happen;
+            $program->sports_occupation = $aProgram->sports_occupation;
+            $program->thumbnail = $aProgram->thumbnail;
+            $program->state = $aProgram->state;
+            $programs[] = $program;
+        }
+            return $programs;
+
+    }
+
+    public function getCustomProgramsAssignedToUser($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName ORDER BY name");
+
+        $programs = array();
+        $tableName = $wpdb->prefix . "cura_programs";
+        foreach ($programResults as $row) {
+
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 1");
+
+            $program = new program();
+            $program->id = $aProgram->id;
+            $program->name = $aProgram->name;
+            $program->type = $aProgram->type;
+            $program->description = $aProgram->description;
+            $program->equipment = $aProgram->equipment;
+            $program->duration = $aProgram->duration;
+            $program->weekly_plan = $aProgram->weekly_plan;
+            $program->life_style = $aProgram->life_style;
+            $program->assoc_body_part_id = $aProgram->assoc_body_part_id;
+            $program->how_it_happen = $aProgram->how_it_happen;
+            $program->sports_occupation = $aProgram->sports_occupation;
+            $program->thumbnail = $aProgram->thumbnail;
+            $program->state = $aProgram->state;
+            $programs[] = $program;
+        }
+            return $programs;
+
+    }
+
+    public function getCompletedProgramsAssignedToUser($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName ORDER BY name WHERE completed = 1");
+
+        $programs = array();
+        $tableName = $wpdb->prefix . "cura_programs";
+        foreach ($programResults as $row) {
+
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id");
+
+            $program = new program();
+            $program->id = $aProgram->id;
+            $program->name = $aProgram->name;
+            $program->type = $aProgram->type;
+            $program->description = $aProgram->description;
+            $program->equipment = $aProgram->equipment;
+            $program->duration = $aProgram->duration;
+            $program->weekly_plan = $aProgram->weekly_plan;
+            $program->life_style = $aProgram->life_style;
+            $program->assoc_body_part_id = $aProgram->assoc_body_part_id;
+            $program->how_it_happen = $aProgram->how_it_happen;
+            $program->sports_occupation = $aProgram->sports_occupation;
+            $program->thumbnail = $aProgram->thumbnail;
+            $program->state = $aProgram->state;
+            $programs[] = $program;
+        }
+            return $programs;
+
+    }
+
+    public function getFavoriteExercises($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_fav_videos";
+
+        $favorites = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId");
+
+        $exercises = array();
+        $tableName = $wpdb->prefix . "cura_exercises";
+        foreach ($favorites as $row) {
+           $exercise = getAnExerciseById($row->exercise_id);
+           $exercises[] = $exercise;
+        }
+    }
 }
 
 ?>
