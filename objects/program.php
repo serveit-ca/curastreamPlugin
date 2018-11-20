@@ -1122,7 +1122,8 @@ public function duplicateGeneralProgram($existingProgram){
         $wpdb->update($tableName, array(
             "tempUserId" =>""),
             array( // Where Clause
-            "id" => $exerciseId));
+            "id" => $exerciseId))
+        ;
         
 		return "Success: Program with Id: " . $programId . " Assigned to user with Id " . $userId;
 	}
