@@ -225,6 +225,14 @@ public $tempUserId;
         return $sports_occupations;
     }
 
+    function getAllCategories(){
+        global $wpdb; // this is how you get access to the database
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        $sql = "SELECT DISTINCT(category_name) FROM dev_cura_exercise_videos ORDER BY category_name;";
+        $categories = $wpdb->get_results( $sql );
+        return $categories;
+    }
+
 
       
     
