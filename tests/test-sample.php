@@ -15,6 +15,7 @@ class SampleTest extends WP_UnitTestCase {
 	 */
 	function test_sample() {
 		// Replace this with some actual testing code.
+		// This should pass testing travis cl
 		$this->assertTrue( true );
 	}
 }
