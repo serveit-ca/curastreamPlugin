@@ -2,7 +2,7 @@
 /**
  * Class SampleTest
  *
- * @package Sample_Plugin
+ * @package Curastream
  */
 
 /**
@@ -13,9 +13,8 @@ class SampleTest extends WP_UnitTestCase {
 	/**
 	 * A single example test.
 	 */
-	function test_sample() {
+	public function test_sample() {
 		// Replace this with some actual testing code.
-		// This should pass testing travis cl
-		$this->assertEquals(50, 50);
+		$this->assertTrue( true );
 	}
 }
