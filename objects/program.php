@@ -1183,28 +1183,28 @@ public function duplicateGeneralProgram($existingProgram){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
 
-        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName ORDER BY name");
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE user_id = $userId");
 
         $programs = array();
         $tableName = $wpdb->prefix . "cura_programs";
         foreach ($programResults as $row) {
 
-            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 0");
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 0", ARRAY_A);
 
             $program = new program();
-            $program->id = $aProgram->id;
-            $program->name = $aProgram->name;
-            $program->type = $aProgram->type;
-            $program->description = $aProgram->description;
-            $program->equipment = $aProgram->equipment;
-            $program->duration = $aProgram->duration;
-            $program->weekly_plan = $aProgram->weekly_plan;
-            $program->life_style = $aProgram->life_style;
-            $program->assoc_body_part_id = $aProgram->assoc_body_part_id;
-            $program->how_it_happen = $aProgram->how_it_happen;
-            $program->sports_occupation = $aProgram->sports_occupation;
-            $program->thumbnail = $aProgram->thumbnail;
-            $program->state = $aProgram->state;
+            $program->id = $aProgram['id'];
+            $program->name = $aProgram['name'];
+            $program->type = $aProgram['type'];
+            $program->description = $aProgram['description'];
+            $program->equipment = $aProgram['equipment'];
+            $program->duration = $aProgram['duration'];
+            $program->weekly_plan = $aProgram['weekly_plan'];
+            $program->life_style = $aProgram['life_style'];
+            $program->assoc_body_part_id = $aProgram['assoc_body_part_id'];
+            $program->how_it_happen = $aProgram['how_it_happen'];
+            $program->sports_occupation = $aProgram['sports_occupation'];
+            $program->thumbnail = $aProgram['thumbnail'];
+            $program->state = $aProgram['state'];
             $programs[] = $program;
         }
             return $programs;
@@ -1215,28 +1215,28 @@ public function duplicateGeneralProgram($existingProgram){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
 
-        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName ORDER BY name");
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE user_id = $userId");
 
         $programs = array();
         $tableName = $wpdb->prefix . "cura_programs";
         foreach ($programResults as $row) {
 
-            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 1");
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 1", ARRAY_A);
 
             $program = new program();
-            $program->id = $aProgram->id;
-            $program->name = $aProgram->name;
-            $program->type = $aProgram->type;
-            $program->description = $aProgram->description;
-            $program->equipment = $aProgram->equipment;
-            $program->duration = $aProgram->duration;
-            $program->weekly_plan = $aProgram->weekly_plan;
-            $program->life_style = $aProgram->life_style;
-            $program->assoc_body_part_id = $aProgram->assoc_body_part_id;
-            $program->how_it_happen = $aProgram->how_it_happen;
-            $program->sports_occupation = $aProgram->sports_occupation;
-            $program->thumbnail = $aProgram->thumbnail;
-            $program->state = $aProgram->state;
+            $program->id = $aProgram['id'];
+            $program->name = $aProgram['name'];
+            $program->type = $aProgram['type'];
+            $program->description = $aProgram['description'];
+            $program->equipment = $aProgram['equipment'];
+            $program->duration = $aProgram['duration'];
+            $program->weekly_plan = $aProgram['weekly_plan'];
+            $program->life_style = $aProgram['life_style'];
+            $program->assoc_body_part_id = $aProgram['assoc_body_part_id'];
+            $program->how_it_happen = $aProgram['how_it_happen'];
+            $program->sports_occupation = $aProgram['sports_occupation'];
+            $program->thumbnail = $aProgram['thumbnail'];
+            $program->state = $aProgram['state'];
             $programs[] = $program;
         }
             return $programs;
@@ -1247,28 +1247,28 @@ public function duplicateGeneralProgram($existingProgram){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
 
-        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName ORDER BY name WHERE completed = 1");
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE completed = 1 AND user_id = $userId");
 
         $programs = array();
         $tableName = $wpdb->prefix . "cura_programs";
         foreach ($programResults as $row) {
 
-            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id");
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id", ARRAY_A);
 
-            $program = new program();
-            $program->id = $aProgram->id;
-            $program->name = $aProgram->name;
-            $program->type = $aProgram->type;
-            $program->description = $aProgram->description;
-            $program->equipment = $aProgram->equipment;
-            $program->duration = $aProgram->duration;
-            $program->weekly_plan = $aProgram->weekly_plan;
-            $program->life_style = $aProgram->life_style;
-            $program->assoc_body_part_id = $aProgram->assoc_body_part_id;
-            $program->how_it_happen = $aProgram->how_it_happen;
-            $program->sports_occupation = $aProgram->sports_occupation;
-            $program->thumbnail = $aProgram->thumbnail;
-            $program->state = $aProgram->state;
+           $program = new program();
+            $program->id = $aProgram['id'];
+            $program->name = $aProgram['name'];
+            $program->type = $aProgram['type'];
+            $program->description = $aProgram['description'];
+            $program->equipment = $aProgram['equipment'];
+            $program->duration = $aProgram['duration'];
+            $program->weekly_plan = $aProgram['weekly_plan'];
+            $program->life_style = $aProgram['life_style'];
+            $program->assoc_body_part_id = $aProgram['assoc_body_part_id'];
+            $program->how_it_happen = $aProgram['how_it_happen'];
+            $program->sports_occupation = $aProgram['sports_occupation'];
+            $program->thumbnail = $aProgram['thumbnail'];
+            $program->state = $aProgram['state'];
             $programs[] = $program;
         }
             return $programs;
@@ -1284,7 +1284,7 @@ public function duplicateGeneralProgram($existingProgram){
         $exercises = array();
         $tableName = $wpdb->prefix . "cura_exercises";
         foreach ($favorites as $row) {
-           $exercise = getAnExerciseById($row->exercise_id);
+           $exercise = $this->getAnExerciseById($row->exercise_id);
            $exercises[] = $exercise;
         }
     }
