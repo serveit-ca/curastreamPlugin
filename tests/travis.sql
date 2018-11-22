@@ -21,7 +21,8 @@ CREATE TABLE `dev_cura_programs` (
   `state` int(11) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `customProgram` int(1) NOT NULL DEFAULT '0'
+  `customProgram` int(1) NOT NULL DEFAULT '0',
+  'tempUserId' int(11)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 # Add Data
