@@ -13,7 +13,7 @@ class WP_Program_Test extends WP_UnitTestCase
     {
     	$programs = new program();
     	$program37 = $programs->getProgramById(37);
-    	if ($program37 -> id == 37) {
+    	if ($program37->id == 37) {
     		assert(true);
     	}
     	else{
