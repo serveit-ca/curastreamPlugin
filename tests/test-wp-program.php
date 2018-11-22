@@ -1,5 +1,5 @@
 <?php 
-require_once("./objects/programs.php");
+require_once("../objects/programs.php");
 $programs = new program();
 class WP_Program_Test extends WP_UnitTestCase
 {
