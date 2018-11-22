@@ -11,7 +11,7 @@ class WP_Program_Test extends WP_UnitTestCase
 
     public function test_get_program_by_id()
     {
-    	public $programs = new program();
+    	$programs = new program();
     	$program37 = $programs->getProgramById(37);
     	if ($program37 -> id == 37) {
     		assert(true);
