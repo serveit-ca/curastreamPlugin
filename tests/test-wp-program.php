@@ -1,5 +1,6 @@
 <?php 
-
+require_once("./objects/programs.php");
+$programs = new program();
 class WP_Program_Test extends WP_UnitTestCase
 {
     public function setUp()
@@ -9,15 +10,18 @@ class WP_Program_Test extends WP_UnitTestCase
         $this->class_instance = new WP_Program_Test();
     }
 
-    public function test_google_site_verification()
+    public function test_get_program_by_id()
     {
-    	//placeholder function
+    	$program37 = $programs->getProgramById(37);
+    	if ($program37 -> id == 37) {
+    		assert(true);
+    	}
+    	else{
+    		assert(false);
+    	}
     }
 
-    public function test_bing_site_verification()
-    {
-    	//placeholder fucntion
-    }
+
 }
 
 ?>
