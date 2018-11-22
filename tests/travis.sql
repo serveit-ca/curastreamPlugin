@@ -3,7 +3,7 @@ CREATE USER 'dev'@'localhost' IDENTIFIED BY 'dev';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'dev'@'localhost';
 # Create DB
 CREATE DATABASE IF NOT EXISTS `wordpress_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `demo`;
+USE `wordpress_test`;
 # Create Table
 CREATE TABLE `dev_cura_programs` (
   `id` int(11) NOT NULL,
