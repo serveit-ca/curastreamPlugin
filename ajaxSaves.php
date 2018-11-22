@@ -104,10 +104,30 @@ require_once ("objects/exercise.php");
 					);
 		 wp_die();	
 	    }
-
-
 	    add_action( 'wp_ajax_completeProgram', 'completeProgram' );
 	    add_action( 'wp_ajax_nopriv_completeProgram', 'completeProgram' );
+
+	    function restartProgram(){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_user_programs";
+	    // Assing a thumbnail for each image 
+
+
+		$wpdb->update( 
+			$tableName, 
+				array( 
+					'completed' => '0'
+					), 
+				array( 
+					'user_id' => $_POST['user_id'], 'saved_prog_id'	=> $_POST['program_id']// string
+					)
+					);
+		 wp_die();	
+	    }
+
+
+	    add_action( 'wp_ajax_restartProgram', 'restartProgram' );
+	    add_action( 'wp_ajax_nopriv_restartProgram', 'restartProgram' );
 
 	    
 

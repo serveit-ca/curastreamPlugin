@@ -256,8 +256,8 @@ public $tempUserId;
     	$tableNameA = $wpdb->prefix . "cura_exercises e";
 		$tableNameB = $wpdb->prefix . "cura_exercise_videos v";
 
-		$exerciseResults = $wpdb->get_row("SELECT e.id, e.name, e.phase_id, e.order_no, e.order_field, e.rest, e.sets_reps, e.variation, e.equipment, e.special_instructions, e.exercise_video_url, e.file_url, e.file_name, v.videoThumbnail FROM $tableNameA , $tableNameB WHERE e.id = $exerciseId AND v.id = e.exercise_video_id ORDER BY order_no", ARRAY_A);
-		
+		$exerciseResults = $wpdb->get_row("SELECT e.id, e.name, e.phase_id, e.order_no, e.order_field, e.rest, e.sets_reps, e.variation, e.equipment, e.special_instructions, e.exercise_video_url, e.file_url, e.file_name, v.videoThumbnail FROM $tableNameA , $tableNameB WHERE e.id = $exerciseId AND v.id = e.exercise_video_id", ARRAY_A);
+		  
             $anExercise = new exercise();
 			$anExercise->id = $exerciseResults['id'];
 			$anExercise->name = $exerciseResults['name'];
@@ -278,6 +278,34 @@ public $tempUserId;
 			return $anExercise;
         
 			
+    }
+     public function getAnExerciseByVideoId($exerciseId){
+        global $wpdb;
+        $tableNameA = $wpdb->prefix . "cura_exercises e";
+        $tableNameB = $wpdb->prefix . "cura_exercise_videos v";
+
+        $exerciseResults = $wpdb->get_row("SELECT e.id, e.name, e.phase_id, e.order_no, e.order_field, e.rest, e.sets_reps, e.variation, e.equipment, e.special_instructions, e.exercise_video_url, e.file_url, e.file_name, v.videoThumbnail FROM $tableNameA , $tableNameB WHERE v.id = $exerciseId AND v.id = e.exercise_video_id", ARRAY_A);
+          
+            $anExercise = new exercise();
+            $anExercise->id = $exerciseResults['id'];
+            $anExercise->name = $exerciseResults['name'];
+            $anExercise->phase_id = $exerciseResults['phase_id'];
+            $anExercise->order_no = $exerciseResults['order_no'];
+            $anExercise->order_field = $exerciseResults['order_field'];
+            $anExercise->rest = $exerciseResults['rest'];
+            $anExercise->sets_reps = $exerciseResults['sets_reps'];
+            $anExercise->variation = $exerciseResults['variation'];
+            $anExercise->equipment = $exerciseResults['equipment'];
+            $anExercise->special_instructions = $exerciseResults['special_instructions'];
+            $anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
+            $anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'])[2])[2];
+            $anExercise->file_url = $exerciseResults['file_url'];
+            $anExercise->file_name = $exerciseResults['file_name'];
+            $anExercise->thumbnailUrl = $exerciseResults['videoThumbnail'];
+            
+            return $anExercise;
+        
+            
     }
 
     // Gets All Phases from Database and retrun an array of phase objects
@@ -1183,14 +1211,16 @@ public function duplicateGeneralProgram($existingProgram){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
 
-        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE user_id = $userId");
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE user_id = $userId AND completed = 0");
 
         $programs = array();
         $tableName = $wpdb->prefix . "cura_programs";
         foreach ($programResults as $row) {
 
             $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 0", ARRAY_A);
+                  if (is_null($aProgram)){
 
+            } else{
             $program = new program();
             $program->id = $aProgram['id'];
             $program->name = $aProgram['name'];
@@ -1205,7 +1235,10 @@ public function duplicateGeneralProgram($existingProgram){
             $program->sports_occupation = $aProgram['sports_occupation'];
             $program->thumbnail = $aProgram['thumbnail'];
             $program->state = $aProgram['state'];
+            $program->current = $program->checkCurrent($userId, $aProgram['id']);
+            $program->completed = $program->checkCompleted($userId, $aProgram['id']);
             $programs[] = $program;
+        }
         }
             return $programs;
 
@@ -1222,7 +1255,9 @@ public function duplicateGeneralProgram($existingProgram){
         foreach ($programResults as $row) {
 
             $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 1", ARRAY_A);
+            if (is_null($aProgram)){
 
+            } else{
             $program = new program();
             $program->id = $aProgram['id'];
             $program->name = $aProgram['name'];
@@ -1237,7 +1272,10 @@ public function duplicateGeneralProgram($existingProgram){
             $program->sports_occupation = $aProgram['sports_occupation'];
             $program->thumbnail = $aProgram['thumbnail'];
             $program->state = $aProgram['state'];
+            $program->current = $program->checkCurrent($userId, $aProgram['id']);
+            $program->completed = $program->checkCompleted($userId, $aProgram['id']);
             $programs[] = $program;
+         }
         }
             return $programs;
 
@@ -1254,7 +1292,9 @@ public function duplicateGeneralProgram($existingProgram){
         foreach ($programResults as $row) {
 
             $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id", ARRAY_A);
+            if (is_null($aProgram)){
 
+            } else{
            $program = new program();
             $program->id = $aProgram['id'];
             $program->name = $aProgram['name'];
@@ -1269,7 +1309,10 @@ public function duplicateGeneralProgram($existingProgram){
             $program->sports_occupation = $aProgram['sports_occupation'];
             $program->thumbnail = $aProgram['thumbnail'];
             $program->state = $aProgram['state'];
+            $program->current = $program->checkCurrent($userId, $aProgram['id']);
+            $program->completed = $program->checkCompleted($userId, $aProgram['id']);
             $programs[] = $program;
+        }
         }
             return $programs;
 
@@ -1284,9 +1327,11 @@ public function duplicateGeneralProgram($existingProgram){
         $exercises = array();
         $tableName = $wpdb->prefix . "cura_exercises";
         foreach ($favorites as $row) {
-           $exercise = $this->getAnExerciseById($row->exercise_id);
+           $exercise = $this->getAnExerciseByVideoId($row->exercise_id);
+           $exercise->favorate = true;
            $exercises[] = $exercise;
         }
+        return $exercises;
     }
 }
 
