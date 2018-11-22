@@ -1,5 +1,5 @@
 <?php 
-$programs = new program();
+public $programs = new program();
 class WP_Program_Test extends WP_UnitTestCase
 {
     public function setUp()
