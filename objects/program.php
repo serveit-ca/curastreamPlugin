@@ -1,4 +1,9 @@
 <?php
+add_action( 'plugins_loaded', array( 'program', 'init' ));
+
+
+ 
+
 require_once("phase.php");
 require_once("exercise.php");
 class program
@@ -38,6 +43,11 @@ public $tempUserId;
 
     public  function __construct() {
     }
+
+    public static function init() {
+       $class = __CLASS__;
+       new $class;
+   }
 
     public function printError($wpdb){
     	
