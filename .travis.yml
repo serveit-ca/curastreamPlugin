@@ -32,7 +32,7 @@ matrix:
       env: WP_VERSION=trunk
 
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+  - mysql -u root --password="" < test/travis.sql
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
