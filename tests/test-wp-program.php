@@ -52,7 +52,7 @@ class WP_Program_Test extends WP_UnitTestCase
     			assert($key->description == $compareProg->description);
     			assert($key->equipment == $compareProg->equipment);
     			assert($key->duration == $compareProg->duration);
-    			assert($key->weekly_plan == $compareProg->weekly_plan);
+    			assert($key->weeklyPlan == $compareProg->weeklyPlan);
     			assert($key->life_style == $compareProg->life_style);
     			assert($key->assoc_body_part_id == $compareProg->assoc_body_part_id);
     			assert($key->how_it_happen == $compareProg->how_it_happen);
