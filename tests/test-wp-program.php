@@ -54,9 +54,9 @@ class WP_Program_Test extends WP_UnitTestCase
     			assert($key->duration == $compareProg->duration || $key->duration == '');
     			assert($key->weeklyPlan == $compareProg->weeklyPlan || $key->weeklyPlan == '');
     			assert($key->lifeStyle == $compareProg->lifeStyle || $key->lifeStyle == '');
-    			assert($key->assoc_body_part_id == $compareProg->assoc_body_part_id || $key->assoc_body_part_id == '');
-    			assert($key->how_it_happen == $compareProg->how_it_happen || $key->how_it_happen == '');
-    			assert($key->sports_occupation == $compareProg->sports_occupation || $key->sports_occupation == '');
+    			assert($key->body_part == $compareProg->body_part || $key->body_part == '');
+    			assert($key->howItHappen == $compareProg->howItHappen || $key->howItHappen == '');
+    			assert($key->sportsOccupation == $compareProg->sportsOccupation || $key->sportsOccupation == '');
     			assert($key->thumbnail == $compareProg->thumbnail);
     			assert($key->state == $compareProg->state);
     		}
