@@ -35,9 +35,36 @@ class WP_Program_Test extends WP_UnitTestCase
     	$programs = new program();
     	$exercise92 = $programs->getAnExerciseById(92);
     	assert($exercise92->id == 92, "getExerciseById");
-    	//$this->reset_database();
+    	$this->reset_database();
     }
 
+
+    public function test_get_all_programs(){
+    	$programs = new program();
+    	$allPrograms = $programs->getAllPrograms();
+    	assert(count($allPrograms) == 5);
+    	foreach ($allPrograms as $key) {
+    		if($key->id != NULL){
+    			$compareProg = $programs->getProgramById($key->id);
+    			assert($key->id == $compareProg->id);
+    			assert($key->name == $compareProg->name);
+    			assert($key->type == $compareProg->type);
+    			assert($key->description == $compareProg->description);
+    			assert($key->equipment == $compareProg->equipment);
+    			assert($key->duration == $compareProg->duration);
+    			assert($key->weekly_plan == $compareProg->weekly_plan);
+    			assert($key->life_style == $compareProg->life_style);
+    			assert($key->assoc_body_part_id == $compareProg->assoc_body_part_id);
+    			assert($key->how_it_happen == $compareProg->how_it_happen);
+    			assert($key->sports_occupation == $compareProg->sports_occupation);
+    			assert($key->thumbnail == $compareProg->thumbnail);
+    			assert($key->state == $compareProg->state);
+    		}
+    		else{
+    			assert(false);
+    		}
+    	}
+    }
 
 
 
