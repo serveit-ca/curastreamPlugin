@@ -10,8 +10,8 @@ class WP_Program_Test extends WP_UnitTestCase
     }
 
     public function reset_database(){
-    	$command = "mysql --user={['root']} --password='{['']}' "
- 		. "-h {$vals['db_host']} -D {$vals['db_name']} < {'travis.sql'}";
+    	$command = "mysql --user='root' --password='' "
+ 		. " -D 'wordpress_test' < 'travis.sql'";
 
 		$output = shell_exec($command . '/shellexec.sql');
     }
