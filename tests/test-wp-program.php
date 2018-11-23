@@ -25,15 +25,15 @@ class WP_Program_Test extends WP_UnitTestCase
     }
 
     public function test_get_phase_by_id(){
-    	$phases = new phase();
-    	$phase60 = $phases->getAPhaseById(60);
+    	$programs = new program();
+    	$phase60 = $programs->getAPhaseById(60);
     	assert($phase60->id == 60, "getPhaseById");
     	//$this->reset_database();
     }
 
     public function test_get_exercise_by_id(){
-    	$exercises = new exercise();
-    	$exercise92 = $exercises->getAnExerciseById(92);
+    	$programs = new program();
+    	$exercise92 = $programs->getAnExerciseById(92);
     	assert($exercise92->id == 92, "getExerciseById");
     	//$this->reset_database();
     }
