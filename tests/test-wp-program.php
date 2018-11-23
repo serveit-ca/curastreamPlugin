@@ -13,7 +13,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	$command = "mysql --user='root' --password='' "
  		. " -D 'wordpress_test' < 'travis.sql'";
 
-		$output = shell_exec($command . '/shellexec.sql');
+		$output = shell_exec($command);
     }
 
     public function test_get_program_by_id()
