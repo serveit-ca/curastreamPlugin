@@ -53,7 +53,7 @@ class WP_Program_Test extends WP_UnitTestCase
     			assert($key->equipment == $compareProg->equipment);
     			assert($key->duration == $compareProg->duration || $key->duration == '');
     			assert($key->weeklyPlan == $compareProg->weeklyPlan || $key->weeklyPlan == '');
-    			assert($key->life_style == $compareProg->life_style || $key->life_style == '');
+    			assert($key->lifeStyle == $compareProg->lifeStyle || $key->lifeStyle == '');
     			assert($key->assoc_body_part_id == $compareProg->assoc_body_part_id || $key->assoc_body_part_id == '');
     			assert($key->how_it_happen == $compareProg->how_it_happen || $key->how_it_happen == '');
     			assert($key->sports_occupation == $compareProg->sports_occupation || $key->sports_occupation == '');
