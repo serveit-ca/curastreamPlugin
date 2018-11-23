@@ -1339,12 +1339,14 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_user_programs";
 
         $updateInfo = $wpdb->get_row("SELECT saved_prog_name, saved_prog_dur, saved_prog_type, completed FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programObj->id", ARRAY_A);
+         if (is_null($updateInfo)){
 
+            } else{
         $programObj->name = $updateInfo['saved_prog_name'];
         $programObj->duration = $updateInfo['saved_prog_dur'];
         $programObj->type = $updateInfo['saved_prog_type'];
         $programObj->completed = $updateInfo['completed'];
-
+    }
         return $programObj;
     }
 }
