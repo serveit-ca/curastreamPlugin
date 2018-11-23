@@ -63,7 +63,7 @@ public $tempUserId;
     	// Get Program By Id
 	public function getProgramById($programId){
 		global $wpdb;
-		$program_table = 'dev_cura_programs';
+		$program_table = $wpdb->prefix .'cura_programs';
 		$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $programId" , ARRAY_A);
 
 		$this->id = $programs["id"];

@@ -5,7 +5,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON *.* TO 'dev'@'localhost';
 CREATE DATABASE IF NOT EXISTS `wordpress_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `wordpress_test`;
 # Create Table
-CREATE TABLE `dev_cura_programs` (
+CREATE TABLE `wptests_cura_programs` (
   `id` int(11) NOT NULL,
   `type` text NOT NULL,
   `name` text NOT NULL,
@@ -27,14 +27,14 @@ CREATE TABLE `dev_cura_programs` (
 
 # Add Data
 
-INSERT INTO `dev_cura_programs` (`id`, `type`, `name`, `description`, `equipment`, `duration`, `weekly_plan`, `life_style`, `assoc_body_part_id`, `how_it_happen`, `sports_occupation`, `thumbnail`, `state`, `created_on`, `updated_on`, `customProgram`) VALUES
+INSERT INTO `wptests_cura_programs` (`id`, `type`, `name`, `description`, `equipment`, `duration`, `weekly_plan`, `life_style`, `assoc_body_part_id`, `how_it_happen`, `sports_occupation`, `thumbnail`, `state`, `created_on`, `updated_on`, `customProgram`) VALUES
 (37, 'Strength-Training', '30 Minutes - Do at Home, Get Gym Results!', 'From working at a home office, to being a homemaker, this program is your go to program! This program provides muscle balance, using strength exercises that hit all the a major muscle groups.  Check out the mobility and flexibility sections for additional maintenance work to care of your well being.  Perform the exercises with the recommended rest or push yourself with a quicker pace!  You feel left out from going to a busy gym with this strength essential program! Enjoy!', 'Foam Roller,  Tennis Ball,  DB (5lbs+),  Theraband: Green and Grey', '', 'Use this program 3 - 4 times per week as fits your schedule.  Use the weekends to get outside for some recreational activity!', 'Working for home or being a stay at home parent isn\'t without its own physical demands and tasks.  Even though you may feel \'active\' throughout the day, its still important to improve yourself physically.  Improving mobility, flexibility and strength will make your daily activities easier to complete putting less stress on your muscles and joints.', 'Core,Glutes,Hamstrings,Hip,Hip Flexors,Knee,Lats,Low Back,Lower Leg,Quads,Shoulder,Upper Back', NULL, 'Homemaker/ Stay at home parent,Office administration,Running,Teacher,Travel,Truck driver,Weight lifting', 'https://curastream.com/wp-content/uploads/2017/07/Curastream_quality_programs.png', 0, '2018-04-05 07:51:21', '0000-00-00 00:00:00', 0),
 (45, 'Rehab', 'Hamstring Strain', 'Hamstring strain can be caused by over stretching or applying too much force in leg extension.  The micro tearing may occur towards the glute (origin), knee (insertion), or the muscle belly (middle).  The pain is often localized, but can refer down in leg or into the glute areas.  Ice, rest, light stretching, and strengthening will help the muscle heal and return to normal form.   Before beginning this program, it is advised to receive clearance from your physician before beginning any physical rehabilitation program.', 'Foam Roller, DB (10-20lb)', '27', '', '', 'Glutes,Hamstrings,Knee', 'Falling,Force absorption,Heavy lifting,Jerking motion,Jumping,Kicking,Landing,Rapid Extension,Repeated movement,Running,Slipping', 'Baseball,Basketball,Construction,Dance,Fire Fighter,Football,Grounds keeper,Gymnastics,Heavy labor,Hockey,Hunting,Labor,Mechanic,Movers,Paramedic,Personal trainer,Police,Racket sports,Rugby,Running,Soccer,Track/field,Volleyball,Weight lifting', 'https://curastream.com/wp-content/uploads/2017/10/Hamstring-sprain-or-cramps-177437616_1255x837.jpeg', 0, '2018-04-05 07:51:21', '0000-00-00 00:00:00', 0),
 (46, 'Rehab', 'Hip Flexor Strain', 'Hip flexor strain is the over stretching of the hip flexor muscles located at the front of the hip.  Applying too much force (kicking motion), or over stretching the muscle may be the cause.  A combination of rest, light stretching, and strengthening exercises will help the muscle return to normal form.   Before beginning this program, it is advised to receive clearance from your physician before beginning any physical rehabilitation program.', 'Exercise mat,  Tennis Ball,  Theraband: Red and Green,  DB (5lb+),  Foam Roller', '27', '', '', 'Groin,Hip,Hip Flexors', 'Falling,Force absorption,Heavy lifting,Hit from behind,Jerking motion,Jumping,Kicking,Landing,Repeated movement,Running,Slipping,Stretching', 'Baseball,Basketball,Dance,Fire Fighter,Football,Golf,Gymnastics,Heavy labor,Hiking,Hockey,Hunting,Mechanic,Movers,Personal trainer,Police,Racket sports,Rock climbing,Rugby,Running,Soccer,Speed Skating,Travel,Truck driver,Volleyball,Weight lifting', 'https://curastream.com/wp-content/uploads/2017/10/Young-man-in-casual-office-shirt-having-hip-pain-501513686_1258x839.jpeg', 0, '2018-04-05 07:51:21', '0000-00-00 00:00:00', 0),
 (47, 'Prevention', 'Hip Injury Prevention Program', 'This program is designed built around proper movement in the hips and using the low back as a stabilizer.  It is common when someone has poor posture to under utilized the hips and over use the back when lifting, carrying or sitting.  This program walks you through mobilization, flexibility, stabilization, and strengthening of the hips.', 'Foam Roller,   Tennis Ball,   Theraband: Green and Grey,  DB (5lbs+)', '', 'This program is a great addition to your current training program if you\'ve had hips issues or it can be done as a stand-alone program that a section is worked through each day of the week.', 'Hips are an area that can have a lot of misconceptions around them.  Many people are simply uneducated on their actual function.  Ball joints (hips and shoulders) are mover joints and their angle of movement is almost limitless while stabilizing joints (elbows, knees) are designed to hold and stabilize large loads.  You will notice that the largest muscle groups in the body are integrated into the hips. Which means this joint can produce a lot of power during movement.  However, many people forget that the core and stabilizing joint must be able to stabilize that load. So hips must synchronize their movement and stabilize the movement using other joints.  Many exercises found here are \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"multi-joint\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\" exercises for the body to learn movement patterns to perform such actions.', 'Core,Glutes,Hip,Hip Flexors,Low Back', NULL, 'Baseball,Basketball,Coach,Construction,Dance,Fire Fighter,Football,Golf,Grounds keeper,Gymnastics,Heavy labor,Hiking,Hockey,Hunting,Labor,Mechanic,Movers,Office administration,Oilfield operator,Paramedic,Personal trainer,Physician surgeon,Police,Racket sports,Rock climbing,Rugby,Running,Soccer,Speed Skating,Swimming,Teacher,Track/field,Travel,Truck driver,Volleyball,Weight lifting', 'https://curastream.com/wp-content/uploads/2017/10/Young-man-in-casual-office-shirt-having-hip-pain-501513686_1258x839.jpeg', 0, '2018-04-05 07:51:21', '0000-00-00 00:00:00', 0),
 (48, 'Strength-Training', 'Curastream Lean - Fat Loss Program', 'Want to melt some unwanted fat off your body? Whether it is to improve your work or sport performance, get healthier or to just look good on the beach - this program will get you there. It is functional, joint-friendly, time-efficient and when combined with proper nutrition – super effective!', 'Foam roller, ball for massage, stick, Swiss ball, jump rope, kettlebells, dumbbells, barbell, chin-up bar, squat rack or smith machine', '', 'This is a 2-day program that has you alternating between Day 1 and Day 2 each time you train. Ideally try to hit the gym 4 days per week \r\n', 'Important note Fat loss is about nutrition. Yes, a program like this can greatly accelerate your nutritional efforts, but it does not give you the freedom to eat whatever you want. You don’t have enough time in your day to out-eat poor nutrition. Here are 8 essential fat loss nutrition habits:   1.Document everything you eat – this will hold you accountable  2.Eat when you are ready for real food, not when you are bored and want a treat  3.Before you eat something, ask: “Will this move me closer or farther from my goals?” 4.Eat slow  5. Eat lean proteins and veggies first  6.Include a small amount of healthy fats (e.g. fish oil, raw nuts, avocado, olive oil, etc.) 7.  Include a small amount of “good” carbs (e.g. fruit, yams, quinoa, beans, whole grains, etc.)  8.Stop when you are satisfied, not stuffed', 'Biceps,Chest,Core,Glutes,Hamstrings,Lats,Quads,Shoulder,Triceps,Upper Back', NULL, 'Baseball,Basketball,Fire Fighter,Football,Hockey,Homemaker/ Stay at home parent,Personal trainer,Police,Rugby,Soccer,Volleyball,Weight lifting', 'https://curastream.com/wp-content/uploads/2017/10/Fitness-girl-measuring-her-waistline-532126798_1185x889.jpeg', 0, '2018-04-05 07:51:21', '0000-00-00 00:00:00', 0);
 
-ALTER TABLE `dev_cura_programs`
+ALTER TABLE `wptests_cura_programs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -42,12 +42,12 @@ ALTER TABLE `dev_cura_programs`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_programs`
+-- AUTO_INCREMENT for table `wptests_cura_programs`
 --
-ALTER TABLE `dev_cura_programs`
+ALTER TABLE `wptests_cura_programs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;COMMIT;
 
-  CREATE TABLE `dev_cura_phases` (
+  CREATE TABLE `wptests_cura_phases` (
   `id` int(11) NOT NULL,
   `program_id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -60,10 +60,10 @@ ALTER TABLE `dev_cura_programs`
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dev_cura_phases`
+-- Dumping data for table `wptests_cura_phases`
 --
 
-INSERT INTO `dev_cura_phases` (`id`, `program_id`, `name`, `duration`, `intro`, `notes`, `created_on`, `updated_on`, `order_no`) VALUES
+INSERT INTO `wptests_cura_phases` (`id`, `program_id`, `name`, `duration`, `intro`, `notes`, `created_on`, `updated_on`, `order_no`) VALUES
 (60, 37, 'Warm Up', '', 'This warm up should take approx. 5 - 7 minutes to complete.', '', '2018-10-23 18:10:21', '0000-00-00 00:00:00', 1),
 (61, 37, 'Meat and Potatoes Day 1', '', 'This is a simple \"hit all the main areas\' meat and potatoes strength program.  To gain more of a cardio/metabolic effect, use less rest between exercises and sets.', '', '2018-10-23 18:10:21', '0000-00-00 00:00:00', 2),
 (62, 37, 'Boost the Balance Day 2', '', 'This day is full of strength exercise that utilize only one side of the body at a time to increase stability while building strength.', '', '2018-10-23 18:10:21', '0000-00-00 00:00:00', 3),
@@ -83,7 +83,7 @@ INSERT INTO `dev_cura_phases` (`id`, `program_id`, `name`, `duration`, `intro`, 
 (84, 48, 'Day 2', '45-60 minutes', 'Day 2 will continue the attack on unwanted fat with a higher rep focus.', 'Follow this workout with: Interval Cardio Mode of Choice: 30-45 sec hard (7-8 on 1-10 scale), 60-90sec easy (3 on 1-10 scale). Repeat for 10-20 minutes. Choose the option best suited to your needs. Examples include: sprinting, hill sprints, bike, treadmill and elliptical.', '2018-10-23 18:10:21', '0000-00-00 00:00:00', 3);
 
 
-ALTER TABLE `dev_cura_phases`
+ALTER TABLE `wptests_cura_phases`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -91,13 +91,13 @@ ALTER TABLE `dev_cura_phases`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_phases`
+-- AUTO_INCREMENT for table `wptests_cura_phases`
 --
-ALTER TABLE `dev_cura_phases`
+ALTER TABLE `wptests_cura_phases`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=410;COMMIT;
 
 
-CREATE TABLE `dev_cura_exercises` (
+CREATE TABLE `wptests_cura_exercises` (
   `id` int(11) NOT NULL,
   `phase_id` int(11) NOT NULL,
   `order_no` int(11) NOT NULL,
@@ -117,10 +117,10 @@ CREATE TABLE `dev_cura_exercises` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dev_cura_exercises`
+-- Dumping data for table `wptests_cura_exercises`
 --
 
-INSERT INTO `dev_cura_exercises` (`id`, `phase_id`, `order_no`, `order_field`, `name`, `rest`, `sets_reps`, `variation`, `equipment`, `special_instructions`, `exercise_video_url`, `file_url`, `file_name`, `created_on`, `updated_on`, `exercise_video_id`) VALUES
+INSERT INTO `wptests_cura_exercises` (`id`, `phase_id`, `order_no`, `order_field`, `name`, `rest`, `sets_reps`, `variation`, `equipment`, `special_instructions`, `exercise_video_url`, `file_url`, `file_name`, `created_on`, `updated_on`, `exercise_video_id`) VALUES
 (92, 60, 0, '1.', 'Hamstring Roll', '0', '1 x 10 rolls per leg', 'none', 'Foam Roller', 'none', 'https://player.vimeo.com/external/192480001.hd.mp4?s=641abe4f7bbf253b3bc3804e5ee34d7c3c96681a&profile_id=174', '', '', '2018-10-22 18:15:09', '0000-00-00 00:00:00', 410),
 (93, 60, 1, '2.', 'Calf Roll', '0', '1 x 10 rolls per leg', 'none', 'Foam Roller', 'none', 'https://player.vimeo.com/external/189690490.hd.mp4?s=2de1a16465bc0f65c830810d7d69e80ae73bf33a&profile_id=174', '', '', '2018-10-22 18:15:08', '0000-00-00 00:00:00', 249),
 (94, 60, 2, '3.', 'Piriformis Roll', '0', '1 x 8 rolls per leg', 'none', 'Foam Roller', 'none', 'https://player.vimeo.com/external/189719631.hd.mp4?s=5e3bc410e3c0f3e11be91328a8ee750c4dd0ed80&profile_id=174', '', '', '2018-10-22 18:15:11', '0000-00-00 00:00:00', 330),
@@ -260,7 +260,7 @@ INSERT INTO `dev_cura_exercises` (`id`, `phase_id`, `order_no`, `order_field`, `
 (254, 84, 4, '3a', 'KB Swings', '30 seconds', '3 x 10-20', 'Weighted hip hinge (start with this if you are new to swings)', 'Kettlebell', '', 'https://player.vimeo.com/external/189682406.hd.mp4?s=9af64bc878366d36eca141ac79d8c6adab6dfb25&profile_id=174', '', '', '2018-10-22 18:15:10', '0000-00-00 00:00:00', 301),
 (255, 84, 5, '3b', 'Swiss Ball Stir the Pot', '30 seconds', '3 x 3-6 (1 rep = 1 slow circle in each direction)', 'Front Plank, Swiss ball rollouts', 'Swiss ball', 'Increase circle size to make it harder or decrease size to make it easier.', 'https://player.vimeo.com/external/189661274.hd.mp4?s=93e12453b7f1eea5dcef243300e1daaa39833fe4&profile_id=174', '', '', '2018-10-22 18:15:13', '0000-00-00 00:00:00', 362);
 
-ALTER TABLE `dev_cura_exercises`
+ALTER TABLE `wptests_cura_exercises`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -268,12 +268,12 @@ ALTER TABLE `dev_cura_exercises`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_exercises`
+-- AUTO_INCREMENT for table `wptests_cura_exercises`
 --
-ALTER TABLE `dev_cura_exercises`
+ALTER TABLE `wptests_cura_exercises`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2617;COMMIT;
 
-  CREATE TABLE `dev_cura_body_parts` (
+  CREATE TABLE `wptests_cura_body_parts` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `status` enum('0','1') DEFAULT NULL,
@@ -282,10 +282,10 @@ ALTER TABLE `dev_cura_exercises`
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dev_cura_body_parts`
+-- Dumping data for table `wptests_cura_body_parts`
 --
 
-INSERT INTO `dev_cura_body_parts` (`id`, `name`, `status`, `created_on`, `updated_on`) VALUES
+INSERT INTO `wptests_cura_body_parts` (`id`, `name`, `status`, `created_on`, `updated_on`) VALUES
 (1, 'Knee', NULL, '2017-08-17 08:26:49', '0000-00-00 00:00:00'),
 (3, 'Neck', NULL, '2017-08-17 13:43:46', '0000-00-00 00:00:00'),
 (4, 'Wrist Hand', NULL, '2017-08-17 13:46:03', '0000-00-00 00:00:00'),
@@ -313,9 +313,9 @@ INSERT INTO `dev_cura_body_parts` (`id`, `name`, `status`, `created_on`, `update
 --
 
 --
--- Indexes for table `dev_cura_body_parts`
+-- Indexes for table `wptests_cura_body_parts`
 --
-ALTER TABLE `dev_cura_body_parts`
+ALTER TABLE `wptests_cura_body_parts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -323,13 +323,13 @@ ALTER TABLE `dev_cura_body_parts`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_body_parts`
+-- AUTO_INCREMENT for table `wptests_cura_body_parts`
 --
-ALTER TABLE `dev_cura_body_parts`
+ALTER TABLE `wptests_cura_body_parts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;COMMIT;
 
 
-  CREATE TABLE `dev_cura_exercise_videos` (
+  CREATE TABLE `wptests_cura_exercise_videos` (
   `id` int(11) NOT NULL,
   `category_name` varchar(255) NOT NULL,
   `assoc_body_part_id` varchar(255) NOT NULL,
@@ -343,10 +343,10 @@ ALTER TABLE `dev_cura_body_parts`
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dev_cura_exercise_videos`
+-- Dumping data for table `wptests_cura_exercise_videos`
 --
 
-INSERT INTO `dev_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_id`, `assoc_body_parts_name`, `name`, `description`, `url`, `created_on`, `updated_on`, `videoThumbnail`) VALUES
+INSERT INTO `wptests_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_id`, `assoc_body_parts_name`, `name`, `description`, `url`, `created_on`, `updated_on`, `videoThumbnail`) VALUES
 (1, 'Strength', '11', 'Quads', 'Zercher Squat', '', 'https://player.vimeo.com/external/189713304.hd.mp4?s=0405fc72ff1b53f668a8c678aabd2a63aa1c5d06&profile_id=174', '2018-09-24 12:52:36', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600129779_640.jpg'),
 (2, 'Strength', '15', 'Shoulder', 'Y Raises', 'Shoulder Exercise.', 'https://player.vimeo.com/external/189836304.hd.mp4?s=18417cfd368d854e3dbd2537c580e6e44b25af7c&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600297392_640.jpg'),
 (3, 'Stretch', '13', 'Ankle Foot', 'Toe Flexion Stretch', '', 'https://player.vimeo.com/external/189644755.hd.mp4?s=274aedf0111472087ce07eb739802b40952f83cb&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/602362745_640.jpg'),
@@ -524,7 +524,7 @@ INSERT INTO `dev_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_
 (177, 'Strength', '9', 'Forearm', 'Forearm DB Eccentric Internal Rotation', '', 'https://player.vimeo.com/external/189668490.hd.mp4?s=773d9534e36f88a3bc7017ecf8a8a0c4d7fe23ae&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600069332_640.jpg'),
 (178, 'Strength', '9', 'Forearm', 'Forearm DB Eccentric External Rotation', '', 'https://player.vimeo.com/external/189668488.hd.mp4?s=c03fdc81dd0f8c377edd1751ebad88dd3a557569&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600069636_640.jpg'),
 (179, 'Strength', '9', 'Forearm', 'Forearm Band Internal Rotation', '', 'https://player.vimeo.com/external/189668487.hd.mp4?s=2139b60a04693308614c6af495a36dc69811a61b&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600069325_640.jpg');
-INSERT INTO `dev_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_id`, `assoc_body_parts_name`, `name`, `description`, `url`, `created_on`, `updated_on`, `videoThumbnail`) VALUES
+INSERT INTO `wptests_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_id`, `assoc_body_parts_name`, `name`, `description`, `url`, `created_on`, `updated_on`, `videoThumbnail`) VALUES
 (180, 'Strength', '9', 'Forearm', 'Forearm Band External Rotation', '', 'https://player.vimeo.com/external/189668486.hd.mp4?s=06d80426f1df00724e858efd2c3a7d0ea8b28247&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600069331_640.jpg'),
 (181, 'Stretch', '9', 'Forearm', 'Forearm Flexor Stretch', '', 'https://player.vimeo.com/external/189719295.hd.mp4?s=c06a23aa405a8ca2456851b5a03f57dc0512e317&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600138192_640.jpg'),
 (182, 'Stretch', '9', 'Forearm', 'Forearm Extensor Stretch', '', 'https://player.vimeo.com/external/189719293.hd.mp4?s=04d0a51c886e3372442ea88394de2a09f3b3c39e&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600138184_640.jpg'),
@@ -700,7 +700,7 @@ INSERT INTO `dev_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_
 (354, 'Stability', '16,17,19', 'Low Back,Hamstrings,Hip', 'Airplane', '', 'https://player.vimeo.com/external/189682355.hd.mp4?s=ff67f49c7f8d9039c353968c06a002718643d9b1&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600090551_640.jpg'),
 (355, 'Test', '16,17,19', 'Low Back,Hamstrings,Hip', 'Thomas Test', '', 'https://player.vimeo.com/external/189682432.hd.mp4?s=33731251f777233f027c6ffea542c23113f45bd9&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600091117_640.jpg'),
 (356, 'Test', '16,17,19', 'Low Back,Hamstrings,Hip', 'Leg Length Discrepancy Test', '', 'https://player.vimeo.com/external/189682408.hd.mp4?s=711565f5af429b452f246aaafe7972de9111bd78&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600091007_640.jpg');
-INSERT INTO `dev_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_id`, `assoc_body_parts_name`, `name`, `description`, `url`, `created_on`, `updated_on`, `videoThumbnail`) VALUES
+INSERT INTO `wptests_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_id`, `assoc_body_parts_name`, `name`, `description`, `url`, `created_on`, `updated_on`, `videoThumbnail`) VALUES
 (357, 'Strength', '10,20,19', 'Core,Glutes,Hip', 'X-Band Walks', '', 'https://player.vimeo.com/external/189661279.hd.mp4?s=1e3f69148b9e7dc9c45dfc250354ebedec7feea3&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600057855_640.jpg'),
 (358, 'Strength', '10', 'Core', 'Woodchop', '', 'https://player.vimeo.com/external/189661278.hd.mp4?s=216e3bae6208d2117153cac40c775389ca63aee4&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600057276_640.jpg'),
 (359, 'Strength', '10', 'Core', 'Woodchop with Hip Turn', '', 'https://player.vimeo.com/external/189661277.hd.mp4?s=b5cf874a5dd1040d4e9392d1c32fde4815e46c4a&profile_id=174', '2018-09-24 12:52:47', '0000-00-00 00:00:00', 'https://i.vimeocdn.com/video/600057513_640.jpg'),
@@ -784,9 +784,9 @@ INSERT INTO `dev_cura_exercise_videos` (`id`, `category_name`, `assoc_body_part_
 --
 
 --
--- Indexes for table `dev_cura_exercise_videos`
+-- Indexes for table `wptests_cura_exercise_videos`
 --
-ALTER TABLE `dev_cura_exercise_videos`
+ALTER TABLE `wptests_cura_exercise_videos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -794,12 +794,12 @@ ALTER TABLE `dev_cura_exercise_videos`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_exercise_videos`
+-- AUTO_INCREMENT for table `wptests_cura_exercise_videos`
 --
-ALTER TABLE `dev_cura_exercise_videos`
+ALTER TABLE `wptests_cura_exercise_videos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=435;COMMIT;
 
-CREATE TABLE `dev_cura_how_it_happened` (
+CREATE TABLE `wptests_cura_how_it_happened` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `status` enum('0','1') DEFAULT NULL,
@@ -808,10 +808,10 @@ CREATE TABLE `dev_cura_how_it_happened` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dev_cura_how_it_happened`
+-- Dumping data for table `wptests_cura_how_it_happened`
 --
 
-INSERT INTO `dev_cura_how_it_happened` (`id`, `name`, `status`, `created_on`, `updated_on`) VALUES
+INSERT INTO `wptests_cura_how_it_happened` (`id`, `name`, `status`, `created_on`, `updated_on`) VALUES
 (1, 'Falling', NULL, '2017-08-17 08:42:43', '0000-00-00 00:00:00'),
 (2, 'Being sedentary', NULL, '2017-08-17 13:53:30', '0000-00-00 00:00:00'),
 (3, 'Catching heavy object', NULL, '2017-08-17 13:53:42', '0000-00-00 00:00:00'),
@@ -852,9 +852,9 @@ INSERT INTO `dev_cura_how_it_happened` (`id`, `name`, `status`, `created_on`, `u
 --
 
 --
--- Indexes for table `dev_cura_how_it_happened`
+-- Indexes for table `wptests_cura_how_it_happened`
 --
-ALTER TABLE `dev_cura_how_it_happened`
+ALTER TABLE `wptests_cura_how_it_happened`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -862,13 +862,13 @@ ALTER TABLE `dev_cura_how_it_happened`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_how_it_happened`
+-- AUTO_INCREMENT for table `wptests_cura_how_it_happened`
 --
-ALTER TABLE `dev_cura_how_it_happened`
+ALTER TABLE `wptests_cura_how_it_happened`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;COMMIT;
 
 
-CREATE TABLE `dev_cura_sport_occupation` (
+CREATE TABLE `wptests_cura_sport_occupation` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
@@ -878,10 +878,10 @@ CREATE TABLE `dev_cura_sport_occupation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dev_cura_sport_occupation`
+-- Dumping data for table `wptests_cura_sport_occupation`
 --
 
-INSERT INTO `dev_cura_sport_occupation` (`id`, `name`, `type`, `status`, `created_on`, `updated_on`) VALUES
+INSERT INTO `wptests_cura_sport_occupation` (`id`, `name`, `type`, `status`, `created_on`, `updated_on`) VALUES
 (1, 'Swimming', 'sport', NULL, '2017-08-17 08:43:06', '0000-00-00 00:00:00'),
 (2, 'Baseball', 'sport', NULL, '2017-08-17 15:09:21', '0000-00-00 00:00:00'),
 (3, 'Basketball', 'sport', NULL, '2017-08-17 15:09:29', '0000-00-00 00:00:00'),
@@ -929,9 +929,9 @@ INSERT INTO `dev_cura_sport_occupation` (`id`, `name`, `type`, `status`, `create
 --
 
 --
--- Indexes for table `dev_cura_sport_occupation`
+-- Indexes for table `wptests_cura_sport_occupation`
 --
-ALTER TABLE `dev_cura_sport_occupation`
+ALTER TABLE `wptests_cura_sport_occupation`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -939,12 +939,12 @@ ALTER TABLE `dev_cura_sport_occupation`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_sport_occupation`
+-- AUTO_INCREMENT for table `wptests_cura_sport_occupation`
 --
-ALTER TABLE `dev_cura_sport_occupation`
+ALTER TABLE `wptests_cura_sport_occupation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;COMMIT;
 
-  CREATE TABLE `dev_cura_user_fav_videos` (
+  CREATE TABLE `wptests_cura_user_fav_videos` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `exercise_id` int(11) NOT NULL,
@@ -952,10 +952,10 @@ ALTER TABLE `dev_cura_sport_occupation`
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `dev_cura_user_fav_videos`
+-- Dumping data for table `wptests_cura_user_fav_videos`
 --
 
-INSERT INTO `dev_cura_user_fav_videos` (`id`, `user_id`, `exercise_id`, `exercise_name`) VALUES
+INSERT INTO `wptests_cura_user_fav_videos` (`id`, `user_id`, `exercise_id`, `exercise_name`) VALUES
 (9, 5, 1, 'Zercher Squat'),
 (23, 5, 50, 'Wrist PROM Flexion'),
 (24, 5, 279, 'Dynamic Quad Stretch'),
@@ -1024,9 +1024,9 @@ INSERT INTO `dev_cura_user_fav_videos` (`id`, `user_id`, `exercise_id`, `exercis
 --
 
 --
--- Indexes for table `dev_cura_user_fav_videos`
+-- Indexes for table `wptests_cura_user_fav_videos`
 --
-ALTER TABLE `dev_cura_user_fav_videos`
+ALTER TABLE `wptests_cura_user_fav_videos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1034,7 +1034,7 @@ ALTER TABLE `dev_cura_user_fav_videos`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_user_fav_videos`
+-- AUTO_INCREMENT for table `wptests_cura_user_fav_videos`
 --
-ALTER TABLE `dev_cura_user_fav_videos`
+ALTER TABLE `wptests_cura_user_fav_videos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;COMMIT;
