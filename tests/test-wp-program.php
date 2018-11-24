@@ -66,6 +66,26 @@ class WP_Program_Test extends WP_UnitTestCase
     	}
     }
 
+    public function test_get_all_phases(){
+    	$programs = new program();
+    	$allPhases = $programs->getAllPhases();
+    	assert(count($allPhases) == 17);
+    	foreach ($allPhases as $key) {
+    		if($key->id != NULL){
+    			$comparePhase = $programs->getPhaseById($key->id);
+    			assert($key->id == $compareProg->id );
+    			assert($key->programId == $compareProg->programId);
+    			assert($key->name == $compareProg->name);
+    			assert($key->duration == $compareProg->duration || $key->duration == '');
+    			assert($key->intro == $compareProg->intro || $key->intro == '');
+    			assert($key->notes == $compareProg->notes || $key->notes == '');
+    		}
+    		else{
+    			assert(false);
+    		}
+    	}
+    }
+
 
 
 }
