@@ -120,6 +120,14 @@ class WP_Program_Test extends WP_UnitTestCase
     	assert($isCustom->custom == 1);
     }
 
+     public function test_make_general(){
+    	$programs = new program();
+    	$programs->makeGeneral(37);
+    	$isCustom = $programs->getProgramById(37);
+    	assert($isCustom->custom == 0);
+    	$this->reset_database();
+    }
+
 
 
 }
