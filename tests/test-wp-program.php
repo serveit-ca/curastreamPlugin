@@ -102,7 +102,7 @@ class WP_Program_Test extends WP_UnitTestCase
     			assert($key->sets_reps == $compareExercise->sets_reps || $key->sets_reps == '');
     			assert($key->variation == $compareExercise->variation || $key->variation == '');
     			assert($key->equipment == $compareExercise->equipment || $key->equipment == '');
-    			assert($key->special_insturctions == $compareExercise->special_insturctions || $key->special_insturctions == '');
+    			assert($key->special_instructions == $compareExercise->special_instructions || $key->special_instructions == '');
     			assert($key->exercise_video_url == $compareExercise->exercise_video_url || $key->exercise_video_url == '');
     			assert($key->file_url == $compareExercise->file_url || $key->file_url == '');
     			assert($key->file_name == $compareExercise->file_name || $key->file_name == '');
