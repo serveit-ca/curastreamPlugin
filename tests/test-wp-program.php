@@ -72,7 +72,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	assert(count($allPhases) == 17);
     	foreach ($allPhases as $key) {
     		if($key->id != NULL){
-    			$comparePhase = $programs->getPhaseById($key->id);
+    			$comparePhase = $programs->getAPhaseById($key->id);
     			assert($key->id == $compareProg->id );
     			assert($key->programId == $compareProg->programId);
     			assert($key->name == $compareProg->name);
