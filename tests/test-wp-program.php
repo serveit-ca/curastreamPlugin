@@ -117,7 +117,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	$programs = new program();
     	$programs->makeCustom(37);
     	$isCustom = $programs->getProgramById(37);
-    	assert($isCustom->customProgram == 1);
+    	assert($isCustom->custom == 1);
     }
 
 
