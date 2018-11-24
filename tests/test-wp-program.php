@@ -90,7 +90,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	$programs = new program();
     	$allExercises = $programs->getAllExercises();
     	assert(count($allExercises) == 138);
-    	foreach ($allPrograms as $key) {
+    	foreach ($allExercises as $key) {
     		if($key->id != NULL){
     			$compareExercise = $programs->getAnExerciseById($key->id);
     			assert($key->id == $compareExercise->id );
