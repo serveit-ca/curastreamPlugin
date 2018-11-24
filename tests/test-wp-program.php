@@ -95,10 +95,17 @@ class WP_Program_Test extends WP_UnitTestCase
     			$compareExercise = $programs->getAnExerciseById($key->id);
     			assert($key->id == $compareExercise->id );
     			assert($key->name == $compareExercise->name);
-    			assert($key->description == $compareExercise->description || $key->description == '');
-    			assert($key->body_part == $compareExercise->body_part || $key->body_part == '');
-    			assert($key->howItHappen == $compareExercise->howItHappen || $key->howItHappen == '');
-    			assert($key->thumnailUrl == $compareExercise->thumnailUrl);
+    			assert($key->phase_id == $compareExercise->phase_id);
+    			assert($key->order_no == $compareExercise->order_no);
+    			assert($key->order_field == $compareExercise->order_field);
+    			assert($key->rest == $compareExercise->rest || $key->rest == '');
+    			assert($key->sets_reps == $compareExercise->sets_reps || $key->sets_reps == '');
+    			assert($key->variation == $compareExercise->variation || $key->variation == '');
+    			assert($key->equipment == $compareExercise->equipment || $key->equipment == '');
+    			assert($key->special_insturctions == $compareExercise->special_insturctions || $key->special_insturctions == '');
+    			assert($key->exercise_video_url == $compareExercise->exercise_video_url || $key->exercise_video_url == '');
+    			assert($key->file_url == $compareExercise->file_url || $key->file_url == '');
+    			assert($key->file_name == $compareExercise->file_name || $key->file_name == '');
     		}
     		else{
     			assert(false);
