@@ -73,12 +73,12 @@ class WP_Program_Test extends WP_UnitTestCase
     	foreach ($allPhases as $key) {
     		if($key->id != NULL){
     			$comparePhase = $programs->getAPhaseById($key->id);
-    			assert($key->id == $compareProg->id );
-    			assert($key->programId == $compareProg->programId);
-    			assert($key->name == $compareProg->name);
-    			assert($key->duration == $compareProg->duration || $key->duration == '');
-    			assert($key->intro == $compareProg->intro || $key->intro == '');
-    			assert($key->notes == $compareProg->notes || $key->notes == '');
+    			assert($key->id == $comparePhase->id );
+    			assert($key->programId == $comparePhase->programId);
+    			assert($key->name == $comparePhase->name);
+    			assert($key->duration == $comparePhase->duration || $key->duration == '');
+    			assert($key->intro == $comparePhase->intro || $key->intro == '');
+    			assert($key->notes == $comparePhase->notes || $key->notes == '');
     		}
     		else{
     			assert(false);
