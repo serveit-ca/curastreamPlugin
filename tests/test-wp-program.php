@@ -86,6 +86,26 @@ class WP_Program_Test extends WP_UnitTestCase
     	}
     }
 
+    public function test_get_all_exercises(){
+    	$programs = new program();
+    	$allExercises = $programs->getAllExercises();
+    	assert(count($allExercises) == 138);
+    	foreach ($allPrograms as $key) {
+    		if($key->id != NULL){
+    			$compareExercise = $programs->getAnExerciseById($key->id);
+    			assert($key->id == $compareExercise->id );
+    			assert($key->name == $compareExercise->name);
+    			assert($key->description == $compareExercise->description || $key->description == '');
+    			assert($key->body_part == $compareExercise->body_part || $key->body_part == '');
+    			assert($key->howItHappen == $compareExercise->howItHappen || $key->howItHappen == '');
+    			assert($key->thumnailUrl == $compareExercise->thumnailUrl);
+    		}
+    		else{
+    			assert(false);
+    		}
+    	}
+    }
+
 
 
 }

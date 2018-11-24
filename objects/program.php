@@ -250,10 +250,10 @@ public $tempUserId;
 			$anExercise->id = $row->id;
 			$anExercise->name = $row->name;
 			$anExercise->description = $row->description;
-			$anExercise->bodyPart = $row->assoc_body_parts_name;
+			$anExercise->body_part = $row->assoc_body_parts_name;
 			$anExercise->category = $row->category_name;
 			$anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
-			$anExercise->thumbnailUrl = $row->videoThumbnail;
+			$anExercise->thumbnailUrl = $row->exercise_video_url;
 			$exercies[] = $anExercise;
         }
 			return $exercies;
