@@ -113,6 +113,13 @@ class WP_Program_Test extends WP_UnitTestCase
     	}
     }
 
+    public function test_make_custom(){
+    	$programs = new program();
+    	$programs->makeCustom(37);
+    	$isCustom = $programs->getProgramById(37);
+    	assert($isCustom->customProgram == 1);
+    }
+
 
 
 }
