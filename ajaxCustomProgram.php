@@ -202,7 +202,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 
-	    	$programs->updateExercise($_POST['order_no'], $_POST['phase_id'], $_POST['order_field'], $_POST['name'], $_POST['rest'], $_POST['sets_reps'], $_POST['variation'],  $_POST['equipment'], $_POST['special_instructions'], $_POST['exercise_video_url'], $_POST['file_url'], $_POST['file_name'], $_POST['exerciseId']);
+	    	$programs->updateExercise($_POST['order_no'], $_POST['phase_id'], $_POST['order_field'], $_POST['name'], $_POST['rest'], $_POST['sets_reps'], $_POST['variation'],  $_POST['equipment'], $_POST['special_instructions'], $_POST['exercise_video_url'], $_POST['file_url'], $_POST['file_name'], $_POST['exercise_video_id'], $_POST['exerciseId']);
 	    	echo "Success";
 	    	wp_die();
 	    }

@@ -1037,7 +1037,7 @@ public function duplicateGeneralProgram($existingProgram){
 				// If Order is Between Initial -1  and Final Inclusive
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current exercise Order_no -1
-					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL,NULL, NULL, NULL, NULL, NULL, $row->id);
+					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
 					echo "exercise: " . $row->name . " Moved Forward.";
 				}//End If	
 				else{
