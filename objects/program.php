@@ -1037,7 +1037,7 @@ public function duplicateGeneralProgram($existingProgram){
 				// If Order is Between Initial -1  and Final Inclusive
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current exercise Order_no -1
-					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL,NULL, NULL, NULL, NULL, NULL, $row->id);
+					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
 					echo "exercise: " . $row->name . " Moved Forward.";
 				}//End If	
 				else{
@@ -1339,12 +1339,14 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_user_programs";
 
         $updateInfo = $wpdb->get_row("SELECT saved_prog_name, saved_prog_dur, saved_prog_type, completed FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programObj->id", ARRAY_A);
+         if (is_null($updateInfo)){
 
+            } else{
         $programObj->name = $updateInfo['saved_prog_name'];
         $programObj->duration = $updateInfo['saved_prog_dur'];
         $programObj->type = $updateInfo['saved_prog_type'];
         $programObj->completed = $updateInfo['completed'];
-
+    }
         return $programObj;
     }
 }
