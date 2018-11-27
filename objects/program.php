@@ -1248,7 +1248,7 @@ public function duplicateGeneralProgram($existingProgram){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
 
-        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE user_id = $userId");
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE completed = 0 AND user_id = $userId");
 
         $programs = array();
         $tableName = $wpdb->prefix . "cura_programs";
@@ -1281,7 +1281,7 @@ public function duplicateGeneralProgram($existingProgram){
 
     }
 
-    public function getCompletedProgramsAssignedToUser($userId){
+    public function getGeneralCompletedProgramsAssignedToUser($userId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
 
@@ -1291,7 +1291,44 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_programs";
         foreach ($programResults as $row) {
 
-            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id", ARRAY_A);
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 0", ARRAY_A);
+            if (is_null($aProgram)){
+
+            } else{
+           $program = new program();
+            $program->id = $aProgram['id'];
+            $program->name = $aProgram['name'];
+            $program->type = $aProgram['type'];
+            $program->description = $aProgram['description'];
+            $program->equipment = $aProgram['equipment'];
+            $program->duration = $aProgram['duration'];
+            $program->weekly_plan = $aProgram['weekly_plan'];
+            $program->life_style = $aProgram['life_style'];
+            $program->assoc_body_part_id = $aProgram['assoc_body_part_id'];
+            $program->how_it_happen = $aProgram['how_it_happen'];
+            $program->sports_occupation = $aProgram['sports_occupation'];
+            $program->thumbnail = $aProgram['thumbnail'];
+            $program->state = $aProgram['state'];
+            $program->current = $program->checkCurrent($userId, $aProgram['id']);
+            $program->completed = $program->checkCompleted($userId, $aProgram['id']);
+            $programs[] = $program;
+        }
+        }
+            return $programs;
+
+    }
+
+    public function getCustomCompletedProgramsAssignedToUser($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE completed = 1 AND user_id = $userId");
+
+        $programs = array();
+        $tableName = $wpdb->prefix . "cura_programs";
+        foreach ($programResults as $row) {
+
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 1", ARRAY_A);
             if (is_null($aProgram)){
 
             } else{
@@ -1339,9 +1376,9 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_user_programs";
 
         $updateInfo = $wpdb->get_row("SELECT saved_prog_name, saved_prog_dur, saved_prog_type, completed FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programObj->id", ARRAY_A);
-         if (is_null($updateInfo)){
+        if (is_null($updateInfo)){
 
-            } else{
+        } else{
         $programObj->name = $updateInfo['saved_prog_name'];
         $programObj->duration = $updateInfo['saved_prog_dur'];
         $programObj->type = $updateInfo['saved_prog_type'];
