@@ -48,7 +48,7 @@ require_once ("objects/exercise.php");
       	$status= "Success";
       		// get the original program 
       		$newProgramId = $programs->duplicateCustomProgram($_POST['existingProgram'],$_POST['temp_user_id']);
-      
+      			$programs->makeCustom($newProgramId);
       		$modifyProgram = $programs->getProgramById($newProgramId);
     	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
       		echo $customProgramForm;
