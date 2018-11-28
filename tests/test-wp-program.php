@@ -154,7 +154,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	$this->reset_database();
     }
 
-    public function test_update_program(){
+    public function test_update_exercise(){
     	$programs = new program();
     	$this->reset_database();
     	$ogExercise = $programs->getAnExerciseById(92);
