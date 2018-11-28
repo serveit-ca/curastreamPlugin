@@ -167,6 +167,14 @@ class WP_Program_Test extends WP_UnitTestCase
     	$this->reset_database();
     }
 
+    public function test_duplicate_general_program(){
+    	$programs = new program();
+    	$ogProg = $programs->getProgramById(37);
+    	$newProg = $programs->duplicateProgram(37);
+
+    	assert($ogProg == $newProg);
+    }
+
 
 
 }
