@@ -7,14 +7,14 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 
 
-/* This fucntion is sued to copy, save and dispaly a custom program */
+/* This fucntion is sued to copy, save and dispaly a general program */
 	      function copyAndEditGeneralExisting(){
 	      	global $programs;
 	      	global $customCreation;
 	      	$status= "Success";
 	      		// get the original program 
 	      		$newProgramId = $programs->duplicateGeneralProgram($_POST['existingProgram']);
-	      		
+	      		$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 1,null, $newProgramId);
 	      		$modifyProgram = $programs->getProgramById($newProgramId);
 	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
 	      		echo $customProgramForm;
@@ -40,6 +40,40 @@ require_once ("objects/exercise.php");
 
 	    add_action( 'wp_ajax_copyAndEditGeneralExisting', 'copyAndEditGeneralExisting' );
 	    add_action( 'wp_ajax_copyAndEditGeneralExisting', 'copyAndEditGeneralExisting' );
+
+    /* This fucntion is sued to copy, save and dispaly a custom program */
+      function copyAndEditCustomExisting(){
+      	global $programs;
+      	global $customCreation;
+      	$status= "Success";
+      		// get the original program 
+      		$newProgramId = $programs->duplicateCustomProgram($_POST['existingProgram'],$_POST['temp_user_id']);
+      
+      		$modifyProgram = $programs->getProgramById($newProgramId);
+    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
+      		echo $customProgramForm;
+      	$phases = $programs->getPhasesByProgramId($newProgramId);
+      		foreach ($phases as $aPhase){
+      			echo $customCreation->addPhase();
+      			echo '<div class="phaseContainer">';
+      		    echo $customCreation->displayPhase($aPhase);
+      		    // Get the Exercise 
+      		    $exercises = $programs->getExercisesByPhaseId($aPhase->id);
+      		    // got through each exercise 
+      		    foreach ($exercises as $exercise){
+      		    // Print out the exercise 
+      		    	echo $customCreation->addExercise();
+      		    	echo $customCreation->displayExercise($exercise);
+      		    }
+      		   	 echo $customCreation->addExercise();
+      		 	echo '</div>';
+      		 }
+      		 echo $customCreation->addPhase();
+      		wp_die();	      
+      	}
+
+	    add_action( 'wp_ajax_copyAndEditCustomExisting', 'copyAndEditCustomExisting' );
+	    add_action( 'wp_ajax_copyAndEditCustomExisting', 'copyAndEditCustomExisting' );
 
 	     /* This fucntion is sued to copy, save and dispaly a custom program */
 	      function addPhaseToProgram(){
@@ -114,6 +148,7 @@ require_once ("objects/exercise.php");
 	    	global $programs;
 	    	global $customCreation;
 	    	$newProgramId = $programs->createProgram($_POST['programName']);
+	    	$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 1,null, $newProgramId);
 	    	$newProgram = $programs->getProgramById($newProgramId);
 	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram);
 	      		echo $customProgramForm;
@@ -129,6 +164,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$newProgramId = $programs->createProgram($_POST['programName']);
 	    	$programs->makeCustom($newProgramId);
+	    	$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 1,$_POST['temp_user_id'], $newProgramId);
 	    	$newProgram = $programs->getProgramById($newProgramId);
 	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram);
 	      		echo $customProgramForm;
@@ -174,7 +210,7 @@ require_once ("objects/exercise.php");
 	    function updateAProgram(){
 	    	global $programs;
 	    	global $customCreation;
-	    	$programs->updateProgram($_POST['name'], $_POST['type'], $_POST['description'], $_POST['equipment'], $_POST['duration'], $_POST['weekly_plan'], $_POST['life_style'], $_POST['assoc_body_part_id'],  $_POST['how_it_happen'], $_POST['sports_occupation'], $_POST['thumbnail'], $_POST['state'], $_POST['programId']);
+	    	$programs->updateProgram($_POST['name'], $_POST['type'], $_POST['description'], $_POST['equipment'], $_POST['duration'], $_POST['weekly_plan'], $_POST['life_style'], $_POST['assoc_body_part_id'],  $_POST['how_it_happen'], $_POST['sports_occupation'], $_POST['thumbnail'], $_POST['state'],$_POST['temp_user_id'], $_POST['programId']);
 	    	echo "Success";
 	    	wp_die();
 	    }
@@ -293,6 +329,7 @@ require_once ("objects/exercise.php");
 	    	global $customCreation;
 	    	$status = "Success";
 	    	$programs->makeCustom($_POST['programId']);
+	    	$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 0,null, $_POST['programId']);
 	    	$programs->assignProgramToUser($_POST['programId'], $_POST['userId']);
 
 	    	echo "Success";
@@ -302,6 +339,19 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_assignProgram', 'assignProgram' );
 	    add_action( 'wp_ajax_nopriv_assignProgram', 'assignProgram');
 
+	    function deleteCustomProgram(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+	    	$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 1,null, $_POST['programId']);
+	    	$programs->removeProgramFromUser($_POST['programId'], $_POST['userId']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_deleteCustomProgram', 'deleteCustomProgram' );
+	    add_action( 'wp_ajax_nopriv_deleteCustomProgram', 'deleteCustomProgram');
 	    // This function makes a custom program a general program
 
 	    function makeProgGeneral(){

@@ -55,7 +55,7 @@ jQuery(".custom_modifyExisting").on('click', function(event){
 		jQuery(".customProgram_createNewOrCopy").addClass("hidden");
 	});
 jQuery(".customProgram_selectUser").on('change', function(event){
-		if(JS_DEBUG){console.log("Step 2: Clicked Edit Existing Custom Program Button");}
+		if(JS_DEBUG){console.log("Step 3: Selected a User ");}
 		jQuery(".customProgram_createNewOrCopy").removeClass("hidden");
 	});
 ///////////////////////// Fuctions used on the Custom Program Creation Page - Call to Actions ///////////////////////
@@ -95,13 +95,13 @@ jQuery("#customProgram_startfromScratch").on('click', function(event){
 		if(JS_DEBUG){console.log("Step 4: Clicked Start a Custom Program from customProgram_startfromScratch");}
 		
 		var userName = jQuery("#selectUser").select2('data');
-
 		jQuery(".alertArea").append('<div class="alertLog alertNotice">Creating a custom program from scratch for: '+userName+'</div>');
-		var programName = "Custom Program for "+userName[0].text; 
+		var programName = "Custom Program for "+userName[0].text;  
 		console.log(programName); 
 		var data = {
 		'action': 'createNewCustomProgram',
-		'programName': programName
+		'programName': programName,
+		'temp_user_id':userName[0].id
 		};
 	// Post to Ajax
 	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
@@ -125,6 +125,34 @@ jQuery("#customProgram_startfromScratch").on('click', function(event){
 jQuery("#generalProgram_edit").on('click', function(event){
 		if(JS_DEBUG){console.log("Step 3: Clicked edit a general Program generalProgram_edit");}
 		var programID = jQuery("#generalExistingProgramEdit").val();
+		console.log("Program ID"+ programID);
+		
+		jQuery(".alertArea").append('<div class="alertLog alertNotice">Editing the general program with the id of '+programID+'</div>');
+		var data = {
+		'action': 'modifyExisitngProgram',
+		'programId': programID
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			//console.log("Data: "+ data);
+			//console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response !=null){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">General Program with id of '+ programID +' loaded</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage
+			jQuery(".programEditingArea").html(response);
+		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program not loaded - Error code: AJAX - modifyExisitngProgram</div>');
+			}
+		}
+		});
+	}); 
+jQuery("#customProgram_edit").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 3: Clicked edit a Custom Program customProgram_edit");}
+		var programID = jQuery("#customExistingProgramEdit").val();
 		console.log("Program ID"+ programID);
 		
 		jQuery(".alertArea").append('<div class="alertLog alertNotice">Editing the general program with the id of '+programID+'</div>');
@@ -175,7 +203,38 @@ jQuery("#generalProgram_copyAndedit").on('click', function(event){
 			jQuery(".programEditingArea").html(response);
 		
 			}else{
-				jQuery(".alertArea").append('<div class="alertLog alertError"> Program not loaded - Error code: AJAX - modifyExisitngProgram</div>');
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program not loaded - Error code: AJAX - copyAndEditGeneralExisting</div>');
+			}
+		}
+		});
+	}); 
+jQuery("#customProgram_copyAndedit").on('click', function(event){
+		if(JS_DEBUG){console.log("Step 4: Clicked Copy an Existing Program and edit from  customProgram_copyAndedit");}
+		var programID = jQuery("#existingProgram").val();
+		var userName = jQuery("#selectUser").select2('data');
+		console.log("Program ID"+ programID);
+		
+		jQuery(".alertArea").append('<div class="alertLog">Creating a Custom Program from the existing program</div>');
+		// Copy the program and display
+		var data = {
+		'action': 'copyAndEditCustomExisting',
+		'existingProgram': programID,
+		'temp_user_id':userName[0].id
+		};
+	// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			//console.log("Data: "+ data);
+			//console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response !=null){
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Custom Program with id of '+ programID +' loaded</div>');
+		// Load the form in the html object
+		// insert a new phase into the webpage
+			jQuery(".programEditingArea").html(response);
+		
+			}else{
+				jQuery(".alertArea").append('<div class="alertLog alertError"> Program not loaded - Error code: AJAX - copyAndEditCustomExisting</div>');
 			}
 		}
 		});
@@ -309,7 +368,7 @@ if(resultObj !=null){
 // used to remove a show exercise 
 jQuery(".closeAddExercise").live('click', function(event){
 	if(JS_DEBUG){console.log("Going to close an exercise");}
-	jQuery(this).parent().parent().parent().prev(".addExerciseContainer").show();
+	jQuery(this).parent().parent().parent().prev(".addExerciseMainContainer").show();
 	jQuery(this).parent().parent().parent().remove();
 });
 // Add an Exercise to Jquery 
@@ -379,18 +438,18 @@ function updateExerciseOrder(location){
 		jQuery(this).attr('data-ordernumber',order);
 		var exerciseID = jQuery(this).attr('data-exerciseID')
 		console.log("Exercise Id:"+exerciseID);
-		// // Remove this logic when Kaiden fixes the exercise 
-		// 	var data = {
-		// 	'action': 'updateAnExercise',
-		// 	'exerciseId': exerciseID,
-		// 	'order_no': order
-		// 	};
-		// 	// ensure the datasbse has been updated
-		// 	jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){	
-		// 		resultObj = response;
-		// 		}
-		// 	});
-		// // Remove to here 
+		// Remove this logic when Kaiden fixes the exercise 
+			var data = {
+			'action': 'updateAnExercise',
+			'exerciseId': exerciseID,
+			'order_no': order
+			};
+			// ensure the datasbse has been updated
+			jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){	
+				resultObj = response;
+				}
+			});
+		// Remove to here 
 		order ++;
 	});
 }
@@ -433,6 +492,34 @@ jQuery(".phaseExpandHide").live('click', function(event){
 		jQuery(this).addClass("fa-angle-double-up");
 	}
 });
+jQuery(".phaseHideAll").live('click', function(event){
+	if(JS_DEBUG){console.log("Entering the Hide all exercises in Phaese Function");}
+	if(jQuery(this).hasClass("fa-angle-up")){ 
+	if(JS_DEBUG){console.log("Going to hide all Exercises in Phase");}
+	jQuery(this).parent().parent().parent().nextAll(".exercises").each(function() {
+		console.log("Found an Exercise");
+		jQuery(this).hide();	 
+	});
+	jQuery(this).parent().parent().parent().nextAll(".addExerciseMainContainer").each(function() {
+		console.log("Found an Exercise");
+		jQuery(this).hide();
+	});
+		jQuery(this).removeClass("fa-angle-up");
+		jQuery(this).addClass("fa-angle-down");
+	}else if(jQuery(this).hasClass("fa-angle-down")){
+	if(JS_DEBUG){console.log("Going to show all Exercises in Phase");}
+		jQuery(this).parent().parent().parent().nextAll(".exercises").each(function() {
+		console.log("Found an Exercise");
+		jQuery(this).show();	 
+	});
+	jQuery(this).parent().parent().parent().nextAll(".addExerciseMainContainer").each(function() {
+		console.log("Found an Exercise");
+		jQuery(this).show();
+	});
+		jQuery(this).removeClass("fa-angle-down");
+		jQuery(this).addClass("fa-angle-up");
+	}
+});
 // Used to remove an exercise 
 jQuery(".removeExercise").live('click', function(event){
 		if(JS_DEBUG){console.log("Removing an exercise");}
@@ -462,7 +549,7 @@ jQuery(".removeExercise").live('click', function(event){
 		// Find the HTML Object where we want to load the form into 
 		if(resultObj !=null){
 			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase Removed</div>');
-		exerciseToDelete.parent().parent().parent().prev(".addExerciseContainer").remove();
+		exerciseToDelete.parent().parent().parent().prev(".addExerciseMainContainer").remove();
 		exerciseToDelete.parent().parent().parent().remove();
 		updateExerciseOrder(parentElement);
 			}else{
@@ -1327,14 +1414,19 @@ jQuery('textarea[name=specialInstructionsText]').live('blur', function(event){
 
 // Assign Custom Program 
 
-jQuery('#assignCustomProgram').live('blur', function(event){
+jQuery('#assignCustomProgram').live('click', function(event){
+	if(jQuery(this).attr('data-action') =="save"){
 	console.log("Going to Assign a Custom Program");
 	var programId = jQuery("#theProgramMetaId").attr("data-programid");
 	console.log("programId"+programId);
-	var userId = jQuery('#selectUser').val();
-	var button = jQuery(this);
-	// console.log("Exercise special instructions changing to: "+ exerciseSpecial+ "for Exercise Id: " + exerciseId);
-	// jQuery(".alertArea").append('<div class="alertLog alertNotice">Exercise special instructions  changing to: '+exerciseSpecial+'</div>');
+	var userId = jQuery(this).attr('data-userId');
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program Assignment about to be added</div>');
+
+	jQuery('#assignCustomProgram').val("Remove Program From User");
+			jQuery('input[name=stateUpdate]').each(function (){
+				jQuery('#Production').attr('checked','checked');
+			});
+	jQuery(this).attr('data-action','remove')
 	var data = {
 		'action': 'assignProgram',
 		'programId': programId,
@@ -1347,12 +1439,45 @@ jQuery('#assignCustomProgram').live('blur', function(event){
 			console.log("Results: "+ response);
 		// Find the HTML Object where we want to load the form into 
 		if(response.trim() =="Success"){
-			// jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise special instructions updated to '+exerciseSpecial+' in database</div>');
-			jQuery(button).val("Remove Program From User");
+			 jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program Assignment added to user in database</div>');
+			
 		// Load the form in the html object
 			}else{
-				// jQuery(".alertArea").append('<div class="alertLog alertError">Exercise special instructions did not updated - Error code: AJAX - updateAExercise</div>');
+				 jQuery(".alertArea").append('<div class="alertLog alertError">Program Assignment did not update - Error code: AJAX - deleteCustomProgram</div>');
 			}
 		}
 		});
+	}else if(jQuery(this).attr('data-action') =="remove"){
+	console.log("Going to remove a Custom Program");
+	var programId = jQuery("#theProgramMetaId").attr("data-programid");
+	console.log("programId"+programId);
+	var userId = jQuery(this).attr('data-userId');
+	jQuery(".alertArea").append('<div class="alertLog alertNotice">Program Assignment about to be removed</div>');
+
+	jQuery('#assignCustomProgram').val("Assign Program To User");
+			jQuery('input[name=stateUpdate]').each(function (){
+				jQuery('#Development').attr('checked','checked');
+			});
+	jQuery(this).attr('data-action','save')
+	var data = {
+		'action': 'deleteCustomProgram',
+		'programId': programId,
+		'userId': userId
+		};
+		// Post to Ajax
+	jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+		// This should be returnin"g HTML object 
+			console.log("Data: "+ data);
+			console.log("Results: "+ response);
+		// Find the HTML Object where we want to load the form into 
+		if(response.trim() =="Success"){
+			 jQuery(".alertArea").append('<div class="alertLog alertSuccess">Program Assignment removed from user in database</div>');
+			
+		// Load the form in the html object
+			}else{
+				 jQuery(".alertArea").append('<div class="alertLog alertError">Program Assignment did not update - Error code: AJAX - deleteCustomProgram</div>');
+			}
+		}
+		});
+	}
 });
