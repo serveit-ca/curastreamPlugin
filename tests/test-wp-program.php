@@ -195,7 +195,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	$expectedIds = array(60,61,62,63,64);
     	$i = 0;
     	foreach($allPhases as $key){
-    		assert($key->id == $i);
+    		assert($key->id == $expectedIds['i']);
     		$i++;
     	}
 
