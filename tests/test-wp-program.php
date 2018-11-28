@@ -130,7 +130,7 @@ class WP_Program_Test extends WP_UnitTestCase
 
     public function test_update_program(){
     	$programs = new program();
-    	$this->reset_database();
+    	
     	$ogProg = $programs->getProgramById(37);
     	$programs->updateProgram("New Name", NULL, "Test description", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
     	$programs2 = new program();
@@ -139,6 +139,31 @@ class WP_Program_Test extends WP_UnitTestCase
     	 assert($ogProg->description != $newProg->description);
     	 assert($ogProg->type == $newProg->type);
     	assert(!($ogProg == $newProg));
+    	$this->reset_database();
+    }
+
+    public function test_update_phase(){
+    	$programs = new program();
+    	$ogPhase= $programs->getAPhaseById(60);
+    	$programs->updatePhase("New Name", NULL, NULL, NULL, NULL, 60);
+    	$programs2 = new program();
+    	$newPhase = $programs2->getPhaseById(60);
+    	 assert($ogPhase->name != $newPhase->name);
+    	 assert($ogPhase->duration == $newPhase->duration);
+    	assert(!($ogPhase == $newPhase));
+    	$this->reset_database();
+    }
+
+    public function test_update_program(){
+    	$programs = new program();
+    	$this->reset_database();
+    	$ogExercise = $programs->getAnExerciseById(92);
+    	$programs->updateExercise(NULL, NULL, NULL, "New Name", NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 92);
+    	$programs2 = new program();
+    	$newExercise = $programs2->getAnExerciseById(92);
+    	 assert($ogExercise->name != $newExercise->name);
+    	 assert($ogExercise->rest == $newExercise->rest);
+    	assert(!($ogExercise == $newExercise));
     	$this->reset_database();
     }
 
