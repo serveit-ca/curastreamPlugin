@@ -5,8 +5,14 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-$programs->makeCustom(15);
-$status = $programs->getProgramStatus(15, 5);
+$ogProg = $programs->getProgramById(37);
+$ogName = $ogProg->name;
+$programs->updateProgram("New Name 4", NULL, "Test description 4", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
+$programs = new program();
+$newProg = $programs->getProgramById(37);
+
+print_r($ogProg);
+print_r($newProg);
 
 echo "Status: " .$status;
 
