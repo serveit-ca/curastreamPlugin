@@ -155,7 +155,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 						 	</button>
 						 </div>
 						<div class="col-md-6">
-						 	<button class="button-secondary custom-btn"id="customProgram_copyAndedit">Copy Existing Custom Program & Edit
+						 	<button class="button-secondary custom-btn"id="customProgram_copyAndedit">Copy Existing Program & Edit Custom Program
 						 	</button>
 						</div>
 
