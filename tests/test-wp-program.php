@@ -128,6 +128,17 @@ class WP_Program_Test extends WP_UnitTestCase
     	$this->reset_database();
     }
 
+    public function test_update_program(){
+    	$programs = new program();
+    	$ogProg = $programs->getProgramById(37);
+    	$programs->updateProgram("New Name", NULL, "Test description", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
+    	$newProg = $programs->getProgramById(37);
+    	assert(!($ogProg->name == $newProg->name));
+    	assert(!($ogProg->description == $newProg->description));
+    	assert(!($ogProg == $newProg));
+    	$this->reset_database();
+    }
+
 
 
 }
