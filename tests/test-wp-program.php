@@ -189,6 +189,19 @@ class WP_Program_Test extends WP_UnitTestCase
     	
     }
 
+    public function test_get_phases_by_program_id(){
+    	$programs = new program();
+    	$allPhases = $programs->getPhasesByProgramId(37);
+    	$expectedIds = array(60,61,62,63,64);
+    	$i = 0;
+    	foreach($allPhases as $key){
+    		assert($key->id == $i);
+    		$i++;
+    	}
+
+
+    }
+
 
 
 }
