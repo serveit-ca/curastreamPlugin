@@ -137,7 +137,8 @@ class WP_Program_Test extends WP_UnitTestCase
     	$newProg = $programs->getProgramById(37);
     	 assert($ogProg->name != $newProg->name);
     	 assert($ogProg->description != $newProg->description);
-    	assert(!($ogProg == $newProg);
+    	 assert($ogProg->type == $newProg->type);
+    	assert(!($ogProg == $newProg));
     	$this->reset_database();
     }
 
