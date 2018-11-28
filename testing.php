@@ -7,7 +7,7 @@ $programs = new program();
 
 $ogProg = $programs->getProgramById(37);
 $ogName = $ogProg->name;
-$programs->updateProgram("New Name 4", NULL, "Test description 4", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
+$programs->updateProgram("New Name 6", NULL, "Test description 4", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
 $programs = new program();
 $newProg = $programs->getProgramById(37);
 
