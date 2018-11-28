@@ -133,9 +133,25 @@ class WP_Program_Test extends WP_UnitTestCase
     	$ogProg = $programs->getProgramById(37);
     	$programs->updateProgram("New Name", NULL, "Test description", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
     	$newProg = $programs->getProgramById(37);
-    	assert(!($ogProg->name == $newProg->name));
-    	assert(!($ogProg->description == $newProg->description));
-    	assert(!($ogProg == $newProg));
+    	if($ogProg->name == $newProg->name){
+    		assert(false);
+    	}
+    	else{
+    		assert(true);
+    	}
+    	if($ogProg->description == $newProg->description){
+    		assert(false);
+    	}
+    	else{
+    		assert(true);
+    	}
+    	if($ogProg == $newProg){
+    		assert(false);
+    	}
+    	else{
+    		assert(true);
+    	}
+    	
     	$this->reset_database();
     }
 
