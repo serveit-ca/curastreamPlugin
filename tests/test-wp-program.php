@@ -147,7 +147,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	$ogPhase= $programs->getAPhaseById(60);
     	$programs->updatePhase("New Name", NULL, NULL, NULL, NULL, 60);
     	$programs2 = new program();
-    	$newPhase = $programs2->getPhaseById(60);
+    	$newPhase = $programs2->getAPhaseById(60);
     	 assert($ogPhase->name != $newPhase->name);
     	 assert($ogPhase->duration == $newPhase->duration);
     	assert(!($ogPhase == $newPhase));
