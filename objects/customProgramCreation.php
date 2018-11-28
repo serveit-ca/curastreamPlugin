@@ -83,18 +83,20 @@ class customProgramCreation {
 							<div class="col-md-6">
 							<div class="form-group">
 								<div class="labelTxt"> Program State </div>
-								<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" value="1" id="Production" <?php if($programObject->state == '1'){echo 'checked ="checked"';} ?> >Production</label>
-								<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" id="Development" value="0" <?php if($programObject->state == '0'){echo 'checked ="checked"';} ?> >Development</label>
+								<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" value="0" id="Production" <?php if($programObject->state == '0'){echo 'checked ="checked"';} ?> >Production</label>
+								<label class="radio_btn radio_btn_state"><input required type="radio" name="stateUpdate" id="Development" value="1" <?php if($programObject->state == '1'){echo 'checked ="checked"';} ?> >Development</label>
 								<p>Note: If the Program State is Active, it will show up in the programs list on the website </p>
 							</div>
 							</div>
 							<div class="col-md-6">
-								<?php if($programObject->custom == '1'){
-									?><div class ="Assign Container">  <input type="button" name="assignCustomProgram" id="assignCustomProgram" class="button-secondary custom-btn" value="Assign Custom Program"></div><?php
+								<?php if($programObject->custom == '1' && $programObject->status == 'notAssigned'){
+									?><div class ="Assign Container">  <input type="button" name="assignCustomProgram" id="assignCustomProgram" data-action="save" data-userId="<?php echo $programObject->tempUserId?>"class="button-secondary custom-btn" value="Assign Custom Program"></div><?php
+								} else if($programObject->custom == '1' && $programObject->status == 'Assigned'){
+									?><div class ="Assign Container">  <input type="button" name="assignCustomProgram" id="assignCustomProgram" data-action="remove" data-userId="<?php echo $programObject->tempUserId?>"class="button-secondary custom-btn" value="Remove Program From User"></div><?php
 								} ?>
 							</div>
 						</div>
-						<div id="bodyPartGroup" class="form-group<?php if($programObject->type == "Strength-Training" ){ echo "hidden";}?>">
+						<div id="bodyPartGroup" class="form-group <?php if($programObject->type == "Strength-Training"){ echo " hidden";}?>">
 								<div class="labelTxt"> Body Parts </div>
 								<?php $body_parts = get_all_body_parts(); 
 								 foreach ($body_parts as $body_part){
@@ -185,8 +187,8 @@ class customProgramCreation {
 					<div class="row phaseControl">
 					<div class="col-md-1">
 						<!-- <i class="phaseMove fas fa-2x fa-arrows-alt-v"></i> -->
-						<!-- <i class="phaseExpandHide fas fa-2x fa-angle-double-up"></i> -->
-						
+						 <i class="phaseExpandHide fas fa-2x fa-angle-double-up"></i>
+						 <i class="phaseHideAll fas fa-2x fa-angle-up"></i>
 					</div>
 					<div class="col-md-10">
 					</div>

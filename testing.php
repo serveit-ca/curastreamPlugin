@@ -5,10 +5,11 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-$programs->makeCustom(15);
-$status = $programs->getProgramStatus(15, 5);
+var_dump($programs->getProgramById(206));
 
-echo "Status: " .$status;
+$status = $programs->removeProgramFromUser(193, 1);
+
+//echo "Status: " .$status;
 
 
 //Testing for Move Exercise/Phase Code

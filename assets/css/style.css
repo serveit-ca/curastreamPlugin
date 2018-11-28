@@ -530,3 +530,9 @@ th#sports {
 .enableSelect2{
 min-width:250px;
 }
+.phaseHideAll{
+    margin-left:10px;
+}
+.select2 {
+width:350px!important;
+}
