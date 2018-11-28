@@ -172,7 +172,20 @@ class WP_Program_Test extends WP_UnitTestCase
     	$ogProg = $programs->getProgramById(37);
     	$newProg = $programs->getProgramById($programs->duplicateGeneralProgram(37));
 
-    	assert($ogProg == $newProg);
+    	assert($ogProg->id != $newProg->id );
+    	assert($ogProg->name == $newProg->name);
+    	assert($ogProg->type == $newProg->type);
+    	assert($ogProg->description == $newProg->description || $ogProg->description == '');
+    	assert($ogProg->equipment == $newProg->equipment);
+    	assert($ogProg->duration == $newProg->duration || $ogProg->duration == '');
+    	assert($ogProg->weeklyPlan == $newProg->weeklyPlan || $ogProg->weeklyPlan == '');
+    	assert($ogProg->lifeStyle == $newProg->lifeStyle || $ogProg->lifeStyle == '');
+    	assert($ogProg->body_part == $newProg->body_part || $ogProg->body_part == '');
+    	assert($ogProg->howItHappen == $newProg->howItHappen || $ogProg->howItHappen == '');
+    	assert($ogProg->sportsOccupation == $newProg->sportsOccupation || $ogProg->sportsOccupation == '');
+    	assert($ogProg->thumbnail == $newProg->thumbnail);
+    	assert($ogProg->state == $newProg->state);
+    	
     }
 
 
