@@ -170,7 +170,8 @@ class WP_Program_Test extends WP_UnitTestCase
     public function test_duplicate_general_program(){
     	$programs = new program();
     	$ogProg = $programs->getProgramById(37);
-    	$newProg = $programs->getProgramById($programs->duplicateGeneralProgram(37));
+    	$programs2 = new program();
+    	$newProg = $programs2->getProgramById($programs2->duplicateGeneralProgram(37));
 
     	assert($ogProg->id != $newProg->id );
     	assert($ogProg->name == $newProg->name);
