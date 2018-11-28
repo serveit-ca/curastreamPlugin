@@ -130,31 +130,13 @@ class WP_Program_Test extends WP_UnitTestCase
 
     public function test_update_program(){
     	$programs = new program();
+    	$this->reset_database();
     	$ogProg = $programs->getProgramById(37);
     	$programs->updateProgram("New Name", NULL, "Test description", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
     	$newProg = $programs->getProgramById(37);
-    	if($ogProg->name == $newProg->name){
-    		echo "Name failed";
-    		assert(false);
-    	}
-    	else{
-    		assert(true);
-    	}
-    	if($ogProg->description == $newProg->description){
-    		echo "description failed";
-    		assert(false);
-    	}
-    	else{
-    		assert(true);
-    	}
-    	if($ogProg == $newProg){
-    		echo "object failed";
-    		assert(false);
-    	}
-    	else{
-    		assert(true);
-    	}
-    	
+    	assert(!($ogProg->name == $newProg->name));
+    	assert(!($ogProg->description == $newProg->description));
+    	assert(!($ogProg == $newProg));
     	$this->reset_database();
     }
 
