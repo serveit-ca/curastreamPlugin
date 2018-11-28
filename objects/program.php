@@ -1389,7 +1389,7 @@ public function duplicateGeneralProgram($existingProgram){
     }
     public function checkAssigned($programId, $userId){
         global $wpdb;
-        $status = "";
+        $status = "notAssigned";
     if (isset($programId) && !is_null($programId) && isset($userId) && !is_null($userId)){
         $tableName = $wpdb->prefix . "cura_user_programs";
 
