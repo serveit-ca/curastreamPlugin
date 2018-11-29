@@ -186,6 +186,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	assert($ogProg->sportsOccupation == $newProg->sportsOccupation || $ogProg->sportsOccupation == '');
     	assert($ogProg->thumbnail == $newProg->thumbnail);
     	assert($ogProg->state == $newProg->state);
+    	assert($newProg->custom == 0);
     	
     }
 
@@ -208,7 +209,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	assert($ogProg->sportsOccupation == $newProg->sportsOccupation || $ogProg->sportsOccupation == '');
     	assert($ogProg->thumbnail == $newProg->thumbnail);
     	assert($ogProg->state == $newProg->state);
-    	assert($newProg->customProgram == 1);
+    	assert($newProg->custom == 1);
     }
 
     public function test_get_phases_by_program_id(){
