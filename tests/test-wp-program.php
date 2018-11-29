@@ -254,6 +254,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	$phaseOne = $programs->getAPhaseById($phaseOneId);
    	assert($phaseOne->order_no == 1);
    	$phaseTwoId = $programs->createPhase("Test Phase 2 for Move Phases", $newProgId);
+   	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
    	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseTwoId);
    	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
    	assert($phaseTwo->order_no == 2);
