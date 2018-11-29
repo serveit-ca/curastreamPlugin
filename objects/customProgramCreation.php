@@ -92,7 +92,7 @@ class customProgramCreation {
 								<?php if($programObject->custom == '1' && $programObject->status == 'notAssigned'){
 									?><div class ="Assign Container">  <input type="button" name="assignCustomProgram" id="assignCustomProgram" data-action="save" data-userId="<?php echo $programObject->tempUserId?>"class="button-secondary custom-btn" value="Assign Custom Program"></div><?php
 								} else if($programObject->custom == '1' && $programObject->status == 'Assigned'){
-									?><div class ="Assign Container">  <input type="button" name="assignCustomProgram" id="assignCustomProgram" data-action="remove" data-userId="<?php echo $programObject->tempUserId?>"class="button-secondary custom-btn" value="Remove Program From User"></div><?php
+									?><div class ="Assign Container">  <input type="button" name="assignCustomProgram" id="assignCustomProgram" data-action="remove" data-userId="<?php echo $programObject->tempUserId;?>"class="button-secondary custom-btn" value="Remove Program From User"></div><?php
 								} ?>
 							</div>
 						</div>
