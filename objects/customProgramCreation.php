@@ -56,7 +56,7 @@ class customProgramCreation {
 										
 						</div>
 						<div class="form-group">
-							<div class="labelTxt">Duration </div>
+							<div class="labelTxt">Duration (Days)</div>
 							<input id="durBox" type="text" name="progDurationUpdate" class="form-control" required="required" placeholder="Duration" min="1" <?php if($programObject->duration){echo 'value ="'.$programObject->duration.'"';} ?> />									
 						</div>
 						<div class="form-group">

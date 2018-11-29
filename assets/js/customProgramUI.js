@@ -549,12 +549,12 @@ jQuery(".removeExercise").live('click', function(event){
 			resultObj = response;
 		// Find the HTML Object where we want to load the form into 
 		if(resultObj !=null){
-			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Phase Removed</div>');
+			jQuery(".alertArea").append('<div class="alertLog alertSuccess">Exercise Removed</div>');
 		exerciseToDelete.parent().parent().parent().prev(".addExerciseMainContainer").remove();
 		exerciseToDelete.parent().parent().parent().remove();
 		updateExerciseOrder(parentElement);
 			}else{
-				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Phase Not Removed</div>');
+				jQuery(".alertArea").append('<div class="alertLog alertError">Error: Exercise Not Removed</div>');
 			}
 		}
 	});

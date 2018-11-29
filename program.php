@@ -18,7 +18,6 @@ function prefix_enqueue()
 <html>
 <head>
 	<title></title>
-	<link href="<?php echo site_url(); ?>/wp-content/plugins/curastream/select2/dist/css/select2.min.css" rel="stylesheet" />
 	<style type="text/css">
 		<?php 
 		// Hide the Main
@@ -381,12 +380,8 @@ function prefix_enqueue()
 		</style>
 </head>
 <body>
-	<div class="overlayAction">
-		<img src="<?php echo site_url().'/wp-admin/images/spinner-2x.gif' ?>">
-	</div>
 	<?php 
 		global $wpdb;
-		include(dirname(dirname(dirname(__FILE__))).'/wp-inlcudes/media.php');
 		$body_parts = $wpdb->get_results("SELECT * FROM `dev_cura_body_parts` WHERE id > 0");
 		function cmp($a, $b)
 		{
@@ -942,259 +937,9 @@ function prefix_enqueue()
 	<?php } 
 	else{
 	?>
-	<div class="main_form">
-	<h1 style="margin: 40px 0;">Add a Program</h1>	
-		<form action="" method="POST" id="addProgram">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="form-group">
-						<label for="type">Type</label>
-						<label class="radio_btn"><input required type="radio" name="type" value="Rehab" id="rehab">Rehab</label>
-						<label class="radio_btn"><input required type="radio" name="type" id="prevention" value="Prevention"> Prevention</label>
-						<label class="radio_btn"><input required type="radio" name="type" id="strength" value="Strength-Training"> Strength Training</label>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<input type="text" name="programName" class="form-control" required="required" placeholder="Name">					
-					</div>
-					<div class="form-group">
-						<input type="text" name="duration" class="form-control" required="required" placeholder="Duration" min="1">									
-					</div>
-					<div class="form-group">
-						<div class="row">
-							<div class="col-md-3">
-						   		<input type="button" name="upload-btn" id="upload-btn" class="button-secondary" value="Choose Image">								
-							</div>
-							<div class="col-md-9">
-						    	<input type="text" name="thumb" id="image_url" class="regular-text form-control" value="" required="required">								
-							</div>
-							<!-- <span id="imageWrapperPull" class="glyphicon glyphicon-triangle-bottom" data-toggle="collapse" data-target="#imageWrapper"></span>
-							<div id="imageWrapper" class="collapse">
-								<img src="">
-							</div> -->
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<select multiple="multiple" name="associated_body_parts[]" class="form-control multiple_parts" required="required">							
-							<!-- 	<option disabled="disabled" selected="selected">Associated Body Parts</option> -->
-							<?php foreach ($body_parts as $key => $value){ ?>
-							<option value="<?php echo array_values((array)$value)[1]; ?>"><?php echo array_values((array)$value)[1]; ?></option>
-							<?php } ?>
-						</select>
-					</div>
-					<div class="form-group">
-						<!-- <label for="duration">Duration</label><br> -->
-						<select multiple="multiple" name="how_it_happened[]" id="howItHappened" class="form-control	 multiple_reasons" required="required">
-							<?php foreach ($howItHappened as $key => $value){ ?>
-							<option value="<?php echo array_values((array)$value)[1]; ?>"><?php echo array_values((array)$value)[1]; ?></option>
-							<?php } ?>
-						</select>
-					</div>
-					<div class="form-group">
-						<select multiple="multiple" name="sports_and_occupations[]" id="sportsOccupation" class="form-control multiple_sports_occ" required="required">
-							<?php foreach ($sportsOccupation as $key => $value){ ?>
-							<option value="<?php echo array_values((array)$value)[1]; ?>"><?php echo array_values((array)$value)[1]; ?></option>
-							<?php } ?>
-						</select>
-					</div>	
-				</div>
-				<div class="col-md-12">
-					<div class="form-group">
-						<textarea name="progDesc" class="form-control" required="required" placeholder="Description"></textarea>
-					</div>
-					<div class="form-group">
-						<textarea name="progEquip" class="form-control" required="required" placeholder="Equipment"></textarea>
-					</div>
-					<div class="form-group" id="hideField1">					
-						<textarea name="progPlan" class="form-control" required="required" placeholder="Weekly Plan"></textarea>
-					</div>
-					<div class="form-group" id="hideField2">
-						<textarea name="progLifestyle" class="form-control" required="required" placeholder="Lifestyle"></textarea>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<h3>Add Phase to this Program</h3>
-					<!-- <button class="add_phase">Add Phase</button> -->
-					<div class="phases">
-						<ul class="nav nav-tabs">
-							<li class="active phase" id="1"><a data-toggle="tab" class="phase" data-tab-index="1" href="#phase1"><span class="order">1</span><span class="deletePhase glyphicon glyphicon-trash" data-tab-index="1"></span></a></li>
-							<button id="add_multiple_phases">Add Another Phase</button>
-						</ul>
-						<div class="tab-content">
-							<div id="phase1" class="tab-pane fade in active" data-tab-count="1">
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<input required="required" type="text" name="phase[0][name]" placeholder="Phase Name" class="form-control name">
-										</div>
-										<div class="form-group">
-											<textarea type="text" name="phase[0][intro]" placeholder="Phase Introduction" class="form-control intro"></textarea>								
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<input required="required" type="text" name="phase[0][duration]" placeholder="Phase Duration" class="form-control duration">
-										</div>
-										<div class="form-group">
-											<textarea type="text" name="phase[0][notes]" placeholder="Phase Notes" class="form-control notes"></textarea>
-										</div>
-									</div>
-									<div class="col-md-12">										
-										<div class="exercises">
-											<!-- <ul class="nav nav-tabs">
-												<li class="active exercise"><a data-toggle="tab" data-tab-index="1" href="#exercise1"><span class="order">1</span><span class="deleteExercise glyphicon glyphicon-trash" data-tab-index="1"></span></a></li>
-												<button class="add_exercise">Add Exercise</button>
-											</ul>
-											<div class="tab-content">
-												<div id="exercise1" class="tab-pane fade in active" data-tab-count="1">
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<input class="form-control set" type="text" placeholder="Sets x Reps"  name="phase[0]['set']">
-															</div>											
-															<div class="form-group">
-																<input class="form-control rest" type="text" placeholder="Rest"  name="phase[0]['rest']">
-															</div>
-															<div class="form-group">
-																<input class="form-control var" type="text"  placeholder="Variation" name="phase[0]['variation']">
-															</div>
-															<div class="form-group">
-																<textarea class="form-control equip"  placeholder="Equipment" name="phase[0]['equipment']"></textarea>
-															</div>
-															<div class="form-group">
-																<textarea class="form-control ins"  placeholder="Special Instructions" name="phase[0]['instructions']"></textarea>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<span class="message">Video</span>
-														</div>
-													</div>
-												</div>
-											</div> -->	
-											<ul class="sortable">
 
-												<li><span class="exerciseName">Exercise</span> <span class="deleteExercise glyphicon glyphicon-trash" data-tab-index="1"></span>
-													<div class="row">
-														<div class="col-md-6">
-															<div class="form-group">
-																<input required="required" class="form-control orderField" type="text" placeholder="Order"  name="phase[0][exercise][0][orderField]" value="">														
-															</div>
-															<div class="form-group">
-																<input type="hidden" class="id" name="phase[0][exercise][0][id]" value="">
-																<input type="hidden" class="name" name="phase[0][exercise][0][name]" value="">
-																<input type="hidden" class="order" name="phase[0][exercise][0][order]" value="">															
-																<input required="required" class="form-control set" type="text" placeholder="Sets x Reps"  name="phase[0][exercise][0][sets]">
-															</div>											
-															<div class="form-group">
-																<input required="required" class="form-control rest" type="text" placeholder="Rest"  name="phase[0][exercise][0][rest]">
-															</div>
-															<div class="form-group">
-																<input required="required" class="form-control var" type="text"  placeholder="Variation" name="phase[0][exercise][0][variation]">
-															</div>
-															<div class="form-group">
-																<textarea required="required" class="form-control equip"  placeholder="Equipment" name="phase[0][exercise][0][equipment]"></textarea>
-															</div>
-															<div class="form-group">
-																<textarea required="required" class="form-control ins"  placeholder="Special Instructions" name="phase[0][exercise][0][instructions]"></textarea>
-															</div>
-														</div>
-														<div class="col-md-6">
-															<select class="exerciseVideoUrlSource form-control" required="required">
-																<option>Select a Video</option>
-																	<?php 
-																		foreach ($videos as $key => $value) { ?>
-																			<option value="<?php echo $value['url'] ?>"><?php echo $value['name'] ?></option>
-																		<?php }
-																	 ?>
-															</select>
-															<input type="hidden" class="exercise ex" name="phase[0][exercise][0][exerciseUrl]" value="">
-															<div class="addVideo">
-																<span class="glyphicon glyphicon-plus"></span>
-																<span class="showMessage">Click in this box to add Video</span>
-															</div>
-															<div class="file-upload-area">
-																<div class="row">
-																	<div class="col-md-3">									
-															   			<input type="button" name="upload-btn" id="upload-file" class="button-secondary file-upload-btn" value="Choose File" data-exerFileUpload="0">
-																	</div>
-																	<div class="col-md-9">
-															    		<input type="hidden" placeholder="File URL" value="" id="file_url" class="regular-text form-control file-upload-path" name="phase[0][exercise][0][file_url]" data-exerFileName="0">
-															    		<input type="text" placeholder="File Name" value="" id="file_name" class="regular-text form-control file-upload-name" name="phase[0][exercise][0][file_name]" data-exerFileName="0">
-																	</div>
-															</div>
-														</div>
-													</div>
-													<span class="glyphicon glyphicon-move"></span>
-													<span class="move"> Move this exercise to a desired order in the list</span>
-												</li>
-												<button class="add_exercise">Add Exercise</button>
-											</ul>											
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>	
-					</div>
-					<div class="form-group addProgram" style="clear: both;">
-						<input type="submit" value="Add Program" name="addProgram">
-						<a href="" class="cancel">Cancel</a>
-					</div>	
-				</div>				
-				</form>
-			</div>
-	</div>
-	<div class="defaultProgramArea">
-		<h1>Demo Program for free users</h1>
-	<?php //print_r($programs); ?>
-	 <form action="" method="POST" id="defaultProgram">
-	 	<div class="row">
-	 		<div class="col-md-6">
-	 	<select class="form-control" name="defaultProgramId">
-	 		<?php 
-	 			// see if this program is in default program table
-	 			global $wpdb;
-	 			$defProgram = $wpdb->get_results("SELECT * FROM $defaultProgram", ARRAY_A)[0]['program_id'];
-	 			foreach ($programs as $key => $value) { ?>
-	 				<option <?php echo ($value['id'] == $defProgram) ? 'selected' : '' ?> value="<?php echo $value['id'] ?>"><?php echo $value['name'] ?></option>	
-	 			<?php } ?>
-	 	</select>
-	 	</div>
-	 	<div class="col-md-6">
-			<input type="submit" name="setDefault" value="Set program as default">					
-		</div>
-	 </form>
-	</div>
-	<?php 
-		if (isset($_POST['searchSelect']) && !empty($_POST['searchSelect']) && isset($_POST['search'])) {
-			$idToSearch = $_POST['searchSelect'];
-			$searchResults = $wpdb->get_results("SELECT * FROM `dev_cura_exercise_videos` WHERE assoc_body_parts_name LIKE '%$idToSearch%'");
-		
-		}
-	 ?>
 	 <h1>All Programs</h1>
-	<div class="searchVids">
-		<form action="" method="post" id="searchProgram">
-			<label>Filter Videos by Body Parts</label>
-			<div class="row">
-				<div class="col-md-6">
-					<select class="form-control" name="searchSelect">
-						<option value="">View All</option>
-						<?php foreach ($body_parts as $key => $value){	?>
-						<option value="<?php echo array_values((array)$value)[1] ?>"<?php echo (isset($_POST['search']) && $_POST['searchSelect'] == array_values((array)$value)[1]) ? 'selected' : '' ?>><?php echo array_values((array)$value)[1]; ?></option>
-						<?php } ?>			
-					</select>
-				</div>
-				<div class="col-md-6">
-					<input type="submit" name="search" value="Search">					
-				</div>
-			</div>	
-		</form>
-	</div>
+
 	<div class="tableProrgams">
 		
 		<div class="row">
@@ -1246,12 +991,7 @@ function prefix_enqueue()
 									?>
 								</td>		
 								<td id="actions">
-									<form id ="editForm" action="" method="POST">					
-										<input type="hidden"  name="editprogram" value="<?php echo $value['id']; ?>">
-										<input type='submit' name="edit" value="Edit">
-									</form>
-									<input type="hidden" name="deleteprogram"  value="<?php echo $value['id']; ?>">							
-									<input type='submit' name="deleteProgram" value="Delete" data-prog-id = "<?php echo $value['id']; ?>" class="deleteProgram">
+									
 								</td>
 							</tr>
 							<?php } 
@@ -1290,12 +1030,7 @@ function prefix_enqueue()
 									?>
 								</td>			
 								<td id="actions">
-									<form id ="editForm" action="" method="POST">					
-										<input type="hidden"  name="editprogram" value="<?php echo $value['id']; ?>">
-										<input type='submit' name="edit" value="Edit">
-									</form>
-									<input type="hidden" name="deleteprogram"  value="<?php echo $value['id']; ?>">							
-									<input type='submit' name="deleteProgram" value="Delete" data-prog-id = "<?php echo $value['id']; ?>" class="deleteProgram">
+									
 								</td>
 							</tr>
 						<?php } 
