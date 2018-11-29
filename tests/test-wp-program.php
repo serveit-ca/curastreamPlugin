@@ -264,9 +264,9 @@ class WP_Program_Test extends WP_UnitTestCase
    	$phaseThree = $programs->getAPhaseById($phaseThreeId);
    	assert($phaseThree->order_no == 3);
    	$programs->movePhaseOrder($newProgId, $phaseThreeId, 3, 1);
-   	assert($phaseThree->id == 1);
-   	assert($phaseOne->id == 2);
-   	assert($phaseTwo->id == 3);
+   	assert($phaseThree->order_no == 1);
+   	assert($phaseOne->order_no == 2);
+   	assert($phaseTwo->order_no == 3);
    }
 
 
