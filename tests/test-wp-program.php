@@ -214,7 +214,8 @@ class WP_Program_Test extends WP_UnitTestCase
     public function test_create_exercise_by_name(){
     	$programs = new program();
     	$newExId = $programs->createExerciseByName("Travis Test Exercise", 60);
-    	$newEx=$programs->getAnExerciseById($newExId);
+    	$programs2 = new program();
+    	$newEx=$programs2->getAnExerciseById($newExId);
     	assert($newEx->phase_id==60);
     	$this->reset_database();
     }
