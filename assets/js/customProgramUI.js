@@ -98,6 +98,7 @@ jQuery("#customProgram_startfromScratch").on('click', function(event){
 		jQuery(".alertArea").append('<div class="alertLog alertNotice">Creating a custom program from scratch for: '+userName+'</div>');
 		var programName = "Custom Program for "+userName[0].text;  
 		console.log(programName); 
+		console.log(userName[0].id); 
 		var data = {
 		'action': 'createNewCustomProgram',
 		'programName': programName,
