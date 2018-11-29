@@ -190,27 +190,27 @@ class WP_Program_Test extends WP_UnitTestCase
     	
     }
 
-    public function test_duplicate_custom_program(){
-    	$programs = new program();
-    	$ogProg = $programs->getProgramById(37);
-    	$programs2 = new program();
-    	$newProg = $programs2->getProgramById($programs2->duplicateGeneralProgram(37));
+    // public function test_duplicate_custom_program(){
+    // 	$programs = new program();
+    // 	$ogProg = $programs->getProgramById(37);
+    // 	$programs2 = new program();
+    // 	$newProg = $programs2->getProgramById($programs2->duplicateGeneralProgram(37));
 
-    	assert($ogProg->id != $newProg->id );
-    	assert($ogProg->name != $newProg->name);
-    	assert($ogProg->type == $newProg->type);
-    	assert($ogProg->description == $newProg->description || $ogProg->description == '');
-    	assert($ogProg->equipment == $newProg->equipment);
-    	assert($ogProg->duration == $newProg->duration || $ogProg->duration == '');
-    	assert($ogProg->weeklyPlan == $newProg->weeklyPlan || $ogProg->weeklyPlan == '');
-    	assert($ogProg->lifeStyle == $newProg->lifeStyle || $ogProg->lifeStyle == '');
-    	assert($ogProg->body_part == $newProg->body_part || $ogProg->body_part == '');
-    	assert($ogProg->howItHappen == $newProg->howItHappen || $ogProg->howItHappen == '');
-    	assert($ogProg->sportsOccupation == $newProg->sportsOccupation || $ogProg->sportsOccupation == '');
-    	assert($ogProg->thumbnail == $newProg->thumbnail);
-    	assert($ogProg->state == $newProg->state);
-    	assert($newProg->custom == 1);
-    }
+    // 	assert($ogProg->id != $newProg->id );
+    // 	assert($ogProg->name != $newProg->name);
+    // 	assert($ogProg->type == $newProg->type);
+    // 	assert($ogProg->description == $newProg->description || $ogProg->description == '');
+    // 	assert($ogProg->equipment == $newProg->equipment);
+    // 	assert($ogProg->duration == $newProg->duration || $ogProg->duration == '');
+    // 	assert($ogProg->weeklyPlan == $newProg->weeklyPlan || $ogProg->weeklyPlan == '');
+    // 	assert($ogProg->lifeStyle == $newProg->lifeStyle || $ogProg->lifeStyle == '');
+    // 	assert($ogProg->body_part == $newProg->body_part || $ogProg->body_part == '');
+    // 	assert($ogProg->howItHappen == $newProg->howItHappen || $ogProg->howItHappen == '');
+    // 	assert($ogProg->sportsOccupation == $newProg->sportsOccupation || $ogProg->sportsOccupation == '');
+    // 	assert($ogProg->thumbnail == $newProg->thumbnail);
+    // 	assert($ogProg->state == $newProg->state);
+    // 	assert($newProg->custom == 1);
+    // }
 
     public function test_get_phases_by_program_id(){
     	$programs = new program();
@@ -242,6 +242,17 @@ class WP_Program_Test extends WP_UnitTestCase
     // 	assert($newEx->phase_id==60);
     // 	$this->reset_database();
     // }
+
+   public function test_move_phase_order(){
+   	$programs = new program();
+
+   	$newProgId = $programs->createProgram("Test Program for Move Phases");
+   	$phaseOneId = $programs->createPhase("Test Phase 1 for Move Phases", $newProgId);
+   	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
+   	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, NULL)
+   	$phaseOne = getPhaseById($phaseOneId);
+   	assert($phaseOne->order_no == 1);
+   }
 
 
 
