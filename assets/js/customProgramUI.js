@@ -95,7 +95,7 @@ jQuery("#customProgram_startfromScratch").on('click', function(event){
 		if(JS_DEBUG){console.log("Step 4: Clicked Start a Custom Program from customProgram_startfromScratch");}
 		
 		var userName = jQuery("#selectUser").select2('data');
-		jQuery(".alertArea").append('<div class="alertLog alertNotice">Creating a custom program from scratch for: '+userName+'</div>');
+		jQuery(".alertArea").append('<div class="alertLog alertNotice">Creating a custom program from scratch for: '+userName[0].text+" - "+ userName[0].id+ '</div>');
 		var programName = "Custom Program for "+userName[0].text;  
 		console.log(programName); 
 		console.log(userName[0].id); 
