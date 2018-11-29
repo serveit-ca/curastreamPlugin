@@ -211,6 +211,18 @@ class WP_Program_Test extends WP_UnitTestCase
     	}
     }
 
+    public function test_create_exercise_by_name(){
+    	$programs = new program();
+    	$programs->createExerciseByName("Travis Test Exercise", 60);
+    	$allExercises->$programs->getExercisesByPhaseId(60);
+    	$i=0;
+    	foreach ($allExercises as $key) {
+    		$i++;
+    	}
+    	assert($i==10);
+    	$this->reset_database();
+    }
+
 
 
 }
