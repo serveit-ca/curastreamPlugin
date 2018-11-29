@@ -198,8 +198,17 @@ class WP_Program_Test extends WP_UnitTestCase
     		assert($key->id == $expectedIds[$i]);
     		$i++;
     	}
+    }
 
-
+    public function test_get_exercises_by_phase_id(){
+    	$programs = new program();
+    	$allExercises = $programs->getExercisesByPhaseId(60);
+    	$expectedIds = array(92,93,94,95,96,97,98,99,100);
+    	$i = 0;
+    	foreach ($allExercises as $key) {
+    		assert($key->id == $expectedIds[$i]);
+    		$i++;
+    	}
     }
 
 
