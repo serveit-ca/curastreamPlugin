@@ -5,16 +5,13 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-$ogProg = $programs->getProgramById(37);
-$ogName = $ogProg->name;
-$programs->updateProgram("New Name 6", NULL, "Test description 4", NULL, NULL, NULL, NULL, NULL,  NULL, NULL, NULL, NULL, NULL, 37);
-$programs = new program();
-$newProg = $programs->getProgramById(37);
-
-print_r($ogProg);
-print_r($newProg);
-
-echo "Status: " .$status;
+$newProgId = $programs->createProgram("Test Program for Move Phases");
+   	$phaseOneId = $programs->createPhase("Test Phase 1 for Move Phases", $newProgId);
+   	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
+   	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, NULL);
+   	$programs = new program();
+   	$phaseOne = $programs->getAPhaseById($phaseOneId);
+   	print_r($phaseOne);
 
 
 //Testing for Move Exercise/Phase Code
