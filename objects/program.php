@@ -766,6 +766,7 @@ public function createExerciseByName($name, $phaseId){
     		"order_no" => $order_no),
     		array( // Where Clause
     	 	"id" => $phaseId));
+            echo "<br> Order No Updated";
 	    }
 
 	    if($this->printError($wpdb) != "No Error"){
@@ -952,44 +953,48 @@ public function duplicateGeneralProgram($existingProgram){
 	}
 
 	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
-		//Get All Phases By Prod Id
-		$phases = $this->getPhasesByProgramId($programId);
-		// Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
-		$currentMaxPhase = $this->getHighestPhaseOrder($programId);
-		if($finalOrder > $currentMaxPhase){
-			//echo "No Need to Move phases - Adding to End";
-		}else{
-			$direction = $finalOrder - $initialOrder;
-			//If Forward
-			if(is_numeric($direction) && $direction > 0){
-				// Loop Order[Initial +1 ] To Order[Final]
-				foreach ($phases as $row) {
-					// If Order is Between Initial +1 and Final Inclusive
-					if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
-						// Current Phase Order_no -1
-						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
-						//echo "Phase: " . $row->name . " Moved Backward.";
-					}//End If	
-				}// End Loop
-			}// End If
+        //Get All Phases By Prod Id
+        $phases = $this->getPhasesByProgramId($programId);
+        // Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
+        $currentMaxPhase = $this->getHighestPhaseOrder($programId);
+        if($finalOrder > $currentMaxPhase){
+            //echo "No Need to Move phases - Adding to End";
+        }else{
+            $direction = $finalOrder - $initialOrder;
+            //If Forward
+            if(is_numeric($direction) && $direction > 0){
+                // Loop Order[Initial +1 ] To Order[Final]
+                foreach ($phases as $row) {
+                    // If Order is Between Initial +1 and Final Inclusive
+                    if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
+                        // Current Phase Order_no -1
+                        $this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
 
-			//Elseif Backward
-			elseif (is_numeric($direction) && $direction < 0) {
-				//Loop Order[Final] to Order [Initial-1]
-				foreach ($phases as $row) {
-					// If Order is Between Initial -1  and Final Inclusive
-					if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
-						// Current Phase Order_no -1
-						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
-						//echo "Phase: " . $row->name . " Moved Forward.";
-					}//End If	
-				}// End Loop
-			}//End Elseif
-		}
-		//Assign Phase to be Moved Final Order_No
-		$this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
-		return "Success Phase Moved"; 
-	}
+                        //echo "Phase: " . $row->name . " Moved Backward.";
+                    }//End If   
+                }// End Loop
+            }// End If
+            //Elseif Backward
+            elseif (is_numeric($direction) && $direction < 0) {
+                //Loop Order[Final] to Order [Initial-1]
+                foreach ($phases as $row) {
+                    // If Order is Between Initial -1  and Final Inclusive
+                    if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
+                        echo "<br>Move Backwards If Order No : ";
+                        echo $row->order_no;
+                        // Current Phase Order_no 
+                        $newOrder = $row->order_no + 1;
+                        $this->updatePhase(NULL, NULL, NULL, NULL, $newOrder, $row->id);
+                        $orderTest = $this->getAPhaseById($row->id);
+                        echo "<br>Phase: " . $row->name . " Moved Forward." . "To: " . $orderTest->order_no;
+                    }//End If   
+                }// End Loop
+            }//End Elseif
+        }
+        //Assign Phase to be Moved Final Order_No
+        $this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
+        return "Success Phase Moved"; 
+    }
 
 	public function moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder){
 		//Get All Exercises By Prod Id

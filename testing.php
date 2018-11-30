@@ -21,15 +21,14 @@ $newProgId = $programs->createProgram("Test Program for Move Phases");
    	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
    	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseThreeId);
    	$phaseThree = $programs->getAPhaseById($phaseThreeId);
-   	assert($phaseThree->order_no == 3);
-   	$programs->movePhaseOrder($newProgId, $phaseOneId, 1, 3);
+   	//assert($phaseThree->order_no == 3);
+   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 3, 1);
+   	$programs = new program();
+   	$phaseThree = $programs->getAPhaseById($phaseThreeId);
    	//assert($phaseThree->order_no == 1);
    	//assert($phaseOne->order_no == 2);
    	//assert($phaseTwo->order_no == 3);
-   	print_r($phaseThree);
-   	print_r($phaseTwo);
-   	print_r($phaseOne);
-
+   
 
 //Testing for Move Exercise/Phase Code
 // $newProg = $programs->createProgram("Testphp Prog9");
