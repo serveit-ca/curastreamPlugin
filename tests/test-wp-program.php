@@ -279,6 +279,20 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($phaseThree->order_no == 3);
    	assert($phaseOne->order_no == 1);
    	assert($phaseTwo->order_no == 2);
+   	$phaseFourId = $programs->createPhase("Test Phase 4 for Move Phases", $newProgId);
+   	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
+   	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseFourId);
+   	$phaseFour = $programs->getAPhaseById($phaseFourId);
+   	assert($phaseFour->order_no == 4);
+   	$programs->deletePhaseUpdateOrder($newProgId, $phaseFourId, 4);
+   	$programs = new program();
+    	$allPhases = $programs->getPhasesByProgramId(37);
+    	$expectedIds = array($phaseOneId,$phaseTwoId,$phaseThreeId);
+    	$i = 0;
+    	foreach($allPhases as $key){
+    		assert($key->id == $expectedIds[$i]);
+    		$i++;
+    	}
    }
 
 
