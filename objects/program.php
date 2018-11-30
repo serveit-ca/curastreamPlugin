@@ -736,7 +736,7 @@ public function createExerciseByName($name, $phaseId){
     	 	"id" => $phaseId));
 	    }
 
-	    //Check and Update duration
+	    //Check and Update duratio
 	    if (isset($duration) && !is_null($duration)){
 	    	$wpdb->update($tableName, array(
     		"duration" => $duration),
