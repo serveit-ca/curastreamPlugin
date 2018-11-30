@@ -245,19 +245,22 @@ class WP_Program_Test extends WP_UnitTestCase
 
    public function test_move_phase_order(){
    	$programs = new program();
-
+   	//start with an empty program with no phases
    	$newProgId = $programs->createProgram("Test Program for Move Phases");
+   	//add a phase to an empty program
    	$phaseOneId = $programs->createPhase("Test Phase 1 for Move Phases", $newProgId);
    	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
    	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseOneId);
    	$programs = new program();
    	$phaseOne = $programs->getAPhaseById($phaseOneId);
    	assert($phaseOne->order_no == 1);
+   	//Add a second phase to a program with one phase to the end
    	$phaseTwoId = $programs->createPhase("Test Phase 2 for Move Phases", $newProgId);
    	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
    	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseTwoId);
    	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
    	assert($phaseTwo->order_no == 2);
+   	//Add a third phase in the first position to the program - Ensure Phase 1 becomes Phase 2 and Phase 2 becomes phase three
    	$phaseThreeId = $programs->createPhase("Test Phase 3 for Move Phases", $newProgId);
    	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
    	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseThreeId);
@@ -271,6 +274,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($phaseThree->order_no == 1);
    	assert($phaseOne->order_no == 2);
    	assert($phaseTwo->order_no == 3);
+   	//Move Back
    	$programs->movePhaseOrder($newProgId, $phaseThreeId, 1, 3);
    	$programs = new program();
    	$phaseThree = $programs->getAPhaseById($phaseThreeId);
@@ -279,11 +283,33 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($phaseThree->order_no == 3);
    	assert($phaseOne->order_no == 1);
    	assert($phaseTwo->order_no == 2);
+   	//Add 4th for further tests
    	$phaseFourId = $programs->createPhase("Test Phase 4 for Move Phases", $newProgId);
    	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
    	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseFourId);
    	$phaseFour = $programs->getAPhaseById($phaseFourId);
    	assert($phaseFour->order_no == 4);
+   	//Change phase order from 3 to 2
+   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 2, 3);
+   	$phaseThree = $programs->getAPhaseById($phaseThreeId);
+   	$phaseOne = $programs->getAPhaseById($phaseOneId);
+   	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
+   	$phaseFour = $programs->getAPhaseById($phaseFourId);
+   	assert($phaseThree->order_no == 2);
+   	assert($phaseOne->order_no == 1);
+   	assert($phaseTwo->order_no == 3);
+   	assert($phaseFour->order_no == 4);
+   	//move back
+   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 3, 2);
+   	$phaseThree = $programs->getAPhaseById($phaseThreeId);
+   	$phaseOne = $programs->getAPhaseById($phaseOneId);
+   	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
+   	$phaseFour = $programs->getAPhaseById($phaseFourId);
+   	assert($phaseThree->order_no == 3);
+   	assert($phaseOne->order_no == 1);
+   	assert($phaseTwo->order_no == 2);
+   	assert($phaseFour->order_no == 4);
+   	//Remove a Phase from the end of the program
    	$programs->deletePhaseUpdateOrder($newProgId, $phaseFourId, 4);
    	$programs = new program();
     	$allPhases = $programs->getPhasesByProgramId($newProgId);
@@ -299,6 +325,7 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($phaseThree->order_no == 3);
    	assert($phaseOne->order_no == 1);
    	assert($phaseTwo->order_no == 2);
+   	//Remove a phase from the middle of the program
     $programs->deletePhaseUpdateOrder($newProgId, $phaseTwoId, 2);
    	$programs = new program();
     	$allPhases = $programs->getPhasesByProgramId($newProgId);
@@ -312,6 +339,18 @@ class WP_Program_Test extends WP_UnitTestCase
    	$phaseOne = $programs->getAPhaseById($phaseOneId);
     assert($phaseOne->order_no == 1);
    	assert($phaseThree->order_no == 2);
+   	//Remove a phase from the start of the program
+   	$programs->deletePhaseUpdateOrder($newProgId, $phaseOneId, 1);
+   	$programs = new program();
+    	$allPhases = $programs->getPhasesByProgramId($newProgId);
+    	$expectedIds = array($phaseThreeId);
+    	$i = 0;
+    	foreach($allPhases as $key){
+    		assert($key->id == $expectedIds[$i]);
+    		$i++;
+    	}
+    $phaseThree = $programs->getAPhaseById($phaseThreeId);
+   	assert($phaseThree->order_no == 1);
    }
 
 
