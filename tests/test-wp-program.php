@@ -309,6 +309,26 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($phaseOne->order_no == 1);
    	assert($phaseTwo->order_no == 2);
    	assert($phaseFour->order_no == 4);
+   	//Change phase order from 2 -4
+   	$programs->movePhaseOrder($newProgId, $phaseTwoId, 2, 4);
+   	$phaseThree = $programs->getAPhaseById($phaseThreeId);
+   	$phaseOne = $programs->getAPhaseById($phaseOneId);
+   	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
+   	$phaseFour = $programs->getAPhaseById($phaseFourId);
+   	assert($phaseThree->order_no == 2);
+   	assert($phaseOne->order_no == 1);
+   	assert($phaseTwo->order_no == 4);
+   	assert($phaseFour->order_no == 3);
+   	//move back
+   	$programs->movePhaseOrder($newProgId, $phaseTwoId, 4, 2);
+   	$phaseThree = $programs->getAPhaseById($phaseThreeId);
+   	$phaseOne = $programs->getAPhaseById($phaseOneId);
+   	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
+   	$phaseFour = $programs->getAPhaseById($phaseFourId);
+   	assert($phaseThree->order_no == 3);
+   	assert($phaseOne->order_no == 1);
+   	assert($phaseTwo->order_no == 2);
+   	assert($phaseFour->order_no == 4);
    	// change phase order of 1 to 2
    	$programs->movePhaseOrder($newProgId, $phaseOneId, 1, 2);
    	$phaseOne = $programs->getAPhaseById($phaseOneId);
