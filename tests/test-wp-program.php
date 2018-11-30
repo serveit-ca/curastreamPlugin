@@ -286,7 +286,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($phaseFour->order_no == 4);
    	$programs->deletePhaseUpdateOrder($newProgId, $phaseFourId, 4);
    	$programs = new program();
-    	$allPhases = $programs->getPhasesByProgramId(37);
+    	$allPhases = $programs->getPhasesByProgramId($newProgId);
     	$expectedIds = array($phaseOneId,$phaseTwoId,$phaseThreeId);
     	$i = 0;
     	foreach($allPhases as $key){
