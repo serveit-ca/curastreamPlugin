@@ -293,6 +293,9 @@ class WP_Program_Test extends WP_UnitTestCase
     		assert($key->id == $expectedIds[$i]);
     		$i++;
     	}
+    $phaseThree = $programs->getAPhaseById($phaseThreeId);
+   	$phaseOne = $programs->getAPhaseById($phaseOneId);
+   	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
     assert($phaseThree->order_no == 3);
    	assert($phaseOne->order_no == 1);
    	assert($phaseTwo->order_no == 2);
@@ -305,6 +308,8 @@ class WP_Program_Test extends WP_UnitTestCase
     		assert($key->id == $expectedIds[$i]);
     		$i++;
     	}
+    $phaseThree = $programs->getAPhaseById($phaseThreeId);
+   	$phaseOne = $programs->getAPhaseById($phaseOneId);
     assert($phaseOne->order_no == 1);
    	assert($phaseThree->order_no == 2);
    }
