@@ -290,7 +290,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	$phaseFour = $programs->getAPhaseById($phaseFourId);
    	assert($phaseFour->order_no == 4);
    	//Change phase order from 3 to 2
-   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 2, 3);
+   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 3, 2);
    	$phaseThree = $programs->getAPhaseById($phaseThreeId);
    	$phaseOne = $programs->getAPhaseById($phaseOneId);
    	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
@@ -300,7 +300,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($phaseTwo->order_no == 3);
    	assert($phaseFour->order_no == 4);
    	//move back
-   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 3, 2);
+   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 2, 3);
    	$phaseThree = $programs->getAPhaseById($phaseThreeId);
    	$phaseOne = $programs->getAPhaseById($phaseOneId);
    	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
