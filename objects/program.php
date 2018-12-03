@@ -1079,7 +1079,6 @@ public function duplicateGeneralProgram($existingProgram){
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
 		$finalOrder = $this->getHighestExerciseOrder($phaseId);
-		echo $finalOrder->order_no;
 		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder);
 		// Deleted This Exercise
 		$wpdb->delete("dev_cura_exercises", array(
