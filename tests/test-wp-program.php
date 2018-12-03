@@ -407,7 +407,7 @@ class WP_Program_Test extends WP_UnitTestCase
 	//add a third exercise to the first position of the phase - Ensure exercise 1 becomes order 2 and exercise 2 becomes order 3
 	$exerciseThreeId = $programs->createExerciseByName("Test Exercise 3 for Move Exercise", $newPhaseId);
 	$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
-	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, $exerciseTwoId);
+	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, $exerciseThreeId);
 	$programs = new program();
 	$exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
 	assert($exerciseThree->order_no == 3);
