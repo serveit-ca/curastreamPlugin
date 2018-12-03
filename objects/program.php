@@ -1124,8 +1124,8 @@ public function duplicateGeneralProgram($existingProgram){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
-		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1");
-		return $finalOrder->order_no;
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1", ARRAY_A);
+		return $finalOrder['order_no'];
 	}
 
 	public function assignProgramToUser($programId, $userId){
