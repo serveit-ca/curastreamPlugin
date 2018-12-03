@@ -428,6 +428,73 @@ class WP_Program_Test extends WP_UnitTestCase
 	assert($exerciseThree->order_no == 3);
 	assert($exerciseTwo->order_no == 2);
 	assert($exerciseOne->order_no == 1);
+	//add 4th for further tests
+	$exerciseFourId = $programs->createExerciseByName("Test Exercise 4 for Move Exercise", $newPhaseId);
+	$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
+	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, $exerciseFourId);
+	$programs = new program();
+	$exerciseFour = $programs->getAnExerciseById($exerciseFourId);
+	assert($exerciseFour->order_no == 4);
+	//change exercise order of 3 to 2
+	$programs->moveExerciseOrder($newPhaseId, $exerciseThreeId, 3, 2);
+	$exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+   	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
+   	$exerciseFour = $programs->getAnExerciseById($exerciseFourId);
+   	assert($exerciseThree->order_no == 2);
+   	assert($exerciseOne->order_no == 1);
+   	assert($exerciseTwo->order_no == 3);
+   	assert($exerciseFour->order_no == 4);
+   	//move back
+   	$programs->moveExerciseOrder($newPhaseId, $exerciseThreeId, 2, 3);
+	$exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+   	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
+   	$exerciseFour = $programs->getAnExerciseById($exerciseFourId);
+   	assert($exerciseThree->order_no == 3);
+   	assert($exerciseOne->order_no == 1);
+   	assert($exerciseTwo->order_no == 2);
+   	assert($exerciseFour->order_no == 4);
+   	//change 2 to 4
+   	$programs->moveExerciseOrder($newPhaseId, $exerciseTwoId, 2, 4);
+	$exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+   	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
+   	$exerciseFour = $programs->getAnExerciseById($exerciseFourId);
+   	assert($exerciseThree->order_no == 2);
+   	assert($exerciseOne->order_no == 1);
+   	assert($exerciseTwo->order_no == 4);
+   	assert($exerciseFour->order_no == 3);
+   	//move back
+   	$programs->moveExerciseOrder($newPhaseId, $exerciseTwoId, 4, 2);
+	$exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+   	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
+   	$exerciseFour = $programs->getAnExerciseById($exerciseFourId);
+   	assert($exerciseThree->order_no == 3);
+   	assert($exerciseOne->order_no == 1);
+   	assert($exerciseTwo->order_no == 2);
+   	assert($exerciseFour->order_no == 4);
+   	//1 to 2
+   	$programs->moveExerciseOrder($newPhaseId, $exerciseOneId, 1, 2);
+	$exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+   	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
+   	$exerciseFour = $programs->getAnExerciseById($exerciseFourId);
+   	assert($exerciseThree->order_no == 3);
+   	assert($exerciseOne->order_no == 2);
+   	assert($exerciseTwo->order_no == 1);
+   	assert($exerciseFour->order_no == 4);
+   	//2 to 1
+   	$programs->moveExerciseOrder($newPhaseId, $exerciseOneId, 2, 1);
+	$exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+   	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
+   	$exerciseFour = $programs->getAnExerciseById($exerciseFourId);
+   	assert($exerciseThree->order_no == 3);
+   	assert($exerciseOne->order_no == 1);
+   	assert($exerciseTwo->order_no == 2);
+   	assert($exerciseFour->order_no == 4);
 }
 
 
