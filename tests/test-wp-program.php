@@ -495,6 +495,48 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($exerciseOne->order_no == 1);
    	assert($exerciseTwo->order_no == 2);
    	assert($exerciseFour->order_no == 4);
+   		//remove exercise from end of phase
+   	$programs->deleteExerciseUpdateOrder($newPhaseId, $exerciseFourId, 4);
+   	$programs = new program();
+   	$allExercises = $programs->getExercisesByPhaseId($newPhaseId);
+   	$expectedIds = array($exerciseOneId,$exerciseTwoId, $exerciseThreeId);
+   	$i = 0;
+   	foreach($allExercises as $key){
+   		assert($key->id == $expectedIds[$i]);
+   		$i++;
+   }
+    $exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+   	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
+    assert($exerciseThree->order_no == 3);
+   	assert($exerciseOne->order_no == 1);
+   	assert($exerciseTwo->order_no == 2);
+   	//remove exercise from middle of phase
+   	$programs->deleteExerciseUpdateOrder($newPhaseId, $exerciseTwoId, 2);
+   	$programs = new program();
+   	$allExercises = $programs->getExercisesByPhaseId($newPhaseId);
+   	$expectedIds = array($exerciseOneId,$exerciseThreeId);
+   	$i = 0;
+   	foreach($allExercises as $key){
+   		assert($key->id == $expectedIds[$i]);
+   		$i++;
+   }
+   $exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+   	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+    assert($exerciseThree->order_no == 3);
+   	assert($exerciseOne->order_no == 1);
+   //remove exercise from middle of phase
+   	$programs->deleteExerciseUpdateOrder($newPhaseId, $exerciseOneId, 1);
+   	$programs = new program();
+   	$allExercises = $programs->getExercisesByPhaseId($newPhaseId);
+   	$expectedIds = array($exerciseThreeId);
+   	$i = 0;
+   	foreach($allExercises as $key){
+   		assert($key->id == $expectedIds[$i]);
+   		$i++;
+   }
+    $exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
+    assert($exerciseThree->order_no == 3);
 }
 
 
