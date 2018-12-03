@@ -499,7 +499,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	$programs->deleteExerciseUpdateOrder($newPhaseId, $exerciseFourId, 4);
    	$programs = new program();
    	$allExercises = $programs->getExercisesByPhaseId($newPhaseId);
-   	$expectedIds = array($exerciseOneId,$exerciseTwoId, $exerciseThreeId);
+   	$expectedIds = array($exerciseOneId,$exerciseTwoId,$exerciseThreeId);
    	$i = 0;
    	foreach($allExercises as $key){
    		assert($key->id == $expectedIds[$i]);
@@ -512,7 +512,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	assert($exerciseOne->order_no == 1);
    	assert($exerciseTwo->order_no == 2);
    	//remove exercise from middle of phase
-   	$programs->deleteExerciseUpdateOrder($newPhaseId, $exerciseTwoId, 2);
+   	$programs->deleteExerciseUpdateOrder($newPhaseId,$exerciseTwoId, 2);
    	$programs = new program();
    	$allExercises = $programs->getExercisesByPhaseId($newPhaseId);
    	$expectedIds = array($exerciseOneId,$exerciseThreeId);
