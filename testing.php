@@ -10,11 +10,12 @@ $programs = new program();
 	$newProgId = $programs->createProgram("Test Program for Move Exercises");
 	$newPhaseId = $programs->createPhase("Test Phase for Move Exercises", $newProgId);
 	//add exercises to empty phase
-	$exerciseOneId = $programs->createExercise("Test Exercise 1 for Move Exercise", $newPhaseId);
+	$exerciseOneId = $programs->createExerciseByName("Test Exercise 1 for Move Exercise", $newPhaseId);
 	$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
-	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseOneId);
+	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, $exerciseOneId);
 	$programs = new program();
 	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+	echo $exerciseOneId;
 	print_r($exerciseOne);
    	//assert($phaseThree->order_no == 1);
    	//assert($phaseOne->order_no == 2);
