@@ -377,7 +377,7 @@ public $tempUserId;
 			$aExercise->file_name = $row['file_name'];
 			$aExercise->thumbnailUrl = $row['videoThumbnail'];
 			$aExercise->exercise_video_id = $row['exercise_video_id'];
-			$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
+			//$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
 
 			$allExercises[] = $aExercise;
         }
