@@ -5,26 +5,17 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-$newProgId = $programs->createProgram("Test Program for Move Phases");
-   	$phaseOneId = $programs->createPhase("Test Phase 1 for Move Phases", $newProgId);
-   	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
-   	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseOneId);
-   	$programs = new program();
-   	$phaseOne = $programs->getAPhaseById($phaseOneId);
-   	//assert($phaseOne->order_no == 1);
-   	$phaseTwoId = $programs->createPhase("Test Phase 2 for Move Phases", $newProgId);
-   	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
-   	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseTwoId);
-   	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
-   	//assert($phaseTwo->order_no == 2);
-   	$phaseThreeId = $programs->createPhase("Test Phase 3 for Move Phases", $newProgId);
-   	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
-   	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseThreeId);
-   	$phaseThree = $programs->getAPhaseById($phaseThreeId);
-   	//assert($phaseThree->order_no == 3);
-   	$programs->movePhaseOrder($newProgId, $phaseThreeId, 3, 1);
-   	$programs = new program();
-   	$phaseThree = $programs->getAPhaseById($phaseThreeId);
+$programs = new program();
+	//start with empty phase with no exercises
+	$newProgId = $programs->createProgram("Test Program for Move Exercises");
+	$newPhaseId = $programs->createPhase("Test Phase for Move Exercises", $newProgId);
+	//add exercises to empty phase
+	$exerciseOneId = $programs->createExercise("Test Exercise 1 for Move Exercise", $newPhaseId);
+	$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
+	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseOneId);
+	$programs = new program();
+	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
+	print_r($exerciseOne);
    	//assert($phaseThree->order_no == 1);
    	//assert($phaseOne->order_no == 2);
    	//assert($phaseTwo->order_no == 3);

@@ -236,7 +236,7 @@ class WP_Program_Test extends WP_UnitTestCase
 
     // public function test_create_exercise_by_name(){
     // 	$programs = new program();
-    // 	$newExId = $programs->createExerciseByName("Travis Test Exercise", 60);
+    // 	$newExId = $programs->createExerciseByNameByName("Travis Test Exercise", 60);
     // 	$programs2 = new program();
     // 	$newEx=$programs2->getAnExerciseById($newExId);
     // 	assert($newEx->phase_id==60);
@@ -391,21 +391,21 @@ class WP_Program_Test extends WP_UnitTestCase
 	$newProgId = $programs->createProgram("Test Program for Move Exercises");
 	$newPhaseId = $programs->createPhase("Test Phase for Move Exercises", $newProgId);
 	//add exercises to empty phase
-	$exerciseOneId = $programs->createExercise("Test Exercise 1 for Move Exercise", $newPhaseId);
+	$exerciseOneId = $programs->createExerciseByName("Test Exercise 1 for Move Exercise", $newPhaseId);
 	$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
 	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseOneId);
 	$programs = new program();
 	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
 	assert($exerciseOne->order_no == 1);
 	//add a second exercise to a phase with one exercise to the end
-	$exerciseTwoId = $programs->createExercise("Test Exercise 2 for Move Exercise", $newPhaseId);
+	$exerciseTwoId = $programs->createExerciseByName("Test Exercise 2 for Move Exercise", $newPhaseId);
 	$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
 	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseTwoId);
 	$programs = new program();
 	$exerciseTwo = $programs->getAnExerciseById($exerciseTwoId);
 	assert($exerciseTwo->order_no == 2);
 	//add a third exercise to the first position of the phase - Ensure exercise 1 becomes order 2 and exercise 2 becomes order 3
-	$exerciseThreeId = $programs->createExercise("Test Exercise 3 for Move Exercise", $newPhaseId);
+	$exerciseThreeId = $programs->createExerciseByName("Test Exercise 3 for Move Exercise", $newPhaseId);
 	$highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
 	$programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseTwoId);
 	$programs = new program();
