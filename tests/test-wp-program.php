@@ -420,7 +420,7 @@ class WP_Program_Test extends WP_UnitTestCase
 	assert($exerciseTwo->order_no == 3);
 	assert($exerciseOne->order_no == 2);
 	//Move Back
-	$programs->moveExerciseOrder($newPhaseId, $exerciseThreeId, 1, 3)
+	$programs->moveExerciseOrder($newPhaseId, $exerciseThreeId, 1, 3);
 	$programs = new program();
 	$exerciseThree = $programs-> getAExerciseById($exerciseThreeId);
 	$exerciseOne = $programs-> getAExerciseById($exerciseOneId);
