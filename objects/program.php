@@ -425,15 +425,15 @@ public function createExerciseByName($name, $phaseId){
     public function createExercise($exerciseId, $phaseId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_exercise_videos";
-    	$exerciseVid = $wpdb->get_row("SELECT id, name, url FROM $tableName WHERE id = $exerciseId");
+    	$exerciseVid = $wpdb->get_row("SELECT id, name, url FROM $tableName WHERE id = $exerciseId", ARRAY_A);
 
     	$tableName = $wpdb->prefix . "cura_exercises";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $exerciseVid->name,
+    		"name" => $exerciseVid['name'],
     		"phase_id" => $phaseId,
-    		"exercise_video_id" => $exerciseVid->id,
-    		"exercise_video_url" => $exerciseVid->url
+    		"exercise_video_id" => $exerciseVid['id'],
+    		"exercise_video_url" => $exerciseVid['url']
     		));
     	  $lastId = $wpdb->insert_id;
 
