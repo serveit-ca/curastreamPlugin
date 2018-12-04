@@ -1081,7 +1081,7 @@ public function duplicateGeneralProgram($existingProgram){
 		$finalOrder = $this->getHighestExerciseOrder($phaseId);
 		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder);
 		// Deleted This Exercise
-		$wpdb->delete("dev_cura_exercises", array(
+		$wpdb->delete($tableName, array(
     		"id" => $exerciseId
     	));
 	}
