@@ -7,8 +7,11 @@ $programs = new program();
     	$allPhases = $programs->getAllPhases();
     	print_r($allPhases);
 
-	
-   
+var_dump($programs->getProgramById(206));
+
+$status = $programs->removeProgramFromUser(193, 1);
+
+//echo "Status: " .$status;
 
 //Testing for Move Exercise/Phase Code
 // $newProg = $programs->createProgram("Testphp Prog9");
