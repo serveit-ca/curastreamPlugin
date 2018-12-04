@@ -57,7 +57,7 @@ public $tempUserId;
 	public function getProgramById($programId){
         global $wpdb;
         $program_table =$wpdb->prefix . "cura_programs";
-        $programs = $wpdb->get_row("SELECT id, name, type, description, duration, equipment, duration, equip, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state, created_on, updated_on, customProgram, tempUserId FROM $program_table WHERE id = $programId" , ARRAY_A);
+        $programs = $wpdb->get_row("SELECT id, name, type, description, duration, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state, created_on, updated_on, customProgram, tempUserId FROM $program_table WHERE id = $programId" , ARRAY_A);
         $this->id = $programs["id"];
         $this->name = $programs["name"];
         $this->type = $programs["type"];
