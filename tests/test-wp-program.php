@@ -383,7 +383,7 @@ class WP_Program_Test extends WP_UnitTestCase
     	}
     $phaseThree = $programs->getAPhaseById($phaseThreeId);
    	assert($phaseThree->order_no == 1);
-   	$this->reset_database():
+   	$this->reset_database();
    }
 
    public function test_move_exercise_order(){
@@ -539,7 +539,7 @@ class WP_Program_Test extends WP_UnitTestCase
    }
     $exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
     assert($exerciseThree->order_no == 1);
-    $this->reset_database():
+    $this->reset_database();
 }
 
 
