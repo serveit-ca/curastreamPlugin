@@ -247,13 +247,15 @@ jQuery(".addPhase").live('click', function(event){
 
 		var programID = jQuery("#theProgramMetaId").attr('data-programid');
 		console.log("Program ID"+ programID);
-		var finalOrder = jQuery(this).parent().parent().parent().prev().attr('data-phase-order');
+		var finalOrder = jQuery(this).parent().parent().parent().prev('.phaseContainer').attr('data-phase-order');
 		console.log("Previous Phase Order Lookup "+finalOrder);
 		if(typeof finalOrder === "undefined"){
 			finalOrder = 1
+		
 		}else{
-			finalOrder++; 
-		}
+		 	finalOrder++; 
+		 }
+
 		console.log("Phase Final Order "+finalOrder);
 		var currentElement = jQuery(this);
 		// add a new phase to the database ajax and reorder
@@ -439,7 +441,6 @@ function updateExerciseOrder(location){
 		jQuery(this).attr('data-ordernumber',order);
 		var exerciseID = jQuery(this).attr('data-exerciseID')
 		console.log("Exercise Id:"+exerciseID);
-		
 		order ++;
 	});
 }

@@ -825,7 +825,7 @@ public function createExerciseByName($name, $phaseId){
     		"order_no" => $order_no),
     		array( // Where Clause
     	 	"id" => $phaseId));
-            echo "<br> Order No Updated";
+            //echo "<br> Order No Updated";
 	    }
 
 	    if($this->printError($wpdb) != "No Error"){
@@ -1029,13 +1029,13 @@ public function duplicateGeneralProgram($existingProgram){
                 foreach ($phases as $row) {
                     // If Order is Between Initial -1  and Final Inclusive
                     if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
-                        echo "<br>Move Backwards If Order No : ";
-                        echo $row->order_no;
+                     //   echo "<br>Move Backwards If Order No : ";
+                       // echo $row->order_no;
                         // Current Phase Order_no 
                         $newOrder = $row->order_no + 1;
                         $this->updatePhase(NULL, NULL, NULL, NULL, $newOrder, $row->id);
                         $orderTest = $this->getAPhaseById($row->id);
-                        echo "<br>Phase: " . $row->name . " Moved Forward." . "To: " . $orderTest->order_no;
+                        // echo "<br>Phase: " . $row->name . " Moved Forward." . "To: " . $orderTest->order_no;
                     }//End If   
                 }// End Loop
             }//End Elseif
