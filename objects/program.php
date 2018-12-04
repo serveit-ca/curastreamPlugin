@@ -55,29 +55,28 @@ public $tempUserId;
 
     	// Get Program By Id
 	public function getProgramById($programId){
-		global $wpdb;
-		$program_table =$wpdb->prefix . 'cura_programs';
-		$programs = $wpdb->get_row("SELECT id, name, type, description, duration, equipment, duration, equip, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state, created_on, updated_on, customProgram, tempUserId FROM $program_table WHERE id = $programId" , ARRAY_A);
-
-		$this->id = $programs["id"];
-		$this->name = $programs["name"];
-		$this->type = $programs["type"];
-		$this->description = $programs["description"];
-		$this->duration = $programs["duration"];
-		$this->equipment = $programs["equipment"];
-		$this->weeklyPlan = $programs['weekly_plan'];
-		$this->lifeStyle = $programs['life_style'];
-		$this->body_part = $programs['assoc_body_part_id'];
-		$this->howItHappen = $programs['how_it_happen'];
-		$this->sportsOccupation = $programs['sports_occupation'];
-		$this->thumbnail = $programs['thumbnail'];
-		$this->state = $programs['state'];
-		$this->createdOn = $programs['created_on'];
-		$this->updatedOn = $programs['updated_on'];
-		$this->custom = $programs['customProgram'];
+        global $wpdb;
+        $program_table =$wpdb->prefix . "cura_programs";
+        $programs = $wpdb->get_row("SELECT id, name, type, description, duration, equipment, duration, equip, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state, created_on, updated_on, customProgram, tempUserId FROM $program_table WHERE id = $programId" , ARRAY_A);
+        $this->id = $programs["id"];
+        $this->name = $programs["name"];
+        $this->type = $programs["type"];
+        $this->description = $programs["description"];
+        $this->duration = $programs["duration"];
+        $this->equipment = $programs["equipment"];
+        $this->weeklyPlan = $programs['weekly_plan'];
+        $this->lifeStyle = $programs['life_style'];
+        $this->body_part = $programs['assoc_body_part_id'];
+        $this->howItHappen = $programs['how_it_happen'];
+        $this->sportsOccupation = $programs['sports_occupation'];
+        $this->thumbnail = $programs['thumbnail'];
+        $this->state = $programs['state'];
+        $this->createdOn = $programs['created_on'];
+        $this->updatedOn = $programs['updated_on'];
+        $this->custom = $programs['customProgram'];
         $this->tempUserId = $programs['tempUserId'];
-		return $this;
-	}
+        return $this;
+    }
 
 	public function checkCurrent($userId, $programId){
     	global $wpdb;
