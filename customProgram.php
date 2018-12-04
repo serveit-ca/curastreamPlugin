@@ -88,7 +88,7 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 				 	<select name="customExistingProgramEdit" class="enableSelect2" id="customExistingProgramEdit">
 					 		<?php 
 					 			
-					 				$allPrograms = $programs->getAllPrograms();
+					 				$allPrograms = $programs->getAllCustomPrograms();
 					 			foreach ($allPrograms as $value) { echo("<option value=\"".$value->id ."\">".$value->name." </option>");}?>
 					 </select>
 					 <div>
