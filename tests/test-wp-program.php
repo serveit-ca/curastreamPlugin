@@ -524,7 +524,7 @@ class WP_Program_Test extends WP_UnitTestCase
    }
    $exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
    	$exerciseOne = $programs->getAnExerciseById($exerciseOneId);
-    assert($exerciseThree->order_no == 3);
+    assert($exerciseThree->order_no == 2);
    	assert($exerciseOne->order_no == 1);
    //remove exercise from middle of phase
    	$programs->deleteExerciseUpdateOrder($newPhaseId, $exerciseOneId, 1);
@@ -537,7 +537,7 @@ class WP_Program_Test extends WP_UnitTestCase
    		$i++;
    }
     $exerciseThree = $programs->getAnExerciseById($exerciseThreeId);
-    assert($exerciseThree->order_no == 3);
+    assert($exerciseThree->order_no == 1);
 }
 
 
