@@ -439,18 +439,7 @@ function updateExerciseOrder(location){
 		jQuery(this).attr('data-ordernumber',order);
 		var exerciseID = jQuery(this).attr('data-exerciseID')
 		console.log("Exercise Id:"+exerciseID);
-		// Remove this logic when Kaiden fixes the exercise 
-			var data = {
-			'action': 'updateAnExercise',
-			'exerciseId': exerciseID,
-			'order_no': order
-			};
-			// ensure the datasbse has been updated
-			jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){	
-				resultObj = response;
-				}
-			});
-		// Remove to here 
+		
 		order ++;
 	});
 }
