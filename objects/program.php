@@ -269,25 +269,26 @@ public $tempUserId;
 
       
     
-    // Get all Exercises From Database
-    public function getAllExerciseVideos(){
-    	global $wpdb;
-		$tableName = $wpdb->prefix . "cura_exercise_videos";
+ // Get all Exercises From Database
+    public function getAllExerciseVideos($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
 
-		$exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_part_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
-		$exercies = array();
+        $exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
+        $exercies = array();
         foreach ($exerciseResults as $row) {
             $anExercise = new exercise();
-			$anExercise->id = $row->id;
+            $anExercise->id = $row->id;
             $anExercise->name = $row->name;
             $anExercise->description = $row->description;
             $anExercise->bodyPart = $row->assoc_body_parts_name;
             $anExercise->category = $row->category_name;
             $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
             $anExercise->thumbnail = $row->videoThumbnail;
+            $anExercise->favorate = $anExercise->checkFavorite($userId, $anExercise->id);
             $exercies[] = $anExercise;
         }
-			return $exercies;
+            return $exercies;
     }
 
 
@@ -311,7 +312,7 @@ public $tempUserId;
 			$anExercise->equipment = $exerciseResults['equipment'];
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-			//$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],[2]),[2]);
+			$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],[2]),[2]);
 			$anExercise->file_url = $exerciseResults['file_url'];
 			$anExercise->file_name = $exerciseResults['file_name'];
 			$anExercise->thumbnail = $exerciseResults['videoThumbnail'];
@@ -435,8 +436,8 @@ public $tempUserId;
 			$aExercise->file_name = $row['file_name'];
 			$aExercise->thumbnail = $row['videoThumbnail'];
 			$aExercise->exercise_video_id = $row['exercise_video_id'];
-			//$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
-
+			$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
+            echo $aExercise->videoId." ";
 			$allExercises[] = $aExercise;
         }
 			return $allExercises;
