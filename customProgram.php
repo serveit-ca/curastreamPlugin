@@ -1,4 +1,6 @@
 <?php
+require_once ("objects/program.php");
+$programs = new program();
  
 $allUsers = get_users(array(
     'meta_key' => 'first_name',
@@ -72,9 +74,9 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 					<h3>3. Select an exisitng general program to edit</h3>
 				 	<select name="generalExistingProgramEdit" class="enableSelect2" id="generalExistingProgramEdit" >
 					 		<?php 
-					 			global $wpdb;
-					 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 ORDER BY name", ARRAY_A);
-					 			foreach ($programs as $key => $value) { echo("<option value=\"".$value['id'] ."\">".$value['name']." </option>");}?>
+					 			
+					 				$allPrograms = $programs->getAllPrograms();
+					 			foreach ($allPrograms as $value) { echo("<option value=\"".$value->id ."\">".$value->name." </option>");}?>
 					 </select>
 					 <div>
 					 	<button class="button-secondary custom-btn"id="generalProgram_edit">Edit General Program 
@@ -85,9 +87,9 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 					<h3>3. Select an exisitng custom program to edit</h3>
 				 	<select name="customExistingProgramEdit" class="enableSelect2" id="customExistingProgramEdit">
 					 		<?php 
-					 			global $wpdb;
-					 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 AND customProgram = 1 ORDER BY name", ARRAY_A);
-					 			foreach ($programs as $key => $value) { echo("<option value=\"".$value['id'] ."\">".$value['name']." </option>");}?>
+					 			
+					 				$allPrograms = $programs->getAllCustomPrograms();
+					 			foreach ($allPrograms as $value) { echo("<option value=\"".$value->id ."\">".$value->name." </option>");}?>
 					 </select>
 					 <div>
 					 	<button class="button-secondary custom-btn"id="customProgram_edit">Edit Custom Program 
@@ -111,9 +113,9 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 						 
 					 	<select name="existingProgram" class="enableSelect2" id="generalProgramexistingProgram">
 						 		<?php 
-						 			global $wpdb;
-						 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 ORDER BY name ", ARRAY_A);
-						 			foreach ($programs as $key => $value) { echo("<option value=\"".$value['id'] ."\">".$value['name']."</option>");}?>
+						 			
+						 				$allPrograms = $programs->getAllPrograms();
+					 			foreach ($allPrograms as $value) { echo("<option value=\"".$value->id ."\">".$value->name." </option>");}?>
 						 </select>
 						</div>
 						
@@ -141,9 +143,9 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 						 
 					 	<select name="existingProgram" class="enableSelect2" id="existingProgram">
 						 		<?php 
-						 			global $wpdb;
-						 				$programs = $wpdb->get_results("SELECT id, name FROM `dev_cura_programs` WHERE id > 0 ORDER BY name ", ARRAY_A);
-						 			foreach ($programs as $key => $value) { echo("<option value=\"".$value['id'] ."\">".$value['name']."</option>");}?>
+						 			
+						 				$allPrograms = $programs->getAllPrograms();
+					 			foreach ($allPrograms as $value) { echo("<option value=\"".$value->id ."\">".$value->name." </option>");}?>
 						 </select>
 						</div>
 						

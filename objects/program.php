@@ -1,4 +1,9 @@
 <?php
+add_action( 'plugins_loaded', array( 'program', 'init' ));
+
+
+ 
+
 require_once("phase.php");
 require_once("exercise.php");
 class program
@@ -17,21 +22,15 @@ public $completed;
 public $status;
 public $thumbnailUrl;
 public $body_part;
-public $sport_occupation;
-public $injury_cause;
-public $howItHappen;
+public $howItHappen; 
 public $sportsOccupation;
-public $thumbnail;
+public $thumbnail; //dupe - check refs, thumnailUrl is gone.
 public $state;
 public $createdOn;
 public $updatedOn;
 public $custom;
-public $programId;
-public $programName;
 public $phases;
 public $exercises;
-public $dateCreated;
-public $dateModified;
 public $tempUserId;
 
 
@@ -39,6 +38,11 @@ public $tempUserId;
 
     public  function __construct() {
     }
+
+    public static function init() {
+       $class = __CLASS__;
+       new $class;
+   }
 
     public function printError($wpdb){
     	
@@ -53,31 +57,30 @@ public $tempUserId;
 
     	// Get Program By Id
 	public function getProgramById($programId){
-		global $wpdb;
-		$program_table = 'dev_cura_programs';
-		$programs = $wpdb->get_row("SELECT * FROM $program_table WHERE id = $programId" , ARRAY_A);
-
-		$this->id = $programs["id"];
-		$this->name = $programs["name"];
-		$this->type = $programs["type"];
-		$this->description = $programs["description"];
-		$this->duration = $programs["duration"];
-		$this->equipment = $programs["equipment"];
-		$this->duration = $programs['duration'];
-		$this->weeklyPlan = $programs['weekly_plan'];
-		$this->lifeStyle = $programs['life_style'];
-		$this->body_part = $programs['assoc_body_part_id'];
-		$this->howItHappen = $programs['how_it_happen'];
-		$this->sportsOccupation = $programs['sports_occupation'];
-		$this->thumbnail = $programs['thumbnail'];
-		$this->state = $programs['state'];
-		$this->createdOn = $programs['created_on'];
-		$this->updatedOn = $programs['updated_on'];
-		$this->custom = $programs['customProgram'];
+        global $wpdb;
+        $program_table =$wpdb->prefix . "cura_programs";
+        $programs = $wpdb->get_row("SELECT id, name, type, description, duration, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state, created_on, updated_on, customProgram, tempUserId FROM $program_table WHERE id = $programId" , ARRAY_A);
+        $this->id = $programs["id"];
+        $this->name = $programs["name"];
+        $this->type = $programs["type"];
+        $this->description = $programs["description"];
+        $this->duration = $programs["duration"];
+        $this->equipment = $programs["equipment"];
+        $this->weeklyPlan = $programs['weekly_plan'];
+        $this->lifeStyle = $programs['life_style'];
+        $this->body_part = $programs['assoc_body_part_id'];
+        $this->howItHappen = $programs['how_it_happen'];
+        $this->sportsOccupation = $programs['sports_occupation'];
+        $this->thumbnail = $programs['thumbnail'];
+        $this->state = $programs['state'];
+        $this->createdOn = $programs['created_on'];
+        $this->updatedOn = $programs['updated_on'];
+        $this->custom = $programs['customProgram'];
         $this->tempUserId = $programs['tempUserId'];
         $this->status = $this->checkAssigned($programs["id"], $programs['tempUserId']);
 		return $this;
 	}
+
 
 	public function checkCurrent($userId, $programId){
     	global $wpdb;
@@ -106,7 +109,7 @@ public $tempUserId;
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_programs";
 
-		$programResults = $wpdb->get_results("SELECT * FROM $tableName ORDER BY name", ARRAY_A);
+		$programResults = $wpdb->get_results("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName ORDER BY name", ARRAY_A);
 
 		$programs = array();
         foreach ($programResults as $row) {
@@ -117,11 +120,11 @@ public $tempUserId;
 			$program->description = $row['description'];
 			$program->equipment = $row['equipment'];
 			$program->duration = $row['duration'];
-			$program->weekly_plan = $row['weekly_plan'];
-			$program->life_style = $row['life_style'];
-			$program->assoc_body_part_id = $row['assoc_body_part_id'];
-			$program->how_it_happen = $row['how_it_happen'];
-			$program->sports_occupation = $row['sports_occupation'];
+			$program->weeklyPlan = $row['weekly_plan'];
+			$program->lifeStyle = $row['life_style'];
+			$program->body_part = $row['assoc_body_part_id'];
+			$program->howItHappen = $row['how_it_happen'];
+			$program->sportsOccupation = $row['sports_occupation'];
 			$program->thumbnail = $row['thumbnail'];
 			$program->state = $row['state'];
 			$programs[] = $program;
@@ -129,11 +132,39 @@ public $tempUserId;
 			return $programs;
     }
 
+       // Get all Programs From Database
+    public function getAllCustomPrograms(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_programs";
+
+        $programResults = $wpdb->get_results("SELECT * FROM $tableName WHERE customProgram = 1 ORDER BY name", ARRAY_A);
+
+        $programs = array();
+        foreach ($programResults as $row) {
+            $program = new program();
+            $program->id = $row['id'];
+            $program->name = $row['name'];
+            $program->type = $row['type'];
+            $program->description = $row['description'];
+            $program->equipment = $row['equipment'];
+            $program->duration = $row['duration'];
+            $program->weekly_plan = $row['weekly_plan'];
+            $program->life_style = $row['life_style'];
+            $program->assoc_body_part_id = $row['assoc_body_part_id'];
+            $program->how_it_happen = $row['how_it_happen'];
+            $program->sports_occupation = $row['sports_occupation'];
+            $program->thumbnail = $row['thumbnail'];
+            $program->state = $row['state'];
+            $programs[] = $program;
+        }
+            return $programs;
+    }
+
     public function getAllActiveGenericPrograms($userId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_programs";
 
-        $programResults = $wpdb->get_results("SELECT * FROM $tableName WHERE customProgram = 0 AND state = 0 ORDER BY name", ARRAY_A);
+        $programResults = $wpdb->get_results("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE customProgram = 0 AND state = 0 ORDER BY name", ARRAY_A);
 
         $programs = array();
         foreach ($programResults as $row) {
@@ -163,7 +194,7 @@ public $tempUserId;
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercises";
 
-		$exerciseResults = $wpdb->get_results("SELECT * FROM $tableName ORDER BY name", ARRAY_A);
+		$exerciseResults = $wpdb->get_results("SELECT id, name, phase_id, order_no, order_field, rest, sets_reps, variation, equipment, special_instructions, exercise_video_url, file_url, file_name FROM $tableName ORDER BY name", ARRAY_A);
 		$exercies = array();
         foreach ($exerciseResults as $row) {
             $anExercise = new exercise();
@@ -227,6 +258,14 @@ public $tempUserId;
         return $sports_occupations;
     }
 
+    function getAllCategories(){
+        global $wpdb; // this is how you get access to the database
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        $sql = "SELECT DISTINCT(category_name) FROM dev_cura_exercise_videos ORDER BY category_name;";
+        $categories = $wpdb->get_results( $sql );
+        return $categories;
+    }
+
 
       
     
@@ -235,18 +274,18 @@ public $tempUserId;
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercise_videos";
 
-		$exerciseResults = $wpdb->get_results("SELECT * FROM $tableName ORDER BY name");
+		$exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_part_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
 		$exercies = array();
         foreach ($exerciseResults as $row) {
             $anExercise = new exercise();
 			$anExercise->id = $row->id;
-			$anExercise->name = $row->name;
-			$anExercise->description = $row->description;
-			$anExercise->bodyPart = $row->assoc_body_parts_name;
-			$anExercise->category = $row->category_name;
-			$anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
-			$anExercise->thumbnailUrl = $row->videoThumbnail;
-			$exercies[] = $anExercise;
+            $anExercise->name = $row->name;
+            $anExercise->description = $row->description;
+            $anExercise->bodyPart = $row->assoc_body_parts_name;
+            $anExercise->category = $row->category_name;
+            $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
+            $anExercise->thumbnail = $row->videoThumbnail;
+            $exercies[] = $anExercise;
         }
 			return $exercies;
     }
@@ -272,10 +311,10 @@ public $tempUserId;
 			$anExercise->equipment = $exerciseResults['equipment'];
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-			$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'])[2])[2];
+			//$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],[2]),[2]);
 			$anExercise->file_url = $exerciseResults['file_url'];
 			$anExercise->file_name = $exerciseResults['file_name'];
-			$anExercise->thumbnailUrl = $exerciseResults['videoThumbnail'];
+			$anExercise->thumbnail = $exerciseResults['videoThumbnail'];
 			
 			return $anExercise;
         
@@ -314,9 +353,8 @@ public $tempUserId;
     public function getAllPhases(){
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
+		$phaseResults = $wpdb->get_results("SELECT id, program_id, name, duration, intro, notes FROM $tableName", ARRAY_A);
 
-		$phaseResults = $wpdb->get_results("SELECT * FROM $tableName");
-		
 		 $phases = array();
         foreach ($phaseResults as $row) {
             $phase = new phase();
@@ -337,7 +375,7 @@ public $tempUserId;
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 
-		$phaseResults = $wpdb->get_results("SELECT * FROM $tableName WHERE program_id = $programId", ARRAY_A);
+		$phaseResults = $wpdb->get_results("SELECT id, program_id, name, duration, intro, notes, order_no FROM $tableName WHERE program_id = $programId", ARRAY_A);
 		 $allPhases = array();
         foreach ($phaseResults as $row) {
             $aPhase = new phase();
@@ -359,7 +397,7 @@ public $tempUserId;
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
 
-		$row = $wpdb->get_row("SELECT * FROM $tableName WHERE id = $phaseId", ARRAY_A);
+		$row = $wpdb->get_row("SELECT id, program_id, name, duration, intro, notes, order_no FROM $tableName WHERE id = $phaseId", ARRAY_A);
 		
 			$aPhase = new phase();
             $aPhase->id = $row['id'];
@@ -395,9 +433,9 @@ public $tempUserId;
 			$aExercise->exercise_video_url = $row['exercise_video_url'];
 			$aExercise->file_url = $row['file_url'];
 			$aExercise->file_name = $row['file_name'];
-			$aExercise->thumbnailUrl = $row['videoThumbnail'];
+			$aExercise->thumbnail = $row['videoThumbnail'];
 			$aExercise->exercise_video_id = $row['exercise_video_id'];
-			$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
+			//$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
 
 			$allExercises[] = $aExercise;
         }
@@ -440,20 +478,21 @@ public function createExerciseByName($name, $phaseId){
    		 else{
 			  return $lastId;
    		 
+         
    		 }
 }
     public function createExercise($exerciseId, $phaseId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_exercise_videos";
-    	$exerciseVid = $wpdb->get_row("SELECT id, name, url FROM $tableName WHERE id = $exerciseId");
+    	$exerciseVid = $wpdb->get_row("SELECT id, name, url FROM $tableName WHERE id = $exerciseId", ARRAY_A);
 
     	$tableName = $wpdb->prefix . "cura_exercises";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $exerciseVid->name,
+    		"name" => $exerciseVid['name'],
     		"phase_id" => $phaseId,
-    		"exercise_video_id" => $exerciseVid->id,
-    		"exercise_video_url" => $exerciseVid->url
+    		"exercise_video_id" => $exerciseVid['id'],
+    		"exercise_video_url" => $exerciseVid['url']
     		));
     	  $lastId = $wpdb->insert_id;
 
@@ -756,7 +795,7 @@ public function createExerciseByName($name, $phaseId){
     	 	"id" => $phaseId));
 	    }
 
-	    //Check and Update duration
+	    //Check and Update duratio
 	    if (isset($duration) && !is_null($duration)){
 	    	$wpdb->update($tableName, array(
     		"duration" => $duration),
@@ -786,6 +825,7 @@ public function createExerciseByName($name, $phaseId){
     		"order_no" => $order_no),
     		array( // Where Clause
     	 	"id" => $phaseId));
+            echo "<br> Order No Updated";
 	    }
 
 	    if($this->printError($wpdb) != "No Error"){
@@ -924,7 +964,7 @@ public function duplicateGeneralProgram($existingProgram){
 	    		global $wpdb;
 			$tableName = $wpdb->prefix . "cura_exercise_videos";
 
-			$exerciseResults = $wpdb->get_row("SELECT * FROM $tableName WHERE url like '$exercise->exercise_video_url'",ARRAY_A);
+			$exerciseResults = $wpdb->get_row("SELECT id, url, exercise_video_url FROM $tableName WHERE url like '$exercise->exercise_video_url'",ARRAY_A);
 			$log.= "New Exercise";
 			$log.= $exerciseResults['id'];
 			$log.= $exerciseResults['url'];
@@ -962,44 +1002,48 @@ public function duplicateGeneralProgram($existingProgram){
 	}
 
 	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
-		//Get All Phases By Prod Id
-		$phases = $this->getPhasesByProgramId($programId);
-		// Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
-		$currentMaxPhase = $this->getHighestPhaseOrder($programId);
-		if($finalOrder > $currentMaxPhase){
-			//echo "No Need to Move phases - Adding to End";
-		}else{
-			$direction = $finalOrder - $initialOrder;
-			//If Forward
-			if(is_numeric($direction) && $direction > 0){
-				// Loop Order[Initial +1 ] To Order[Final]
-				foreach ($phases as $row) {
-					// If Order is Between Initial +1 and Final Inclusive
-					if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
-						// Current Phase Order_no -1
-						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
-						//echo "Phase: " . $row->name . " Moved Backward.";
-					}//End If	
-				}// End Loop
-			}// End If
+        //Get All Phases By Prod Id
+        $phases = $this->getPhasesByProgramId($programId);
+        // Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
+        $currentMaxPhase = $this->getHighestPhaseOrder($programId);
+        if($finalOrder > $currentMaxPhase){
+            //echo "No Need to Move phases - Adding to End";
+        }else{
+            $direction = $finalOrder - $initialOrder;
+            //If Forward
+            if(is_numeric($direction) && $direction > 0){
+                // Loop Order[Initial +1 ] To Order[Final]
+                foreach ($phases as $row) {
+                    // If Order is Between Initial +1 and Final Inclusive
+                    if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
+                        // Current Phase Order_no -1
+                        $this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
 
-			//Elseif Backward
-			elseif (is_numeric($direction) && $direction < 0) {
-				//Loop Order[Final] to Order [Initial-1]
-				foreach ($phases as $row) {
-					// If Order is Between Initial -1  and Final Inclusive
-					if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
-						// Current Phase Order_no -1
-						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
-						//echo "Phase: " . $row->name . " Moved Forward.";
-					}//End If	
-				}// End Loop
-			}//End Elseif
-		}
-		//Assign Phase to be Moved Final Order_No
-		$this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
-		return "Success Phase Moved"; 
-	}
+                        //echo "Phase: " . $row->name . " Moved Backward.";
+                    }//End If   
+                }// End Loop
+            }// End If
+            //Elseif Backward
+            elseif (is_numeric($direction) && $direction < 0) {
+                //Loop Order[Final] to Order [Initial-1]
+                foreach ($phases as $row) {
+                    // If Order is Between Initial -1  and Final Inclusive
+                    if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
+                        echo "<br>Move Backwards If Order No : ";
+                        echo $row->order_no;
+                        // Current Phase Order_no 
+                        $newOrder = $row->order_no + 1;
+                        $this->updatePhase(NULL, NULL, NULL, NULL, $newOrder, $row->id);
+                        $orderTest = $this->getAPhaseById($row->id);
+                        echo "<br>Phase: " . $row->name . " Moved Forward." . "To: " . $orderTest->order_no;
+                    }//End If   
+                }// End Loop
+            }//End Elseif
+        }
+        //Assign Phase to be Moved Final Order_No
+        $this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
+        return "Success Phase Moved"; 
+    }
 
 	public function moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder){
 		//Get All Exercises By Prod Id
@@ -1084,10 +1128,9 @@ public function duplicateGeneralProgram($existingProgram){
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
 		$finalOrder = $this->getHighestExerciseOrder($phaseId);
-		echo $finalOrder->order_no;
 		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder);
 		// Deleted This Exercise
-		$wpdb->delete("dev_cura_exercises", array(
+		$wpdb->delete($tableName, array(
     		"id" => $exerciseId
     	));
 	}
@@ -1129,8 +1172,8 @@ public function duplicateGeneralProgram($existingProgram){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
-		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1");
-		return $finalOrder->order_no;
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1", ARRAY_A);
+		return $finalOrder['order_no'];
 	}
 
 	public function assignProgramToUser($programId, $userId){
