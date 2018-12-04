@@ -4,8 +4,8 @@ require_once ("objects/program.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
-    	$program37 = $programs->getProgramById(37);
-    	echo$program37->id;
+    	$allPhases = $programs->getAllPhases();
+    	print_r($allPhases);
 
 	
    

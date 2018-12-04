@@ -285,7 +285,7 @@ public $tempUserId;
     public function getAllPhases(){
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
-		$phaseResults = $wpdb->get_results("SELECT id, program_id, name, duration, intro, notes FROM $tableName". ARRAY_A);
+		$phaseResults = $wpdb->get_results("SELECT id, program_id, name, duration, intro, notes FROM $tableName", ARRAY_A);
 
 		 $phases = array();
         foreach ($phaseResults as $row) {
