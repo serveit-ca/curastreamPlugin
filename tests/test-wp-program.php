@@ -499,6 +499,7 @@ class WP_Program_Test extends WP_UnitTestCase
    	$programs->deleteExerciseUpdateOrder($newPhaseId, $exerciseFourId, 4);
    	$programs = new program();
    	$allExercises = $programs->getExercisesByPhaseId($newPhaseId);
+   	print_r($allExercises);
    	$expectedIds = array($exerciseOneId,$exerciseTwoId,$exerciseThreeId);
    	$i = 0;
    	foreach($allExercises as $key){
