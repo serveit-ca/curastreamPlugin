@@ -478,6 +478,7 @@ public function createExerciseByName($name, $phaseId){
    		 else{
 			  return $lastId;
    		 
+         
    		 }
 }
     public function createExercise($exerciseId, $phaseId){
