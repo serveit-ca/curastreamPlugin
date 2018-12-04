@@ -69,7 +69,7 @@ class WP_Program_Test extends WP_UnitTestCase
     public function test_get_all_phases(){
     	$programs = new program();
     	$allPhases = $programs->getAllPhases();
-    	print_r($allPhases);
+    	echo count($allPhases);
     	assert(count($allPhases) == 17);
     	foreach ($allPhases as $key) {
     		if($key->id != NULL){
