@@ -1,4 +1,9 @@
 <?php
+add_action( 'plugins_loaded', array( 'program', 'init' ));
+
+
+ 
+
 require_once("phase.php");
 require_once("exercise.php");
 class program
@@ -32,6 +37,11 @@ public $tempUserId;
     public  function __construct() {
     }
 
+    public static function init() {
+       $class = __CLASS__;
+       new $class;
+   }
+
     public function printError($wpdb){
     	
     	if($wpdb->last_error !== ''){
@@ -46,7 +56,7 @@ public $tempUserId;
     	// Get Program By Id
 	public function getProgramById($programId){
 		global $wpdb;
-		$program_table = 'dev_cura_programs';
+		$program_table =$wpdb->prefix . "cura_programs';
 		$programs = $wpdb->get_row("SELECT id, name, type, description, duration, equipment, duration, equip, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state, created_on, updated_on, customProgram, tempUserId FROM $program_table WHERE id = $programId" , ARRAY_A);
 
 		$this->id = $programs["id"];
@@ -107,11 +117,11 @@ public $tempUserId;
 			$program->description = $row['description'];
 			$program->equipment = $row['equipment'];
 			$program->duration = $row['duration'];
-			$program->weekly_plan = $row['weekly_plan'];
-			$program->life_style = $row['life_style'];
-			$program->assoc_body_part_id = $row['assoc_body_part_id'];
-			$program->how_it_happen = $row['how_it_happen'];
-			$program->sports_occupation = $row['sports_occupation'];
+			$program->weeklyPlan = $row['weekly_plan'];
+			$program->lifeStyle = $row['life_style'];
+			$program->body_part = $row['assoc_body_part_id'];
+			$program->howItHappen = $row['how_it_happen'];
+			$program->sportsOccupation = $row['sports_occupation'];
 			$program->thumbnail = $row['thumbnail'];
 			$program->state = $row['state'];
 			$programs[] = $program;
@@ -262,7 +272,7 @@ public $tempUserId;
 			$anExercise->equipment = $exerciseResults['equipment'];
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-			$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'])[2])[2];
+			//$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],[2]),[2]);
 			$anExercise->file_url = $exerciseResults['file_url'];
 			$anExercise->file_name = $exerciseResults['file_name'];
 			$anExercise->thumbnail = $exerciseResults['videoThumbnail'];
@@ -276,9 +286,8 @@ public $tempUserId;
     public function getAllPhases(){
     	global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
-
 		$phaseResults = $wpdb->get_results("SELECT id, program_id, name, duration, intro, notes FROM $tableName");
-		
+
 		 $phases = array();
         foreach ($phaseResults as $row) {
             $phase = new phase();
@@ -359,7 +368,7 @@ public $tempUserId;
 			$aExercise->file_name = $row['file_name'];
 			$aExercise->thumbnail = $row['videoThumbnail'];
 			$aExercise->exercise_video_id = $row['exercise_video_id'];
-			$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
+			//$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
 
 			$allExercises[] = $aExercise;
         }
@@ -407,15 +416,15 @@ public function createExerciseByName($name, $phaseId){
     public function createExercise($exerciseId, $phaseId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_exercise_videos";
-    	$exerciseVid = $wpdb->get_row("SELECT id, name, url FROM $tableName WHERE id = $exerciseId");
+    	$exerciseVid = $wpdb->get_row("SELECT id, name, url FROM $tableName WHERE id = $exerciseId", ARRAY_A);
 
     	$tableName = $wpdb->prefix . "cura_exercises";
 
     	$wpdb->insert($tableName, array(
-    		"name" => $exerciseVid->name,
+    		"name" => $exerciseVid['name'],
     		"phase_id" => $phaseId,
-    		"exercise_video_id" => $exerciseVid->id,
-    		"exercise_video_url" => $exerciseVid->url
+    		"exercise_video_id" => $exerciseVid['id'],
+    		"exercise_video_url" => $exerciseVid['url']
     		));
     	  $lastId = $wpdb->insert_id;
 
@@ -718,7 +727,7 @@ public function createExerciseByName($name, $phaseId){
     	 	"id" => $phaseId));
 	    }
 
-	    //Check and Update duration
+	    //Check and Update duratio
 	    if (isset($duration) && !is_null($duration)){
 	    	$wpdb->update($tableName, array(
     		"duration" => $duration),
@@ -748,6 +757,7 @@ public function createExerciseByName($name, $phaseId){
     		"order_no" => $order_no),
     		array( // Where Clause
     	 	"id" => $phaseId));
+            echo "<br> Order No Updated";
 	    }
 
 	    if($this->printError($wpdb) != "No Error"){
@@ -934,44 +944,48 @@ public function duplicateGeneralProgram($existingProgram){
 	}
 
 	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
-		//Get All Phases By Prod Id
-		$phases = $this->getPhasesByProgramId($programId);
-		// Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
-		$currentMaxPhase = $this->getHighestPhaseOrder($programId);
-		if($finalOrder > $currentMaxPhase){
-			//echo "No Need to Move phases - Adding to End";
-		}else{
-			$direction = $finalOrder - $initialOrder;
-			//If Forward
-			if(is_numeric($direction) && $direction > 0){
-				// Loop Order[Initial +1 ] To Order[Final]
-				foreach ($phases as $row) {
-					// If Order is Between Initial +1 and Final Inclusive
-					if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
-						// Current Phase Order_no -1
-						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
-						//echo "Phase: " . $row->name . " Moved Backward.";
-					}//End If	
-				}// End Loop
-			}// End If
+        //Get All Phases By Prod Id
+        $phases = $this->getPhasesByProgramId($programId);
+        // Determine Direction Final - Initial; Positive = Moving Forward, Negative = moving backward
+        $currentMaxPhase = $this->getHighestPhaseOrder($programId);
+        if($finalOrder > $currentMaxPhase){
+            //echo "No Need to Move phases - Adding to End";
+        }else{
+            $direction = $finalOrder - $initialOrder;
+            //If Forward
+            if(is_numeric($direction) && $direction > 0){
+                // Loop Order[Initial +1 ] To Order[Final]
+                foreach ($phases as $row) {
+                    // If Order is Between Initial +1 and Final Inclusive
+                    if($row->order_no > $initialOrder && $row->order_no < $finalOrder+1){
+                        // Current Phase Order_no -1
+                        $this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no-1, $row->id);
 
-			//Elseif Backward
-			elseif (is_numeric($direction) && $direction < 0) {
-				//Loop Order[Final] to Order [Initial-1]
-				foreach ($phases as $row) {
-					// If Order is Between Initial -1  and Final Inclusive
-					if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
-						// Current Phase Order_no -1
-						$this->updatePhase(NULL, NULL, NULL, NULL, $row->order_no+1, $row->id);
-						//echo "Phase: " . $row->name . " Moved Forward.";
-					}//End If	
-				}// End Loop
-			}//End Elseif
-		}
-		//Assign Phase to be Moved Final Order_No
-		$this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
-		return "Success Phase Moved"; 
-	}
+                        //echo "Phase: " . $row->name . " Moved Backward.";
+                    }//End If   
+                }// End Loop
+            }// End If
+            //Elseif Backward
+            elseif (is_numeric($direction) && $direction < 0) {
+                //Loop Order[Final] to Order [Initial-1]
+                foreach ($phases as $row) {
+                    // If Order is Between Initial -1  and Final Inclusive
+                    if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
+                        echo "<br>Move Backwards If Order No : ";
+                        echo $row->order_no;
+                        // Current Phase Order_no 
+                        $newOrder = $row->order_no + 1;
+                        $this->updatePhase(NULL, NULL, NULL, NULL, $newOrder, $row->id);
+                        $orderTest = $this->getAPhaseById($row->id);
+                        echo "<br>Phase: " . $row->name . " Moved Forward." . "To: " . $orderTest->order_no;
+                    }//End If   
+                }// End Loop
+            }//End Elseif
+        }
+        //Assign Phase to be Moved Final Order_No
+        $this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
+        return "Success Phase Moved"; 
+    }
 
 	public function moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder){
 		//Get All Exercises By Prod Id
@@ -1056,10 +1070,9 @@ public function duplicateGeneralProgram($existingProgram){
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
 		$finalOrder = $this->getHighestExerciseOrder($phaseId);
-		echo $finalOrder->order_no;
 		$this->moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder);
 		// Deleted This Exercise
-		$wpdb->delete("dev_cura_exercises", array(
+		$wpdb->delete($tableName, array(
     		"id" => $exerciseId
     	));
 	}
@@ -1101,8 +1114,8 @@ public function duplicateGeneralProgram($existingProgram){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_exercises";
 		// Reorder This Exercise to the Top
-		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1");
-		return $finalOrder->order_no;
+		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1", ARRAY_A);
+		return $finalOrder['order_no'];
 	}
 
 	public function assignProgramToUser($programId, $userId){
