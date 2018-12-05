@@ -313,6 +313,7 @@ public $tempUserId;
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
             list($vc0,$vc1,$vc2) = explode('.', $exerciseResults['exercise_video_url']);
+    
             list($vcId0,$vcId1,$vcId2,) = explode('/', $vc2);
             $anExercise->videoId = $vcId2;
 			$anExercise->file_url = $exerciseResults['file_url'];
