@@ -1074,10 +1074,10 @@ public function duplicateGeneralProgram($existingProgram){
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current exercise Order_no -1
 					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
-					echo "exercise: " . $row->name . " Moved Forward.";
+					//echo "exercise: " . $row->name . " Moved Forward.";
 				}//End If	
 				else{
-					echo "exercise: " . $row->name . " Not Changed.";
+					//echo "exercise: " . $row->name . " Not Changed.";
 				}
 			}// End Loop
 		}//End Elseif

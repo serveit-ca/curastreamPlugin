@@ -386,9 +386,10 @@ jQuery(".addExercise").live('click', function(event){
 		console.log("Exercise ID "+exerciseID);
 
 		// determine the location of the new exercise
-		console.log(jQuery(this).closest(".addExerciseContent"));
-		var finalOrder = jQuery(this).closest(".exercises").attr('data-ordernumber');
-		console.log("Previous Phase Order Lookup"+finalOrder);
+		console.log(jQuery(this).parent().parent().parent().parent().prevAll(".exercises:first"));
+		var finalOrder = jQuery(this).parent().parent().parent().parent().prevAll(".exercises:first").attr('data-ordernumber');
+
+		console.log("Previous Exercise Order Lookup "+finalOrder);
 		if(typeof finalOrder === "undefined"){
 			finalOrder = 1
 		}else{
@@ -404,7 +405,7 @@ jQuery(".addExercise").live('click', function(event){
 		'programID': programID,
 		'exerciseId': exerciseID,
 		'phaseId': phaseId,
-		'finalOrder':finalOrder	};
+		'finalOrder':finalOrder};
 		// ensure the datasbse has been updated
 		jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
 		// This should be returnin"g HTML object 
