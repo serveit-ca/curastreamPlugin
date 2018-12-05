@@ -312,9 +312,8 @@ public $tempUserId;
 			$anExercise->equipment = $exerciseResults['equipment'];
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-            list($vc0,$vc1,$vc2) = explode('.', $exerciseResults['exercise_video_url']);
-    
-            list($vcId0,$vcId1,$vcId2,) = explode('/', $vc2);
+            list($vc0,$vc1,$vc2) = array_pad(explode('.', $exerciseResults['exercise_video_url'],4),4,null);
+            list($vcId0,$vcId1,$vcId2,) = array_pad(explode('/', $vc2,4),4,null);
             $anExercise->videoId = $vcId2;
 			$anExercise->file_url = $exerciseResults['file_url'];
 			$anExercise->file_name = $exerciseResults['file_name'];
