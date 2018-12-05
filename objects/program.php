@@ -312,7 +312,7 @@ public $tempUserId;
 			$anExercise->equipment = $exerciseResults['equipment'];
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-			$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],[2]),[2]);
+			$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],2),2);
 			$anExercise->file_url = $exerciseResults['file_url'];
 			$anExercise->file_name = $exerciseResults['file_name'];
 			$anExercise->thumbnail = $exerciseResults['videoThumbnail'];
