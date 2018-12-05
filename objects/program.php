@@ -440,7 +440,7 @@ public $tempUserId;
 			$aExercise->file_name = $row['file_name'];
 			$aExercise->thumbnail = $row['videoThumbnail'];
 			$aExercise->exercise_video_id = $row['exercise_video_id'];
-			list($vc0,$vc1,$vc2) = array_pad(explode('.', $exerciseResults['exercise_video_url'],4),4,null);
+			list($vc0,$vc1,$vc2) = array_pad(explode('.', $row['exercise_video_url'],4),4,null);
             list($vcId0,$vcId1,$vcId2,) = array_pad(explode('/', $vc2,4),4,null);
             $anExercise->videoId = $vcId2;
 			$allExercises[] = $aExercise;
