@@ -1445,6 +1445,39 @@ public function duplicateGeneralProgram($existingProgram){
     }
         return $status;
     }
+
+    public function getAssignedCountByProgramId($progamId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        $assignedProgs = $wpdb->get_results("SELECT id FROM $tableName WHERE saved_prog_id = $programId", ARRAY_A);
+        $assignedCount = 0;
+        foreach ($assignedProgs as $key) {
+            $assignedCount++;
+        }
+        return $assignedCount;
+    }
+
+    public function getAssignedNotCompletedCountByProgramId($progamId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        $assignedProgs = $wpdb->get_results("SELECT id FROM $tableName WHERE saved_prog_id = $programId AND completed = 0", ARRAY_A);
+        $assignedCount = 0;
+        foreach ($assignedProgs as $key) {
+            $assignedCount++;
+        }
+        return $assignedCount;
+    }
+
+    public function getAssignedCompletedCountByProgramId($progamId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        $assignedProgs = $wpdb->get_results("SELECT id FROM $tableName WHERE saved_prog_id = $programId AND completed = 1", ARRAY_A);
+        $assignedCount = 0;
+        foreach ($assignedProgs as $key) {
+            $assignedCount++;
+        }
+        return $assignedCount;
+    }
 }
 
 ?>
