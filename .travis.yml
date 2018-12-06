@@ -10,7 +10,7 @@ branches:
   only:
     - master
     - autoTest
-    -programManagement
+    - programManagement
 
 services:
   - mysql
