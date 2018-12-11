@@ -1487,7 +1487,7 @@ public function duplicateGeneralProgram($existingProgram){
         if($programState == 0){
             return "Production";
         }
-        else if($prgoramState == 1){
+        elseif($prgoramState == 1){
             return "Development";
         }
         else{
