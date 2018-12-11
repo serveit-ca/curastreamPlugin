@@ -1053,7 +1053,7 @@ CREATE TABLE `wptests_cura_user_programs` (
 -- Dumping data for table `dev_cura_user_programs`
 --
 
-INSERT INTO `dev_cura_user_programs` (`id`, `user_id`, `saved_prog_type`, `saved_prog_dur`, `saved_prog_id`, `saved_prog_name`, `completed`) VALUES
+INSERT INTO `wptests_cura_user_programs` (`id`, `user_id`, `saved_prog_type`, `saved_prog_dur`, `saved_prog_id`, `saved_prog_name`, `completed`) VALUES
 (10, 5, 'Rehab', 12, 15, 'Arpit Testing', 1),
 (11, 5, 'Strength-Training', 15, 16, 'Strength Training Test', 0),
 (12, 11, 'Rehab', 20, 18, 'Rehab Testing', 0),
