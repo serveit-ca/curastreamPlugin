@@ -6,7 +6,7 @@ require_once ("objects/exercise.php");
 $programs = new program();
 
   $assignedCount = $programs->getAssignedCountByProgramId(37);
-  $expectedCount = 6;
+  $expectedCount = ;
   echo "Assigned Count : " . $assignedCount;
   echo "Assigned  Expected : " . $expectedCount;
 

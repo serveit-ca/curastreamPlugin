@@ -1467,7 +1467,7 @@ public function duplicateGeneralProgram($existingProgram){
         }
         return $assignedCount;
     }
-    
+
 
     public function getAssignedCompletedCountByProgramId($programId){
         global $wpdb;
@@ -1478,6 +1478,21 @@ public function duplicateGeneralProgram($existingProgram){
             $assignedCount++;
         }
         return $assignedCount;
+    }
+
+    public function getProgramStateById($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        $programState = $wpdb->get_row("SELECT state FROM $tableName WHERE id = $programId", ARRAY_A);
+        if($programState == 0){
+            return "Production";
+        }
+        else if($prgoramState == 1){
+            return "Development";
+        }
+        else{
+            return "Program State Unknown";
+        }
     }
 }
 

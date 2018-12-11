@@ -565,6 +565,15 @@ public function test_get_completed_count_by_program_id(){
   assert($assignedCount == $expectedCount);
 }
 
+public function test_get_program_state_by_id(){
+  $programs = new program();
+  $programState = $programs->getProgramStateById(37);
+  assert($programState == "Production");
+  $programs = new program();
+  $programState = $programs->getProgramStateById(48);
+  assert($programState == "Development");
+}
+
 }
 
 ?>
