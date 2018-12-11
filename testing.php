@@ -4,8 +4,8 @@ require_once ("objects/program.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
-    	$assignedCount = $programs->getAssignedCountByProgramId(37);
-  $expectedCount = 6;
+    	$assignedCount = $programs->getAssignedCompletedCountByProgramId(37);
+  $expectedCount = 1;
   echo "Assigned Count: " . $assignedCount;
   echo "Expected Count: " . $expectedCount;
 
