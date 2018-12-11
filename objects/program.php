@@ -1467,6 +1467,7 @@ public function duplicateGeneralProgram($existingProgram){
         }
         return $assignedCount;
     }
+    
 
     public function getAssignedCompletedCountByProgramId($programId){
         global $wpdb;
