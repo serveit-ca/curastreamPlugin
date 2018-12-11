@@ -1039,7 +1039,7 @@ ALTER TABLE `wptests_cura_user_fav_videos`
 ALTER TABLE `wptests_cura_user_fav_videos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;COMMIT;
 
-CREATE TABLE `dev_cura_user_programs` (
+CREATE TABLE `wptests_cura_user_programs` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `saved_prog_type` varchar(255) NOT NULL,
