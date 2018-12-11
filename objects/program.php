@@ -1471,7 +1471,7 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getAssignedCompletedCountByProgramId($programId){
         global $wpdb;
-        $tableName = $wpdb->prefix . "cura_user_programs";
+        $tableName = $wpdb->prefix . "cura_programs";
         $assignedProgs = $wpdb->get_results("SELECT id FROM $tableName WHERE saved_prog_id = $programId AND completed = 1", ARRAY_A);
         $assignedCount = 0;
         foreach ($assignedProgs as $key) {
@@ -1482,7 +1482,7 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getProgramStateById($programId){
         global $wpdb;
-        $tableName = $wpdb->prefix . "cura_user_programs";
+        $tableName = $wpdb->prefix . "cura_programs";
         $programState = $wpdb->get_row("SELECT state FROM $tableName WHERE id = $programId", ARRAY_A);
         if($programState == 0){
             return "Production";
