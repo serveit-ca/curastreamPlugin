@@ -1218,7 +1218,7 @@ INSERT INTO `wptests_cura_user_programs` (`id`, `user_id`, `saved_prog_type`, `s
 --
 -- Indexes for table `dev_cura_user_programs`
 --
-ALTER TABLE `dev_cura_user_programs`
+ALTER TABLE `wptests_cura_user_programs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1226,7 +1226,7 @@ ALTER TABLE `dev_cura_user_programs`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_user_programs`
+-- AUTO_INCREMENT for table `wptests_cura_user_programs`
 --
-ALTER TABLE `dev_cura_user_programs`
+ALTER TABLE `wptests_cura_user_programs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;COMMIT;
