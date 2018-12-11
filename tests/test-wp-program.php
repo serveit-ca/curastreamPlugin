@@ -545,7 +545,7 @@ class WP_Program_Test extends WP_UnitTestCase
 public function test_get_assigned_count_by_program_id(){
   $programs = new program();
   $assignedCount = $programs->getAssignedCountByProgramId(37);
-  $expectedCount = 5;
+  $expectedCount = 6;
   echo $assignedCount;
   assert($assignedCount == $expectedCount);
 }
@@ -561,7 +561,7 @@ public function test_get_assigned_not_completed_count_by_program_id(){
 public function test_get_completed_count_by_program_id(){
   $programs = new program();
   $assignedCount = $programs->getAssignedCompletedCountByProgramId(37);
-  $expectedCount = 0;
+  $expectedCount = 1;
   assert($assignedCount == $expectedCount);
 }
 
