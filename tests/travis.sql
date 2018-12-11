@@ -1039,7 +1039,7 @@ ALTER TABLE `wptests_cura_user_fav_videos`
 ALTER TABLE `wptests_cura_user_fav_videos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;COMMIT;
 
-  CREATE TABLE `dev_cura_user_programs` (
+CREATE TABLE `dev_cura_user_programs` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `saved_prog_type` varchar(255) NOT NULL,
@@ -1230,7 +1230,3 @@ ALTER TABLE `dev_cura_user_programs`
 --
 ALTER TABLE `dev_cura_user_programs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
