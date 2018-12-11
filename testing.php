@@ -4,12 +4,11 @@ require_once ("objects/program.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
-    	$allPhases = $programs->getAllPhases();
-    	print_r($allPhases);
+    	$assignedCount = $programs->getAssignedCountByProgramId(37);
+  $expectedCount = 6;
+  echo "Assigned Count: " . $assignedCount;
+  echo "Expected Count: " . $expectedCount;
 
-var_dump($programs->getProgramById(206));
-
-$status = $programs->removeProgramFromUser(193, 1);
 
 //echo "Status: " .$status;
 
