@@ -4,10 +4,25 @@ require_once ("objects/program.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
-    	$assignedCount = $programs->getAssignedCompletedCountByProgramId(37);
+
+  $assignedCount = $programs->getAssignedCountByProgramId(37);
+  $expectedCount = 6;
+  echo "Assigned Count : " . $assignedCount;
+  echo "Assigned  Expected : " . $expectedCount;
+
+
+
+  $assignedCount = $programs->getAssignedNotCompletedCountByProgramId(37);
+  $expectedCount = 5;
+  echo "Assigned Not Count : " . $assignedCount;
+  echo "Assigned Not Expected : " . $expectedCount;
+
+
+  $assignedCount = $programs->getAssignedCompletedCountByProgramId(37);
   $expectedCount = 1;
-  echo "Assigned Count: " . $assignedCount;
-  echo "Expected Count: " . $expectedCount;
+  echo "Assigned Completed Count : " . $assignedCount;
+  echo "Assigned Comp Expected : " . $expectedCount;
+
 
 
 //echo "Status: " .$status;
