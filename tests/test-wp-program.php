@@ -546,6 +546,7 @@ public function test_get_assigned_count_by_program_id(){
   $programs = new program();
   $assignedCount = $programs->getAssignedCountByProgramId(37);
   $expectedCount = 5;
+  echo $assignedCount;
   assert($assignedCount == $expectedCount);
 }
 
@@ -553,6 +554,7 @@ public function test_get_assigned_not_completed_count_by_program_id(){
   $programs = new program();
   $assignedCount = $programs->getAssignedNotCompletedCountByProgramId(37);
   $expectedCount = 5;
+  echo $assignedCount;
   assert($assignedCount == $expectedCount);
 }
 
