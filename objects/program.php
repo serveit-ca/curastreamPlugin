@@ -1484,10 +1484,10 @@ public function duplicateGeneralProgram($existingProgram){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_programs";
         $programState = $wpdb->get_row("SELECT state FROM $tableName WHERE id = $programId", ARRAY_A);
-        if($programState == 0){
+        if($programState['state'] == 0){
             return "Production";
         }
-        elseif($programState == 1){
+        elseif($programState['state'] == 1){
             return "Development";
         }
         else{
