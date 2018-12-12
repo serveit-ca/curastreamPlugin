@@ -1494,6 +1494,17 @@ public function duplicateGeneralProgram($existingProgram){
             return "Program State Unknown";
         }
     }
+
+    public function checkStaleness($programId){
+        global $wpdb;
+        $assignedCount = $this->getAssignedCountByProgramId($programId);
+        if ($assignedCount <= 0){
+            return "Stale Program";
+        }
+        else{
+            return "Program in use by " . $assignedCount . " users.";
+        }
+    }
 }
 
 ?>

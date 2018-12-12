@@ -5,10 +5,10 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-  $programState = $programs->getProgramStateById(37);
+  $programState = $programs->checkStaleness(37);
   echo $programState;
   $programs = new program();
-  $programState = $programs->getProgramStateById(144);
+  $programState = $programs->checkStaleness(144);
   echo $programState;
   
 

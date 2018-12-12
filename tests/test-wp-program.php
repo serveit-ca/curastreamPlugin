@@ -574,6 +574,15 @@ public function test_get_program_state_by_id(){
   assert($programState == "Development");
 }
 
+public function test_check_staleness(){
+  $programs = new program();
+  $stale = $programs->checkStaleness(37);
+  assert($stale == "Program in use by 5 users.");
+  $programs = new program();
+  $stale = $programs->checkStaleness(144);
+  assert($stale == "Stale Program");
+}
+
 }
 
 ?>
