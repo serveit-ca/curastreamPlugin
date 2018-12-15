@@ -5,11 +5,9 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-  $programState = $programs->checkStaleness(37);
-  echo $programState;
-  $programs = new program();
-  $programState = $programs->checkStaleness(144);
-  echo $programState;
+  $programs->recordUserDeletion(1, 37);
+  $programs->recordUserDeletion(5, 15);
+  
   
 
 

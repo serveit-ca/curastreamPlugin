@@ -1505,6 +1505,36 @@ public function duplicateGeneralProgram($existingProgram){
             return "Program in use by " . $assignedCount . " users.";
         }
     }
+
+    public function getProgramUsersById($programId){
+        global $wpdb;
+        $tableNameA = $wpdb->prefix . "cura_user_programs";
+        $tableNameB = $wpdb->prefix . "users";
+        $programUsers = $wpdb->get_results("SELECT user_id FROM $tableNameA WHERE saved_prog_id = $programId", ARRAY_A);
+        $usersArray = array();
+        foreach($programUsers as $key){
+            $userObj = get_user_by('id', $key['user_id']);
+            $userName = $userObj->first_name . " " . $userObj->last_name;
+            $usersArray[] = $userName;
+        }
+        return $usersArray;
+    }
+
+    public function recordUserDeletion($userId, $programId){
+        global $wpdb;
+        $tableNameA = $wpdb->prefix . "cura_user_programs";
+        $userProg = $wpdb->get_row("SELECT id FROM $tableNameA WHERE saved_prog_id = $programId AND user_id = $userId", ARRAY_A);
+        if (!is_null($userProg)){
+            $tableNameB = $wpdb->prefix . "cura_deleted";
+            $wpdb->insert($tableNameB, array(
+                "program_id" => $programId,
+                "user_id" => $userId,
+                ));
+        }
+        else{
+            echo "This user does not have that program assigned";
+        }
+    }
 }
 
 ?>
