@@ -189,6 +189,33 @@ public $tempUserId;
             return $programs;
     }
 
+    public function getAllGenericPrograms(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_programs";
+
+        $programResults = $wpdb->get_results("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE customProgram = 0 ORDER BY name", ARRAY_A);
+
+        $programs = array();
+        foreach ($programResults as $row) {
+            $program = new program();
+            $program->id = $row['id'];
+            $program->name = $row['name'];
+            $program->type = $row['type'];
+            $program->description = $row['description'];
+            $program->equipment = $row['equipment'];
+            $program->duration = $row['duration'];
+            $program->weeklyPlan = $row['weekly_plan'];
+            $program->lifeStyle = $row['life_style'];
+            $program->body_part = $row['assoc_body_part_id'];
+            $program->howItHappen = $row['how_it_happen'];
+            $program->sportsOccupation = $row['sports_occupation'];
+            $program->thumbnail = $row['thumbnail'];
+            $program->state = $row['state'];
+            $programs[] = $program;
+        }
+            return $programs;
+    }
+
     // Get all Exercises From Database
     public function getAllExercises(){
     	global $wpdb;
@@ -1498,23 +1525,19 @@ public function duplicateGeneralProgram($existingProgram){
     public function checkStaleness($programId){
         global $wpdb;
         $assignedCount = $this->getAssignedCountByProgramId($programId);
-        if ($assignedCount <= 0){
-            return "Stale Program";
-        }
-        else{
-            return "Program in use by " . $assignedCount . " users.";
-        }
+        return $assignedCount;
     }
 
     public function getProgramUsersById($programId){
         global $wpdb;
         $tableNameA = $wpdb->prefix . "cura_user_programs";
-        $tableNameB = $wpdb->prefix . "users";
         $programUsers = $wpdb->get_results("SELECT user_id FROM $tableNameA WHERE saved_prog_id = $programId", ARRAY_A);
         $usersArray = array();
         foreach($programUsers as $key){
-            $userObj = get_user_by('id', $key['user_id']);
+            $userObj = get_user_by('ID', $key['user_id']);
+            //print_r($userObj);
             $userName = $userObj->first_name . " " . $userObj->last_name;
+            //echo "User Name " . $userName;
             $usersArray[] = $userName;
         }
         return $usersArray;
@@ -1535,6 +1558,40 @@ public function duplicateGeneralProgram($existingProgram){
             echo "This user does not have that program assigned";
         }
     }
+
+    public function getProgramDeletionById($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_deleted";
+        $numDeleted = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableName WHERE program_id = $programId", ARRAY_A);
+        $count = 0;
+        foreach ($numDeleted as $key) {
+            $count++;
+        }
+        if(!is_null($count) && $count > 0){
+            return $count;
+        }
+        else{
+            return "No Deletions";
+        }
+    }
+
+    public function getProgramUserDeletionById($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_deleted";
+        $userDeletedId = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableName WHERE program_id = $programId", ARRAY_A);
+        $usersArray = array();
+        foreach ($userDeletedId as $key) {
+            $userObj = get_user_by('ID', $key['user_id']);
+            //print_r($userObj);
+            $userName = $userObj->first_name . " " . $userObj->last_name;
+            //echo "User Name " . $userName;
+            $usersArray[] = $userName;
+        }
+        return $usersArray;
+
+    }
+
+
 }
 
 ?>

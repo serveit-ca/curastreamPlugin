@@ -5,8 +5,8 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-  $programs->recordUserDeletion(1, 37);
-  $programs->recordUserDeletion(5, 15);
+  $number = $programs->getProgramUsersById(37);
+  //echo $number;
   
   
 
