@@ -397,14 +397,13 @@ function prefix_enqueue()
 		<div class="row">
 			<div class="col-md-12">
 				<table id="programs" class="table table-bordered">	
-					<th id= "sr">Program Name</th>
-					<th id= "title">Program Type</th>
-					<th id= "type">State</th>
-					<th id= "sports">Current Number of Users</th>
-					<th id= "parts">Users</th>
-					<th id= "actions">Number of Deletions</th>
-					<th id= "actions">Deleted By</th>
-					<th id= "actions">Last Added</th>
+					<th id= "name">Program Name</th>
+					<th id= "type">Program Type</th>
+					<th id= "state">State</th>
+					<th id= "numUsers">Current Number of Users</th>
+					<th id= "users">Users</th>
+					<th id= "numDeletion">Number of Deletions</th>
+					<th id= "deletedBy">Deleted By</th>
 					<th id= "actions">Actions</th>
 					<?php 
 							foreach ($programs as $key) {					
@@ -438,8 +437,7 @@ function prefix_enqueue()
 									echo("<option value=\"".$aUser."</option>");
 								}
 								?>
-							</td>
-							<td><?php echo "((Function Needed))"; ?></td>			
+							</td>		
 							<td><?php 
 
 								echo("<button id=\"view-".$key->id."\">View</button>");
@@ -466,10 +464,6 @@ function prefix_enqueue()
 	<?php
 	$programObj = new program();
 		$programs = $programObj->getAllCustomPrograms();
-		foreach ($programs as $key => $row) {
-		    $name[$key]  = $row->name;
-		}
-		array_multisort($name, SORT_ASC, $programs);
 
 	?>
 	<h1>Custom Programs</h1>
@@ -479,11 +473,13 @@ function prefix_enqueue()
 		<div class="row">
 			<div class="col-md-12">
 				<table id="programs" class="table table-bordered">	
-					<th id= "sr">Program Name</th>
-					<th id= "title">Program Type</th>
-					<th id= "type">State</th>
-					<th id= "parts">Users</th>
-					<th id= "actions">Number of Deletions</th>
+					<th id= "name">Program Name</th>
+					<th id= "type">Program Type</th>
+					<th id= "state">State</th>
+					<th id= "numUsers">Current Number of Users</th>
+					<th id= "users">Users</th>
+					<th id= "numDeletion">Number of Deletions</th>
+					<th id= "deletedBy">Deleted By</th>
 					<th id= "actions">Actions</th>
 					<?php 
 							foreach ($programs as $key) {					
@@ -514,11 +510,11 @@ function prefix_enqueue()
 							<td><?php echo $programObj->getProgramDeletionById($key->id); ?></td>
 							<td><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
 								foreach ($programUsers as $aUser) {
-									echo("<option value=\"".$aUser."</option>");
+									//echo("<option value=\"".$aUser."</option>");
+									echo "User Deleted";
 								}
 								?>
-							</td>
-							<td><?php echo "((Function Needed))"; ?></td>			
+							</td>		
 							<td><?php 
 
 								echo("<button id=\"view-".$key->id."\">View</button>");
