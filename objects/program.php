@@ -1591,6 +1591,33 @@ public function duplicateGeneralProgram($existingProgram){
 
     }
 
+    public function checkUserExistsForUserPrograms(){
+        global $wpdb;
+        $tableNameA = $wpdb->prefix . "cura_user_programs";
+        $tableNameB = $wpdb->prefix . "user";
+        // get all users Id's
+        $users = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableNameB", ARRAY_A);
+        
+        //get all user programs
+        $userProgs = $wpdb->get_results("SELECT user_id FROM $tableNameA", ARRAY_A);
+        //foreach user program check if user_id exists in Ids
+        $toBeDeleted = array();
+        foreach ($userProgs as $progkey) {
+            $exists = 0;
+            foreach ($users as $userkey) {
+                if($userProgs['user_id'] == $users['user_id']){
+                    $exists++;
+                }
+            }
+            
+        }
+        //if not put id into "to be deleted" array
+
+        //foreach to be deleted, delete all user_programs
+
+
+    }
+
 
 }
 
