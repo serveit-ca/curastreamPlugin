@@ -23,6 +23,10 @@ function prefix_enqueue()
 		
 		</style>
 </head>
+<script type="text/javascript">
+	
+
+</script>
 <body>
 	<?php
 	$programObj = new program();
@@ -81,13 +85,18 @@ function prefix_enqueue()
 								}
 								?>
 							</ul></td>		
-							<td><?php 
+							<td>
 
-								echo("<button id=\"view-".$key->id."\">View</button>");
-								echo("<button id=\"view-".$key->id."\">Edit</button>");
-
-								?>
-								
+								<a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $key->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
+										View Program
+									</div>
+								</a>
+								<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $key->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
+										Edit Program
+									</div>
+								</a>
 
 							</td>
 							</tr>

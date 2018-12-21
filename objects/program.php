@@ -338,7 +338,7 @@ public $tempUserId;
 			$anExercise->equipment = $exerciseResults['equipment'];
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-			//$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],[2]),[2]);
+			$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'])[2])[2];
 			$anExercise->file_url = $exerciseResults['file_url'];
 			$anExercise->file_name = $exerciseResults['file_name'];
 			$anExercise->thumbnail = $exerciseResults['videoThumbnail'];
@@ -462,7 +462,7 @@ public $tempUserId;
 			$aExercise->file_name = $row['file_name'];
 			$aExercise->thumbnail = $row['videoThumbnail'];
 			$aExercise->exercise_video_id = $row['exercise_video_id'];
-			//$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
+			$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'])[2])[2];
 
 			$allExercises[] = $aExercise;
         }
@@ -1636,7 +1636,7 @@ public function duplicateGeneralProgram($existingProgram){
             return $error;
          }
          else{
-            return "Success: User Program with Id: " . $userId . " Deleted";
+            return "Success: User Program with User Id: " . $userId . " Deleted";
          
          }
 

@@ -245,7 +245,7 @@ class customProgramCreation {
 					<div class="videoContainer">
 						<span class="exerciseLabel labelTxt">Video</span>
 						<div class="exercise-container" data-videoId="<?php echo $exerciseObject->videoId; ?>">
-							<img class="exerciseVideo" src="<?php echo $exerciseObject->thumbnailUrl; ?>"/>
+							<img class="exerciseVideo" src="<?php echo $exerciseObject->thumbnail; ?>"/>
 						</div>
 					</div>	
 				</div>							

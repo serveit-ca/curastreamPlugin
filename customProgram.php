@@ -1,39 +1,50 @@
 <?php
 require_once ("objects/program.php");
 $programs = new program();
- 
-$allUsers = get_users(array(
-    'meta_key' => 'first_name',
-    'orderby'  => 'meta_value',
-));
- 
+require_once ("objects/customProgramCreation.php");
+$customCreation = new customProgramCreation();
+require_once ("objects/phase.php");
+require_once ("objects/exercise.php");
 
-if(WP_DEBUG){	//echo("<br/>All Users Array Size:".sizeof($allUsers));
-}
+if(!isset($_GET['program_id'])){
 
-// Create an empty array of Active users 
-$activeUsers = array();
-// Add active users to the array
-foreach($allUsers as $user){
-if(WP_DEBUG){		//echo ("<br/>".$user->ID.$user->user_login);
-}
-	if (user_can($user->ID, 'mepr-active')){
-if(WP_DEBUG){		//	echo("<br/>Active User".$user->user_login);
-}
-		array_push($activeUsers,$user);
-	}else{
-if(WP_DEBUG){			//echo ("<br/> Error".$user->user_login);
-}
+		$allUsers = get_users(array(
+	    'meta_key' => 'first_name',
+	    'orderby'  => 'meta_value',
+	));
+	 
+
+	if(WP_DEBUG){	//echo("<br/>All Users Array Size:".sizeof($allUsers));
 	}
-if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
-}
-}
-// Get a list of groups 
-// Select a user or a group TODO - Add Group functionality 
+
+	// Create an empty array of Active users 
+	$activeUsers = array();
+	// Add active users to the array
+	foreach($allUsers as $user){
+	if(WP_DEBUG){		//echo ("<br/>".$user->ID.$user->user_login);
+	}
+		if (user_can($user->ID, 'mepr-active')){
+	if(WP_DEBUG){		//	echo("<br/>Active User".$user->user_login);
+	}
+			array_push($activeUsers,$user);
+		}else{
+	if(WP_DEBUG){			//echo ("<br/> Error".$user->user_login);
+	}
+		}
+	if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
+	}
+	}
+	// Get a list of groups 
+	// Select a user or a group TODO - Add Group functionality 
+} 
+
 ?>
 	<div class="container-fluid customProgramContainer">
 
 		<div class="row">
+			<?php
+			if(!isset($_GET['program_id'])){
+			?>
 			<div class="col-md-7">
 				<!-- Part 1 -->
 				<div class="programSelection">
@@ -165,6 +176,11 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 				</div>
 			
 			</div>
+		<?php }
+		else{ ?>
+			<div class="col-md-7">
+			</div>
+		<?php } ?>
 			<div class="col-md-5">
 				<div class="alertArea">
 					<h4>Program Builder Status Log</h4>
@@ -175,6 +191,30 @@ if(WP_DEBUG){		//echo("<br/>Array Size:".sizeof($activeUsers));
 
 	<div class="container-fluid">
 		<div class="programEditingArea">
-		
+			<?php
+			if(isset($_GET['program_id'])){
+			$modifyProgram = $programs->getProgramById($_GET['program_id']);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
+	      		echo $customProgramForm;
+	      	$phases = $programs->getPhasesByProgramId($_GET['program_id']);
+	      		foreach ($phases as $aPhase){
+	      			echo $customCreation->addPhase();
+	      			echo '<div class="phaseContainer">';
+	      		    echo $customCreation->displayPhase($aPhase);
+	      		    // Get the Exercise 
+	      		    $exercises = $programs->getExercisesByPhaseId($aPhase->id);
+	      		    // got through each exercise 
+	      		    foreach ($exercises as $exercise){
+	      		    // Print out the exercise 
+	      		    	echo $customCreation->addExercise();
+	      		    	echo $customCreation->displayExercise($exercise);
+	      		    }
+	      		   	 echo $customCreation->addExercise();
+	      		 	echo '</div>';
+	      		 }
+	      		 echo $customCreation->addPhase();
+	      		}
+			?>
+
 		</div>
 	</div>

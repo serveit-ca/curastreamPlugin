@@ -68,6 +68,8 @@ require_once ("objects/exercise.php");
 	    
 	    /* This Function is used to delete a prgraom for a user*/
 	    function deleteProgram(){
+	    global $programs;
+	    $programs->recordUserDeletion($_POST['user_id'], $_POST['program_id']);
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_programs";
 	    // Assing a thumbnail for each image 
