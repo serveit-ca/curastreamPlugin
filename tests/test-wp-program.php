@@ -542,7 +542,46 @@ class WP_Program_Test extends WP_UnitTestCase
     $this->reset_database();
 }
 
+public function test_get_assigned_count_by_program_id(){
+  $programs = new program();
+  $assignedCount = $programs->getAssignedCountByProgramId(37);
+  $expectedCount = 6;
+  echo $assignedCount;
+  assert($assignedCount == $expectedCount);
+}
 
+public function test_get_assigned_not_completed_count_by_program_id(){
+  $programs = new program();
+  $assignedCount = $programs->getAssignedNotCompletedCountByProgramId(37);
+  $expectedCount = 5;
+  echo $assignedCount;
+  assert($assignedCount == $expectedCount);
+}
+
+public function test_get_completed_count_by_program_id(){
+  $programs = new program();
+  $assignedCount = $programs->getAssignedCompletedCountByProgramId(37);
+  $expectedCount = 1;
+  assert($assignedCount == $expectedCount);
+}
+
+public function test_get_program_state_by_id(){
+  $programs = new program();
+  $programState = $programs->getProgramStateById(37);
+  assert($programState == "Production");
+  $programs = new program();
+  $programState = $programs->getProgramStateById(48);
+  assert($programState == "Development");
+}
+
+public function test_check_staleness(){
+  $programs = new program();
+  $stale = $programs->checkStaleness(37);
+  assert($stale == 6);
+  $programs = new program();
+  $stale = $programs->checkStaleness(144);
+  assert($stale == 0);
+}
 
 }
 

@@ -189,6 +189,33 @@ public $tempUserId;
             return $programs;
     }
 
+    public function getAllGenericPrograms(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_programs";
+
+        $programResults = $wpdb->get_results("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE customProgram = 0 ORDER BY name", ARRAY_A);
+
+        $programs = array();
+        foreach ($programResults as $row) {
+            $program = new program();
+            $program->id = $row['id'];
+            $program->name = $row['name'];
+            $program->type = $row['type'];
+            $program->description = $row['description'];
+            $program->equipment = $row['equipment'];
+            $program->duration = $row['duration'];
+            $program->weeklyPlan = $row['weekly_plan'];
+            $program->lifeStyle = $row['life_style'];
+            $program->body_part = $row['assoc_body_part_id'];
+            $program->howItHappen = $row['how_it_happen'];
+            $program->sportsOccupation = $row['sports_occupation'];
+            $program->thumbnail = $row['thumbnail'];
+            $program->state = $row['state'];
+            $programs[] = $program;
+        }
+            return $programs;
+    }
+
     // Get all Exercises From Database
     public function getAllExercises(){
     	global $wpdb;
@@ -342,7 +369,7 @@ public $tempUserId;
             $anExercise->equipment = $exerciseResults['equipment'];
             $anExercise->special_instructions = $exerciseResults['special_instructions'];
             $anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-             list($vc0,$vc1,$vc2) = array_pad(explode('.', $exerciseResults['exercise_video_url'],4),4,null);
+            list($vc0,$vc1,$vc2) = array_pad(explode('.', $exerciseResults['exercise_video_url'],4),4,null);
             list($vcId0,$vcId1,$vcId2) = array_pad(explode('/', $vc2,4),4,null);
             $anExercise->videoId = $vcId2;
             $anExercise->file_url = $exerciseResults['file_url'];
@@ -1451,6 +1478,177 @@ public function duplicateGeneralProgram($existingProgram){
     }
         return $status;
     }
+
+    public function getAssignedCountByProgramId($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        $assignedProgs = $wpdb->get_results("SELECT id FROM $tableName WHERE saved_prog_id = $programId", ARRAY_A);
+        $assignedCount = 0;
+        foreach ($assignedProgs as $key) {
+            $assignedCount++;
+        }
+        return $assignedCount;
+    }
+
+    public function getAssignedNotCompletedCountByProgramId($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        $assignedProgs = $wpdb->get_results("SELECT id FROM $tableName WHERE saved_prog_id = $programId AND completed = 0", ARRAY_A);
+        $assignedCount = 0;
+        foreach ($assignedProgs as $key) {
+            $assignedCount++;
+        }
+        return $assignedCount;
+    }
+
+
+    public function getAssignedCompletedCountByProgramId($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        $assignedProgs = $wpdb->get_results("SELECT id FROM $tableName WHERE saved_prog_id = $programId AND completed = 1", ARRAY_A);
+        $assignedCount = 0;
+        foreach ($assignedProgs as $key) {
+            $assignedCount++;
+        }
+        return $assignedCount;
+    }
+
+    public function getProgramStateById($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_programs";
+        $programState = $wpdb->get_row("SELECT state FROM $tableName WHERE id = $programId", ARRAY_A);
+        if($programState['state'] == 0){
+            return "Production";
+        }
+        elseif($programState['state'] == 1){
+            return "Development";
+        }
+        else{
+            return "Program State Unknown";
+        }
+    }
+
+    public function checkStaleness($programId){
+        global $wpdb;
+        $assignedCount = $this->getAssignedCountByProgramId($programId);
+        return $assignedCount;
+    }
+
+    public function getProgramUsersById($programId){
+        global $wpdb;
+        $tableNameA = $wpdb->prefix . "cura_user_programs";
+        $programUsers = $wpdb->get_results("SELECT user_id FROM $tableNameA WHERE saved_prog_id = $programId", ARRAY_A);
+        $usersArray = array();
+        foreach($programUsers as $key){
+            $userObj = get_user_by('ID', $key['user_id']);
+            //print_r($userObj);
+            $userName = $userObj->first_name . " " . $userObj->last_name;
+            //echo "User Name " . $userName;
+            $usersArray[] = $userName;
+        }
+        return $usersArray;
+    }
+
+    public function recordUserDeletion($userId, $programId){
+        global $wpdb;
+        $tableNameA = $wpdb->prefix . "cura_user_programs";
+        $userProg = $wpdb->get_row("SELECT id FROM $tableNameA WHERE saved_prog_id = $programId AND user_id = $userId", ARRAY_A);
+        if (!is_null($userProg)){
+            $tableNameB = $wpdb->prefix . "cura_deleted";
+            $wpdb->insert($tableNameB, array(
+                "program_id" => $programId,
+                "user_id" => $userId,
+                ));
+        }
+        else{
+            echo "This user does not have that program assigned";
+        }
+    }
+
+    public function getProgramDeletionById($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_deleted";
+        $numDeleted = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableName WHERE program_id = $programId", ARRAY_A);
+        $count = 0;
+        foreach ($numDeleted as $key) {
+            $count++;
+        }
+        if(!is_null($count) && $count > 0){
+            return $count;
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public function getProgramUserDeletionById($programId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_deleted";
+        $userDeletedId = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableName WHERE program_id = $programId", ARRAY_A);
+        $usersArray = array();
+        foreach ($userDeletedId as $key) {
+            $userObj = get_user_by('ID', $key['user_id']);
+            //print_r($userObj);
+            $userName = $userObj->first_name . " " . $userObj->last_name;
+            //echo "User Name " . $userName;
+            $usersArray[] = $userName;
+        }
+        return $usersArray;
+
+    }
+
+    public function checkUserExistsForUserPrograms(){
+        global $wpdb;
+        $tableNameA = $wpdb->prefix . "cura_user_programs";
+        $tableNameB = $wpdb->prefix . "users";
+        // get all users Id's
+        $users = $wpdb->get_results("SELECT DISTINCT ID FROM $tableNameB", ARRAY_A);
+        
+        //get all user programs
+        $userProgs = $wpdb->get_results("SELECT user_id FROM $tableNameA", ARRAY_A);
+        //foreach user program check if user_id exists in Ids
+        $toBeDeleted = array();
+        foreach ($userProgs as $progkey) {
+            $exists = 0;
+            foreach ($users as $userkey) {
+                if($progkey['user_id'] == $userkey['ID']){
+                    $exists++;
+                }
+            }
+            //if not put id into "to be deleted" array
+            if($exists <= 0){
+                $toBeDeleted[] = $progkey['user_id'];
+            }
+        } //end userProgs loop
+
+        //remove dulpicated from toBeDeleted Array
+        $fixedDeleted = array();
+        $fixedDeleted = array_unique($toBeDeleted);
+
+        //foreach to be deleted, delete all user_programs
+        foreach ($fixedDeleted as $key) {
+            $wasDeleted = $this->deleteUserProgram($key);
+            echo $wasDeleted;
+        }
+    }
+    public function deleteUserProgram($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+
+        $wpdb->query("DELETE FROM $tableName WHERE user_id = $userId");
+
+        if($this->printError($wpdb) != "No Error"){
+            $error = $this->printError($wpdb);
+            return $error;
+         }
+         else{
+            return "Success: User Program with User Id: " . $userId . " Deleted";
+         
+         }
+
+    }
+
+
 }
 
 ?>

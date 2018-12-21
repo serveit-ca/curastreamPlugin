@@ -130,13 +130,29 @@ class customProgramCreation {
 							<div class="labelTxt"> Sports </div>
 							<?php
 								foreach ($sports as $sportsOccupation){
-									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
+								$whatHappened = explode(",",$programObject->sportsOccupation);
+								$itHappens = false;
+								foreach($whatHappened as $itHappened){
+								 		if(str_replace(' ', '', strtolower($sportsOccupation->name)) == str_replace(' ', '', strtolower($itHappened))){
+								 			$itHappens = true;
+								 			break;
+								 		}
+								 	}
+									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $sportsOccupation->name;?></input>	
 								<?php } ?>
 							<div class="labelTxt"><br /></div>
 							<div class="labelTxt"> Occupations </div>
 							<?php 
 								foreach ($occupations as $sportsOccupation){
-									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
+									$whatHappened = explode(",",$programObject->sportsOccupation);
+									$itHappens = false;
+								foreach($whatHappened as $itHappened){
+								 		if(str_replace(' ', '', strtolower($sportsOccupation->name)) == str_replace(' ', '', strtolower($itHappened))){
+								 			$itHappens = true;
+								 			break;
+								 		}
+								 	}
+									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $sportsOccupation->name;?></input>	
 								<?php } ?>
 						</div>	
 					</div>

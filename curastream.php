@@ -98,9 +98,15 @@ function add_submenu() {
         '',
         ''
     );
-    add_submenu_page('curastreamPlugin','Program Aministration','Program Aministration',
+    add_submenu_page('curastreamPlugin','Program Administration','Program Administration',
         'manage_options',
         'curastream/customProgram.php',
+        '',
+        ''
+    );
+    add_submenu_page('curastreamPlugin','Program Metrics','Program Metrics',
+        'manage_options',
+        'curastream/programMetrics.php',
         '',
         ''
     );

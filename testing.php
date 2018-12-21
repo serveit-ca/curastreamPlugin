@@ -4,12 +4,13 @@ require_once ("objects/program.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
-    	$allPhases = $programs->getAllPhases();
-    	print_r($allPhases);
 
-var_dump($programs->getProgramById(206));
+ $programs->checkUserExistsForUserPrograms();
+  //echo $number;
+  
+  
 
-$status = $programs->removeProgramFromUser(193, 1);
+
 
 //echo "Status: " .$status;
 
