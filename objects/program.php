@@ -269,25 +269,26 @@ public $tempUserId;
 
       
     
-    // Get all Exercises From Database
-    public function getAllExerciseVideos(){
-    	global $wpdb;
-		$tableName = $wpdb->prefix . "cura_exercise_videos";
+ // Get all Exercises From Database
+    public function getAllExerciseVideos($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
 
-		$exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_part_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
-		$exercies = array();
+        $exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
+        $exercies = array();
         foreach ($exerciseResults as $row) {
             $anExercise = new exercise();
-			$anExercise->id = $row->id;
+            $anExercise->id = $row->id;
             $anExercise->name = $row->name;
             $anExercise->description = $row->description;
             $anExercise->bodyPart = $row->assoc_body_parts_name;
             $anExercise->category = $row->category_name;
             $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
             $anExercise->thumbnail = $row->videoThumbnail;
+            $anExercise->favorate = $anExercise->checkFavorite($userId, $anExercise->id);
             $exercies[] = $anExercise;
         }
-			return $exercies;
+            return $exercies;
     }
 
 
@@ -311,7 +312,9 @@ public $tempUserId;
 			$anExercise->equipment = $exerciseResults['equipment'];
 			$anExercise->special_instructions = $exerciseResults['special_instructions'];
 			$anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-			//$anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'],[2]),[2]);
+            list($vc0,$vc1,$vc2) = array_pad(explode('.', $exerciseResults['exercise_video_url'],4),4,null);
+            list($vcId0,$vcId1,$vcId2) = array_pad(explode('/', $vc2,4),4,null);
+            $anExercise->videoId = $vcId2;
 			$anExercise->file_url = $exerciseResults['file_url'];
 			$anExercise->file_name = $exerciseResults['file_name'];
 			$anExercise->thumbnail = $exerciseResults['videoThumbnail'];
@@ -339,7 +342,9 @@ public $tempUserId;
             $anExercise->equipment = $exerciseResults['equipment'];
             $anExercise->special_instructions = $exerciseResults['special_instructions'];
             $anExercise->exercise_video_url = $exerciseResults['exercise_video_url'];
-            $anExercise->videoId = explode('/', explode('.', $exerciseResults['exercise_video_url'])[2])[2];
+             list($vc0,$vc1,$vc2) = array_pad(explode('.', $exerciseResults['exercise_video_url'],4),4,null);
+            list($vcId0,$vcId1,$vcId2) = array_pad(explode('/', $vc2,4),4,null);
+            $anExercise->videoId = $vcId2;
             $anExercise->file_url = $exerciseResults['file_url'];
             $anExercise->file_name = $exerciseResults['file_name'];
             $anExercise->thumbnailUrl = $exerciseResults['videoThumbnail'];
@@ -435,8 +440,9 @@ public $tempUserId;
 			$aExercise->file_name = $row['file_name'];
 			$aExercise->thumbnail = $row['videoThumbnail'];
 			$aExercise->exercise_video_id = $row['exercise_video_id'];
-			//$aExercise->videoId = explode('/', explode('.', $aExercise->exercise_video_url)[2])[2];
-
+			list($vc0,$vc1,$vc2) = array_pad(explode('.', $row['exercise_video_url'],4),4,null);
+            list($vcId0,$vcId1,$vcId2) = array_pad(explode('/', $vc2,4),4,null);
+            $aExercise->videoId = $vcId2;
 			$allExercises[] = $aExercise;
         }
 			return $allExercises;
@@ -825,7 +831,7 @@ public function createExerciseByName($name, $phaseId){
     		"order_no" => $order_no),
     		array( // Where Clause
     	 	"id" => $phaseId));
-            echo "<br> Order No Updated";
+            //echo "<br> Order No Updated";
 	    }
 
 	    if($this->printError($wpdb) != "No Error"){
@@ -1029,13 +1035,13 @@ public function duplicateGeneralProgram($existingProgram){
                 foreach ($phases as $row) {
                     // If Order is Between Initial -1  and Final Inclusive
                     if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
-                        echo "<br>Move Backwards If Order No : ";
-                        echo $row->order_no;
+                     //   echo "<br>Move Backwards If Order No : ";
+                       // echo $row->order_no;
                         // Current Phase Order_no 
                         $newOrder = $row->order_no + 1;
                         $this->updatePhase(NULL, NULL, NULL, NULL, $newOrder, $row->id);
                         $orderTest = $this->getAPhaseById($row->id);
-                        echo "<br>Phase: " . $row->name . " Moved Forward." . "To: " . $orderTest->order_no;
+                        // echo "<br>Phase: " . $row->name . " Moved Forward." . "To: " . $orderTest->order_no;
                     }//End If   
                 }// End Loop
             }//End Elseif
@@ -1074,10 +1080,10 @@ public function duplicateGeneralProgram($existingProgram){
 				if($row->order_no < $initialOrder && $row->order_no >= $finalOrder){
 					// Current exercise Order_no -1
 					$this->updateExercise($row->order_no+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $row->id);
-					echo "exercise: " . $row->name . " Moved Forward.";
+					//echo "exercise: " . $row->name . " Moved Forward.";
 				}//End If	
 				else{
-					echo "exercise: " . $row->name . " Not Changed.";
+					//echo "exercise: " . $row->name . " Not Changed.";
 				}
 			}// End Loop
 		}//End Elseif
