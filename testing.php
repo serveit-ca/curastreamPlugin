@@ -5,7 +5,7 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
-  $number = $programs->getProgramUsersById(37);
+ $programs->checkUserExistsForUserPrograms();
   //echo $number;
   
   

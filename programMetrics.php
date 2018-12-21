@@ -20,364 +20,7 @@ function prefix_enqueue()
 <head>
 	<title></title>
 	<style type="text/css">
-		<?php 
-		// Hide the Main
-		if(isset($_POST['editprogram']) && isset($_POST['edit']) && $_POST['edit'] == 'Edit' ){?>
-			#main_form
-			{
-				display: none;
-			}
-		<?php } ?>
-		.edit_form, .main_form
-		{
-			width: 90%;
-		}
-		.left_form{
-			width: 48%;
-			float: left;
-			margin-right: 30px; 
-		}
-		.right_form{
-			width: 47%;
-			float: left;
-		}
-		label{
-			font-weight: bold;
-			font-size: 16px;
-			max-width: 100%;
-			margin-bottom: 8px;
-			display: inline-block;
-		}
-		.radio_btn{
-			font-weight: normal;
-		}
-		.radio_btn+.radio_btn{
-			margin-left: 10px;
-		}
-		span.select2-selection
-		{
-			border-color: rgb(221, 221, 221)
-		}
-		input:focus, span.select2-selection:focus, textarea:focus
-		{
-			border-color: #00b1b3!important; 
-		}
-		.selectThumb {
-			background: #00b1b3!important;
-			color: #fff!important;
-			text-align: center!important;
-			font-weight: 400!important;		
-			border-color: #00b1b3!important;
-		}
-		.imgDisplay {
-			position: fixed;
-			width: 100vw;
-			height: 100vh;
-			background: rgba(0, 0, 0, 0.5);
-			top: 0;
-			left: 0;
-			display: none;
-			z-index: 1000000;
-		}
-		span.select2-selection.select2-selection--multiple {
-			min-height: 34px;
-			border-color: #ddd;
-		}
-		span.select2-selection.select2-selection--multiple:focus {		
-			border-color: #00b1b3!important;
-		}
-		div[id*="phase"] {
-			padding-top: 30px;
-		}
-		.add_phase, #add_multiple_phases, .add_exercise, input[type="submit"]{
-			border: 0;
-			padding: 10px 15px;
-			background-color: #00b1b3;
-			color: #fff;
-		}
-		input.form-control {
-			height: 38px!important;
-		}
-		ul.sortable li {
-	    padding: 20px;
-	    background: rgba(125, 125, 125, 0.17);
-	    border-radius: 5px;
-	    margin-bottom: 20px;
-	    position: relative;
-	}
-
-
-	div[id*=phase] {
-	    background: aliceblue;
-	    padding: 20px;
-	    border-right: 1px solid rgb(214, 208, 208);
-	    border-left: 1px solid rgb(214, 208, 208);
-	    border-bottom: 1px solid rgb(214, 208, 208);
-	}
-	.phases {
-	    margin-top: 30px;
-	} 	
-	.form-group.addProgram {
-	    margin-top: 10px;
-	    padding-top: 10px;
-	    border-top: 1px solid darkgray;
-	}
-
-	span.deletePhaseEdit.glyphicon.glyphicon-trash, span.deleteExerciseEdit.glyphicon.glyphicon-trash,span.nameExerciseEdit.glyphicon.glyphicon-edit , span.deletePhase, span.deleteExercise {
-	    color: #555;
-	    font-size: 10px;
-	    display: inline-block;
-	    margin-left: 10px;
-	    padding: 5px;
-	    border-radius: 5px;
-	        cursor: pointer;
-	}
-	span.deleteExercise.glyphicon.glyphicon-trash, span.deleteExerciseEdit.glyphicon.glyphicon-trash {
-	    margin-bottom: 20px;
-	    cursor: pointer;
-	}
-	span.select2-selection.select2-selection--multiple {
-	    min-height: 38px;
-	}
-	::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-	  color: #999;
-	}
-	::-moz-placeholder { /* Firefox 19+ */
-	  color: #999;
-	}
-	.addVideo {
-	    width: 100%;
-	    height: 280px;
-	    border: 2px dashed #c3c3c3;
-	    position: relative;
-	}
-	.addVideo span.glyphicon {
-	    border: 3px solid #c3c3c3;
-	    padding: 13px;
-	    border-radius: 100%;
-	    position: absolute;
-	    top: -30px;
-	    left: 0;
-	    right: 0;
-	    bottom: 0;
-	    width: 45px;
-	    height: 45px;
-	    margin: auto;
-	    color: #c3c3c3;
-	        cursor: pointer;
-	        display: none;
-	}
-	span.showMessage {
-	    font-size: 15px;
-	    font-weight: 700;
-	    color: gray;
-	    position: absolute;
-	    left: 0;
-	    right: 0;
-	    margin: auto;
-	    text-align: center;
-	    top: 140px;
-	}
-	span.glyphicon.glyphicon-move {
-	    font-size: 19px;
-	    position: absolute;
-	    right: 29px;
-	    top: 16px;
-	    cursor: move;
-	}
-	span.move {
-	    position: absolute;
-	    right: 60px;
-	    top: 12px;
-	        border-bottom: 2px solid #00b1b3;
-	}
-	label[for="type"] {
-	    display: inline-block;
-	    margin: 0 20px 5px 0;
-	    border-bottom: 3px solid #00b1b3;
-	    padding-bottom: 5px;
-	}
-	select.exerciseVideoUrlSource, select.exerciseVideoUrl {
-	    height: 37px;
-	}
-	form#editForm {
-	    float: left;
-	    margin-right: 5px;
-	}
-
-	form#editForm input[type="submit"] {
-	    background-color: #efc227;
-	}
-	input[name="deleteProgram"]{
-	    background-color: #ff5e5e;
-	}
-	a.cancel {
-	    padding: 12px 10px;
-	    background: #FF5E5E;
-	    color: #fff!important;
-	    text-decoration: none!important
-	}
-
-	input#upload-btn, input.file-upload-btn {
-	    height: 37px!important;
-	    background-color: #00b1b3!important;
-	    border: 0!important;
-	    color: #fff!important;
-	    width: 108px!important;
-	}
-	.file-upload-area {
-	    margin-top: 10px;
-	}
-	div#imageWrapper {
-	    border: 1px solid #c7c7c7;
-	    border-radius: 4px;
-	    margin-top: 10px;
-	}
-	div#imageWrapper img {
-	    width: 100%;
-	}
-	input[type="radio"] {
-	    margin: -3px 5px 0 0!important;
-	}
-	select.form-control {
-	    height: 40px;
-	}
-
-	.searchVids {
-	    margin: 30px 0;
-	}
-	.searchVids label {
-	    color: #00b1b3;
-	    margin-bottom: 10px;
-	    font-size: 16px;
-	}
-	.fetchVideos {
-	    height: 80vh;
-	    width: 84%;
-	    position: fixed;
-	    top: 0;
-	    bottom: 0;
-	    margin: auto;
-	    background: #fff;
-	    border-radius: 10px;
-	    box-shadow: 0px 0px 30px grey;
-	    display: none;
-	    padding: 30px;
-
-	}
-	.closeModal {
-	    position: absolute!important;
-	    right: 20px;
-	    top: 20px!important;
-	    cursor: pointer;
-	}
-	table#videos {
-
-	    border: 1px solid #dedede;
-	    display: block;
-	    height: 67%;
-	    margin-top: 30px;
-	}
-	table#videos thead
-	{
-		display: block
-	}
-	table#videos tbody
-	{
-		display: block;
-		height: 85% !important;
-		overflow-y: scroll;
-
-	}
-	span.useButton {
-	    background-color: #00b1b3;
-	    padding: 10px;
-	    color: #fff;
-	    border-radius: 5px;
-	    cursor: pointer;
-	}
-	#videos th {
-	    display: inline-block;
-	    width: 19%;
-	}
-	#videos tr {
-	    width: 100%;
-	display: block;
-	border-bottom: 1px solid #e9e9e9;
-	border-collapse: collapse;
-	}
-	table#videos td {
-	    padding: 10px 15px;
-	    display: inline-block;
-	    width: 19.25%;
-	    border: 0;
-	}
-	select[class*="exerciseVideoUrl"] {
-	    display: none;
-	}
-
-	.fetchVideos ul {
-	    margin-top: 50px;
-	    max-height: 320px;
-	    display: block;
-	    overflow-y: scroll;
-	}
-	.fetchVideos h3
-	{
-		margin:0;
-	}
-	.fetchVideos li {
-	    display: block;
-	    height: 50px;
-	}
-	.select2-results__option[aria-selected=true] {
-	    display: none;
-	}
-	span.body-parts {
-	    display: inline-block;
-	    background-color: #00b3b3;
-	    color: #fff;
-	    padding: 5px;
-	    margin: 0 5px 5px 0;
-	    border-radius: 5px;
-	}
-	th#parts {
-	    width: 18%;
-	}
-	span.exerciseName {
-	    font-size: 18px;
-	    font-weight: bold;
-	}
-	.overlayAction {
-	    height: 100vh;
-	    position: fixed;
-	    width: 87vw;
-	    top: 0;
-	    left: 160px;
-	    background:rgb(255,255,255);
-	    z-index: 999;
-	    /*display: none;*/
-	}
-	.overlayAction img{
-	position: absolute;
-	left: 0;
-	right: 0;
-	margin: auto;
-	top: 0;
-	bottom: 0;
-	}
-	th#title {
-	    width: 15%;
-	}
-	th#cat {
-	    width: 20%;
-	}
-	th#title {
-	    width: 11%;
-	}
-	th#sports {
-	    width: 21%;
-	}
+		
 		</style>
 </head>
 <body>
@@ -424,20 +67,20 @@ function prefix_enqueue()
 								 	
 							</td>
 							<td><?php echo $programObj->checkStaleness($key->id); ?></td>
-							<td><?php echo "user names"
-								// $programUsers = $programObj->getProgramUsersById($key->id);
-								// foreach ($programUsers as $aUser) {
-								// 	echo("<option value=\"".$aUser."</option>");
-								// }
-								?>					
-							</td>
-							<td><?php echo $programObj->getProgramDeletionById($key->id); ?></td>
-							<td><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
+							<td><ul><?php //echo "user names"
+								$programUsers = $programObj->getProgramUsersById($key->id);
 								foreach ($programUsers as $aUser) {
-									echo("<option value=\"".$aUser."</option>");
+									echo("<li>" .$aUser."</li>");
+								}
+								?>					
+							</ul></td>
+							<td><?php echo $programObj->getProgramDeletionById($key->id); ?></td>
+							<td><ul><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
+								foreach ($programUsers as $aUser) {
+									echo("<li>" .$aUser."</li>");
 								}
 								?>
-							</td>		
+							</ul></td>		
 							<td><?php 
 
 								echo("<button id=\"view-".$key->id."\">View</button>");
@@ -500,21 +143,20 @@ function prefix_enqueue()
 								 	
 							</td>
 							<td><?php echo $programObj->checkStaleness($key->id); ?></td>
-							<td><?php echo "user names"
-								// $programUsers = $programObj->getProgramUsersById($key->id);
-								// foreach ($programUsers as $aUser) {
-								// 	echo("<option value=\"".$aUser."</option>");
-								// }
-								?>					
-							</td>
-							<td><?php echo $programObj->getProgramDeletionById($key->id); ?></td>
-							<td><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
+							<td><ul><?php //echo "user names"
+								$programUsers = $programObj->getProgramUsersById($key->id);
 								foreach ($programUsers as $aUser) {
-									//echo("<option value=\"".$aUser."</option>");
-									echo "User Deleted";
+									echo("<li>" .$aUser."</li>");
+								}
+								?>					
+							</ul></td>
+							<td><?php echo $programObj->getProgramDeletionById($key->id); ?></td>
+							<td><ul><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
+								foreach ($programUsers as $aUser) {
+									echo("<li>" .$aUser."</li>");
 								}
 								?>
-							</td>		
+							</ul></td>		
 							<td><?php 
 
 								echo("<button id=\"view-".$key->id."\">View</button>");

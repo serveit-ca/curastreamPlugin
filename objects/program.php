@@ -1571,7 +1571,7 @@ public function duplicateGeneralProgram($existingProgram){
             return $count;
         }
         else{
-            return "No Deletions";
+            return 0;
         }
     }
 
@@ -1594,9 +1594,9 @@ public function duplicateGeneralProgram($existingProgram){
     public function checkUserExistsForUserPrograms(){
         global $wpdb;
         $tableNameA = $wpdb->prefix . "cura_user_programs";
-        $tableNameB = $wpdb->prefix . "user";
+        $tableNameB = $wpdb->prefix . "users";
         // get all users Id's
-        $users = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableNameB", ARRAY_A);
+        $users = $wpdb->get_results("SELECT DISTINCT ID FROM $tableNameB", ARRAY_A);
         
         //get all user programs
         $userProgs = $wpdb->get_results("SELECT user_id FROM $tableNameA", ARRAY_A);
@@ -1605,16 +1605,40 @@ public function duplicateGeneralProgram($existingProgram){
         foreach ($userProgs as $progkey) {
             $exists = 0;
             foreach ($users as $userkey) {
-                if($userProgs['user_id'] == $users['user_id']){
+                if($progkey['user_id'] == $userkey['ID']){
                     $exists++;
                 }
             }
-            
-        }
-        //if not put id into "to be deleted" array
+            //if not put id into "to be deleted" array
+            if($exists <= 0){
+                $toBeDeleted[] = $progkey['user_id'];
+            }
+        } //end userProgs loop
+
+        //remove dulpicated from toBeDeleted Array
+        $fixedDeleted = array();
+        $fixedDeleted = array_unique($toBeDeleted);
 
         //foreach to be deleted, delete all user_programs
+        foreach ($fixedDeleted as $key) {
+            $wasDeleted = $this->deleteUserProgram($key);
+            echo $wasDeleted;
+        }
+    }
+    public function deleteUserProgram($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
 
+        $wpdb->query("DELETE FROM $tableName WHERE user_id = $userId");
+
+        if($this->printError($wpdb) != "No Error"){
+            $error = $this->printError($wpdb);
+            return $error;
+         }
+         else{
+            return "Success: User Program with Id: " . $userId . " Deleted";
+         
+         }
 
     }
 
