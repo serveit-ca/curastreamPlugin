@@ -5,7 +5,7 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
- $programs->recordUserDeletion(1, 75);
+ $programs->checkUserExistsForUserPrograms();
   //echo $number;
   
   
