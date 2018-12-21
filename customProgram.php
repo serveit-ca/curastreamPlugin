@@ -194,7 +194,7 @@ if(!isset($_GET['program_id'])){
 			<?php
 			if(isset($_GET['program_id'])){
 			$modifyProgram = $programs->getProgramById($_GET['program_id']);
-	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram, $programs->getAllBodyParts(), $programs->getAllInjuries(), $programs->getAllSports(), $programs->getAllOccupations());
 	      		echo $customProgramForm;
 	      	$phases = $programs->getPhasesByProgramId($_GET['program_id']);
 	      		foreach ($phases as $aPhase){

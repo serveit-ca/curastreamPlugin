@@ -37,11 +37,12 @@ class customProgramCreation {
 	public $exerciseFile;
 
 	 /*This function is used to generate the Program Meta Data  */
-	public function createProgramMetaImputForm($programObject){
+	public function createProgramMetaImputForm($programObject, $body_parts, $howItHappeneds, $sports, $occupations){
 			?>
 
 			<div class="row" id="theProgramMetaId" data-programId="<?php echo $programObject->id?>">
 					<div class="col-md-12">
+						
 						<div class="form-group">
 							<div class="labelTxt"> Type </div>
 							<label class="radio_btn radio_btn_type"><input required type="radio" name="typeUpdate" value="Rehab" id="rehab" <?php if($programObject->type == 'Rehab'){echo 'checked ="checked"';} ?> >Rehab</label>
@@ -98,8 +99,7 @@ class customProgramCreation {
 						</div>
 						<div id="bodyPartGroup" class="form-group <?php if($programObject->type == "Strength-Training"){ echo " hidden";}?>">
 								<div class="labelTxt"> Body Parts </div>
-								<?php $body_parts = get_all_body_parts(); 
-								 foreach ($body_parts as $body_part){
+							<?php foreach ($body_parts as $body_part){
 								 	$parts = explode(",",$programObject->body_part);
 								 	$injuredParts = false;
 								 	foreach($parts as $part){
@@ -114,8 +114,7 @@ class customProgramCreation {
 
 						<div id="howItHappenedGroup" class="form-group <?php if($programObject->type == "Prevention" || $programObject->type == "Strength-Training" ){ echo "hidden";}?>">
 								<div class="labelTxt"> How It Happened </div>
-								<?php $howItHappeneds = get_all_injury_reasons();
-								 foreach ($howItHappeneds as $howItHappened){ 
+							<?php foreach ($howItHappeneds as $howItHappened){ 
 								 	$whatHappened = explode(",",$programObject->howItHappen);
 								 	$itHappens = false;
 								 	foreach($whatHappened as $itHappened){
@@ -129,14 +128,14 @@ class customProgramCreation {
 						</div>
 						<div id="sportsAndOccupationGroup"class="form-group <?php if($programObject->type == "Rehab" || $programObject->type == "Prevention"){ echo "hidden";}?>">
 							<div class="labelTxt"> Sports </div>
-							<?php $sportsOccupations = get_all_sports();
-								foreach ($sportsOccupations as $sportsOccupation){
+							<?php
+								foreach ($sports as $sportsOccupation){
 									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
 								<?php } ?>
 							<div class="labelTxt"><br /></div>
 							<div class="labelTxt"> Occupations </div>
-							<?php $sportsOccupations = get_all_occupations();
-								foreach ($sportsOccupations as $sportsOccupation){
+							<?php 
+								foreach ($occupations as $sportsOccupation){
 									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>"> <?php echo $sportsOccupation->name;?></input>	
 								<?php } ?>
 						</div>	

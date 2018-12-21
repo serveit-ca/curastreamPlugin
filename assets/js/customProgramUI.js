@@ -247,13 +247,15 @@ jQuery(".addPhase").live('click', function(event){
 
 		var programID = jQuery("#theProgramMetaId").attr('data-programid');
 		console.log("Program ID"+ programID);
-		var finalOrder = jQuery(this).parent().parent().parent().prev().attr('data-phase-order');
+		var finalOrder = jQuery(this).parent().parent().parent().prev('.phaseContainer').attr('data-phase-order');
 		console.log("Previous Phase Order Lookup "+finalOrder);
 		if(typeof finalOrder === "undefined"){
 			finalOrder = 1
+		
 		}else{
-			finalOrder++; 
-		}
+		 	finalOrder++; 
+		 }
+
 		console.log("Phase Final Order "+finalOrder);
 		var currentElement = jQuery(this);
 		// add a new phase to the database ajax and reorder
@@ -384,9 +386,10 @@ jQuery(".addExercise").live('click', function(event){
 		console.log("Exercise ID "+exerciseID);
 
 		// determine the location of the new exercise
-		console.log(jQuery(this).closest(".addExerciseContent"));
-		var finalOrder = jQuery(this).closest(".exercises").attr('data-ordernumber');
-		console.log("Previous Phase Order Lookup"+finalOrder);
+		console.log(jQuery(this).parent().parent().parent().parent().prevAll(".exercises:first"));
+		var finalOrder = jQuery(this).parent().parent().parent().parent().prevAll(".exercises:first").attr('data-ordernumber');
+
+		console.log("Previous Exercise Order Lookup "+finalOrder);
 		if(typeof finalOrder === "undefined"){
 			finalOrder = 1
 		}else{
@@ -402,7 +405,7 @@ jQuery(".addExercise").live('click', function(event){
 		'programID': programID,
 		'exerciseId': exerciseID,
 		'phaseId': phaseId,
-		'finalOrder':finalOrder	};
+		'finalOrder':finalOrder};
 		// ensure the datasbse has been updated
 		jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
 		// This should be returnin"g HTML object 
@@ -439,18 +442,6 @@ function updateExerciseOrder(location){
 		jQuery(this).attr('data-ordernumber',order);
 		var exerciseID = jQuery(this).attr('data-exerciseID')
 		console.log("Exercise Id:"+exerciseID);
-		// Remove this logic when Kaiden fixes the exercise 
-			var data = {
-			'action': 'updateAnExercise',
-			'exerciseId': exerciseID,
-			'order_no': order
-			};
-			// ensure the datasbse has been updated
-			jQuery.ajax({type:'POST',data,url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){	
-				resultObj = response;
-				}
-			});
-		// Remove to here 
 		order ++;
 	});
 }

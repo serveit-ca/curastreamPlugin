@@ -16,7 +16,7 @@ require_once ("objects/exercise.php");
 	      		$newProgramId = $programs->duplicateGeneralProgram($_POST['existingProgram']);
 	      		$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 1,null, $newProgramId);
 	      		$modifyProgram = $programs->getProgramById($newProgramId);
-	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram, $programs->getAllBodyParts(), $programs->getAllInjuries(), $programs->getAllSports(), $programs->getAllOccupations());
 	      		echo $customProgramForm;
 	      	$phases = $programs->getPhasesByProgramId($newProgramId);
 	      		foreach ($phases as $aPhase){
@@ -50,7 +50,7 @@ require_once ("objects/exercise.php");
       		$newProgramId = $programs->duplicateCustomProgram($_POST['existingProgram'],$_POST['temp_user_id']);
       			$programs->makeCustom($newProgramId);
       		$modifyProgram = $programs->getProgramById($newProgramId);
-    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
+    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram, $programs->getAllBodyParts(), $programs->getAllInjuries(), $programs->getAllSports(), $programs->getAllOccupations());
       		echo $customProgramForm;
       	$phases = $programs->getPhasesByProgramId($newProgramId);
       		foreach ($phases as $aPhase){
@@ -132,7 +132,7 @@ require_once ("objects/exercise.php");
 	    function addExerciseChooser(){
 	      	global $programs;
 	      	global $customCreation;
-	      	$exerciseVideos = $programs->getAllExerciseVideos();
+	      	$exerciseVideos = $programs->getAllExerciseVideos(1);
 	   
 	      	echo $customCreation->addExerciseChooser($exerciseVideos);
 
@@ -150,7 +150,7 @@ require_once ("objects/exercise.php");
 	    	$newProgramId = $programs->createProgram($_POST['programName']);
 	    	$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 1,null, $newProgramId);
 	    	$newProgram = $programs->getProgramById($newProgramId);
-	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram, $programs->getAllBodyParts(), $programs->getAllInjuries(), $programs->getAllSports(), $programs->getAllOccupations());
 	      		echo $customProgramForm;
 	      		echo $customCreation->addPhase();
 	      		wp_die();
@@ -166,7 +166,7 @@ require_once ("objects/exercise.php");
 	    	$programs->makeCustom($newProgramId);
 	    	$programs->updateProgram(null, null, null, null, null, null, null, null, null, null, null, 1,$_POST['temp_user_id'], $newProgramId);
 	    	$newProgram = $programs->getProgramById($newProgramId);
-	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram);
+	    	$customProgramForm = $customCreation->createProgramMetaImputForm($newProgram, $programs->getAllBodyParts(), $programs->getAllInjuries(), $programs->getAllSports(), $programs->getAllOccupations());
 	      		echo $customProgramForm;
 	      		echo $customCreation->addPhase();
 	      		wp_die();
@@ -181,7 +181,7 @@ require_once ("objects/exercise.php");
 	    	$status = "Success";
 
 	    	$modifyProgram = $programs->getProgramById($_POST['programId']);
-	    	$customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram);
+	    $customProgramForm = $customCreation->createProgramMetaImputForm($modifyProgram, $programs->getAllBodyParts(), $programs->getAllInjuries(), $programs->getAllSports(), $programs->getAllOccupations());
 	      		echo $customProgramForm;
 	      	$phases = $programs->getPhasesByProgramId($_POST['programId']);
 	      		foreach ($phases as $aPhase){

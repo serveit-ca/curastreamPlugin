@@ -9,8 +9,6 @@ notifications:
 branches:
   only:
     - master
-    - autoTest
-    - programManagement
 
 services:
   - mysql
