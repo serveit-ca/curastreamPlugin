@@ -990,50 +990,6 @@ public function duplicateGeneralProgram($existingProgram){
     	return $newProgramId;
     }
 
-    public function updateDatabase(){
-     	$allExercises = $this->getAllExercises();
-     	$log = "";
-	    foreach ($allExercises as $exercise){
-	    		global $wpdb;
-			$tableName = $wpdb->prefix . "cura_exercise_videos";
-
-			$exerciseResults = $wpdb->get_row("SELECT id, url, exercise_video_url FROM $tableName WHERE url like '$exercise->exercise_video_url'",ARRAY_A);
-			$log.= "New Exercise";
-			$log.= $exerciseResults['id'];
-			$log.= $exerciseResults['url'];
-			$log.= $exercise->exercise_video_url;
-	
-			$value = array('exercise_video_id'=>$exerciseResults['id']);
-			$where = array('exercise_video_url'=>$exercise->exercise_video_url);
-			$log.=implode("",$value);
-			$log.=implode("",$where);
-			$log.="<br /><br />";
-			$update = $wpdb->update("dev_cura_exercises",$value,$where);
-	    }
-	    return $log;
-	}
-
-	public function updateDatabasePhases(){
-		//Get All Programs
-		$allPrograms = $this->getAllPrograms();
-		//For Each Program
-		foreach ($allPrograms as $progrow) {
-			// Get all That Programs Phases
-			$programPhases = $this->getPhasesByProgramId($progrow->id);
-			// Counter variable to 1
-			$orderCount = 1;
-			//For Each Phase
-			foreach ($programPhases as $phaserow) {
-				//Phase[count] order_no = count;
-				$this->updatePhase(NULL, NULL, NULL, NULL, $orderCount, $phaserow->id);
-				echo "Phase " . $phaserow->name . " Updated with Order Number: " . $phaserow->order_no;
-				//Increment Count
-				$orderCount++;
-			}
-		}
-			
-	}
-
 	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
         //Get All Phases By Prod Id
         $phases = $this->getPhasesByProgramId($programId);
