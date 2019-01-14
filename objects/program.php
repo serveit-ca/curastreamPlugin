@@ -280,7 +280,7 @@ public $tempUserId;
     function getAllSportsOccupations(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_sport_occupation";
-        $sports_occupations = $wpdb->get_results("SELECT id, name FROM $tableName ORDER BY name");
+        $sports_occupations = $wpdb->get_results("SELECT id, name, type FROM $tableName ORDER BY name");
     
         return $sports_occupations;
     }
@@ -1647,6 +1647,94 @@ public function duplicateGeneralProgram($existingProgram){
          }
 
     }
+
+    public function updateBodyPart($name, $partId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $partId));
+        }
+    }
+
+    public function updateSportsAndOccupation($name, $type, $sportId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $sportId));
+        }
+
+        //Check and Update type
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "type" => $type),
+            array( // Where Clause
+            "id" => $sportId));
+        }
+    }
+
+    public function updateHowItHappened($name, $causeId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $causeId));
+        }
+    }
+
+    public function newBodyPart($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name));
+        }
+    }
+
+    public function newSport($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name),
+            array(
+            "type" => "sport"));
+        }
+    }
+
+    public function newOccupation($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name),
+            array(
+            "type" => "occupation"));
+        }
+    }
+
+    public function newHowItHappened($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name));
+        }
+    }
+
 
 
 }
