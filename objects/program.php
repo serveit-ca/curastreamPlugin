@@ -1782,7 +1782,7 @@ public function duplicateGeneralProgram($existingProgram){
             $phases = $wpdb->get_results("SELECT id, program_id FROM $tableName WHERE id = $phaseId", ARRAY_A);
             foreach ($phases as $progkey) {
                 $program = $this->getProgramById($progkey['program_id']);
-                $progNames[] = $program->name;
+                $progNames[] = $program;
             }
         }
         return $progNames;

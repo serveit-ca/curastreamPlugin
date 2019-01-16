@@ -63,9 +63,18 @@ function prefix_enqueue()
 								</td>
 								<td><?php echo $programObj->getExerciseVideoCount($key->id); ?></td>
 								<td><?php
-										foreach ($progNames as $name) {
-											echo $name . "<br>";
-										}
+										foreach ($progNames as $value) {
+											echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
+										View Program
+									</div>
+								</a>
+								<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
+										Edit Program
+									</div>
+								</a> <br>
+										<?php }
 									?>
 										
 								</td>
