@@ -36,19 +36,43 @@ function prefix_enqueue()
 				<table id="programs" class="table table-bordered">	
 					<th id= "name">Name</th>
 					<th id= "edit">Edit</th>
+					<th id= "numUses"># of Program Uses</th>
+					<th id= "assigned">Assigned Programs</th>
 					<th id= "actions">Actions</th>
 					<tr>
 						<td> <input type="text" placeholder="New Body Part "></td>
 						<td></td>
+						<td></td>
+						<td></td>
 						<td><button>Save</button></td>
 					</tr>
 					<?php 
-							foreach ($bodyParts as $key) {					
+							foreach ($bodyParts as $key) {
+							$partPrograms = $programObj->getProgramsByBodyPart($key->id);					
 					?>
 							<tr>
 								<td><?php echo $key->name ?></td>	
 								<td>
 									<input type="text" placeholder="Update <?php echo $key->name ?> ">
+								</td>
+								<td>
+									<?php echo count($partPrograms); ?>
+
+								</td>
+								<td>
+									<?php foreach ($partPrograms as $value) {
+										echo $value->name . "<a href=\"<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>\" target=\"_blank\">
+									<div class=\"viewProgram smallProgramBtn\">
+										View Program
+									</div>
+								</a>
+								<a href=\"<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>\" target=\"_blank\">
+									<div class=\"viewProgram smallProgramBtn\">
+										Edit Program
+									</div>
+								</a>
+								<br>";
+									}; ?>
 								</td>
 								<td>
 									<button>Save</button>
@@ -76,20 +100,39 @@ function prefix_enqueue()
 				<table id="programs" class="table table-bordered">	
 					<th id= "name">Name</th>
 					<th id= "edit">Edit</th>
+					<th id= "numUses"># of Uses</th>
+					<th id= "assigned">Assigned Programs</th>
 					<th id= "actions">Actions</th>
 					<tr>
 						<td> <input type="text" placeholder="New How it Happened"></td>
 						<td></td>
+						<td></td>
+						<td></td>
 						<td><button>Save</button></td>
 					</tr>
 					<?php 
-							foreach ($injuries as $key) {					
+							foreach ($injuries as $key) {
+							$injuryPrograms = $programObj->getProgramsByHowItHappened($key->id);					
 					?>
 							<tr>
 								<td><?php echo $key->name ?></td>	
 								<td>
 									<input type="text" placeholder="Update <?php echo $key->name ?> ">
 								</td>
+								<td><?php echo count($injuryPrograms); ?></td>
+								<td><?php foreach ($injuryPrograms as $value) {
+										echo $value->name . "<a href=\"<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>\" target=\"_blank\">
+									<div class=\"viewProgram smallProgramBtn\">
+										View Program
+									</div>
+								</a>
+								<a href=\"<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>\" target=\"_blank\">
+									<div class=\"viewProgram smallProgramBtn\">
+										Edit Program
+									</div>
+								</a>
+								<br>";
+									}; ?></td>
 								<td>
 									<button>Save</button>
 									<button>Delete</button>
@@ -116,6 +159,8 @@ function prefix_enqueue()
 					<th id= "name">Name</th>
 					<th id= "type">Type</th>
 					<th id= "edit">Edit</th>
+					<th id= "numUses"># of Uses</th>
+					<th id= "assigned">Assigned Programs</th>
 					<th id= "actions">Actions</th>
 					<tr>
 						<td> <input type="text" placeholder="New Sport or Occupation"></td>
@@ -125,10 +170,13 @@ function prefix_enqueue()
 							</select>
 						</td>
 						<td></td>
+						<td></td>
+						<td></td>
 						<td><button>Save</button></td>
 					</tr>
 					<?php 
-							foreach ($sports as $key) {					
+							foreach ($sports as $key) {
+							$sportPrograms = $programObj->getProgramsBySportOcc($key->id);						
 					?>
 							<tr>
 								<td><?php echo $key->name ?></td>
@@ -136,6 +184,22 @@ function prefix_enqueue()
 								<td>
 									<input type="text" placeholder="Update <?php echo $key->name ?> ">
 								</td>
+								<td><?php echo count($sportPrograms); ?></td>
+								<td><?php foreach ($sportPrograms as $value) {
+										echo $value->name . "<a href=\"<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>\" target=\"_blank\">
+									<div class=\"viewProgram smallProgramBtn\">
+										View Program
+									</div>
+								</a>
+								<a href=\"<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>\" target=\"_blank\">
+									<div class=\"viewProgram smallProgramBtn\">
+										Edit Program
+									</div>
+								</a>
+								<br>";
+									}; ?>
+										
+									</td>
 								<td>
 									<button>Save</button>
 									<button>Delete</button>
