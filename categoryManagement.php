@@ -180,7 +180,7 @@ function prefix_enqueue()
 					?>
 							<tr>
 								<td><?php echo $key->name ?></td>
-								<td><?php echo $key->type ?></td>	
+								<td><?php echo $key->type ?> <button>Toggle Type</button></td>	
 								<td>
 									<input type="text" placeholder="Update <?php echo $key->name ?> ">
 								</td>

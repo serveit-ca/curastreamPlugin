@@ -418,7 +418,7 @@ require_once ("objects/exercise.php");
 	    	$status = "Success";
 
 	    	$programs->getAllOccupations();
-
+	
 	    	echo "Success";
 	    	wp_die();	
 	    }
@@ -538,6 +538,13 @@ require_once ("objects/exercise.php");
 	    add_action( 'wp_ajax_createANewHowItHappened', 'createANewHowItHappened');
 	    add_action( 'wp_ajax_nopriv_createANewHowItHappened', 'createANewHowItHappened');
 
-
-
-    ?>
+	    function updateAExerciseVideo(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+	    	$programs->updateExerciseVideo($_POST['name'], $_POST['url'], $_POST['videoId']);
+	    	echo "Success";
+	    	wp_die();	
+	    }
+	    add_action( 'wp_ajax_updateAExerciseVideo', 'updateAExerciseVideo');
+	    add_action( 'wp_ajax_nopriv_updateAExerciseVideo', 'updateAExerciseVideo');

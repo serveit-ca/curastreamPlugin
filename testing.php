@@ -8,6 +8,10 @@ $programs = new program();
  $programarray = $programs->getProgramsByHowItHappened(1);
  //$bodypart = $programs->getBodyPartById(1);
  print_r($programarray);
+
+ $number = $programs->getProgramsByExerciseVideo(410);
+ print_r($number);
+
   
   
 

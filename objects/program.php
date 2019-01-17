@@ -318,6 +318,28 @@ public $tempUserId;
             return $exercies;
     }
 
+    // Get all Exercises From Database without user favorites.
+    public function getAllExerciseVideosNoFavorite(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+        $exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
+        $exercies = array();
+        foreach ($exerciseResults as $row) {
+            $anExercise = new exercise();
+            $anExercise->id = $row->id;
+            $anExercise->name = $row->name;
+            $anExercise->description = $row->description;
+            $anExercise->bodyPart = $row->assoc_body_parts_name;
+            $anExercise->category = $row->category_name;
+            $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
+            $anExercise->thumbnail = $row->videoThumbnail;
+            $anExercise->url = $row->url;
+            $exercies[] = $anExercise;
+        }
+            return $exercies;
+    }
+
 
     // Gets a Single Exercise by That Exercises Id
     public function getAnExerciseById($exerciseId){
@@ -989,50 +1011,6 @@ public function duplicateGeneralProgram($existingProgram){
     	}
     	return $newProgramId;
     }
-
-    public function updateDatabase(){
-     	$allExercises = $this->getAllExercises();
-     	$log = "";
-	    foreach ($allExercises as $exercise){
-	    		global $wpdb;
-			$tableName = $wpdb->prefix . "cura_exercise_videos";
-
-			$exerciseResults = $wpdb->get_row("SELECT id, url, exercise_video_url FROM $tableName WHERE url like '$exercise->exercise_video_url'",ARRAY_A);
-			$log.= "New Exercise";
-			$log.= $exerciseResults['id'];
-			$log.= $exerciseResults['url'];
-			$log.= $exercise->exercise_video_url;
-	
-			$value = array('exercise_video_id'=>$exerciseResults['id']);
-			$where = array('exercise_video_url'=>$exercise->exercise_video_url);
-			$log.=implode("",$value);
-			$log.=implode("",$where);
-			$log.="<br /><br />";
-			$update = $wpdb->update("dev_cura_exercises",$value,$where);
-	    }
-	    return $log;
-	}
-
-	public function updateDatabasePhases(){
-		//Get All Programs
-		$allPrograms = $this->getAllPrograms();
-		//For Each Program
-		foreach ($allPrograms as $progrow) {
-			// Get all That Programs Phases
-			$programPhases = $this->getPhasesByProgramId($progrow->id);
-			// Counter variable to 1
-			$orderCount = 1;
-			//For Each Phase
-			foreach ($programPhases as $phaserow) {
-				//Phase[count] order_no = count;
-				$this->updatePhase(NULL, NULL, NULL, NULL, $orderCount, $phaserow->id);
-				echo "Phase " . $phaserow->name . " Updated with Order Number: " . $phaserow->order_no;
-				//Increment Count
-				$orderCount++;
-			}
-		}
-			
-	}
 
 	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
         //Get All Phases By Prod Id
@@ -1822,8 +1800,54 @@ public function duplicateGeneralProgram($existingProgram){
         return $programsIncluded;
     }
 
+    public function getExerciseVideoCount($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercises";
+        $exercises = $wpdb->get_results("SELECT id FROM $tableName WHERE exercise_video_id = $videoId");
+        $count = 0;
 
+        foreach ($exercises as $key) {
+            $count++;
+        }
 
+        return $count;
+
+    }
+
+    public function getProgramsByExerciseVideo($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercises";
+        $exercises = $wpdb->get_results("SELECT id, phase_id FROM $tableName WHERE exercise_video_id = $videoId", ARRAY_A);
+        $tableName = $wpdb->prefix . "cura_phases";
+        $progNames = array();
+        foreach ($exercises as $key) {
+            $phaseId = $key['phase_id'];
+            $phases = $wpdb->get_results("SELECT id, program_id FROM $tableName WHERE id = $phaseId", ARRAY_A);
+            foreach ($phases as $progkey) {
+                $program = $this->getProgramById($progkey['program_id']);
+                $progNames[] = $program;
+            }
+        }
+        return $progNames;
+    }
+
+    public function updateExerciseVideo($name, $url, $videoId){
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $videoId));
+        }
+
+        //Check and Update url
+        if (isset($duration) && !is_null($duration)){
+            $wpdb->update($tableName, array(
+            "url" => $url),
+            array( // Where Clause
+            "id" => $videoId));
+        }
+    }
 }
 
 ?>

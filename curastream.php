@@ -98,6 +98,12 @@ function add_submenu() {
         '',
         ''
     );
+    add_submenu_page('curastreamPlugin','Video Management','Video Management',
+        'manage_options',
+        'curastream/exerciseManagement.php',
+        '',
+        ''
+    );
     add_submenu_page('curastreamPlugin','Category Management','Category Management',
         'manage_options',
         'curastream/categoryManagement.php',
