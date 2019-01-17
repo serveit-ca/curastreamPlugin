@@ -1788,8 +1788,23 @@ public function duplicateGeneralProgram($existingProgram){
         return $progNames;
     }
 
+    public function updateExerciseVideo($name, $url, $videoId){
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $videoId));
+        }
 
-
+        //Check and Update url
+        if (isset($duration) && !is_null($duration)){
+            $wpdb->update($tableName, array(
+            "url" => $url),
+            array( // Where Clause
+            "id" => $videoId));
+        }
+    }
 }
 
 ?>
