@@ -439,4 +439,105 @@ require_once ("objects/exercise.php");
 
 	    add_action( 'wp_ajax_getSportsOccupations', 'getSportsOccupations');
 	    add_action( 'wp_ajax_nopriv_getSportsOccupations', 'getSportsOccupations');
+
+	    function updateABodyPart(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->updateBodyPart($_POST['name'], $_POST['partId']);
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_updateABodyPart', 'updateABodyPart');
+	    add_action( 'wp_ajax_nopriv_updateABodyPart', 'updateABodyPart');
+
+	    function updateASportsAndOccupation(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->updateSportsAndOccupation($_POST['name'], $_POST['type'], $_POST['sportId']);
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_updateASportsAndOccupation', 'updateASportsAndOccupation');
+	    add_action( 'wp_ajax_nopriv_updateASportsAndOccupation', 'updateASportsAndOccupation');
+
+	    function updateAHowItHappened(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->updateHowItHappened($_POST['name'], $_POST['causeId']);
+
+	    	echo "Success";
+	    	wp_die();	
+	    }
+
+	    add_action( 'wp_ajax_updateAHowItHappened', 'updateAHowItHappened');
+	    add_action( 'wp_ajax_nopriv_updateAHowItHappened', 'updateAHowItHappened');
+
+	    function createANewBodyPart(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->newBodyPart($_POST['name']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_createANewBodyPart', 'createANewBodyPart');
+	    add_action( 'wp_ajax_nopriv_createANewBodyPart', 'createANewBodyPart');
+
+	    function createANewSport(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->newSport($_POST['name']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_createANewSport', 'createANewSport');
+	    add_action( 'wp_ajax_nopriv_createANewSport', 'createANewSport');
+
+	    function createANewOccupation(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->newOccupation($_POST['name']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_createANewOccupation', 'createANewOccupation');
+	    add_action( 'wp_ajax_nopriv_createANewOccupation', 'createANewOccupation');
+
+	    function createANewHowItHappened(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$status = "Success";
+
+	    	$programs->newHowItHappened($_POST['name']);
+
+	    	echo "Success";
+	    	wp_die();
+	    }
+
+	    add_action( 'wp_ajax_createANewHowItHappened', 'createANewHowItHappened');
+	    add_action( 'wp_ajax_nopriv_createANewHowItHappened', 'createANewHowItHappened');
+
+
+
     ?>

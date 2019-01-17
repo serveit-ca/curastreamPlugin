@@ -61,18 +61,18 @@ function prefix_enqueue()
 								</td>
 								<td>
 									<?php foreach ($partPrograms as $value) {
-										echo $value->name . "<a href=\"<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>\" target=\"_blank\">
-									<div class=\"viewProgram smallProgramBtn\">
+										echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
 										View Program
 									</div>
 								</a>
-								<a href=\"<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>\" target=\"_blank\">
-									<div class=\"viewProgram smallProgramBtn\">
+								<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
 										Edit Program
 									</div>
-								</a>
-								<br>";
-									}; ?>
+								</a> <br>
+										<?php }
+									?>
 								</td>
 								<td>
 									<button>Save</button>
@@ -121,18 +121,18 @@ function prefix_enqueue()
 								</td>
 								<td><?php echo count($injuryPrograms); ?></td>
 								<td><?php foreach ($injuryPrograms as $value) {
-										echo $value->name . "<a href=\"<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>\" target=\"_blank\">
-									<div class=\"viewProgram smallProgramBtn\">
+										echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
 										View Program
 									</div>
 								</a>
-								<a href=\"<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>\" target=\"_blank\">
-									<div class=\"viewProgram smallProgramBtn\">
+								<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
 										Edit Program
 									</div>
-								</a>
-								<br>";
-									}; ?></td>
+								</a> <br>
+										<?php }
+									?></td>
 								<td>
 									<button>Save</button>
 									<button>Delete</button>
@@ -186,18 +186,18 @@ function prefix_enqueue()
 								</td>
 								<td><?php echo count($sportPrograms); ?></td>
 								<td><?php foreach ($sportPrograms as $value) {
-										echo $value->name . "<a href=\"<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>\" target=\"_blank\">
-									<div class=\"viewProgram smallProgramBtn\">
+										echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
 										View Program
 									</div>
 								</a>
-								<a href=\"<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>\" target=\"_blank\">
-									<div class=\"viewProgram smallProgramBtn\">
+								<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
 										Edit Program
 									</div>
-								</a>
-								<br>";
-									}; ?>
+								</a> <br>
+										<?php }
+									?>
 										
 									</td>
 								<td>
