@@ -280,7 +280,7 @@ public $tempUserId;
     function getAllSportsOccupations(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_sport_occupation";
-        $sports_occupations = $wpdb->get_results("SELECT id, name FROM $tableName ORDER BY name");
+        $sports_occupations = $wpdb->get_results("SELECT id, name, type FROM $tableName ORDER BY name");
     
         return $sports_occupations;
     }
@@ -313,6 +313,28 @@ public $tempUserId;
             $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
             $anExercise->thumbnail = $row->videoThumbnail;
             $anExercise->favorate = $anExercise->checkFavorite($userId, $anExercise->id);
+            $exercies[] = $anExercise;
+        }
+            return $exercies;
+    }
+
+    // Get all Exercises From Database without user favorites.
+    public function getAllExerciseVideosNoFavorite(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+        $exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
+        $exercies = array();
+        foreach ($exerciseResults as $row) {
+            $anExercise = new exercise();
+            $anExercise->id = $row->id;
+            $anExercise->name = $row->name;
+            $anExercise->description = $row->description;
+            $anExercise->bodyPart = $row->assoc_body_parts_name;
+            $anExercise->category = $row->category_name;
+            $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
+            $anExercise->thumbnail = $row->videoThumbnail;
+            $anExercise->url = $row->url;
             $exercies[] = $anExercise;
         }
             return $exercies;
@@ -1604,7 +1626,141 @@ public function duplicateGeneralProgram($existingProgram){
 
     }
 
+    public function updateBodyPart($name, $partId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
 
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $partId));
+        }
+    }
+
+    public function updateSportsAndOccupation($name, $type, $sportId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $sportId));
+        }
+
+        //Check and Update type
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "type" => $type),
+            array( // Where Clause
+            "id" => $sportId));
+        }
+    }
+
+    public function updateHowItHappened($name, $causeId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $causeId));
+        }
+    }
+
+    public function newBodyPart($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name));
+        }
+    }
+
+    public function newSport($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name),
+            array(
+            "type" => "sport"));
+        }
+    }
+
+    public function newOccupation($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name),
+            array(
+            "type" => "occupation"));
+        }
+    }
+
+    public function newHowItHappened($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name));
+        }
+    }
+
+    public function getExerciseVideoCount($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercises";
+        $exercises = $wpdb->get_results("SELECT id FROM $tableName WHERE exercise_video_id = $videoId");
+        $count = 0;
+
+        foreach ($exercises as $key) {
+            $count++;
+        }
+
+        return $count;
+
+    }
+
+    public function getProgramsByExerciseVideo($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercises";
+        $exercises = $wpdb->get_results("SELECT id, phase_id FROM $tableName WHERE exercise_video_id = $videoId", ARRAY_A);
+        $tableName = $wpdb->prefix . "cura_phases";
+        $progNames = array();
+        foreach ($exercises as $key) {
+            $phaseId = $key['phase_id'];
+            $phases = $wpdb->get_results("SELECT id, program_id FROM $tableName WHERE id = $phaseId", ARRAY_A);
+            foreach ($phases as $progkey) {
+                $program = $this->getProgramById($progkey['program_id']);
+                $progNames[] = $program;
+            }
+        }
+        return $progNames;
+    }
+
+    public function updateExerciseVideo($name, $url, $videoId){
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $videoId));
+        }
+
+        //Check and Update url
+        if (isset($duration) && !is_null($duration)){
+            $wpdb->update($tableName, array(
+            "url" => $url),
+            array( // Where Clause
+            "id" => $videoId));
+        }
+    }
 }
 
 ?>
