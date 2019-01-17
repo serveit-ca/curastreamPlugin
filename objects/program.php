@@ -1713,6 +1713,93 @@ public function duplicateGeneralProgram($existingProgram){
         }
     }
 
+    public function getBodyPartById($bodyPartId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";    
+        
+        $body_part = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $bodyPartId");
+        
+        return $body_part;
+
+    }
+
+    public function getProgramsByBodyPart($bodyPartId){
+        global $wpdb;
+        $bodyPart = $this->getBodyPartById($bodyPartId);
+        $programs = $this->getAllPrograms();
+        $programsIncluded = array();
+        foreach ($programs as $key) {
+            $programParts = explode(',' , $key->body_part);
+            foreach ($programParts as $value) {
+                if ($bodyPart->name == $value){
+                    $aProgram = new program();
+                    $aProgram->name = $key->name;
+                    $aProgram->id = $key->id;
+                    $programsIncluded[] = $aProgram;
+                }
+            }
+        }
+        return $programsIncluded;
+    }
+
+    public function getSportOccById($sportId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";    
+        
+        $sport_occ = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $sportId");
+        
+        return $sport_occ;
+
+    }
+
+    public function getProgramsBySportOcc($sportId){
+        global $wpdb;
+        $sportOcc = $this->getSportOccById($sportId);
+        $programs = $this->getAllPrograms();
+        $programsIncluded = array();
+        foreach ($programs as $key) {
+            $programParts = explode(',' , $key->sportsOccupation);
+            foreach ($programParts as $value) {
+                if ($sportOcc->name == $value){
+                    $aProgram = new program();
+                    $aProgram->name = $key->name;
+                    $aProgram->id = $key->id;
+                    $programsIncluded[] = $aProgram;
+                }
+            }
+        }
+        return $programsIncluded;
+    }
+
+    public function getHowItHappenedById($injuryId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";    
+        
+        $injury = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $injuryId");
+        
+        return $injury;
+
+    }
+
+    public function getProgramsByHowItHappened($injuryId){
+        global $wpdb;
+        $injury = $this->getHowItHappenedById($injuryId);
+        $programs = $this->getAllPrograms();
+        $programsIncluded = array();
+        foreach ($programs as $key) {
+            $programParts = explode(',' , $key->howItHappen);
+            foreach ($programParts as $value) {
+                if ($injury->name == $value){
+                    $aProgram = new program();
+                    $aProgram->name = $key->name;
+                    $aProgram->id = $key->id;
+                    $programsIncluded[] = $aProgram;
+                }
+            }
+        }
+        return $programsIncluded;
+    }
+
     public function getExerciseVideoCount($videoId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_exercises";
