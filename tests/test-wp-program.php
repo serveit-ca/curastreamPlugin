@@ -587,7 +587,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs = new program();
     $users = $programs->getProgramUsersById(15);
     $usersExpected = array("Mike Friesen");
-    assert()
+    assert($users = $usersExpected);
   }
 
 }
