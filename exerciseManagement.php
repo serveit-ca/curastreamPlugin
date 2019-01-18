@@ -31,14 +31,19 @@ function prefix_enqueue()
 		
 		<div class="row">
 			<div class="col-md-12">
-				<table id="programs" class="table table-bordered">	
-					<th id= "name">Name</th>
-					<th id= "updateName">Update Name</th>
-					<th id= "url">URL</th>
-					<th id= "updateUrl">Update URL</th>
-					<th id= "numUses"># of Uses</th>
-					<th id= "Assigned">Programs Assigned</th>
-					<th id= "actions">Actions</th>
+				<table id="exerciseVideos" class="table table-bordered">	
+					<thead>
+						<tr>
+							<th id= "name">Name</th>
+							<th id= "updateName">Update Name</th>
+							<th id= "url">URL</th>
+							<th id= "updateUrl">Update URL</th>
+							<th id= "numUses"># of Uses</th>
+							<th id= "Assigned">Programs Assigned</th>
+							<th id= "actions">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
 					<tr>
 						<td> <input type="text" placeholder="New Exercise Video"></td>
 						<td></td>
@@ -62,7 +67,10 @@ function prefix_enqueue()
 									<input type="text" placeholder="Update Url">
 								</td>
 								<td><?php echo $programObj->getExerciseVideoCount($key->id); ?></td>
-								<td><?php
+								<td>
+									<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div class="hidden showData">
+									<?php
 										foreach ($progNames as $value) {
 											echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
 									<div class="viewProgram smallProgramBtn">
@@ -76,7 +84,7 @@ function prefix_enqueue()
 								</a> <br>
 										<?php }
 									?>
-										
+									</div>
 								</td>
 								<td>
 									<button>Save</button>
@@ -84,6 +92,7 @@ function prefix_enqueue()
 								</td>
 							</tr>
 						<?php } ?>
+					</tbody>
 				</table>
 			</div>
 		</div>

@@ -5,15 +5,17 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
- $programarray = $programs->getProgramsByHowItHappened(1);
- //$bodypart = $programs->getBodyPartById(1);
- print_r($programarray);
+ // $programarray = $programs->getProgramsByHowItHappened(1);
+ // //$bodypart = $programs->getBodyPartById(1);
+ // print_r($programarray);
 
- $number = $programs->getProgramsByExerciseVideo(410);
- print_r($number);
+ // $number = $programs->getProgramsByExerciseVideo(410);
+ // print_r($number);
 
   
-  
+print_r(get_role("curastreamProgramEditor2"));  
+echo "<br/>";
+print_r(get_role("subscriber"));
 
 
 

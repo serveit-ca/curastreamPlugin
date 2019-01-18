@@ -8,7 +8,107 @@ if(JS_DEBUG){console.log("Welcome to the Custom ProgramUI Builder Script");}
 jQuery(document).ready(function() {
     jQuery('.enableSelect2').select2();
 });
+// Table Filtering 
 
+jQuery(document).ready(function(){
+	jQuery('#bodyParts').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+     { "searchable": false },
+     { "searchable": false }
+  ]
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery('#injuryType').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+     { "searchable": false },
+     { "searchable": false }
+  ]
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery('#sportsAndOccupations').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+     { "searchable": false },
+     { "searchable": false },
+     { "searchable": false }
+  ]
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery('#exerciseVideos').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+      { "searchable": false },
+     { "searchable": false },
+     null,
+     { "searchable": false },
+     { "searchable": false }
+  ]
+	});
+});
+jQuery(document).ready(function(){
+	jQuery('#programMetrics').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    { "searchable": false }
+  ]
+	});
+});
+jQuery(document).ready(function(){
+	jQuery('#customProgramMetrics').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    { "searchable": false }
+  ]
+	});
+});
+
+// /////////////Functions used to show and hide all objects
+jQuery(".showHideAll").on('click', function(event){
+	if(jQuery(this).hasClass("fa-angle-down")){
+		jQuery(this).removeClass("fa-angle-down");
+		jQuery(this).addClass("fa-angle-up");
+		jQuery(this).next(".showData").removeClass("hidden");
+	}else if(jQuery(this).hasClass("fa-angle-up")){
+		jQuery(this).removeClass("fa-angle-up");
+		jQuery(this).addClass("fa-angle-down");
+		jQuery(this).next(".showData").addClass("hidden");
+	}
+	jQuery(this).next(".showData")
+
+});
 ///////////////////////// Fuctions used on the Custom Program Creation Page - Top Buttons ///////////////////////
 // These fucntions are used to display the differnt button options on the Custom Programs page 
 // when you start to edit or customize a program 
