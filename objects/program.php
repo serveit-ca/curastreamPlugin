@@ -280,7 +280,7 @@ public $tempUserId;
     function getAllSportsOccupations(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_sport_occupation";
-        $sports_occupations = $wpdb->get_results("SELECT id, name FROM $tableName ORDER BY name");
+        $sports_occupations = $wpdb->get_results("SELECT id, name, type FROM $tableName ORDER BY name");
     
         return $sports_occupations;
     }
@@ -313,6 +313,28 @@ public $tempUserId;
             $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
             $anExercise->thumbnail = $row->videoThumbnail;
             $anExercise->favorate = $anExercise->checkFavorite($userId, $anExercise->id);
+            $exercies[] = $anExercise;
+        }
+            return $exercies;
+    }
+
+    // Get all Exercises From Database without user favorites.
+    public function getAllExerciseVideosNoFavorite(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+        $exerciseResults = $wpdb->get_results("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName ORDER BY name");
+        $exercies = array();
+        foreach ($exerciseResults as $row) {
+            $anExercise = new exercise();
+            $anExercise->id = $row->id;
+            $anExercise->name = $row->name;
+            $anExercise->description = $row->description;
+            $anExercise->bodyPart = $row->assoc_body_parts_name;
+            $anExercise->category = $row->category_name;
+            $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
+            $anExercise->thumbnail = $row->videoThumbnail;
+            $anExercise->url = $row->url;
             $exercies[] = $anExercise;
         }
             return $exercies;
@@ -990,50 +1012,6 @@ public function duplicateGeneralProgram($existingProgram){
     	return $newProgramId;
     }
 
-    public function updateDatabase(){
-     	$allExercises = $this->getAllExercises();
-     	$log = "";
-	    foreach ($allExercises as $exercise){
-	    		global $wpdb;
-			$tableName = $wpdb->prefix . "cura_exercise_videos";
-
-			$exerciseResults = $wpdb->get_row("SELECT id, url, exercise_video_url FROM $tableName WHERE url like '$exercise->exercise_video_url'",ARRAY_A);
-			$log.= "New Exercise";
-			$log.= $exerciseResults['id'];
-			$log.= $exerciseResults['url'];
-			$log.= $exercise->exercise_video_url;
-	
-			$value = array('exercise_video_id'=>$exerciseResults['id']);
-			$where = array('exercise_video_url'=>$exercise->exercise_video_url);
-			$log.=implode("",$value);
-			$log.=implode("",$where);
-			$log.="<br /><br />";
-			$update = $wpdb->update("dev_cura_exercises",$value,$where);
-	    }
-	    return $log;
-	}
-
-	public function updateDatabasePhases(){
-		//Get All Programs
-		$allPrograms = $this->getAllPrograms();
-		//For Each Program
-		foreach ($allPrograms as $progrow) {
-			// Get all That Programs Phases
-			$programPhases = $this->getPhasesByProgramId($progrow->id);
-			// Counter variable to 1
-			$orderCount = 1;
-			//For Each Phase
-			foreach ($programPhases as $phaserow) {
-				//Phase[count] order_no = count;
-				$this->updatePhase(NULL, NULL, NULL, NULL, $orderCount, $phaserow->id);
-				echo "Phase " . $phaserow->name . " Updated with Order Number: " . $phaserow->order_no;
-				//Increment Count
-				$orderCount++;
-			}
-		}
-			
-	}
-
 	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
         //Get All Phases By Prod Id
         $phases = $this->getPhasesByProgramId($programId);
@@ -1648,6 +1626,260 @@ public function duplicateGeneralProgram($existingProgram){
 
     }
 
+    public function updateBodyPart($name, $partId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $partId));
+        }
+    }
+
+    public function updateSportsAndOccupation($name, $type, $sportId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $sportId));
+        }
+
+        //Check and Update type
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "type" => $type),
+            array( // Where Clause
+            "id" => $sportId));
+        }
+    }
+
+    public function updateHowItHappened($name, $causeId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $causeId));
+        }
+    }
+
+    public function newBodyPart($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name));
+        }
+    }
+
+    public function newSport($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name),
+            array(
+            "type" => "sport"));
+        }
+    }
+
+    public function newOccupation($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name),
+            array(
+            "type" => "occupation"));
+        }
+    }
+
+    public function newHowItHappened($name){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+        if (isset($name) && !is_null($name)){
+            $wpdb->insert($tableName, array(
+            "name" => $name));
+        }
+    }
+
+    public function getBodyPartById($bodyPartId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";    
+        
+        $body_part = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $bodyPartId");
+        
+        return $body_part;
+
+    }
+
+    public function getProgramsByBodyPart($bodyPartId){
+        global $wpdb;
+        $bodyPart = $this->getBodyPartById($bodyPartId);
+        $programs = $this->getAllPrograms();
+        $programsIncluded = array();
+        foreach ($programs as $key) {
+            $programParts = explode(',' , $key->body_part);
+            foreach ($programParts as $value) {
+                if ($bodyPart->name == $value){
+                    $aProgram = new program();
+                    $aProgram->name = $key->name;
+                    $aProgram->id = $key->id;
+                    $programsIncluded[] = $aProgram;
+                }
+            }
+        }
+        return $programsIncluded;
+    }
+
+    public function getSportOccById($sportId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";    
+        
+        $sport_occ = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $sportId");
+        
+        return $sport_occ;
+
+    }
+
+    public function getProgramsBySportOcc($sportId){
+        global $wpdb;
+        $sportOcc = $this->getSportOccById($sportId);
+        $programs = $this->getAllPrograms();
+        $programsIncluded = array();
+        foreach ($programs as $key) {
+            $programParts = explode(',' , $key->sportsOccupation);
+            foreach ($programParts as $value) {
+                if ($sportOcc->name == $value){
+                    $aProgram = new program();
+                    $aProgram->name = $key->name;
+                    $aProgram->id = $key->id;
+                    $programsIncluded[] = $aProgram;
+                }
+            }
+        }
+        return $programsIncluded;
+    }
+
+    public function getHowItHappenedById($injuryId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";    
+        
+        $injury = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $injuryId");
+        
+        return $injury;
+
+    }
+
+    public function getProgramsByHowItHappened($injuryId){
+        global $wpdb;
+        $injury = $this->getHowItHappenedById($injuryId);
+        $programs = $this->getAllPrograms();
+        $programsIncluded = array();
+        foreach ($programs as $key) {
+            $programParts = explode(',' , $key->howItHappen);
+            foreach ($programParts as $value) {
+                if ($injury->name == $value){
+                    $aProgram = new program();
+                    $aProgram->name = $key->name;
+                    $aProgram->id = $key->id;
+                    $programsIncluded[] = $aProgram;
+                }
+            }
+        }
+        return $programsIncluded;
+    }
+
+    public function getExerciseVideoCount($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercises";
+        $exercises = $wpdb->get_results("SELECT id FROM $tableName WHERE exercise_video_id = $videoId");
+        $count = 0;
+
+        foreach ($exercises as $key) {
+            $count++;
+        }
+
+        return $count;
+
+    }
+
+    public function getProgramsByExerciseVideo($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercises";
+        $exercises = $wpdb->get_results("SELECT id, phase_id FROM $tableName WHERE exercise_video_id = $videoId", ARRAY_A);
+        $tableName = $wpdb->prefix . "cura_phases";
+        $progNames = array();
+        foreach ($exercises as $key) {
+            $phaseId = $key['phase_id'];
+            $phases = $wpdb->get_results("SELECT id, program_id FROM $tableName WHERE id = $phaseId", ARRAY_A);
+            foreach ($phases as $progkey) {
+                $program = $this->getProgramById($progkey['program_id']);
+                $progNames[] = $program;
+            }
+        }
+        return $progNames;
+    }
+
+    public function createExerciseVideo($name, $url){
+       global $wpdb;
+       $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+       if (isset($name) && !is_null($name) && isset($url) && !is_null($url)){
+           $wpdb->insert($tableName, array(
+           "name" => $name,
+           "url" => $url));
+           $lastid = $wpdb->insert_id;
+           return $lastid;
+        }
+    }
+
+    public function updateExerciseVideo($name, $url, $videoId){
+        global $wpdb;
+       $tableName = $wpdb->prefix . "cura_exercise_videos";
+        //Check and Update name
+        if (isset($name) && !is_null($name)){
+            $wpdb->update($tableName, array(
+            "name" => $name),
+            array( // Where Clause
+            "id" => $videoId));
+        }
+
+        //Check and Update url
+        if (isset($url) && !is_null($url)){
+            $wpdb->update($tableName, array(
+            "url" => $url),
+            array( // Where Clause
+            "id" => $videoId));
+        }
+    }
+
+    public function deleteExerciseVideo($exerciseVideoId){
+       global $wpdb;
+       $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+       $wpdb->delete($tableName, array(
+           "id" => $exerciseVideoId
+       ));
+
+       if($this->printError($wpdb) != "No Error"){
+           $error = $this->printError($wpdb);
+           return $error;
+        }
+        else{
+           return "Success: Exercise with Id: " . $exerciseId . " Deleted";
+        }
+    }
 
 }
 

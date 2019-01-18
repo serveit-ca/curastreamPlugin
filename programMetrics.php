@@ -43,15 +43,20 @@ function prefix_enqueue()
 		
 		<div class="row">
 			<div class="col-md-12">
-				<table id="programs" class="table table-bordered">	
+				<table id="programMetrics" class="table table-bordered">	
+					<thead>
+						<tr>
 					<th id= "name">Program Name</th>
 					<th id= "type">Program Type</th>
 					<th id= "state">State</th>
 					<th id= "numUsers">Current Number of Users</th>
-					<th id= "users">Users</th>
+					<th id= "users">Current Users</th>
 					<th id= "numDeletion">Number of Deletions</th>
 					<th id= "deletedBy">Deleted By</th>
 					<th id= "actions">Actions</th>
+					</tr>
+					</thead>
+					<tbody>
 					<?php 
 							foreach ($programs as $key) {					
 							$partsAssoc = explode(',', $key->body_part);
@@ -71,20 +76,30 @@ function prefix_enqueue()
 								 	
 							</td>
 							<td><?php echo $programObj->checkStaleness($key->id); ?></td>
-							<td><ul><?php //echo "user names"
+							<td>
+								<i class="showHideAll fas fa-2x fa-angle-down"></i>
+								<div class="hidden showData">
+							<ul><?php //echo "user names"
 								$programUsers = $programObj->getProgramUsersById($key->id);
 								foreach ($programUsers as $aUser) {
 									echo("<li>" .$aUser."</li>");
 								}
 								?>					
-							</ul></td>
+							</ul>
+								</div>
+							</td>
 							<td><?php echo $programObj->getProgramDeletionById($key->id); ?></td>
-							<td><ul><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
-								foreach ($programUsers as $aUser) {
-									echo("<li>" .$aUser."</li>");
-								}
-								?>
-							</ul></td>		
+							<td>
+								<i class="showHideAll fas fa-2x fa-angle-down"></i>
+								<div class="hidden showData">
+									<ul><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
+									foreach ($programUsers as $aUser) {
+										echo("<li>" .$aUser."</li>");
+									}
+									?>
+									</ul>
+								</div>
+							</td>		
 							<td>
 
 								<a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $key->id;?>" target="_blank">
@@ -102,6 +117,7 @@ function prefix_enqueue()
 							</tr>
 						<?php  
 					}?>
+				</tbody>
 				</table>
 			</div>
 		</div>
@@ -124,15 +140,20 @@ function prefix_enqueue()
 		
 		<div class="row">
 			<div class="col-md-12">
-				<table id="programs" class="table table-bordered">	
+				<table id="customProgramMetrics" class="table table-bordered">	
+					<thead>
+						<tr>
 					<th id= "name">Program Name</th>
 					<th id= "type">Program Type</th>
 					<th id= "state">State</th>
 					<th id= "numUsers">Current Number of Users</th>
-					<th id= "users">Users</th>
+					<th id= "users">Current Users</th>
 					<th id= "numDeletion">Number of Deletions</th>
 					<th id= "deletedBy">Deleted By</th>
 					<th id= "actions">Actions</th>
+					</tr>
+					</thead>
+					<tbody>
 					<?php 
 							foreach ($programs as $key) {					
 							$partsAssoc = explode(',', $key->body_part);
@@ -152,32 +173,47 @@ function prefix_enqueue()
 								 	
 							</td>
 							<td><?php echo $programObj->checkStaleness($key->id); ?></td>
-							<td><ul><?php //echo "user names"
+							<td>
+									<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div class="hidden showData">
+							<ul><?php //echo "user names"
 								$programUsers = $programObj->getProgramUsersById($key->id);
 								foreach ($programUsers as $aUser) {
 									echo("<li>" .$aUser."</li>");
 								}
 								?>					
-							</ul></td>
+							</ul>
+								</div>
+							</td>
 							<td><?php echo $programObj->getProgramDeletionById($key->id); ?></td>
-							<td><ul><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
+							<td>
+								<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div class="hidden showData">
+										<ul><?php $programUsers = $programObj->getProgramUserDeletionById($key->id);
 								foreach ($programUsers as $aUser) {
 									echo("<li>" .$aUser."</li>");
 								}
 								?>
-							</ul></td>		
-							<td><?php 
-
-								echo("<button id=\"view-".$key->id."\">View</button>");
-								echo("<button id=\"view-".$key->id."\">Edit</button>");
-
-								?>
-								
+										</ul>
+									</div>
+							</td>		
+							<td>
+								<a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $key->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
+										View Program
+									</div>
+								</a>
+								<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $key->id;?>" target="_blank">
+									<div class="viewProgram smallProgramBtn">
+										Edit Program
+									</div>
+								</a>
 
 							</td>
 							</tr>
 						<?php  
 					}?>
+				</tbody>
 				</table>
 			</div>
 		</div>
