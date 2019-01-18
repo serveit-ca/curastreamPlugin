@@ -594,6 +594,8 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs = new program();
     $programs->recordUserDeletion(7, 15);
     $deletedCount = $programs->getProgramDeletionById(15);
+    $deletedforassert = $programs->checkUserExistsForUserPrograms();
+    echo $deletedforassert;
     assert($deletedCount == 1); 
   }
 
