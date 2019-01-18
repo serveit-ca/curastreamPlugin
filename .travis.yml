@@ -9,6 +9,7 @@ notifications:
 branches:
   only:
     - master
+    - travisTesting
 
 services:
   - mysql

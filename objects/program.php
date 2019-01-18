@@ -1848,6 +1848,22 @@ public function duplicateGeneralProgram($existingProgram){
             "id" => $videoId));
         }
     }
+
+    public function createExerciseVideo($name, $url){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+        if (isset($name) && !is_null($name) && isset($url) && !is_null($url)){
+            $wpdb->insert($tableName, array(
+            "name" => $name),
+            array(
+            "url" => $url));
+
+            $lastid = $wpdb->insert_id;
+            return $lastid;
+        }
+
+    }
 }
 
 ?>
