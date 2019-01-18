@@ -1248,7 +1248,7 @@ ALTER TABLE `wptests_cura_user_programs`
 -- Table structure for table `dev_usermeta`
 --
 
-CREATE TABLE `dev_usermeta` (
+CREATE TABLE `wptests_usermeta` (
   `umeta_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
   `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1256,10 +1256,10 @@ CREATE TABLE `dev_usermeta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `dev_usermeta`
+-- Dumping data for table `wptests_usermeta`
 --
 
-INSERT INTO `dev_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
+INSERT INTO `wptests_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
 (1, 1, 'nickname', 'admin'),
 (2, 1, 'first_name', 'Nathan'),
 (3, 1, 'last_name', 'Tymos'),
@@ -2049,7 +2049,7 @@ INSERT INTO `dev_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VAL
 (2966, 89, 'uuid', 'd95e2204475f390bfea7104bdf85aba3'),
 (2967, 89, '_yoast_wpseo_profile_updated', '1516653360'),
 (2968, 89, 'dev_user_avatar', '');
-INSERT INTO `dev_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
+INSERT INTO `wptests_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
 (2969, 89, 'dismissed_wp_pointers', ''),
 (2970, 89, 'signup_notice_sent', '1'),
 (2972, 89, 'googleplus', ''),
@@ -2835,7 +2835,7 @@ INSERT INTO `dev_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VAL
 (5089, 163, 'instagram', ''),
 (5090, 163, 'pinterest', ''),
 (5091, 163, 'tumblr', '');
-INSERT INTO `dev_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
+INSERT INTO `wptests_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
 (5092, 163, 'google-plus', ''),
 (5093, 163, 'linkedin', ''),
 (5094, 163, 'profile_last_modified', 'December 11, 2018<br>4:04 pm'),
@@ -3125,7 +3125,7 @@ INSERT INTO `dev_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VAL
 --
 -- Indexes for table `dev_usermeta`
 --
-ALTER TABLE `dev_usermeta`
+ALTER TABLE `wptests_usermeta`
   ADD PRIMARY KEY (`umeta_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `meta_key` (`meta_key`(191));
@@ -3135,18 +3135,18 @@ ALTER TABLE `dev_usermeta`
 --
 
 --
--- AUTO_INCREMENT for table `dev_usermeta`
+-- AUTO_INCREMENT for table `wptests_usermeta`
 --
-ALTER TABLE `dev_usermeta`
+ALTER TABLE `wptests_usermeta`
   MODIFY `umeta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5635;COMMIT;
 
 
 
 --
--- Table structure for table `dev_users`
+-- Table structure for table `wptests_users`
 --
 
-CREATE TABLE `dev_users` (
+CREATE TABLE `wptests_users` (
   `ID` bigint(20) UNSIGNED NOT NULL,
   `user_login` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `user_pass` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -3160,10 +3160,10 @@ CREATE TABLE `dev_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `dev_users`
+-- Dumping data for table `wptests_users`
 --
 
-INSERT INTO `dev_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) VALUES
+INSERT INTO `wptests_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) VALUES
 (1, 'admin', '$P$BuyeDxf/Y7KShbXmJJkR.QRLoPKQyN0', 'admin', 'nathan@serveit.ca', '', '2017-06-30 06:12:31', '', 0, 'admin'),
 (7, 'mikefriesen', '$P$BQl82K6aGnYgf2QGmayN7uyVKp8VVU.', 'mikefriesen', 'mike.friesen@curastream.com', 'http://www.curastream.com', '2017-08-09 13:00:38', '', 0, 'Mike Friesen'),
 (8, 'Andrew', '$P$BTJLvmORCLmdtOqgB8yso1u.rO52800', 'andrew', 'andrew.heming@curastream.com', 'http://www.curastream.com', '2017-09-11 17:19:40', '1505150380:$P$BiyV/0fQJb2.xTYL4/Ndn0p8k7aG9s0', 0, 'Andrew Heming'),
@@ -3230,9 +3230,9 @@ INSERT INTO `dev_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `user
 --
 
 --
--- Indexes for table `dev_users`
+-- Indexes for table `wptests_users`
 --
-ALTER TABLE `dev_users`
+ALTER TABLE `wptests_users`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `user_login_key` (`user_login`),
   ADD KEY `user_nicename` (`user_nicename`),
@@ -3243,18 +3243,18 @@ ALTER TABLE `dev_users`
 --
 
 --
--- AUTO_INCREMENT for table `dev_users`
+-- AUTO_INCREMENT for table `wptests_users`
 --
-ALTER TABLE `dev_users`
+ALTER TABLE `wptests_users`
   MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;COMMIT;
 
   -- --------------------------------------------------------
 
 --
--- Table structure for table `dev_cura_deleted`
+-- Table structure for table `wptests_cura_deleted`
 --
 
-CREATE TABLE `dev_cura_deleted` (
+CREATE TABLE `wptests_cura_deleted` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `program_id` int(11) NOT NULL
@@ -3265,9 +3265,9 @@ CREATE TABLE `dev_cura_deleted` (
 --
 
 --
--- Indexes for table `dev_cura_deleted`
+-- Indexes for table `wptests_cura_deleted`
 --
-ALTER TABLE `dev_cura_deleted`
+ALTER TABLE `wptests_cura_deleted`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -3275,8 +3275,8 @@ ALTER TABLE `dev_cura_deleted`
 --
 
 --
--- AUTO_INCREMENT for table `dev_cura_deleted`
+-- AUTO_INCREMENT for table `wptests_cura_deleted`
 --
-ALTER TABLE `dev_cura_deleted`
+ALTER TABLE `wptests_cura_deleted`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
 
