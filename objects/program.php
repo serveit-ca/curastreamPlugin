@@ -1608,6 +1608,7 @@ public function duplicateGeneralProgram($existingProgram){
             $wasDeleted = $this->deleteUserProgram($key);
             echo $wasDeleted;
         }
+        return count($fixedDeleted);
     }
     public function deleteUserProgram($userId){
         global $wpdb;
