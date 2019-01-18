@@ -132,6 +132,7 @@ remove_role('curastreamProgramEditor');
      $role = get_role("curastreamProgramEditor");
       $role->add_cap( 'read');
       $role->add_cap('curaProgEditor');
+      $role->add_cap('delete_posts');
    }
     $role = get_role("administrator");
       $role->add_cap('curaProgEditor');
