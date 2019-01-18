@@ -3248,3 +3248,35 @@ ALTER TABLE `dev_users`
 ALTER TABLE `dev_users`
   MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;COMMIT;
 
+  -- --------------------------------------------------------
+
+--
+-- Table structure for table `dev_cura_deleted`
+--
+
+CREATE TABLE `dev_cura_deleted` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `program_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `dev_cura_deleted`
+--
+ALTER TABLE `dev_cura_deleted`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `dev_cura_deleted`
+--
+ALTER TABLE `dev_cura_deleted`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+

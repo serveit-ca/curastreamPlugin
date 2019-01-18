@@ -583,12 +583,21 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($stale == 0);
   }
 
-  public function test_get_program_users_by_id(){
+  // public function test_get_program_users_by_id(){
+  //   $programs = new program();
+  //   $users = $programs->getProgramUsersById(15);
+  //   $usersExpected = array("Mike Friesen");
+  //   assert($users = $usersExpected);
+  // }
+
+  public function test_record_user_deletion(){
     $programs = new program();
-    $users = $programs->getProgramUsersById(15);
-    $usersExpected = array("Mike Friesen");
-    assert($users = $usersExpected);
+    $programs->recordUserDeletion(7, 15);
+    $deletedCount = $programs->getProgramDeletionById(15);
+    assert($deletedCount == 1);
   }
+
+
 
 }
 
