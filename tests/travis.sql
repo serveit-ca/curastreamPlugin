@@ -1054,7 +1054,7 @@ CREATE TABLE `wptests_cura_user_programs` (
 --
 
 INSERT INTO `wptests_cura_user_programs` (`id`, `user_id`, `saved_prog_type`, `saved_prog_dur`, `saved_prog_id`, `saved_prog_name`, `completed`) VALUES
-(10, 5, 'Rehab', 12, 15, 'Arpit Testing', 1),
+(10, 7, 'Rehab', 12, 15, 'Arpit Testing', 1),
 (11, 5, 'Strength-Training', 15, 16, 'Strength Training Test', 0),
 (12, 11, 'Rehab', 20, 18, 'Rehab Testing', 0),
 (13, 11, 'Rehab', 10, 14, 'Test Program', 0),
@@ -3140,11 +3140,7 @@ ALTER TABLE `dev_usermeta`
 ALTER TABLE `dev_usermeta`
   MODIFY `umeta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5635;COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `dev_users`
