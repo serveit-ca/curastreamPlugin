@@ -9,7 +9,7 @@ $programs = new program();
     $programs->newBodyPart("Test Name");
     $programs = new program();
     $newPart = $programs->getBodyPartById(26);
-    print_r($newPart);
+    echo $newPart->name;
 
   
   

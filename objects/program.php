@@ -1119,12 +1119,13 @@ public function duplicateGeneralProgram($existingProgram){
 	public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
+        $tableNameB = $wpdb->prefix . "cura_exercises";
 		// Reorder This Phase to The Top
 		$finalOrder = $this->getHighestPhaseOrder($programId);
 		echo $finalOrder;
 		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder);
 		// Delete all Exercises in Phase
-		$wpdb->delete("dev_cura_exercises", array(
+		$wpdb->delete($tableNameB, array(
     		"phase_id" => $phaseId
     	));
 		// Delete Phase
