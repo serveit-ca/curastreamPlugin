@@ -1621,7 +1621,7 @@ public function duplicateGeneralProgram($existingProgram){
             return $error;
          }
          else{
-            return "Success: User Program with User Id: " . $userId . " Deleted";
+            return "Success: User Programs with User Id: " . $userId . " Deleted";
          
          }
 
