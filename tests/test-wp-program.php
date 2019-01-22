@@ -621,6 +621,16 @@ class WP_Program_Test extends WP_UnitTestCase
     $this->reset_database();
   }
 
+  public function test_update_sports_and_occupation(){
+    $programs = new program();
+    $programs->updateSportsAndOccupation("Test Name", "Sport", 1);
+    $programs = new program();
+    $sport = $programs->getSportOccById(1);
+    assert($sport->name == "Test Name");
+    assert($sport->type == "Sport");
+    $this->reset_database();
+  }
+
 
 
 }
