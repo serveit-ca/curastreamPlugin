@@ -270,7 +270,8 @@ ALTER TABLE `wptests_cura_exercises`
 --
 -- AUTO_INCREMENT for table `wptests_cura_exercises`
 --
-
+ALTER TABLE `wptests_cura_exercises`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2617;COMMIT;
 
   CREATE TABLE `wptests_cura_body_parts` (
   `id` int(11) NOT NULL,
@@ -279,9 +280,6 @@ ALTER TABLE `wptests_cura_exercises`
   `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-  ALTER TABLE `wptests_cura_exercises`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2617;COMMIT;
 
 --
 -- Dumping data for table `wptests_cura_body_parts`

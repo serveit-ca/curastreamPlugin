@@ -642,8 +642,9 @@ class WP_Program_Test extends WP_UnitTestCase
   public function test_new_body_part(){
     $programs = new program();
     $programs->newBodyPart("Test Name");
+    $lastid = $wpdb->insert_id;
     $programs = new program();
-    $newPart = $programs->getBodyPartById(26);
+    $newPart = $programs->getBodyPartById($lastid);
     assert($newPart->name == "Test Name");
     $this->reset_database(); 
   }
