@@ -608,7 +608,8 @@ class WP_Program_Test extends WP_UnitTestCase
   public function test_delete_user_program(){
     $programs = new program();
     $deleted = $programs->deletedUserProgram(7);
-    assert($deleted = "Success: User Programs with User Id: 7 Deleted")
+    assert($deleted = "Success: User Programs with User Id: 7 Deleted");
+    $this->reset_database();
   }
 
 
