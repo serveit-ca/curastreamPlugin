@@ -639,6 +639,14 @@ class WP_Program_Test extends WP_UnitTestCase
     $this->reset_database();
   }
 
+  public function test_new_body_part(){
+    $programs = new program();
+    $programs->newBodyPart("Test Name");
+    $programs = new program();
+    $newPart = $programs->getBodyPartById(26);
+    assert($newPart->name == "Test Name");
+  }
+
 
 
 }
