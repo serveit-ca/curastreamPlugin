@@ -627,7 +627,6 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs = new program();
     $sport = $programs->getSportOccById(1);
     assert($sport->name == "Test Name");
-    assert($sport->type == "Sport");
     $this->reset_database();
   }
 
