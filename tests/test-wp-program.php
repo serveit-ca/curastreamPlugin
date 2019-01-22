@@ -630,6 +630,15 @@ class WP_Program_Test extends WP_UnitTestCase
     $this->reset_database();
   }
 
+  public function test_update_how_it_happened(){
+    $programs = new program();
+    $programs->updateHowItHappened("Test Name", 1);
+    $programs = new program();
+    $how = $programs->getHowItHappenedById(1);
+    assert($how->name == "Test Name");
+    $this->reset_database();
+  }
+
 
 
 }
