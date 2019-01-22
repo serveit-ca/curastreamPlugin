@@ -640,6 +640,7 @@ class WP_Program_Test extends WP_UnitTestCase
   }
 
   public function test_new_body_part(){
+    global $wpdb;
     $programs = new program();
     $programs->newBodyPart("Test Name");
     $lastid = $wpdb->insert_id;
