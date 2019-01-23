@@ -713,7 +713,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $expectedProgs = array(45,46);
     $count = 0;
     //id 37 and 45 expected
-    $resultsCount = $programs->getExerciseVideoCount(2);
+    $resultsCount = $programs->getExerciseVideoCount(3);
     echo "Exercise Video Count:  " . $resultsCount;
     foreach ($injuryProgram as $key) {
       assert($key->id == $expectedProgs[$count]);
