@@ -723,6 +723,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs = new program();
     $expectedCount = 8;
     $resultsCount = $programs->getExerciseVideoCount(1);
+    echo $resultsCount;
     assert($expectedCount == $resultsCount);
   }
 
