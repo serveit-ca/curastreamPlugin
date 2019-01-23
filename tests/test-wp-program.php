@@ -683,6 +683,18 @@ class WP_Program_Test extends WP_UnitTestCase
     $this->reset_database(); 
   }
 
+  public function test_get_programs_by_body_part(){
+    $programs = new program();
+    $partsProgram = $programs->getProgramsByBodyPart(1);
+    $expectedProgs = array(37,45);
+    $count = 0;
+    //id 37 and 45 expected
+    foreach ($partsProgram as $key) {
+      assert($key->id == $expectedProgs[$count]);
+      $count++;
+    }
+  }
+
 
 
 }
