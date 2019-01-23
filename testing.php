@@ -7,10 +7,9 @@ $programs = new program();
 
 
     
-    $programs->newSport("Test Name");
-    $lastid = $wpdb->insert_id;
-    $programs = new program();
-    $newPart = $programs->getSportOccById($lastid);
+   $count = $programs->getExerciseVideoCount(1);
+   echo $count;
+    
 
   
   

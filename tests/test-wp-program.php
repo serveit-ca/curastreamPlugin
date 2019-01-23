@@ -700,7 +700,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $sportsProgram = $programs->getProgramsBySportOcc(1);
     $expectedProgs = array(47);
     $count = 0;
-    //id 37 and 45 expected
+    //id 47 expected
     foreach ($sportsProgram as $key) {
       assert($key->id == $expectedProgs[$count]);
       $count++;
@@ -717,6 +717,13 @@ class WP_Program_Test extends WP_UnitTestCase
       assert($key->id == $expectedProgs[$count]);
       $count++;
     }
+  }
+
+  public function test_get_exercise_video_count(){
+    $programs = new program();
+    $expectedCount = 8;
+    $resultsCount = $programs->getExerciseVideoCount(1);
+    assert($expectedCount == $resultsCount);
   }
 
 
