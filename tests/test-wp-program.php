@@ -723,8 +723,23 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs = new program();
     $expectedCount = 7;
     $resultsCount = $programs->getExerciseVideoCount(277);
-    echo $resultsCount;
     assert($expectedCount == $resultsCount);
+    $resultsPrograms = $programs->getProgramsByExerciseVideo();
+    $expectedProgNames = array();
+    $count = 0;
+    foreach ($resultsPrograms as $key) {
+      echo "Program: " . $count . "Name: " . $key->name;
+      $count++;
+    }
+  }
+
+  public function test_get_programs_by_exercise_video(){
+    $programs = new program();
+    $resultsPrograms = $programs->getProgramsByExerciseVideo();
+    $expectedProgNames = array();
+    foreach ($resultsPrograms as $key) {
+      # code...
+    }
   }
 
 
