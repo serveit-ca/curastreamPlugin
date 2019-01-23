@@ -661,6 +661,28 @@ class WP_Program_Test extends WP_UnitTestCase
     $this->reset_database(); 
   }
 
+  public function test_new_occupation(){
+    global $wpdb;
+    $programs = new program(); 
+    $programs->newOccupation("Test Name");
+    $lastid = $wpdb->insert_id;
+    $programs = new program();
+    $newPart = $programs->getSportOccById($lastid);
+    assert($newPart->name == "Test Name");
+    $this->reset_database(); 
+  }
+
+  public function test_new_how_it_happened(){
+    global $wpdb;
+    $programs = new program(); 
+    $programs->newHowItHappened("Test Name");
+    $lastid = $wpdb->insert_id;
+    $programs = new program();
+    $newPart = $programs->getHowItHappenedById($lastid);
+    assert($newPart->name == "Test Name");
+    $this->reset_database(); 
+  }
+
 
 
 }

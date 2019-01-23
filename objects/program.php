@@ -1699,8 +1699,7 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_sport_occupation";
         if (isset($name) && !is_null($name)){
             $wpdb->insert($tableName, array(
-            "name" => $name),
-            array(
+            "name" => $name,
             "type" => "occupation"));
         }
     }
