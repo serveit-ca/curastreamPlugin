@@ -695,6 +695,18 @@ class WP_Program_Test extends WP_UnitTestCase
     }
   }
 
+  public function test_get_programs_by_sport_occ(){
+    $programs = new program();
+    $partsProgram = $programs->getProgramsBySportOcc(1);
+    $expectedProgs = array(47);
+    $count = 0;
+    //id 37 and 45 expected
+    foreach ($partsProgram as $key) {
+      assert($key->id == $expectedProgs[$count]);
+      $count++;
+    }
+  }
+
 
 
 }
