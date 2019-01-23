@@ -724,7 +724,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $expectedCount = 7;
     $resultsCount = $programs->getExerciseVideoCount(277);
     assert($expectedCount == $resultsCount);
-    $resultsPrograms = $programs->getProgramsByExerciseVideo();
+    $resultsPrograms = $programs->getProgramsByExerciseVideo(1);
     $expectedProgNames = array();
     $count = 0;
     foreach ($resultsPrograms as $key) {
