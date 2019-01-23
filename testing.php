@@ -6,10 +6,11 @@ require_once ("objects/exercise.php");
 $programs = new program();
 
 
-    $programs->newBodyPart("Test Name");
+    
+    $programs->newSport("Test Name");
+    $lastid = $wpdb->insert_id;
     $programs = new program();
-    $newPart = $programs->getBodyPartById(26);
-    echo $newPart->name;
+    $newPart = $programs->getSportOccById($lastid);
 
   
   
