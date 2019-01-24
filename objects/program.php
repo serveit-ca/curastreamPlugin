@@ -323,19 +323,15 @@ public $tempUserId;
         $tableName = $wpdb->prefix . "cura_exercise_videos";
 
         $exerciseResults = $wpdb->get_row("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName WHERE id = $videoId");
-        $exercies = array();
-        foreach ($exerciseResults as $row) {
+       
             $anExercise = new exercise();
-            $anExercise->id = $row->id;
-            $anExercise->name = $row->name;
-            $anExercise->description = $row->description;
-            $anExercise->bodyPart = $row->assoc_body_parts_name;
-            $anExercise->category = $row->category_name;
-            $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
-            $anExercise->thumbnail = $row->videoThumbnail;
-            $anExercise->favorate = $anExercise->checkFavorite($userId, $anExercise->id);
-            $exercies[] = $anExercise;
-        }
+            $anExercise->id = $exerciseResults->id;
+            $anExercise->name = $exerciseResults->name;
+            $anExercise->description = $exerciseResults->description;
+            $anExercise->bodyPart = $exerciseResults->assoc_body_parts_name;
+            $anExercise->category = $exerciseResults->category_name;
+            $anExercise->videoId = explode('/', explode('.', $exerciseResults->url)[2])[2];
+            $anExercise->thumbnail = $exerciseResults->videoThumbnail;
             return $exercies;
     }
 
