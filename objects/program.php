@@ -318,6 +318,29 @@ public $tempUserId;
             return $exercies;
     }
 
+    public function getExerciseVideoById($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+        $exerciseResults = $wpdb->get_row("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName WHERE id = $videoId ORDER BY name");
+        $exercies = array();
+        foreach ($exerciseResults as $row) {
+            $anExercise = new exercise();
+            $anExercise->id = $row->id;
+            $anExercise->name = $row->name;
+            $anExercise->description = $row->description;
+            $anExercise->bodyPart = $row->assoc_body_parts_name;
+            $anExercise->category = $row->category_name;
+            $anExercise->videoId = explode('/', explode('.', $row->url)[2])[2];
+            $anExercise->thumbnail = $row->videoThumbnail;
+            $anExercise->favorate = $anExercise->checkFavorite($userId, $anExercise->id);
+            $exercies[] = $anExercise;
+        }
+            return $exercies;
+    }
+
+
+
     // Get all Exercises From Database without user favorites.
     public function getAllExerciseVideosNoFavorite(){
         global $wpdb;

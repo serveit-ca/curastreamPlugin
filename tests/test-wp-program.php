@@ -737,6 +737,16 @@ class WP_Program_Test extends WP_UnitTestCase
     }
   }
 
+  public function test_update_exercise_video(){
+    $programs = new program();
+    $programs->updateExerciseVideo("Test Name", NULL, 1);
+    $programs = new program();
+    $video = $programs->getExerciseVideoById(1);
+    assert($bodyPart->name == "Test Name");
+    $this->reset_database();
+
+  }
+
 
 
 }
