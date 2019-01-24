@@ -733,7 +733,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $expectedProgNames = array("Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program");
     foreach ($resultsPrograms as $key) {
       assert($expectedProgNames[$count] == $key->name);
-      $count++
+      $count++;
     }
   }
 
