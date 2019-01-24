@@ -746,6 +746,14 @@ class WP_Program_Test extends WP_UnitTestCase
     $this->reset_database();
   }
 
+  public function test_create_exercise_video(){
+    $programs = new program();
+    $programs->createExerciseVideo("Test Name", "Fake URL");
+    $programs = new program();
+    $newVideo = $programs->getExerciseVideoById();
+    assert($newVideo->name == "Test Name");
+  }
+
 
 
 }
