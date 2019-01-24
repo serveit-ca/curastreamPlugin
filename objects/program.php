@@ -332,7 +332,7 @@ public $tempUserId;
             $anExercise->category = $exerciseResults->category_name;
             $anExercise->videoId = explode('/', explode('.', $exerciseResults->url)[2])[2];
             $anExercise->thumbnail = $exerciseResults->videoThumbnail;
-            return $anExercie;
+            return $anExercise;
     }
 
 
