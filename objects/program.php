@@ -322,7 +322,7 @@ public $tempUserId;
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_exercise_videos";
 
-        $exerciseResults = $wpdb->get_row("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName WHERE id = $videoId ORDER BY name");
+        $exerciseResults = $wpdb->get_row("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName WHERE id = $videoId");
         $exercies = array();
         foreach ($exerciseResults as $row) {
             $anExercise = new exercise();
@@ -1856,7 +1856,7 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function updateExerciseVideo($name, $url, $videoId){
         global $wpdb;
-        $tableName = $wpdb->prefix . "cura_exercise_videos";
+         $tableName = $wpdb->prefix . "cura_exercise_videos";
         //Check and Update name
         if (isset($name) && !is_null($name)){
             $wpdb->update($tableName, array(
