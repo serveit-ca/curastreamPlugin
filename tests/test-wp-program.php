@@ -747,10 +747,12 @@ class WP_Program_Test extends WP_UnitTestCase
   }
 
   public function test_create_exercise_video(){
+    global $wpdb;
     $programs = new program();
     $programs->createExerciseVideo("Test Name", "Fake URL");
     $programs = new program();
-    $newVideo = $programs->getExerciseVideoById();
+    $lastid = $wpdb->insert_id;
+    $newVideo = $programs->getExerciseVideoById($lastid);
     assert($newVideo->name == "Test Name");
   }
 
