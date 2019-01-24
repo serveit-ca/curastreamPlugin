@@ -724,21 +724,16 @@ class WP_Program_Test extends WP_UnitTestCase
     $expectedCount = 7;
     $resultsCount = $programs->getExerciseVideoCount(277);
     assert($expectedCount == $resultsCount);
-    $resultsPrograms = $programs->getProgramsByExerciseVideo(277);
-    $expectedProgNames = array();
-    $count = 0;
-    foreach ($resultsPrograms as $key) {
-      echo "Program: " . $count . "Name: " . $key->name;
-      $count++;
-    }
   }
 
   public function test_get_programs_by_exercise_video(){
     $programs = new program();
-    //$resultsPrograms = $programs->getProgramsByExerciseVideo();
-    $expectedProgNames = array();
+    $resultsPrograms = $programs->getProgramsByExerciseVideo();
+    $count = 0;
+    $expectedProgNames = array("Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program");
     foreach ($resultsPrograms as $key) {
-      # code...
+      assert($expectedProgNames[$count] == $key->name);
+      $count++
     }
   }
 
