@@ -1855,6 +1855,7 @@ public function duplicateGeneralProgram($existingProgram){
     }
 
     public function updateExerciseVideo($name, $url, $videoId){
+        global $wpdb;
         //Check and Update name
         if (isset($name) && !is_null($name)){
             $wpdb->update($tableName, array(
