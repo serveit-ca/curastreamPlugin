@@ -330,7 +330,6 @@ public $tempUserId;
             $anExercise->description = $exerciseResults->description;
             $anExercise->bodyPart = $exerciseResults->assoc_body_parts_name;
             $anExercise->category = $exerciseResults->category_name;
-            $anExercise->videoId = explode('/', explode('.', $exerciseResults->url)[2])[2];
             $anExercise->thumbnail = $exerciseResults->videoThumbnail;
             return $anExercise;
     }
