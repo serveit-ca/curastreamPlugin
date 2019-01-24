@@ -1876,8 +1876,7 @@ public function duplicateGeneralProgram($existingProgram){
 
         if (isset($name) && !is_null($name) && isset($url) && !is_null($url)){
             $wpdb->insert($tableName, array(
-            "name" => $name),
-            array(
+            "name" => $name,
             "url" => $url));
 
             $lastid = $wpdb->insert_id;
