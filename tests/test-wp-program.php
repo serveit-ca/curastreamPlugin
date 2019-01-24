@@ -728,7 +728,7 @@ class WP_Program_Test extends WP_UnitTestCase
 
   public function test_get_programs_by_exercise_video(){
     $programs = new program();
-    $resultsPrograms = $programs->getProgramsByExerciseVideo();
+    $resultsPrograms = $programs->getProgramsByExerciseVideo(277);
     $count = 0;
     $expectedProgNames = array("Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program", "Hip Injury Prevention Program");
     foreach ($resultsPrograms as $key) {
