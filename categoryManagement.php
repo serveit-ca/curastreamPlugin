@@ -1,19 +1,4 @@
 <?php 
-//include "objects/program.php";
-function prefix_enqueue() 
-{       
-    // JS
-    wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js');
-    wp_register_script('loadUI', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
-    wp_register_script('loadselect2', site_url('/wp-content/plugins/Curastream/select2/dist/js/select2.min.js'));
-    wp_enqueue_script('prefix_bootstrap');
-    wp_enqueue_script('loadUI');
-    wp_enqueue_script('loadselect2');
-
-    // CSS
-    wp_register_style('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
-    wp_enqueue_style('prefix_bootstrap');
-}
 
  ?>
 <html>
@@ -33,12 +18,17 @@ function prefix_enqueue()
 		
 		<div class="row">
 			<div class="col-md-12">
-				<table id="programs" class="table table-bordered">	
+				<table id="bodyParts" class="table table-bordered">	
+					<thead>
+						<tr>
 					<th id= "name">Name</th>
 					<th id= "edit">Edit</th>
 					<th id= "numUses"># of Program Uses</th>
 					<th id= "assigned">Assigned Programs</th>
 					<th id= "actions">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
 					<tr>
 						<td> <input type="text" placeholder="New Body Part "></td>
 						<td></td>
@@ -60,19 +50,23 @@ function prefix_enqueue()
 
 								</td>
 								<td>
-									<?php foreach ($partPrograms as $value) {
-										echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
-									<div class="viewProgram smallProgramBtn">
-										View Program
-									</div>
-								</a>
-								<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>" target="_blank">
-									<div class="viewProgram smallProgramBtn">
-										Edit Program
-									</div>
-								</a> <br>
-										<?php }
-									?>
+									<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div class="hidden showData">
+										<?php foreach ($partPrograms as $value) {
+											echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
+										<div class="viewProgram smallProgramBtn">
+											View Program
+										</div>
+									</a>
+									<a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=curastream%2FcustomProgram.php&program_id=<?php echo $value->id;?>" target="_blank">
+										<div class="viewProgram smallProgramBtn">
+											Edit Program
+											</div>
+									
+									</a> <br>
+											<?php }
+										?>
+								</div>
 								</td>
 								<td>
 									<button>Save</button>
@@ -80,6 +74,7 @@ function prefix_enqueue()
 								</td>
 							</tr>
 						<?php } ?>
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -97,12 +92,17 @@ function prefix_enqueue()
 		
 		<div class="row">
 			<div class="col-md-12">
-				<table id="programs" class="table table-bordered">	
-					<th id= "name">Name</th>
-					<th id= "edit">Edit</th>
-					<th id= "numUses"># of Uses</th>
-					<th id= "assigned">Assigned Programs</th>
-					<th id= "actions">Actions</th>
+				<table id="injuryType" class="table table-bordered">	
+					<thead>
+						<tr>
+							<th id= "name">Name</th>
+							<th id= "edit">Edit</th>
+							<th id= "numUses"># of Uses</th>
+							<th id= "assigned">Assigned Programs</th>
+							<th id= "actions">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
 					<tr>
 						<td> <input type="text" placeholder="New How it Happened"></td>
 						<td></td>
@@ -120,7 +120,10 @@ function prefix_enqueue()
 									<input type="text" placeholder="Update <?php echo $key->name ?> ">
 								</td>
 								<td><?php echo count($injuryPrograms); ?></td>
-								<td><?php foreach ($injuryPrograms as $value) {
+								<td>
+									<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div class="hidden showData">
+									<?php foreach ($injuryPrograms as $value) {
 										echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
 									<div class="viewProgram smallProgramBtn">
 										View Program
@@ -132,13 +135,16 @@ function prefix_enqueue()
 									</div>
 								</a> <br>
 										<?php }
-									?></td>
+									?>
+									</div>
+								</td>
 								<td>
 									<button>Save</button>
 									<button>Delete</button>
 								</td>
 							</tr>
 						<?php } ?>
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -155,13 +161,18 @@ function prefix_enqueue()
 		
 		<div class="row">
 			<div class="col-md-12">
-				<table id="programs" class="table table-bordered">	
+				<table id="sportsAndOccupations" class="table table-bordered">
+				<thead>
+				<tr>	
 					<th id= "name">Name</th>
 					<th id= "type">Type</th>
 					<th id= "edit">Edit</th>
 					<th id= "numUses"># of Uses</th>
 					<th id= "assigned">Assigned Programs</th>
 					<th id= "actions">Actions</th>
+				</tr>
+				</thead>
+					<tbody>
 					<tr>
 						<td> <input type="text" placeholder="New Sport or Occupation"></td>
 						<td><select>
@@ -185,7 +196,10 @@ function prefix_enqueue()
 									<input type="text" placeholder="Update <?php echo $key->name ?> ">
 								</td>
 								<td><?php echo count($sportPrograms); ?></td>
-								<td><?php foreach ($sportPrograms as $value) {
+								<td>
+									<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div class="hidden showData">
+									<?php foreach ($sportPrograms as $value) {
 										echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
 									<div class="viewProgram smallProgramBtn">
 										View Program
@@ -198,7 +212,7 @@ function prefix_enqueue()
 								</a> <br>
 										<?php }
 									?>
-										
+									</div>
 									</td>
 								<td>
 									<button>Save</button>
@@ -206,6 +220,7 @@ function prefix_enqueue()
 								</td>
 							</tr>
 						<?php } ?>
+					</tbody>
 				</table>
 			</div>
 		</div>

@@ -1859,7 +1859,6 @@ public function duplicateGeneralProgram($existingProgram){
             array( // Where Clause
             "id" => $videoId));
         }
-
         //Check and Update url
         if (isset($duration) && !is_null($duration)){
             $wpdb->update($tableName, array(
@@ -1868,24 +1867,17 @@ public function duplicateGeneralProgram($existingProgram){
             "id" => $videoId));
         }
     }
-
     public function createExerciseVideo($name, $url){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_exercise_videos";
-
         if (isset($name) && !is_null($name) && isset($url) && !is_null($url)){
             $wpdb->insert($tableName, array(
             "name" => $name,
             "url" => $url));
-
             $lastid = $wpdb->insert_id;
             return $lastid;
         }
-
     }
-
-
 }
-
 ?>
 

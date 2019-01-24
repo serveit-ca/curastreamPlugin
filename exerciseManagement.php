@@ -31,22 +31,27 @@ function prefix_enqueue()
 		
 		<div class="row">
 			<div class="col-md-12">
-				<table id="programs" class="table table-bordered">	
-					<th id= "name">Name</th>
-					<th id= "updateName">Update Name</th>
-					<th id= "url">URL</th>
-					<th id= "updateUrl">Update URL</th>
-					<th id= "numUses"># of Uses</th>
-					<th id= "Assigned">Programs Assigned</th>
-					<th id= "actions">Actions</th>
-					<tr>
-						<td> <input type="text" placeholder="New Exercise Video"></td>
+				<table id="exerciseVideos" class="table table-bordered">	
+					<thead>
+						<tr>
+							<th id= "name">Name</th>
+							<th id= "updateName">Update Name</th>
+							<th id= "url">URL</th>
+							<th id= "updateUrl">Update URL</th>
+							<th id= "numUses"># of Uses</th>
+							<th id= "Assigned">Programs Assigned</th>
+							<th id= "actions">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr class="addExerciseRow">
+						<td> <input  id="addNewExerciseName" type="text" placeholder="New Exercise Video"></td>
 						<td></td>
-						<td> <input type="text" placeholder="New Video URL"></td>
+						<td> <input id="addNewExerciseVideo" type="text" placeholder="New Video URL"></td>
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><button>Save</button></td>
+						<td><button class="saveNewExercise  custom-btn">Add Video</button></td>
 					</tr>
 					<?php 
 							foreach ($exerciseVideos as $key) {	
@@ -55,14 +60,18 @@ function prefix_enqueue()
 							<tr>
 								<td><?php echo $key->name ?></td>	
 								<td>
-									<input type="text" placeholder="Update <?php echo $key->name ?> ">
+									<input type="text" class="updateName" id="updateName<?php echo $key->id?>" placeholder="Update <?php echo $key->name ?> ">
 								</td>
 								<td><a href="<?php echo $key->url ?>"><?php echo $key->url ?></a></td>
 								<td>
-									<input type="text" placeholder="Update Url">
+									<input type="text" id="updateUrl<?php echo $key->id?>" placeholder="Update Url">
 								</td>
-								<td><?php echo $programObj->getExerciseVideoCount($key->id); ?></td>
-								<td><?php
+								<td><?php  $programCount = $programObj->getExerciseVideoCount($key->id);
+								echo $programCount ?></td>
+								<td>
+									<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div class="hidden showData">
+									<?php
 										foreach ($progNames as $value) {
 											echo $value->name ?> <a href="<?php echo get_site_url();?>/view-program/?program_id=<?php echo $value->id;?>" target="_blank">
 									<div class="viewProgram smallProgramBtn">
@@ -76,14 +85,15 @@ function prefix_enqueue()
 								</a> <br>
 										<?php }
 									?>
-										
+									</div>
 								</td>
 								<td>
-									<button>Save</button>
-									<button>Delete</button>
+									<button class="custom-btn updateExerciseVideo" data-exerciseId="<?php echo $key->id?>">Save</button>
+									<button class="deleteVideoExercise custom-btn" data-programCount="<?php echo $programCount ?>" data-exerciseId="<?php echo $key->id?>">Delete</button>
 								</td>
 							</tr>
 						<?php } ?>
+					</tbody>
 				</table>
 			</div>
 		</div>
