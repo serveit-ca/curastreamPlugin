@@ -1878,6 +1878,32 @@ public function duplicateGeneralProgram($existingProgram){
             return $lastid;
         }
     }
+
+    public function getBodyPartIdByName($partName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        $partId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$partName\"");
+        if (isset($partId->id) && !is_null($partId->id)){
+            return $partId->id;
+        }
+        else{
+            echo "That Part is Null or Doesn't Exist";
+        }
+    }
+
+    public function getSportOccIdByName($sportName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
+        return $sportId->id;
+    }
+
+    public function getHowItHappenedIdByName($injuryName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+        $injuryId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$injuryName\"");
+        return $injuryId->id;
+    }
 }
 ?>
 
