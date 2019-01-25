@@ -1894,6 +1894,8 @@ public function duplicateGeneralProgram($existingProgram){
     public function getSportOccIdByName($sportName){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_sport_occupation";
+        echo "Sport Name: ".$sportName;
+        echo "SELECT id FROM $tableName WHERE name LIKE \"$sportName\"";
         $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
         return $sportId->id;
     }
