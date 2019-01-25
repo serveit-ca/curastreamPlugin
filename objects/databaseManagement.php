@@ -39,6 +39,7 @@ class databaseManagement{
 		}		
 	}
 
+	//Might be broken, needs tested again. 
 	public function fixProgramSportsOcc(){
 		global $wpdb;
 		$programs = new program();
@@ -61,6 +62,35 @@ class databaseManagement{
 			if (isset($finalIds) && !is_null($finalIds)){
             $wpdb->update($tableName, array(
             "sports_occupation" => $finalIds),
+            array( // Where Clause
+            "id" => $key->id));
+            echo "<br>" . $finalIds . " added to: " . $key->name;
+        	}
+		}		
+	}
+
+	public function fixProgramHowItHappened(){
+		global $wpdb;
+		$programs = new program();
+		$tableName = $wpdb->prefix . "cura_programs";
+		$allProgs = $programs->getAllPrograms();
+		foreach ($allProgs as $key) {
+			echo $key->name . " Injury : " . $key->howItHappen;
+			$explodedParts = explode(",", $key->howItHappen);
+			$count = 0;
+			$toImplodeIds = array();
+
+			foreach ($explodedParts as $injury){
+				$injuryId = $programs->getHowItHappenedIdByName($injury);
+				$toImplodeIds[$count] = $injuryId;
+				echo "<br>" . $injury . " id added to final array.";
+				$count++;
+			}
+
+			$finalIds = implode(",", $toImplodeIds);
+			if (isset($finalIds) && !is_null($finalIds)){
+            $wpdb->update($tableName, array(
+            "how_it_happen" => $finalIds),
             array( // Where Clause
             "id" => $key->id));
             echo "<br>" . $finalIds . " added to: " . $key->name;
