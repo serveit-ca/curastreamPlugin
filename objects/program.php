@@ -1743,13 +1743,12 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getProgramsByBodyPart($bodyPartId){
         global $wpdb;
-        $bodyPart = $this->getBodyPartById($bodyPartId);
         $programs = $this->getAllPrograms();
         $programsIncluded = array();
         foreach ($programs as $key) {
             $programParts = explode(',' , $key->body_part);
             foreach ($programParts as $value) {
-                if ($bodyPart->name == $value){
+                if ($bodyPartId == $value){
                     $aProgram = new program();
                     $aProgram->name = $key->name;
                     $aProgram->id = $key->id;
@@ -1772,13 +1771,13 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getProgramsBySportOcc($sportId){
         global $wpdb;
-        $sportOcc = $this->getSportOccById($sportId);
+        
         $programs = $this->getAllPrograms();
         $programsIncluded = array();
         foreach ($programs as $key) {
             $programParts = explode(',' , $key->sportsOccupation);
             foreach ($programParts as $value) {
-                if ($sportOcc->name == $value){
+                if ($sportId == $value){
                     $aProgram = new program();
                     $aProgram->name = $key->name;
                     $aProgram->id = $key->id;
@@ -1801,13 +1800,13 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getProgramsByHowItHappened($injuryId){
         global $wpdb;
-        $injury = $this->getHowItHappenedById($injuryId);
+       
         $programs = $this->getAllPrograms();
         $programsIncluded = array();
         foreach ($programs as $key) {
             $programParts = explode(',' , $key->howItHappen);
             foreach ($programParts as $value) {
-                if ($injury->name == $value){
+                if ($injuryId == $value){
                     $aProgram = new program();
                     $aProgram->name = $key->name;
                     $aProgram->id = $key->id;
