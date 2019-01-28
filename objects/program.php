@@ -1882,6 +1882,7 @@ public function duplicateGeneralProgram($existingProgram){
     public function getBodyPartIdByName($partName){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_body_parts";
+        $partName = trim($partName);
         $partId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$partName\"");
         if (isset($partId->id) && !is_null($partId->id)){
             return $partId->id;
@@ -1894,8 +1895,7 @@ public function duplicateGeneralProgram($existingProgram){
     public function getSportOccIdByName($sportName){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_sport_occupation";
-        echo "Sport Name: ".$sportName;
-        echo "SELECT id FROM $tableName WHERE name LIKE \"$sportName\"";
+        $sportName = trim($sportName);
         $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
         return $sportId->id;
     }
@@ -1903,6 +1903,7 @@ public function duplicateGeneralProgram($existingProgram){
     public function getHowItHappenedIdByName($injuryName){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_how_it_happened";
+        $injuryName = trim($injuryName);
         $injuryId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$injuryName\"");
         return $injuryId->id;
     }

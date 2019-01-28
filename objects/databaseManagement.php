@@ -98,6 +98,50 @@ class databaseManagement{
 		}		
 	}
 
+	public function updateNulls(){
+		global $wpdb;
+		$programs = new program();
+		$tableName = $wpdb->prefix . "cura_programs";
+
+		//fix body part nulls
+		$programs->newBodyPart("No Body Part Assigned");
+		
+		$nullBodyParts = $wpdb->get_results("SELECT id FROM $tableName WHERE assoc_body_part_id IS NULL");
+		foreach ($nullBodyParts as $key) {
+			$wpdb->update($tableName, array(
+            "assoc_body_part_id" => "No Body Part Assigned"),
+            array( // Where Clause
+            "id" => $key->id));
+        	}
+		
+
+		//fix sports occupations
+		$programs->newSport("No Sport Assigned");
+		$lastId = $wpdb->insert_id;
+		$nullSportsOcc = $wpdb->get_results("SELECT id FROM $tableName WHERE sports_occupation IS NULL");
+		foreach ($nullSportsOcc as $key) {
+			$wpdb->update($tableName, array(
+            "sports_occupation" => "No Sport Assigned"),
+            array( // Where Clause
+            "id" => $key->id));
+        	}
+		
+
+		//fix injury
+		$programs->newHowItHappened("No How It Happened Assigned");
+		$lastId = $wpdb->insert_id;
+		$nullInjuries = $wpdb->get_results("SELECT id FROM $tableName WHERE how_it_happen IS NULL");
+		foreach ($nullInjuries as $key) {
+			$wpdb->update($tableName, array(
+            "how_it_happen" => "No How It Happened Assigned"),
+            array( // Where Clause
+            "id" => $key->id));
+        	}
+		
+
+
+	}
+
 
 
 
