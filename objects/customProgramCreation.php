@@ -103,7 +103,7 @@ class customProgramCreation {
 								 	$parts = explode(",",$programObject->body_part);
 								 	$injuredParts = false;
 								 	foreach($parts as $part){
-								 		if(str_replace(' ', '', strtolower($body_part->name)) == str_replace(' ', '', strtolower($part))){
+								 		if(str_replace(' ', '', strtolower($body_part->id)) == str_replace(' ', '', strtolower($part))){
 								 			$injuredParts = true;
 								 			break;
 								 		}
@@ -118,7 +118,7 @@ class customProgramCreation {
 								 	$whatHappened = explode(",",$programObject->howItHappen);
 								 	$itHappens = false;
 								 	foreach($whatHappened as $itHappened){
-								 		if(str_replace(' ', '', strtolower($howItHappened->name)) == str_replace(' ', '', strtolower($itHappened))){
+								 		if(str_replace(' ', '', strtolower($howItHappened->id)) == str_replace(' ', '', strtolower($itHappened))){
 								 			$itHappens = true;
 								 			break;
 								 		}
@@ -133,7 +133,7 @@ class customProgramCreation {
 								$whatHappened = explode(",",$programObject->sportsOccupation);
 								$itHappens = false;
 								foreach($whatHappened as $itHappened){
-								 		if(str_replace(' ', '', strtolower($sportsOccupation->name)) == str_replace(' ', '', strtolower($itHappened))){
+								 		if(str_replace(' ', '', strtolower($sportsOccupation->id)) == str_replace(' ', '', strtolower($itHappened))){
 								 			$itHappens = true;
 								 			break;
 								 		}
@@ -147,7 +147,7 @@ class customProgramCreation {
 									$whatHappened = explode(",",$programObject->sportsOccupation);
 									$itHappens = false;
 								foreach($whatHappened as $itHappened){
-								 		if(str_replace(' ', '', strtolower($sportsOccupation->name)) == str_replace(' ', '', strtolower($itHappened))){
+								 		if(str_replace(' ', '', strtolower($sportsOccupation->id)) == str_replace(' ', '', strtolower($itHappened))){
 								 			$itHappens = true;
 								 			break;
 								 		}
