@@ -1534,14 +1534,19 @@ public function duplicateGeneralProgram($existingProgram){
     public function getProgramUsersById($programId){
         global $wpdb;
         $tableNameA = $wpdb->prefix . "cura_user_programs";
-        $programUsers = $wpdb->get_results("SELECT user_id FROM $tableNameA WHERE saved_prog_id = $programId", ARRAY_A);
+        $programUsers = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableNameA WHERE saved_prog_id = $programId", ARRAY_A);
         $usersArray = array();
         foreach($programUsers as $key){
             $userObj = get_user_by('ID', $key['user_id']);
-            //print_r($userObj);
-            $userName = $userObj->first_name . " " . $userObj->last_name;
-            //echo "User Name " . $userName;
-            $usersArray[] = $userName;
+           if (isset($userObj->first_name) && !is_null($userObj->first_name) && isset($userObj->last_name) && !is_null($userObj->last_name)){
+                //print_r($userObj);
+                $userName = $userObj->first_name . " " . $userObj->last_name;
+                //echo "User Name " . $userName;
+                $usersArray[] = $userName;
+            }
+            else{
+                $userName = $userObj->display_name;
+            }
         }
         return $usersArray;
     }
@@ -1585,10 +1590,15 @@ public function duplicateGeneralProgram($existingProgram){
         $usersArray = array();
         foreach ($userDeletedId as $key) {
             $userObj = get_user_by('ID', $key['user_id']);
-            //print_r($userObj);
-            $userName = $userObj->first_name . " " . $userObj->last_name;
-            //echo "User Name " . $userName;
-            $usersArray[] = $userName;
+            if (isset($userObj->first_name) && !is_null($userObj->first_name) && isset($userObj->last_name) && !is_null($userObj->last_name)){
+                //print_r($userObj);
+                $userName = $userObj->first_name . " " . $userObj->last_name;
+                //echo "User Name " . $userName;
+                $usersArray[] = $userName;
+            }
+            else{
+                $userName = $userObj->display_name;
+            }
         }
         return $usersArray;
 
