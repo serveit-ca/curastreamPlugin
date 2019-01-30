@@ -5,12 +5,11 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 $programs = new program();
 
- // $programarray = $programs->getProgramsByHowItHappened(1);
- // //$bodypart = $programs->getBodyPartById(1);
- // print_r($programarray);
 
- // $number = $programs->getProgramsByExerciseVideo(410);
- // print_r($number);
+   $count = $programs->getExerciseVideoCount(1);
+   echo $count;
+    
+
 
   
 print_r(get_role("curastreamProgramEditor2"));  

@@ -1054,7 +1054,7 @@ CREATE TABLE `wptests_cura_user_programs` (
 --
 
 INSERT INTO `wptests_cura_user_programs` (`id`, `user_id`, `saved_prog_type`, `saved_prog_dur`, `saved_prog_id`, `saved_prog_name`, `completed`) VALUES
-(10, 5, 'Rehab', 12, 15, 'Arpit Testing', 1),
+(10, 7, 'Rehab', 12, 15, 'Arpit Testing', 1),
 (11, 5, 'Strength-Training', 15, 16, 'Strength Training Test', 0),
 (12, 11, 'Rehab', 20, 18, 'Rehab Testing', 0),
 (13, 11, 'Rehab', 10, 14, 'Test Program', 0),
@@ -1230,3 +1230,49 @@ ALTER TABLE `wptests_cura_user_programs`
 --
 ALTER TABLE `wptests_cura_user_programs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;COMMIT;
+
+  -- phpMyAdmin SQL Dump
+-- version 4.7.3
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Jan 18, 2019 at 11:26 AM
+-- Server version: 5.6.40-84.0-log
+-- PHP Version: 5.6.30
+
+
+
+
+
+
+--
+-- Table structure for table `dev_cura_deleted`
+--
+
+CREATE TABLE `wptests_cura_deleted` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `program_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `wptests_cura_deleted`
+--
+ALTER TABLE `wptests_cura_deleted`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `wptests_cura_deleted`
+--
+ALTER TABLE `wptests_cura_deleted`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+
+

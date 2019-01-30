@@ -318,6 +318,24 @@ public $tempUserId;
             return $exercies;
     }
 
+    public function getExerciseVideoById($videoId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+        $exerciseResults = $wpdb->get_row("SELECT id, name, description, assoc_body_parts_name, category_name, url, videoThumbnail  FROM $tableName WHERE id = $videoId");
+       
+            $anExercise = new exercise();
+            $anExercise->id = $exerciseResults->id;
+            $anExercise->name = $exerciseResults->name;
+            $anExercise->description = $exerciseResults->description;
+            $anExercise->bodyPart = $exerciseResults->assoc_body_parts_name;
+            $anExercise->category = $exerciseResults->category_name;
+            $anExercise->thumbnail = $exerciseResults->videoThumbnail;
+            return $anExercise;
+    }
+
+
+
     // Get all Exercises From Database without user favorites.
     public function getAllExerciseVideosNoFavorite(){
         global $wpdb;
@@ -1119,12 +1137,13 @@ public function duplicateGeneralProgram($existingProgram){
 	public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_phases";
+        $tableNameB = $wpdb->prefix . "cura_exercises";
 		// Reorder This Phase to The Top
 		$finalOrder = $this->getHighestPhaseOrder($programId);
 		echo $finalOrder;
 		$this->movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder);
 		// Delete all Exercises in Phase
-		$wpdb->delete("dev_cura_exercises", array(
+		$wpdb->delete($tableNameB, array(
     		"phase_id" => $phaseId
     	));
 		// Delete Phase
@@ -1608,6 +1627,7 @@ public function duplicateGeneralProgram($existingProgram){
             $wasDeleted = $this->deleteUserProgram($key);
             echo $wasDeleted;
         }
+        return count($fixedDeleted);
     }
     public function deleteUserProgram($userId){
         global $wpdb;
@@ -1620,7 +1640,7 @@ public function duplicateGeneralProgram($existingProgram){
             return $error;
          }
          else{
-            return "Success: User Program with User Id: " . $userId . " Deleted";
+            return "Success: User Programs with User Id: " . $userId . " Deleted";
          
          }
 
@@ -1687,8 +1707,7 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_sport_occupation";
         if (isset($name) && !is_null($name)){
             $wpdb->insert($tableName, array(
-            "name" => $name),
-            array(
+            "name" => $name,
             "type" => "sport"));
         }
     }
@@ -1698,8 +1717,7 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_sport_occupation";
         if (isset($name) && !is_null($name)){
             $wpdb->insert($tableName, array(
-            "name" => $name),
-            array(
+            "name" => $name,
             "type" => "occupation"));
         }
     }
@@ -1846,7 +1864,8 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function updateExerciseVideo($name, $url, $videoId){
         global $wpdb;
-       $tableName = $wpdb->prefix . "cura_exercise_videos";
+         $tableName = $wpdb->prefix . "cura_exercise_videos";
+
         //Check and Update name
         if (isset($name) && !is_null($name)){
             $wpdb->update($tableName, array(
@@ -1863,6 +1882,9 @@ public function duplicateGeneralProgram($existingProgram){
             "id" => $videoId));
         }
     }
+
+
+
 
     public function deleteExerciseVideo($exerciseVideoId){
        global $wpdb;
