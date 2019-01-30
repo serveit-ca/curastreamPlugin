@@ -548,3 +548,21 @@ require_once ("objects/exercise.php");
 	    }
 	    add_action( 'wp_ajax_updateAExerciseVideo', 'updateAExerciseVideo');
 	    add_action( 'wp_ajax_nopriv_updateAExerciseVideo', 'updateAExerciseVideo');
+
+	    function saveNewExercise(){
+	    	global $programs;
+	    	global $customCreation;	    
+	    	echo $programs->createExerciseVideo($_POST['name'], $_POST['url']);
+	    	wp_die();	
+	    }
+	    add_action( 'wp_ajax_saveNewExercise', 'saveNewExercise');
+	    add_action( 'wp_ajax_nopriv_saveNewExercise', 'saveNewExercise');
+
+	    function deleteAExerciseVideo(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$programs->deleteExerciseVideo($_POST['id']);
+	    	wp_die();	
+	    }
+	   	add_action( 'wp_ajax_deleteAExerciseVideo', 'deleteAExerciseVideo');
+	    add_action( 'wp_ajax_nopriv_deleteAExerciseVideo', 'deleteAExerciseVideo');

@@ -8,7 +8,107 @@ if(JS_DEBUG){console.log("Welcome to the Custom ProgramUI Builder Script");}
 jQuery(document).ready(function() {
     jQuery('.enableSelect2').select2();
 });
+// Table Filtering 
 
+jQuery(document).ready(function(){
+	jQuery('#bodyParts').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+     { "searchable": false },
+     { "searchable": false }
+  ]
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery('#injuryType').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+     { "searchable": false },
+     { "searchable": false }
+  ]
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery('#sportsAndOccupations').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+     { "searchable": false },
+     { "searchable": false },
+     { "searchable": false }
+  ]
+	});
+});
+
+jQuery(document).ready(function(){
+	jQuery('#exerciseVideos').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+      { "searchable": false },
+     { "searchable": false },
+     null,
+     null,
+     { "searchable": false }
+  ]
+	});
+});
+jQuery(document).ready(function(){
+	jQuery('#programMetrics').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    { "searchable": false }
+  ]
+	});
+});
+jQuery(document).ready(function(){
+	jQuery('#customProgramMetrics').DataTable({
+		paging: false,
+		 "columns": [
+   	null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    { "searchable": false }
+  ]
+	});
+});
+
+// /////////////Functions used to show and hide all objects
+jQuery(".showHideAll").on('click', function(event){
+	if(jQuery(this).hasClass("fa-angle-down")){
+		jQuery(this).removeClass("fa-angle-down");
+		jQuery(this).addClass("fa-angle-up");
+		jQuery(this).next(".showData").removeClass("hidden");
+	}else if(jQuery(this).hasClass("fa-angle-up")){
+		jQuery(this).removeClass("fa-angle-up");
+		jQuery(this).addClass("fa-angle-down");
+		jQuery(this).next(".showData").addClass("hidden");
+	}
+	jQuery(this).next(".showData")
+
+});
 ///////////////////////// Fuctions used on the Custom Program Creation Page - Top Buttons ///////////////////////
 // These fucntions are used to display the differnt button options on the Custom Programs page 
 // when you start to edit or customize a program 
@@ -1473,3 +1573,125 @@ jQuery('#assignCustomProgram').live('click', function(event){
 		});
 	}
 });
+
+// Saving a new Exericse
+jQuery(".saveNewExercise").on('click', function(event){
+		if(JS_DEBUG){console.log("Starting to Save a New Exercise Video");}
+		// Get the Name 
+		var exerciseName = jQuery("#addNewExerciseName").val();
+		console.log("Exercise Name"+exerciseName);
+		// Get the URL
+		var exerciseURL = jQuery("#addNewExerciseVideo").val();
+		console.log("Exercise Video"+exerciseURL); 
+
+		if(exerciseName.trim() !="" && exerciseURL.trim() !=""){
+			console.log("Exercise Video & Exercise Name have been set"); 
+
+			var data = {
+			'action': 'saveNewExercise',
+			'name': exerciseName,
+			'url': exerciseURL
+			};
+		// Post to Ajax
+		jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+			// This should be returnin"g HTML object 
+				//console.log("Data: "+ data);
+				//console.log("Results: "+ response);
+			// Find the HTML Object where we want to load the form into 
+			if(response !=null){	
+			// Find the table body tag 
+			console.log(response);
+				// jQuery(".addExerciseRow").after("<tr role='row'><td>"+exerciseName+"</td><td><input type='text' placeholder='Update"+exerciseName+"'></td><td><a href='"+exerciseURL+"'>"+exerciseURL+"</a></td><td><input type='text' placeholder='Update Url'></td><td>0</td><td><i class='showHideAll fas fa-2x fa-angle-down'></i></td><td><button class='custom-btn' data-exerciseId='"+response+"'>Save</button><button class='custom-btn' data-exerciseId='"+response+"'>Delete</button></td>");
+			// add a row 
+				// jQuery("#addNewExerciseName").val('');
+				// jQuery("#addNewExerciseVideo").val('');
+				location.reload();
+				}else{
+					console.log("Error Creating a New Exercise");
+				}
+			}
+			});
+		}else{
+			alert("Please enter an Exercise Name and a Vimeo URL");
+		}
+	}); 
+
+// Deleting a new Exericse
+jQuery(".deleteVideoExercise").on('click', function(event){
+		if(JS_DEBUG){console.log("Starting to delete an Exercise Video");}
+		// Get the Name 
+		var exerciseVideoId = jQuery(this).attr('data-exerciseId');
+		console.log("Exercise Id"+exerciseVideoId);
+		var programCount = jQuery(this).attr('data-programCount');
+		console.log("Program Count "+programCount);
+		if(programCount == "0"){
+			var data = {
+			'action': 'deleteAExerciseVideo',
+			'id': exerciseVideoId
+			};
+		// Post to Ajax
+		jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+			// This should be returnin"g HTML object 
+				//console.log("Data: "+ data);
+				//console.log("Results: "+ response);
+			// Find the HTML Object where we want to load the form into 
+			if(response !=null){	
+			// Find the table body tag 
+			console.log(response);
+				// jQuery(".addExerciseRow").after("<tr role='row'><td>"+exerciseName+"</td><td><input type='text' placeholder='Update"+exerciseName+"'></td><td><a href='"+exerciseURL+"'>"+exerciseURL+"</a></td><td><input type='text' placeholder='Update Url'></td><td>0</td><td><i class='showHideAll fas fa-2x fa-angle-down'></i></td><td><button class='custom-btn' data-exerciseId='"+response+"'>Save</button><button class='custom-btn' data-exerciseId='"+response+"'>Delete</button></td>");
+				// jQuery("#addNewExerciseName").val('');
+				// jQuery("#addNewExerciseVideo").val('');
+				//location.reload();
+				}else{
+					console.log("Error deleting an Exercise");
+				}
+			}
+		});
+		}else{
+			alert("You must ensure no programs have this video assigned before you can delete");
+		}
+	}); 
+
+// Updating a new Exericse
+jQuery(".updateExerciseVideo").on('click', function(event){
+		if(JS_DEBUG){console.log("Starting to Update an Exercise Video");}
+		// Get the Name 
+		var exerciseVideoId = jQuery(this).attr('data-exerciseId');
+		console.log("Exercise Id"+exerciseVideoId);
+		var nameID = "#updateName"+exerciseVideoId;
+		var newName = jQuery(nameID).val();
+		console.log("New Name"+newName);
+		var urlID = "#updateUrl"+exerciseVideoId;
+		var newURL = jQuery(urlID).val();
+		console.log("New URL"+newURL);
+
+		if(newName.trim() !="" || newURL.trim() !=""){
+			var data = {
+			'action': 'updateAExerciseVideo',
+			'videoId': exerciseVideoId,
+			'name': newName,
+			'url': newURL,
+			};
+		// Post to Ajax
+		jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+			// This should be returnin"g HTML object 
+				//console.log("Data: "+ data);
+				//console.log("Results: "+ response);
+			// Find the HTML Object where we want to load the form into 
+			if(response !=null){	
+			// Find the table body tag 
+			console.log(response);
+				// jQuery(".addExerciseRow").after("<tr role='row'><td>"+exerciseName+"</td><td><input type='text' placeholder='Update"+exerciseName+"'></td><td><a href='"+exerciseURL+"'>"+exerciseURL+"</a></td><td><input type='text' placeholder='Update Url'></td><td>0</td><td><i class='showHideAll fas fa-2x fa-angle-down'></i></td><td><button class='custom-btn' data-exerciseId='"+response+"'>Save</button><button class='custom-btn' data-exerciseId='"+response+"'>Delete</button></td>");
+			// add a row 
+				// jQuery("#addNewExerciseName").val('');
+				// jQuery("#addNewExerciseVideo").val('');
+				location.reload();
+				}else{
+					console.log("Error deleting an Exercise");
+				}
+			}
+		});
+		}else{
+			alert("Please enter a new Exercise Name or a new Vimeo URL");
+		}
+	}); 

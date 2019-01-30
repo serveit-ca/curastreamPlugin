@@ -6,13 +6,15 @@ require_once ("objects/exercise.php");
 $programs = new program();
 
 
-    
    $count = $programs->getExerciseVideoCount(1);
    echo $count;
     
 
+
   
-  
+print_r(get_role("curastreamProgramEditor2"));  
+echo "<br/>";
+print_r(get_role("subscriber"));
 
 
 
