@@ -1910,7 +1910,7 @@ public function duplicateGeneralProgram($existingProgram){
         $sportName = trim($sportName);
         $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
         return $sportId->id;
-
+    }
     public function deleteExerciseVideo($exerciseVideoId){
        global $wpdb;
        $tableName = $wpdb->prefix . "cura_exercise_videos";
