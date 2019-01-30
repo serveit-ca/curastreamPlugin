@@ -1534,14 +1534,19 @@ public function duplicateGeneralProgram($existingProgram){
     public function getProgramUsersById($programId){
         global $wpdb;
         $tableNameA = $wpdb->prefix . "cura_user_programs";
-        $programUsers = $wpdb->get_results("SELECT user_id FROM $tableNameA WHERE saved_prog_id = $programId", ARRAY_A);
+        $programUsers = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableNameA WHERE saved_prog_id = $programId", ARRAY_A);
         $usersArray = array();
         foreach($programUsers as $key){
             $userObj = get_user_by('ID', $key['user_id']);
-            //print_r($userObj);
-            $userName = $userObj->first_name . " " . $userObj->last_name;
-            //echo "User Name " . $userName;
-            $usersArray[] = $userName;
+           if (isset($userObj->first_name) && !is_null($userObj->first_name) && isset($userObj->last_name) && !is_null($userObj->last_name)){
+                //print_r($userObj);
+                $userName = $userObj->first_name . " " . $userObj->last_name;
+                //echo "User Name " . $userName;
+                $usersArray[] = $userName;
+            }
+            else{
+                $userName = $userObj->display_name;
+            }
         }
         return $usersArray;
     }
@@ -1585,10 +1590,15 @@ public function duplicateGeneralProgram($existingProgram){
         $usersArray = array();
         foreach ($userDeletedId as $key) {
             $userObj = get_user_by('ID', $key['user_id']);
-            //print_r($userObj);
-            $userName = $userObj->first_name . " " . $userObj->last_name;
-            //echo "User Name " . $userName;
-            $usersArray[] = $userName;
+            if (isset($userObj->first_name) && !is_null($userObj->first_name) && isset($userObj->last_name) && !is_null($userObj->last_name)){
+                //print_r($userObj);
+                $userName = $userObj->first_name . " " . $userObj->last_name;
+                //echo "User Name " . $userName;
+                $usersArray[] = $userName;
+            }
+            else{
+                $userName = $userObj->display_name;
+            }
         }
         return $usersArray;
 
@@ -1743,13 +1753,12 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getProgramsByBodyPart($bodyPartId){
         global $wpdb;
-        $bodyPart = $this->getBodyPartById($bodyPartId);
         $programs = $this->getAllPrograms();
         $programsIncluded = array();
         foreach ($programs as $key) {
             $programParts = explode(',' , $key->body_part);
             foreach ($programParts as $value) {
-                if ($bodyPart->name == $value){
+                if ($bodyPartId == $value){
                     $aProgram = new program();
                     $aProgram->name = $key->name;
                     $aProgram->id = $key->id;
@@ -1772,13 +1781,13 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getProgramsBySportOcc($sportId){
         global $wpdb;
-        $sportOcc = $this->getSportOccById($sportId);
+        
         $programs = $this->getAllPrograms();
         $programsIncluded = array();
         foreach ($programs as $key) {
             $programParts = explode(',' , $key->sportsOccupation);
             foreach ($programParts as $value) {
-                if ($sportOcc->name == $value){
+                if ($sportId == $value){
                     $aProgram = new program();
                     $aProgram->name = $key->name;
                     $aProgram->id = $key->id;
@@ -1801,13 +1810,13 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getProgramsByHowItHappened($injuryId){
         global $wpdb;
-        $injury = $this->getHowItHappenedById($injuryId);
+       
         $programs = $this->getAllPrograms();
         $programsIncluded = array();
         foreach ($programs as $key) {
             $programParts = explode(',' , $key->howItHappen);
             foreach ($programParts as $value) {
-                if ($injury->name == $value){
+                if ($injuryId == $value){
                     $aProgram = new program();
                     $aProgram->name = $key->name;
                     $aProgram->id = $key->id;
@@ -1873,7 +1882,6 @@ public function duplicateGeneralProgram($existingProgram){
             array( // Where Clause
             "id" => $videoId));
         }
-
         //Check and Update url
         if (isset($url) && !is_null($url)){
             $wpdb->update($tableName, array(
@@ -1883,9 +1891,26 @@ public function duplicateGeneralProgram($existingProgram){
         }
     }
 
+    public function getBodyPartIdByName($partName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        $partName = trim($partName);
+        $partId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$partName\"");
+        if (isset($partId->id) && !is_null($partId->id)){
+            return $partId->id;
+        }
+        else{
+            echo "That Part is Null or Doesn't Exist";
+        }
+    }
 
-
-
+    public function getSportOccIdByName($sportName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        $sportName = trim($sportName);
+        $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
+        return $sportId->id;
+    }
     public function deleteExerciseVideo($exerciseVideoId){
        global $wpdb;
        $tableName = $wpdb->prefix . "cura_exercise_videos";
@@ -1903,7 +1928,13 @@ public function duplicateGeneralProgram($existingProgram){
         }
     }
 
+    public function getHowItHappenedIdByName($injuryName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_how_it_happened";
+        $injuryName = trim($injuryName);
+        $injuryId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$injuryName\"");
+        return $injuryId->id;
+    }
 }
-
 ?>
 
