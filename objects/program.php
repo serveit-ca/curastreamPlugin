@@ -1858,9 +1858,23 @@ public function duplicateGeneralProgram($existingProgram){
         return $progNames;
     }
 
+    public function createExerciseVideo($name, $url){
+       global $wpdb;
+       $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+       if (isset($name) && !is_null($name) && isset($url) && !is_null($url)){
+           $wpdb->insert($tableName, array(
+           "name" => $name,
+           "url" => $url));
+           $lastid = $wpdb->insert_id;
+           return $lastid;
+        }
+    }
+
     public function updateExerciseVideo($name, $url, $videoId){
         global $wpdb;
          $tableName = $wpdb->prefix . "cura_exercise_videos";
+
         //Check and Update name
         if (isset($name) && !is_null($name)){
             $wpdb->update($tableName, array(
@@ -1869,22 +1883,11 @@ public function duplicateGeneralProgram($existingProgram){
             "id" => $videoId));
         }
         //Check and Update url
-        if (isset($duration) && !is_null($duration)){
+        if (isset($url) && !is_null($url)){
             $wpdb->update($tableName, array(
             "url" => $url),
             array( // Where Clause
             "id" => $videoId));
-        }
-    }
-    public function createExerciseVideo($name, $url){
-        global $wpdb;
-        $tableName = $wpdb->prefix . "cura_exercise_videos";
-        if (isset($name) && !is_null($name) && isset($url) && !is_null($url)){
-            $wpdb->insert($tableName, array(
-            "name" => $name,
-            "url" => $url));
-            $lastid = $wpdb->insert_id;
-            return $lastid;
         }
     }
 
@@ -1907,7 +1910,22 @@ public function duplicateGeneralProgram($existingProgram){
         $sportName = trim($sportName);
         $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
         return $sportId->id;
-    }
+
+    public function deleteExerciseVideo($exerciseVideoId){
+       global $wpdb;
+       $tableName = $wpdb->prefix . "cura_exercise_videos";
+
+       $wpdb->delete($tableName, array(
+           "id" => $exerciseVideoId
+       ));
+
+       if($this->printError($wpdb) != "No Error"){
+           $error = $this->printError($wpdb);
+           return $error;
+        }
+        else{
+           return "Success: Exercise with Id: " . $exerciseId . " Deleted";
+        }
 
     public function getHowItHappenedIdByName($injuryName){
         global $wpdb;
