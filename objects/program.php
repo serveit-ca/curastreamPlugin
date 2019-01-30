@@ -1926,6 +1926,7 @@ public function duplicateGeneralProgram($existingProgram){
         else{
            return "Success: Exercise with Id: " . $exerciseId . " Deleted";
         }
+    }
 
     public function getHowItHappenedIdByName($injuryName){
         global $wpdb;
