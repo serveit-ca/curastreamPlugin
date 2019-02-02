@@ -1280,6 +1280,42 @@ public function duplicateGeneralProgram($existingProgram){
         }
         
     }
+    public function getProgramsAssignedToUser($userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+
+        $programResults = $wpdb->get_results("SELECT saved_prog_id FROM $tableName WHERE user_id = $userId");
+
+        $programs = array();
+        $tableName = $wpdb->prefix . "cura_programs";
+        foreach ($programResults as $row) {
+
+            $aProgram = $wpdb->get_row("SELECT id, name, type, description, equipment, duration, weekly_plan, life_style, assoc_body_part_id, how_it_happen, sports_occupation, thumbnail, state FROM $tableName WHERE id = $row->saved_prog_id AND customProgram = 0", ARRAY_A);
+                  if (is_null($aProgram)){
+                    
+            } else{
+            $program = new program();
+            $program->id = $aProgram['id'];
+            $program->name = $aProgram['name'];
+            $program->type = $aProgram['type'];
+            $program->description = $aProgram['description'];
+            $program->equipment = $aProgram['equipment'];
+            $program->duration = $aProgram['duration'];
+            $program->weekly_plan = $aProgram['weekly_plan'];
+            $program->life_style = $aProgram['life_style'];
+            $program->assoc_body_part_id = $aProgram['assoc_body_part_id'];
+            $program->how_it_happen = $aProgram['how_it_happen'];
+            $program->sports_occupation = $aProgram['sports_occupation'];
+            $program->thumbnail = $aProgram['thumbnail'];
+            $program->state = $aProgram['state'];
+            $program->current = $program->checkCurrent($userId, $aProgram['id']);
+            $program->completed = $program->checkCompleted($userId, $aProgram['id']);
+            $programs[] = $program;
+        }
+        }
+            return $programs;
+
+    }
 
     public function getGeneralProgramsAssignedToUser($userId){
         global $wpdb;
@@ -1936,5 +1972,7 @@ public function duplicateGeneralProgram($existingProgram){
         return $injuryId->id;
     }
 }
+
+
 ?>
 

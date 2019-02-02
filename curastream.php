@@ -5,8 +5,9 @@ Description: Add Programs
 Author: Admin
 */
 // Used for page filtering 
-include("ajaxSaves.php");
-include("ajaxCustomProgram.php");
+require_once("ajaxSaves.php");
+require_once("ajaxCustomProgram.php");
+require_once ("objects/program.php");
 // Used for Ajax Saves to DB 
 function curastream_add_bootstrap_And_Other() 
     {       
@@ -115,6 +116,49 @@ function add_submenu() {
         ''
     );
     }
+}
+
+// End Point Code for App API
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/bodyparts', array(
+            'methods' => 'GET',
+            'callback' => array($programs, 'getAllBodyParts'),
+            ));
+    } );
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/sportoccs', array(
+            'methods' => 'GET',
+            'callback' => array($programs, 'getAllSportsOccupations'),
+            ));
+    } );
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/howithappeneds', array(
+            'methods' => 'GET',
+            'callback' => array($programs, 'getAllInjuries'),
+            ));
+    } );
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/userprogs/(?P<id>\d+)', array(
+            'methods' => 'GET',
+            'callback' => 'getProgramsAssignedToUserHandler',
+            ));
+    } );
+
+function getProgramsAssignedToUserHandler(){
+    $programs = new program();
+    $data = file_get_contents("php://input");
+    $data = json_decode($data,TRUE);
+    $body_part_id = $request['data']['id'];
+    $userProgs = $programs->getProgramsAssignedToUser($body_part_id);
+    return $userProgs;
 }
 
 function load_wp_media(){
