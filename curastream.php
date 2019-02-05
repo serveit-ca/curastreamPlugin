@@ -149,14 +149,20 @@ add_action('rest_api_init', function(){
         register_rest_route('curastream/v2', '/userprogs/(?P<id>\d+)', array(
             'methods' => 'GET',
             'callback' => 'getProgramsAssignedToUserHandler',
+            'args' => [
+                'id'
+            ],
             ));
     } );
 
 function getProgramsAssignedToUserHandler(){
     $programs = new program();
     $data = file_get_contents("php://input");
+    echo "<br> -----------". phpinfo() . "-------------------- <br>";
+    print_r($data);
     $data = json_decode($data,TRUE);
-    $body_part_id = $request['data']['id'];
+    echo "<br> ID: " . $data['id'];
+    $body_part_id = $data['id'];
     $userProgs = $programs->getProgramsAssignedToUser($body_part_id);
     return $userProgs;
 }
