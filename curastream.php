@@ -144,10 +144,30 @@ add_action('rest_api_init', function(){
             ));
     } );
 
+// add_action('rest_api_init', function(){
+//     $programs = new program();
+//         register_rest_route('curastream/v2', '/userprogs/(?P<id>\d+)', array(
+//             'methods' => 'POST',
+//             'callback' => 'getProgramsAssignedToUserHandler',
+//             'args' => [
+//                 'id'
+//             ],
+//             ));
+//     } );
+
+// function getProgramsAssignedToUserHandler( $data){
+//     $programs = new program();
+//     echo "<br> ------------------------------- <br>";
+//     print_r($data);
+//     echo "<br> ID: " . $data['id'];
+//     $body_part_id = $data['id'];
+//     $userProgs = $programs->getProgramsAssignedToUser($body_part_id);
+//     return $userProgs;
+// }
 add_action('rest_api_init', function(){
     $programs = new program();
         register_rest_route('curastream/v2', '/userprogs/(?P<id>\d+)', array(
-            'methods' => 'GET',
+            'methods' => 'POST',
             'callback' => 'getProgramsAssignedToUserHandler',
             'args' => [
                 'id'
@@ -155,12 +175,8 @@ add_action('rest_api_init', function(){
             ));
     } );
 
-function getProgramsAssignedToUserHandler(){
+function getProgramsAssignedToUserHandler($data){
     $programs = new program();
-    $data = file_get_contents("php://input");
-    echo "<br> -----------". phpinfo() . "-------------------- <br>";
-    print_r($data);
-    $data = json_decode($data,TRUE);
     echo "<br> ID: " . $data['id'];
     $body_part_id = $data['id'];
     $userProgs = $programs->getProgramsAssignedToUser($body_part_id);
