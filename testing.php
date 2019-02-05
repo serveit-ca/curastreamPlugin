@@ -36,7 +36,7 @@ echo "<h2>API Connections - Token & Validation</h2>";
  
 echo "<h3>Getting the Admin user Token for Local Development  </h3>";
    
-    $apiQueryURL = "http://curastream.test/wp-json/curastream/v2/userprogs/1";
+    $apiQueryURL = "http://curastream.test/wp-json/curastream/v2/bodypart/1";
 
     $response = wp_remote_post($apiQueryURL, array(
         'method' => 'POST',

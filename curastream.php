@@ -144,26 +144,6 @@ add_action('rest_api_init', function(){
             ));
     } );
 
-// add_action('rest_api_init', function(){
-//     $programs = new program();
-//         register_rest_route('curastream/v2', '/userprogs/(?P<id>\d+)', array(
-//             'methods' => 'POST',
-//             'callback' => 'getProgramsAssignedToUserHandler',
-//             'args' => [
-//                 'id'
-//             ],
-//             ));
-//     } );
-
-// function getProgramsAssignedToUserHandler( $data){
-//     $programs = new program();
-//     echo "<br> ------------------------------- <br>";
-//     print_r($data);
-//     echo "<br> ID: " . $data['id'];
-//     $body_part_id = $data['id'];
-//     $userProgs = $programs->getProgramsAssignedToUser($body_part_id);
-//     return $userProgs;
-// }
 add_action('rest_api_init', function(){
     $programs = new program();
         register_rest_route('curastream/v2', '/userprogs/(?P<id>\d+)', array(
@@ -178,10 +158,90 @@ add_action('rest_api_init', function(){
 function getProgramsAssignedToUserHandler($data){
     $programs = new program();
     echo "<br> ID: " . $data['id'];
-    $body_part_id = $data['id'];
-    $userProgs = $programs->getProgramsAssignedToUser($body_part_id);
+    $user_id = $data['id'];
+    $userProgs = $programs->getProgramsAssignedToUser($user_id);
     return $userProgs;
 }
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/userfavs/(?P<id>\d+)', array(
+            'methods' => 'POST',
+            'callback' => 'getFavoriteExercisesHandler',
+            'args' => [
+                'id'
+            ],
+            ));
+    } );
+
+function getFavoriteExercisesHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $user_id = $data['id'];
+    $userFavs = $programs->getFavoriteExercises($user_id);
+    return $userFavs;
+}
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/progphases/(?P<id>\d+)', array(
+            'methods' => 'POST',
+            'callback' => 'getPhasesByProgramIdHandler',
+            'args' => [
+                'id'
+            ],
+            ));
+    } );
+
+function getPhasesByProgramIdHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $user_id = $data['id'];
+    $userFavs = $programs->getPhasesByProgramId($user_id);
+    return $userFavs;
+}
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/phaseexercises/(?P<id>\d+)', array(
+            'methods' => 'POST',
+            'callback' => 'getExercisesByPhaseIdHandler',
+            'args' => [
+                'id'
+            ],
+            ));
+    } );
+
+function getExercisesByPhaseIdHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $user_id = $data['id'];
+    $userFavs = $programs->getExercisesByPhaseId($user_id);
+    return $userFavs;
+}
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/bodypart/(?P<id>\d+)', array(
+            'methods' => 'POST',
+            'callback' => 'getBodyPartByIdHandler',
+            'args' => [
+                'id'
+            ],
+            ));
+    } );
+
+function getBodyPartByIdHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $part_id = $data['id'];
+    $bodyPart = $programs->getBodyPartById($part_id);
+    return $bodyPart;
+}
+
+
+
+
 
 function load_wp_media(){
     wp_enqueue_media();
