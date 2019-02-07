@@ -1935,6 +1935,138 @@ public function duplicateGeneralProgram($existingProgram){
         $injuryId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$injuryName\"");
         return $injuryId->id;
     }
+
+    public function newCustomGroup($groupName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_groups";
+        $groupName = trim($groupName);
+        if (isset($groupName) && !is_null($groupName)){
+            $wpdb->insert($tableName, array(
+            "name" => $groupName,
+            "type" => 2));
+            $lastid = $wpdb->insert_id;
+            return $lastid;
+        }
+    }
+
+    public function newCorpGroup($groupName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_groups";
+        $groupName = trim($groupName);
+        if (isset($groupName) && !is_null($groupName)){
+            $wpdb->insert($tableName, array(
+            "name" => $groupName,
+            "type" => 1));
+            $lastid = $wpdb->insert_id;
+            return $lastid;
+        }
+    }
+
+    public function getProgramsByGroupId($groupId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_group_programs";
+        $groupIds = $wpdb->get_results("SELECT program_id FROM $tableName WHERE group_id = $groupId");
+        $progIds = array();
+        foreach ($groupIds as $key) {
+            $program = $key->program_id;
+            $progIds[] = $program;
+        }
+        return $progIds;
+    }
+
+    public function getUsersByGroupId($groupId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_group_users";
+        $groupIds = $wpdb->get_results("SELECT user_id FROM $tableName WHERE group_id = $groupId");
+        $userIds = array();
+        foreach ($groupIds as $key) {
+            $user = $key->user_id;
+            $userIds[] = $user;
+        }
+        return $progIds;
+    }
+
+    public function assignUserToGroup($groupId, $userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_group_users"
+        if (isset($groupId) && !is_null($groupId) && isset($userId) && !is_null($userId)){
+            $wpdb->insert($tableName, array(
+            "group_id" => $groupId,
+            "user_id" => $userId,
+            "privilege_level" => 0));
+            $lastid = $wpdb->insert_id;
+
+            //get all programs from group
+            $allGroupProgs =  $this->getProgramsByGroupId($groupId);
+            foreach ($allGroupProgs as $key) {
+                $this->assignProgramToUser($key, $userId);
+                echo "Program with Id: " . $key . "Assigned to User with Id: " . $userId;
+            }
+            return $lastid;
+        }
+    }
+
+    public function removeUserFromGroup($groupId, $userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_group_users"
+        if (isset($groupId) && !is_null($groupId) && isset($userId) && !is_null($userId)){
+            $wpdb->delete($tableName, array(
+                "group_id" => $groupId,
+                "user_id" => $userId));
+            // Delete all of that users programs tied to the group -- figure out a way to know if that user had it independantly assigned or not... add timestamp functionality?
+        }    
+    }
+
+    public function assignProgramToGroup($programId, $groupId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_group_programs";
+        if (isset($groupId) && !is_null($groupId) && isset($programId) && !is_null($programId)){
+            $wpdb->insert($tableName, array(
+                "program_id" => $groupId,
+                "group_id" => $userId));
+        }   
+        $groupUsers = $this->getUsersByGroupId($groupId);
+        foreach ($groupUsers as $key) {
+            if($this->checkAssigned($programId, $key) == "notAssigned"){
+                $this->assignProgramToUser($programId, $key);
+            }
+        }
+    }
+
+    public function changeGroupUserPrivilege($groupId, $userId, $privilegeLevel){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_group_users";
+        //Check and Update name
+        if (isset($privilegeLevel) && !is_null($privilegeLevel)){
+            $wpdb->update($tableName, array(
+            "privilege_level" => $privilegeLevel),
+            array( // Where Clause
+            "user_id" => $userId,
+            "group_id" => $groupId));
+        }
+    }
+
+    public function checkUserPriviledge($userId, $groupId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_group_users";
+        $privLevel = $wpdb->get_row("SELECT privilege_level FROM $tableName WHERE user_id = $userId AND group_id = $groupId");
+        if($privLevel->privilege_level == 2){
+            return "Owner Level";
+        }
+        elseif($privLevel->privilege_level == 1) {
+            return "Admin Level";
+        }
+        elseif($privLevel->privilege_level == 0) {
+            return "User Level";
+        }
+        else{
+            return "Error: Privilege Level Not Assigned";
+        }
+
+    }
+
+
+
 }
 ?>
 
