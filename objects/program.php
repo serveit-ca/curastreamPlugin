@@ -1983,7 +1983,7 @@ public function duplicateGeneralProgram($existingProgram){
             $user = $key->user_id;
             $userIds[] = $user;
         }
-        return $progIds;
+        return $userIds;
     }
 
     public function assignUserToGroup($groupId, $userId){
@@ -2033,7 +2033,7 @@ public function duplicateGeneralProgram($existingProgram){
             $tableName = $wpdb->prefix . "cura_user_programs";
 
             $updateInfo = $wpdb->get_row("SELECT group_id FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programId", ARRAY_A);
-            if (is_null($updateInfo) || $updateInfo->group_id == 0){
+            if (is_null($updateInfo) || $updateInfo['group_id'] == 0){
                 $status="notGroupAssigned";
             } else{
                 $status="Assigned";
@@ -2047,12 +2047,14 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_group_programs";
         if (isset($groupId) && !is_null($groupId) && isset($programId) && !is_null($programId)){
             $wpdb->insert($tableName, array(
-                "program_id" => $groupId,
-                "group_id" => $userId));
+                "program_id" => $programId,
+                "group_id" => $groupId));
             $groupUsers = $this->getUsersByGroupId($groupId);
-            foreach ($groupUsers as $key) {
-                if($this->checkGroupAssigned($programId, $key) == "Assigned"){
-                    $this->removeProgramFromUser($programId, $key);
+            if (isset($groupId) && !is_null($groupId)){
+                foreach ($groupUsers as $key) {
+                    if($this->checkGroupAssigned($programId, $key) == "Assigned"){
+                        $this->removeProgramFromUser($programId, $key);
+                    }
                 }
             }
         }   
@@ -2086,6 +2088,7 @@ public function duplicateGeneralProgram($existingProgram){
             array( // Where Clause
             "user_id" => $userId,
             "group_id" => $groupId));
+            echo "User with Id " . $userId . " Privilege Changed to " . $privilegeLevel;
         }
     }
 
