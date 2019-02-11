@@ -791,7 +791,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs = new program();
     $programs->removeUserFromGroup(1,1);
     $user = $programs->getUsersByGroupId(1);
-    assert($user[0] == NULL);
+    assert($user == NULL);
   }
 
 
