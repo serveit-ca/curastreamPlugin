@@ -763,8 +763,8 @@ class WP_Program_Test extends WP_UnitTestCase
     $tableName = $wpdb->prefix . "cura_groups";
     $lastId = $wpdb->insert_id;
     $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
-    assert($newGroup->name = "Test Custom");
-    assert($newGroup->type = 2);
+    assert($newGroup->name == "Test Custom");
+    assert($newGroup->type == 2);
   }
 
   public function test_new_corp_group(){
@@ -774,8 +774,8 @@ class WP_Program_Test extends WP_UnitTestCase
     $tableName = $wpdb->prefix . "cura_groups";
     $lastId = $wpdb->insert_id;
     $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
-    assert($newGroup->name = "Test Corp");
-    assert($newGroup->type = 1);
+    assert($newGroup->name == "Test Corp");
+    assert($newGroup->type == 1);
   }
 
 
