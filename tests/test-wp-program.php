@@ -786,6 +786,14 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($user[0] == 1);
   }
 
+  public function test_remove_user_from_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->removeUserFromGroup(1,1);
+    $user = $programs->getUsersByGroupId(1);
+    assert($user[0] == NULL);
+  }
+
 
 }
 
