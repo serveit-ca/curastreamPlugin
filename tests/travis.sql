@@ -1273,7 +1273,7 @@ ALTER TABLE `wptests_cura_deleted`
 -- AUTO_INCREMENT for table `wptests_cura_deleted`
 --
 ALTER TABLE `wptests_cura_deleted`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT; 
 
 
 
