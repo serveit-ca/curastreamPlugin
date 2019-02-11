@@ -1277,12 +1277,12 @@ ALTER TABLE `wptests_cura_deleted`
 
 
 
-CREATE TABLE 'wptests_cura_corps_groups'( 'id' int(11) NOT NULL, 'group_id' int(11) NOT NULL, 'corps_id' int(11) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE 'wptests_cura_corps_groups' ( 'id' int(11) NOT NULL, 'group_id' int(11) NOT NULL, 'corps_id' int(11) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE 'wptests_cura_groups'( 'id' int(11) NOT NULL, 'name' varchar(55) NOT NULL, 'type' int(1) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE 'wptests_cura_groups' ( 'id' int(11) NOT NULL, 'name' varchar(55) NOT NULL, 'type' int(1) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE 'wptests_cura_group_users'( 'id' int(11) NOT NULL, 'user_id' int(11) NOT NULL, 'group_id' int(11) NOT NULL,  'privilege_level' int(1) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE 'wptests_cura_group_users' ( 'id' int(11) NOT NULL, 'user_id' int(11) NOT NULL, 'group_id' int(11) NOT NULL,  'privilege_level' int(1) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE 'wptests_cura_group_programs'( 'id' int(11) NOT NULL, 'group_id' int(11) NOT NULL, 'program_id' int(11) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE 'wptests_cura_group_programs' ( 'id' int(11) NOT NULL, 'group_id' int(11) NOT NULL, 'program_id' int(11) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE 'wptests_cura_user_programs' ADD 'group_id' int(11);
