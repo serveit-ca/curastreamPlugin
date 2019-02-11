@@ -756,6 +756,28 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($newVideo->name == "Test Name");
   }
 
+  public function test_new_custom_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->newCustomGroup("Test Custom");
+    $tableName = $wpdb->prefix . "cura_groups"
+    $lastid = $wpdb->insert_id;
+    $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId")
+    assert($newGroup->name = "Test Custom");
+    assert($newGroup->type = 2);
+  }
+
+  public function test_new_corp_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->newCorpGroup("Test Corp");
+    $tableName = $wpdb->prefix . "cura_groups"
+    $lastid = $wpdb->insert_id;
+    $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId")
+    assert($newGroup->name = "Test Corp");
+    assert($newGroup->type = 1);
+  }
+
 
 }
 

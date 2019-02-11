@@ -9,7 +9,7 @@ notifications:
 branches:
   only:
     - master
-    - databaseOverhaul
+    - groupManagement
 
 services:
   - mysql
