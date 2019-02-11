@@ -1273,7 +1273,7 @@ ALTER TABLE `wptests_cura_deleted`
 -- AUTO_INCREMENT for table `wptests_cura_deleted`
 --
 ALTER TABLE `wptests_cura_deleted`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT; 
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT; 
 
 
 
@@ -1286,3 +1286,5 @@ CREATE TABLE 'wptests_cura_group_users' ( 'id' int(11) NOT NULL, 'user_id' int(1
 CREATE TABLE 'wptests_cura_group_programs' ( 'id' int(11) NOT NULL, 'group_id' int(11) NOT NULL, 'program_id' int(11) NOT NULL, PRIMARY KEY('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE 'wptests_cura_user_programs' ADD 'group_id' int(11);
+
+COMMIT;
