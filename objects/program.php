@@ -1999,8 +1999,11 @@ public function duplicateGeneralProgram($existingProgram){
             //get all programs from group
             $allGroupProgs =  $this->getProgramsByGroupId($groupId);
             foreach ($allGroupProgs as $key) {
-                $this->assignProgramToUser($key, $userId);
-                echo "Program with Id: " . $key . "Assigned to User with Id: " . $userId;
+                if($this->checkAssigned($key, $userId) == "notAssigned"){
+                        $this->assignProgramToUser($key, $userId);
+                         $this->makeGroupAssigned($key, $groupId, $userId);
+                    }
+                echo "Program with Id: " . $key . " Assigned to User with Id: " . $userId . "<br>";
             }
             return $lastid;
         }
@@ -2052,8 +2055,9 @@ public function duplicateGeneralProgram($existingProgram){
             $groupUsers = $this->getUsersByGroupId($groupId);
             if (isset($groupId) && !is_null($groupId)){
                 foreach ($groupUsers as $key) {
-                    if($this->checkGroupAssigned($programId, $key) == "Assigned"){
-                        $this->removeProgramFromUser($programId, $key);
+                    if($this->checkAssigned($programId, $key) == "notAssigned"){
+                        $this->assignProgramToUser($programId, $key);
+                        $this->makeGroupAssigned($programId, $groupId, $key);
                     }
                 }
             }
@@ -2066,12 +2070,12 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_group_programs";
         if (isset($groupId) && !is_null($groupId) && isset($programId) && !is_null($programId)){
             $wpdb->delete($tableName, array(
-                "program_id" => $groupId,
-                "group_id" => $userId));
+                "program_id" => $programId,
+                "group_id" => $groupId));
             $groupUsers = $this->getUsersByGroupId($groupId);
             foreach ($groupUsers as $key) {
-                if($this->checkAssigned($programId, $key) == "notAssigned"){
-                    $this->assignProgramToUser($programId, $key);
+                if($this->checkGroupAssigned($programId, $key) == "Assigned"){                    
+                    $this->removeProgramFromUser($programId, $key);
                 }
             }
         } 
@@ -2109,6 +2113,19 @@ public function duplicateGeneralProgram($existingProgram){
             return "Error: Privilege Level Not Assigned";
         }
 
+    }
+
+    public function makeGroupAssigned($programId, $groupId, $userId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_user_programs";
+        //Check and Update name
+        if (isset($programId) && !is_null($programId) && isset($userId) && !is_null($userId) && isset($groupId) && !is_null($groupId)){
+            $wpdb->update($tableName, array(
+            "group_id" => $groupId),
+            array( // Where Clause
+            "saved_prog_id" => $programId,
+            "user_id" => $userId));
+        }
     }
 
 

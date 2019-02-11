@@ -8,34 +8,36 @@ $database = new databaseManagement();
 $programs = new program();
 
 
-$custGroup = $programs->newCustomGroup("Custom Test Group");
-$corpGroup = $programs->newCorpGroup("Corporate Test Group");
-echo $custGroup . "<br>";
-echo $corpGroup . "<br>";
+// $custGroup = $programs->newCustomGroup("Custom Test Group");
+// $corpGroup = $programs->newCorpGroup("Corporate Test Group");
+// echo $custGroup . "<br>";
+// echo $corpGroup . "<br>";
 
-$programs->assignProgramToGroup(37, 1);
-$programs->assignProgramToGroup(45, 1);
+$programs->assignProgramToUser(37,6);
 
-$groupProgs = $programs->getProgramsByGroupId(1);
+$programs->assignProgramToGroup(37, 6);
+$programs->assignProgramToGroup(45, 6);
+
+$groupProgs = $programs->getProgramsByGroupId(6);
 print_r($groupProgs);
 echo "<br>";
 
-$groupUserId = $programs->assignUserToGroup(1, 1);
-$isAssigned = $programs->checkAssigned(37,1);
-$isGroupAssigned = $programs->checkGroupAssigned(37,1);
+$groupUserId = $programs->assignUserToGroup(6, 6);
+$isAssigned = $programs->checkAssigned(37,6);
+$isGroupAssigned = $programs->checkGroupAssigned(37,6);
 echo $isAssigned . "<br>";
 echo $isGroupAssigned . "<br>";
 
-$programs->removeProgramFromGroup(37, 1);
+$programs->removeProgramFromGroup(37, 6);
 
-$groupProgs = $programs->getProgramsByGroupId(1);
+$groupProgs = $programs->getProgramsByGroupId(6);
 print_r($groupProgs);
 echo "<br>";
 
 
 
-$isAssigned = $programs->checkAssigned(37,1);
-$isGroupAssigned = $programs->checkGroupAssigned(37,1);
+$isAssigned = $programs->checkAssigned(37,6);
+$isGroupAssigned = $programs->checkGroupAssigned(37,6);
 echo $isAssigned . "<br>";
 echo $isGroupAssigned . "<br>";
 
