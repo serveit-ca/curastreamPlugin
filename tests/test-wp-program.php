@@ -778,6 +778,14 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($newGroup->type == 1);
   }
 
+  public function test_assign_user_to_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->assignUserToGroup(1, 1);
+    $user = $programs->getUsersByGroupId(1);
+    assert($user->id == 1);
+  }
+
 
 }
 
