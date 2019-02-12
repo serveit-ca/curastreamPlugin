@@ -800,7 +800,14 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs->assignProgramToGroup(37,1);
     $groupProgs = $programs->getProgramsByGroupId(1);
     assert($groupProgs[0] == 37); 
+  }
 
+  public function test_remove_program_from_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->removeProgramFromGroup(37,1);
+    $groupProgs = $programs->getProgramsByGroupId(1);
+    assert($groupProgs == NULL); 
   }
 
 
