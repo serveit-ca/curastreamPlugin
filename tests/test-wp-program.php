@@ -816,7 +816,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs->assignUserToGroup(1,1);
     $programs->changeGroupUserPrivilege(1,1,2);
     $pLevel = $programs->checkUserPrivilege(1,1);
-    assert($pLevel == "Owner Level");
+    assert($pLevel == "Owner Level"); 
   }
 
 
