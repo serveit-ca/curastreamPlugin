@@ -810,6 +810,15 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($groupProgs == NULL); 
   }
 
+  public function test_change_group_user_privilege(){
+    global $wpdb;
+    $programs = new program();
+    $programs->assignUserToGroup(1,1);
+    $programs->changeGroupUserPrivilege(1,1,2);
+    $pLevel = $programs->checkUserPrivilege(1,1);
+    assert($pLevel == "Owner Level");
+  }
+
 
 }
 
