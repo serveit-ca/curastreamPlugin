@@ -794,6 +794,15 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($user == NULL);
   }
 
+  public function test_assign_program_to_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->assignProgramToGroup(37,1);
+    $groupProgs = $programs->getProgramsByGroupId(1);
+    assert($groupProgs[0] == 37); 
+
+  }
+
 
 }
 
