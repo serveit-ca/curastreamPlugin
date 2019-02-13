@@ -1976,14 +1976,22 @@ public function duplicateGeneralProgram($existingProgram){
 
     public function getUsersByGroupId($groupId){
         global $wpdb;
-        $tableName = $wpdb->prefix . "cura_group_users";
-        $groupIds = $wpdb->get_results("SELECT user_id FROM $tableName WHERE group_id = $groupId");
-        $userIds = array();
-        foreach ($groupIds as $key) {
-            $user = $key->user_id;
-            $userIds[] = $user;
+        $tableNameA = $wpdb->prefix . "cura_user_programs";
+        $programUsers = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableNameA WHERE group_id = $groupId", ARRAY_A);
+        $usersArray = array();
+        foreach($programUsers as $key){
+            $userObj = get_user_by('ID', $key['user_id']);
+           if (isset($userObj->first_name) && !is_null($userObj->first_name) && isset($userObj->last_name) && !is_null($userObj->last_name)){
+                //print_r($userObj);
+                $userName = $userObj->first_name . " " . $userObj->last_name;
+                //echo "User Name " . $userName;
+                $usersArray[] = $userName;
+            }
+            else{
+                $userName = $userObj->display_name;
+            }
         }
-        return $userIds;
+        return $usersArray;
     }
 
     public function assignUserToGroup($groupId, $userId){
@@ -2002,8 +2010,12 @@ public function duplicateGeneralProgram($existingProgram){
                 if($this->checkAssigned($key, $userId) == "notAssigned"){
                         $this->assignProgramToUser($key, $userId);
                          $this->makeGroupAssigned($key, $groupId, $userId);
+                         echo "Program with Id: " . $key . " Assigned to User with Id: " . $userId . "<br>";
                     }
-                echo "Program with Id: " . $key . " Assigned to User with Id: " . $userId . "<br>";
+                else{
+                    echo "User is already assigned to this group.";
+                }
+                
             }
             return $lastid;
         }
@@ -2126,6 +2138,43 @@ public function duplicateGeneralProgram($existingProgram){
             "saved_prog_id" => $programId,
             "user_id" => $userId));
         }
+    }
+
+    public function getAllCorpGroups(){
+        global $wpdb;
+        $tableName =  $wpdb->prefix . "cura_groups";
+        $corpGroups = $wpdb->get_results("SELECT id, name, type FROM $tableName WHERE type = 1 ORDER BY name");
+        $groups = array();
+        foreach ($corpGroups as $key) {
+            $aGroup = array();
+            $aGroup['name'] = $key->name;
+            $aGroup['id'] = $key->id;
+            $aGroup['type'] = $key->type;
+            $groups[] = $aGroup;
+        }
+        return $groups;
+    }
+
+    public function getAllCustomGroups(){
+        global $wpdb;
+        $tableName =  $wpdb->prefix . "cura_groups";
+        $corpGroups = $wpdb->get_results("SELECT id, name, type FROM $tableName WHERE type = 2 ORDER BY name");
+        $groups = array();
+        foreach ($corpGroups as $key) {
+            $aGroup = array();
+            $aGroup['name'] = $key->name;
+            $aGroup['id'] = $key->id;
+            $aGroup['type'] = $key->type;
+            $groups[] = $aGroup;
+        }
+        return $groups;
+    }
+
+    public function getCorpAccountByGroupId($groupId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_groups";
+        $corpId = $wpdb->get_row("SELECT corp_id FROM $tableName WHERE group_id = $groupId");
+        return $corpId;
     }
 
 
