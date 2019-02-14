@@ -1987,7 +1987,7 @@ public function duplicateGeneralProgram($existingProgram){
                 //echo "User Name " . $userName;
                 $usersArray[] = $userName;
             }
-            else{
+            elseif(isset($userObj->display_name) && !is_null($userObj->display_name)){
                 $userName = $userObj->display_name;
             }
         }
@@ -2175,6 +2175,35 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_corp_groups";
         $corpId = $wpdb->get_row("SELECT corp_id FROM $tableName WHERE group_id = $groupId");
         return $corpId;
+    }
+
+    public function checkGroupType($groupId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_groups";
+        $type = $wpdb->get_row("SELECT type FROM $tableName WHERE group_id = $groupId");
+        return $type;
+    }
+
+    public function deleteGroup($groupId){
+        global $wpdb;
+        // Removes all Users
+        $groupUsers = $this->getUsersByGroupId($groupId);
+        foreach ($groupUsers as $key) {
+            $this->removeUserFromGroup($key);
+        }
+        // Removes all programs
+        $groupProgs = $this->getProgramsByGroupId($groupId);
+        foreach ($groupProgs as $key) {
+            $this->removeProgramFromGroup($key);
+        }
+        // Removes from Corp Group Table
+        $groupType = $this->checkGroupType($groupId);
+        if($groupType == 1){
+            // Is a Corp. Group, delete it.
+            $tableNameB = $wpdb->prefix . "cura_corp_groups";
+            $wpdb->delete($tableNameB, array(
+                "group_id" => $groupId));
+        }
     }
 
 

@@ -83,13 +83,8 @@ function prefix_enqueue()
 							<td>
 
 								<a href="" target="_blank">
-									<div class="viewProgram smallProgramBtn">
-										View Program
-									</div>
-								</a>
-								<a href="" target="_blank">
-									<div class="viewProgram smallProgramBtn">
-										Edit Program
+									<div class="deleteGroup smallProgramBtn">
+										Delete Group
 									</div>
 								</a>
 
@@ -160,15 +155,11 @@ function prefix_enqueue()
 							<td>
 
 								<a href="" target="_blank">
-									<div class="viewProgram smallProgramBtn">
-										View Program
+									<div class="deleteGroup smallProgramBtn">
+										Delete Group
 									</div>
 								</a>
-								<a href="" target="_blank">
-									<div class="viewProgram smallProgramBtn">
-										Edit Program
-									</div>
-								</a>
+								
 
 							</td>
 							</tr>
