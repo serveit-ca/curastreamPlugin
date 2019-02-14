@@ -127,6 +127,22 @@ function load_wp_media(){
     wp_enqueue_media();
 }
 
+// register_rest_route(
+//     'curastream', '/view_program_details/',
+//     array(
+//     'methods'  => 'POST',
+//     'callback' => 'view_program_details',
+//     )
+//     );
+
+    add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream', '/view_program_details/', array(
+            'methods' => 'POST',
+            'callback' => 'view_program_details',
+            ));
+    } );
+
 add_action( 'admin_menu', 'add_menu');
 add_action( 'admin_menu', 'add_submenu');
 add_action( 'admin_enqueue_scripts', 'load_wp_media' );
@@ -160,48 +176,82 @@ echo "<h3>Here are some useful Links</h3>";
 echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>");
 }
 
-function get_body_part() {
-    header('Access-Control-Allow-Origin: *');
-    $data = file_get_contents("php://input");
-    $data = json_decode($data,TRUE);
-    global $wpdb;
-    $table = $wpdb->prefix . 'cura_body_parts';
-    $body_part_id = $data['id'];
-    $body_parts = $wpdb->get_results("SELECT * FROM $table WHERE id = $body_part_id");        
-    if (empty($body_parts)) {
-        $response = array('status' => 'success', 'body_parts' => null);
-        return $response;
-    }
-    $response = array('status' => 'success', 'body_parts' => $body_parts);
-    return $response;
-}
-function get_body_parts() {
-    header('Access-Control-Allow-Origin: *');
-    $data = file_get_contents("php://input");
-    $data = json_decode($data,TRUE);
-    global $wpdb;
-    $table = $wpdb->prefix . 'cura_body_parts';
-    $body_parts = $wpdb->get_results("SELECT id, name FROM $table");    
-    if ( empty($body_parts)) {
-        $response = array('status' => 'success', 'body_parts' => null);
-        return $response;
-    }
-    $response = array('status' => 'success', 'body_parts' => $body_parts);
-    return $response;
-}
-add_action( 'rest_api_init', function () {
-    register_rest_route( 'curastream/v1', '/body-part/(?P<id>\d+)', array(
-        'methods' => 'GET',
-        'callback' => 'get_body_part',
-    ) );
-} );
+//002120
+function view_program_details($request)
+{
+    
+    $data = headerRest($request);
+    
+    $current_user = wp_get_current_user();
+    $id = $data['id'];
+    //$exercise_id = $data['exercise_id'];
+    if($current_user->ID!=0 && isset($id))
+    {
+    
+        global $wpdb; // this is how you get access to the database
+        $cura_programs = $wpdb->prefix . "cura_programs";
+        
+        $sql = "select id,type,name,description,equipment,duration,weekly_plan,life_style,assoc_body_part_id,how_it_happen,sports_occupation,thumbnail FROM $cura_programs  where  id='".$id."' ";
+        
+        
+        $body_parts = $wpdb->get_results( $sql );
+        $num    =   $wpdb->num_rows;
+    if($num>0)
+    {
+        $i = 1; 
+        foreach ( $body_parts as $item ) 
+        {
+            $phases = get_phases_of_programs($item->id);
+                        
+                $content = array(
+                "id"=>$item->id,
+                "type"=>$item->type,
+                "name"=>$item->name,
+                "description"=>$item->description,
+                "equipment"=>$item->equipment,
+                "duration"=>$item->duration,
+                "weekly_plan"=>$item->weekly_plan,
+                "life_style"=>$item->life_style,
+                "assoc_body_part_id"=>$item->assoc_body_part_id,
+                "how_it_happen"=>$item->how_it_happen,
+                "sports_occupation"=>$item->sports_occupation,
+                "thumbnail"=>$item->thumbnail,
+                "phases" => $phases
+                
+                );
 
-add_action( 'rest_api_init', function () {
-    register_rest_route( 'curastream/v1', '/body-parts', array(
-        'methods' => 'GET',
-        'callback' => 'get_body_parts',
-    ) );
-} );
+        }
+    //$content = array('message' => 'Successfully removed program from user list.');
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='success';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;die();
+    }
+        else
+        {
+    $content = array('message' => 'Failed to display program.');
+    //$result["sql"] =$sql;
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='success';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;  
+die();
+        
+    }
+    }
+    else
+    {
+    $content = array('message' => 'All fields are required.');
+    $result["status"] ='fail';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+     echo $respnse; die();
+    }
+
+    
+}
 
 // get programs by type
 function get_programs() {
