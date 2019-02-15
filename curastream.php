@@ -5,6 +5,7 @@ Description: Add Programs
 Author: Admin
 */
 // Used for page filtering 
+include("objects/program.php");
 include("ajaxSaves.php");
 include("ajaxCustomProgram.php");
 // Used for Ajax Saves to DB 
@@ -138,7 +139,7 @@ function load_wp_media(){
     add_action('rest_api_init', function(){
     $programs = new program();
         register_rest_route('curastream', '/view_program_details/', array(
-            'methods' => 'POST',
+            'methods' => 'GET',
             'callback' => 'view_program_details',
             ));
     } );
@@ -176,55 +177,85 @@ echo "<h3>Here are some useful Links</h3>";
 echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>");
 }
 
-//002120
-function view_program_details($request)
-{
+
+function headerRest($request){
+    header('Content-Type:application/json;charset=utf8');
+    header('Access-Control-Allow-Origin: *');
+
+    $data = file_get_contents("php://input");
+    $data = json_decode($data,TRUE);    
+    if(empty($data)){
+
+        if(isset($request) && !empty($request->get_params())){
+            $data = $request->get_params();
+        }
+    }
+    return $data;
+}
+
+function view_program_details($request){
     
     $data = headerRest($request);
-    
-    $current_user = wp_get_current_user();
     $id = $data['id'];
-    //$exercise_id = $data['exercise_id'];
-    if($current_user->ID!=0 && isset($id))
-    {
-    
-        global $wpdb; // this is how you get access to the database
-        $cura_programs = $wpdb->prefix . "cura_programs";
-        
-        $sql = "select id,type,name,description,equipment,duration,weekly_plan,life_style,assoc_body_part_id,how_it_happen,sports_occupation,thumbnail FROM $cura_programs  where  id='".$id."' ";
-        
-        
-        $body_parts = $wpdb->get_results( $sql );
-        $num    =   $wpdb->num_rows;
-    if($num>0)
-    {
-        $i = 1; 
-        foreach ( $body_parts as $item ) 
-        {
-            $phases = get_phases_of_programs($item->id);
-                        
-                $content = array(
-                "id"=>$item->id,
-                "type"=>$item->type,
-                "name"=>$item->name,
-                "description"=>$item->description,
-                "equipment"=>$item->equipment,
-                "duration"=>$item->duration,
-                "weekly_plan"=>$item->weekly_plan,
-                "life_style"=>$item->life_style,
-                "assoc_body_part_id"=>$item->assoc_body_part_id,
-                "how_it_happen"=>$item->how_it_happen,
-                "sports_occupation"=>$item->sports_occupation,
-                "thumbnail"=>$item->thumbnail,
-                "phases" => $phases
-                
-                );
+    if(isset($id)){
+        $programs = new program();
+        $program = $programs->getProgramById($id);
 
-        }
+    if(isset($program) && !is_null($program))
+    {
+            $phases = array();            
+            $progPhases = $programs->getPhasesByProgramId($program->id);            
+            foreach ($progPhases as $phase) {
+                $exerciseArray = array();
+                $exercises = $programs->getExercisesByPhaseId($phase->id);
+                   foreach ($exercises as $exercise) {
+                        $exerciseContent[] = array(
+                            "id"=>$exercise->id,
+                            "phase_id"=>$exercise->phase_id,
+                            "order_no"=>$exercise->order_no,
+                            "order_field"=>$exercise->order_field,
+                            "name"=>$exercise->name,
+                            "rest"=>$exercise->rest,
+                            "sets_reps"=>$exercise->sets_reps,
+                            "variation"=>$exercise->variation,
+                            "equipment"=>$exercise->equipment,
+                            "special_instructions"=>$exercise->special_instructions,
+                            "exercise_video_url"=>$exercise->exercise_video_url,
+                            "file_url"=>$exercise->file_url,
+                            "file_name"=>$exercise->file_name
+                            );
+                        $exerciseArray[] = $exerciseContent;
+                    }
+                $phaseContent[] = array(
+                    "id"=>$phase->id,
+                    "name"=>$phase->name,
+                    "intro"=>$phase->intro,
+                    "notes"=>$phase->notes,
+                    "exercise"=>$exerciseArray
+                    );
+                $phases[] = $phaseContent;
+            }                        
+            $programContent = array(
+                "id"=>$program->id,
+                "type"=>$program->type,
+                "name"=>$program->name,
+                "description"=>$program->description,
+                "equipment"=>$program->equipment,
+                "duration"=>$program->duration,
+                "weekly_plan"=>$program->weeklyPlan,
+                "life_style"=>$program->lifeStyle,
+                "assoc_body_part_id"=>$program->body_part,
+                "how_it_happen"=>$program->howItHappen,
+                "sports_occupation"=>$program->sportsOccupation,
+                "thumbnail"=>$program->thumbnail,
+                "phases" => $phases  
+            );
+
+        
     //$content = array('message' => 'Successfully removed program from user list.');
     //$result["user_id"] =$current_user->ID;
     $result["status"] ='success';
-    $result["data"] = $content;
+    $result["data"] = $programContent;
     $respnse = json_encode($result,JSON_PRETTY_PRINT);
     echo $respnse;die();
     }
@@ -234,7 +265,7 @@ function view_program_details($request)
     //$result["sql"] =$sql;
     //$result["user_id"] =$current_user->ID;
     $result["status"] ='success';
-    $result["data"] = $content;
+    $result["data"] = $programContent;
     $respnse = json_encode($result,JSON_PRETTY_PRINT);
     echo $respnse;  
 die();
@@ -245,7 +276,7 @@ die();
     {
     $content = array('message' => 'All fields are required.');
     $result["status"] ='fail';
-    $result["data"] = $content;
+    $result["data"] = $programContent;
     $respnse = json_encode($result,JSON_PRETTY_PRINT);
      echo $respnse; die();
     }

@@ -4,42 +4,22 @@ require_once ("objects/program.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 require_once ("objects/databaseManagement.php");
-$database = new databaseManagement();
-$programs = new program();
+// $database = new databaseManagement();
+// $programs = new program();
+echo "<h3>Getting the Program Info </h3>";
 
+    $apiQueryURL = "http://curastream.test/wp-json/curastream/view_program_details";
 
-// $custGroup = $programs->newCustomGroup("Custom Test Group");
-// $corpGroup = $programs->newCorpGroup("Corporate Test Group");
-// echo $custGroup . "<br>";
-// echo $corpGroup . "<br>";
+    $jsonBody = json_encode(array("id"=>"37"));
 
-$programs->assignProgramToUser(37,6);
+    $response = wp_remote_post($apiQueryURL, array(
+        'method' => 'POST',
+        'body'=>$jsonBody
+    ));
+   // var_dump($response);
+    $data = wp_remote_retrieve_body( $response );
 
-$programs->assignProgramToGroup(37, 6);
-$programs->assignProgramToGroup(45, 6);
-
-$groupProgs = $programs->getProgramsByGroupId(6);
-print_r($groupProgs);
-echo "<br>";
-
-$groupUserId = $programs->assignUserToGroup(6, 6);
-$isAssigned = $programs->checkAssigned(37,6);
-$isGroupAssigned = $programs->checkGroupAssigned(37,6);
-echo $isAssigned . "<br>";
-echo $isGroupAssigned . "<br>";
-
-$programs->removeProgramFromGroup(37, 6);
-
-$groupProgs = $programs->getProgramsByGroupId(6);
-print_r($groupProgs);
-echo "<br>";
-
-
-
-$isAssigned = $programs->checkAssigned(37,6);
-$isGroupAssigned = $programs->checkGroupAssigned(37,6);
-echo $isAssigned . "<br>";
-echo $isGroupAssigned . "<br>";
+    var_dump($data);
 
 
 
