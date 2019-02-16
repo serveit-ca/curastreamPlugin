@@ -1737,19 +1737,10 @@ public function duplicateGeneralProgram($existingProgram){
         $tableName = $wpdb->prefix . "cura_how_it_happened";
         if (isset($name) && !is_null($name)){
             $wpdb->insert($tableName, array(
-            "name" => $name));
-        }
+            "name" => $name));       }
     }
 
-    public function getBodyPartById($bodyPartId){
-        global $wpdb;
-        $tableName = $wpdb->prefix . "cura_body_parts";    
-        
-        $body_part = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $bodyPartId");
-        
-        return $body_part;
-
-    }
+    
 
     public function getProgramsByBodyPart($bodyPartId){
         global $wpdb;
@@ -2205,6 +2196,20 @@ public function duplicateGeneralProgram($existingProgram){
                 "group_id" => $groupId));
         }
     }
+
+    public function getBodyPartById($bodyPartId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";    
+        
+        $body_part = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $bodyPartId");
+        
+        return $body_part;
+
+    }
+
+
+
+
 
 
 

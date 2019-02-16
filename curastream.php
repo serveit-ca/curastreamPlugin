@@ -234,7 +234,38 @@ function view_program_details($request){
                     "exercise"=>$exerciseArray
                     );
                 $phases[] = $phaseContent;
-            }                        
+            }
+            $partIdString = $program->body_part;
+            $sportIdString = $program->sportsOccupation;
+            $howIdString = $program->howItHappen;
+            $partIdArray = array();
+            $sportIdArray = array();
+            $howIdArray = array();
+            $partIdArray = explode(',', $partIdString);
+            $sportIdArray = explode(',', $sportIdString);
+            $howIdArray = explode(',', $howIdString);
+            $partNameArray = array();
+            $sportNameArray = array();
+            $howNameArray = array();
+            foreach ($partIdArray as $key ) {
+                $part = $programs->getBodyPartById($key);
+                $partName = $part->name;
+                $partNameArray[] = $partName;
+            }
+            $partNameString = implode(",", $partNameArray);
+            foreach ($sportIdArray as $key ) {
+                $sport = $programs->getSportOccById($key);
+                $sportName = $sport->name;
+                $sportNameArray[] = $sportName;
+            }
+            $sportNameString = implode(",", $sportNameArray);
+            foreach ($howIdArray as $key ) {
+                $how = $programs->getHowItHappenedById($key);
+                $howName = $how->name;
+                $howNameArray[] = $howName;
+            }
+            $howNameString = implode(",", $howNameArray);
+
             $programContent = array(
                 "id"=>$program->id,
                 "type"=>$program->type,
@@ -244,9 +275,9 @@ function view_program_details($request){
                 "duration"=>$program->duration,
                 "weekly_plan"=>$program->weeklyPlan,
                 "life_style"=>$program->lifeStyle,
-                "assoc_body_part_id"=>$program->body_part,
-                "how_it_happen"=>$program->howItHappen,
-                "sports_occupation"=>$program->sportsOccupation,
+                "assoc_body_part_id"=>$partNameString,
+                "how_it_happen"=>$howNameString,
+                "sports_occupation"=>$sportNameString,
                 "thumbnail"=>$program->thumbnail,
                 "phases" => $phases  
             );
