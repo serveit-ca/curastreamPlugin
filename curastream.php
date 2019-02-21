@@ -136,6 +136,15 @@ function load_wp_media(){
 //     )
 //     );
 
+
+// Endpoint for memberpress 
+    add_action('rest_api_init', function(){
+        register_rest_route('curastream', '/mempr_new_corp/', array(
+            'methods' => 'POST',
+            'callback' => 'mempr_add_new_corp'
+        ));
+    });
+
     add_action('rest_api_init', function(){
     $programs = new program();
         register_rest_route('curastream', '/view_program_details/', array(
@@ -175,6 +184,26 @@ function curastream_parent_page() {
 echo "<h1>Welcome to the Curastream Plugin</h1>";
 echo "<h3>Here are some useful Links</h3>";
 echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>");
+}
+
+function mempr_add_new_corp($request){
+    $data = $request->get_json_params();
+    $programs = new program();
+    // Check To Ensure it is a Corp Sub
+    
+    // Get Data From The Json
+
+    // Use Data to look up data we need
+
+    // Put data back in on our end
+    // New Corp
+
+    // New Group
+
+    // New Corp Group
+
+    // Assign Group Users
+    $programs->newCorpGroup("test corp webhook for nathan");
 }
 
 
@@ -231,9 +260,8 @@ function view_program_details($request){
                     "name"=>$phase->name,
                     "intro"=>$phase->intro,
                     "notes"=>$phase->notes,
-                    "exercise"=>$exerciseArray
-                    );
-                $phases[] = $phaseContent;
+                    "exercise"=>$exerciseArray);
+                                     $phases[] = $phaseContent;
             }
             $partIdString = $program->body_part;
             $sportIdString = $program->sportsOccupation;
