@@ -5,21 +5,11 @@ require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 require_once ("objects/databaseManagement.php");
 // $database = new databaseManagement();
-// $programs = new program();
-echo "<h3>Getting the Program Info </h3>";
-
-    $apiQueryURL = "http://curastream.test/wp-json/curastream/view_program_details";
-
-    $jsonBody = json_encode(array("id"=>"37"));
-
-    $response = wp_remote_post($apiQueryURL, array(
-        'method' => 'POST',
-        'body'=>$jsonBody
-    ));
-   // var_dump($response);
-    $data = wp_remote_retrieve_body( $response );
-
-    var_dump($data);
+ $programs = new program();
+// New Corp
+    $newCorpId = $programs->newCorp("Corp Name");
+    // New Group
+    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
 
 
 
@@ -30,7 +20,7 @@ echo "<h3>Getting the Program Info </h3>";
 // $newProg = $programs->createProgram("Testphp Prog9");
 // $newPhaseId = $programs->createPhase("Testphp Phase2", $newProg);
 
-// $newExerciseId = $programs->createExercise(434, $newPhaseId);
+// $newExerciseId = $programs->createExercise(434, $newPhas eId);
 // $highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
 // echo "HO: " .  $highestOrder;
 // $programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);

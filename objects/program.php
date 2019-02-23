@@ -1939,8 +1939,19 @@ public function duplicateGeneralProgram($existingProgram){
             return $lastid;
         }
     }
+    public function newCorp($corpName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corps";
+        //$corpName = trim($corpName);
+        if (isset($corpName) && !is_null($corpName)){
+            $wpdb->insert($tableName, array(
+            "name" => $corpName));
+            $lastid = $wpdb->insert_id;
+            return $lastid;
+        }
+    }
 
-    public function newCorpGroup($groupName){
+    public function newCorpGroup($groupName, $corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_groups";
         $groupName = trim($groupName);
@@ -1949,6 +1960,12 @@ public function duplicateGeneralProgram($existingProgram){
             "name" => $groupName,
             "type" => 1));
             $lastid = $wpdb->insert_id;
+
+            $tableName = $wpdb->prefix . "cura_corp_groups";
+            $wpdb->insert($tableName, array(
+            "group_id" => $lastid,
+            "corp_Id" => $corpId));
+            
             return $lastid;
         }
     }
@@ -2206,6 +2223,8 @@ public function duplicateGeneralProgram($existingProgram){
         return $body_part;
 
     }
+
+    
 
 
 

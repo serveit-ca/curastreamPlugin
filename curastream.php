@@ -146,6 +146,20 @@ function load_wp_media(){
     });
 
     add_action('rest_api_init', function(){
+        register_rest_route('curastream', '/mempr_new_sub_corp/', array(
+            'methods' => 'POST',
+            'callback' => 'mempr_add_new_sub_corp'
+        ));
+    });
+
+    add_action('rest_api_init', function(){
+        register_rest_route('curastream', '/mempr_remove_sub_corp/', array(
+            'methods' => 'POST',
+            'callback' => 'mempr_remove_sub_corp'
+        ));
+    });
+
+    add_action('rest_api_init', function(){
     $programs = new program();
         register_rest_route('curastream', '/view_program_details/', array(
             'methods' => 'GET',
@@ -190,20 +204,33 @@ function mempr_add_new_corp($request){
     $data = $request->get_json_params();
     $programs = new program();
     // Check To Ensure it is a Corp Sub
-    
-    // Get Data From The Json
 
-    // Use Data to look up data we need
-
-    // Put data back in on our end
     // New Corp
-
+    $newCorpId = $programs->newCorp("Corp Name");
     // New Group
-
-    // New Corp Group
-
+    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
     // Assign Group Users
-    $programs->newCorpGroup("test corp webhook for nathan");
+}
+
+function mempr_add_new_sub_corp($request){
+    $data = $request->get_json_params();
+    $programs = new program();
+    // Check To Ensure it is a Corp Sub
+    // New Group
+    $newGroupId = $programs->newCorpGroup("Corp Name - New Group Name", $data['corpId']);
+    // Assign Group Users
+}
+
+function mempr_remove_sub_corp($request){
+    $data = $request->get_json_params();
+    $programs = new program();
+    // Check To Ensure it is a Corp Sub
+
+    // New Corp
+    $newCorpId = $programs->newCorp("Corp Name");
+    // New Group
+    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
+    // Assign Group Users
 }
 
 
