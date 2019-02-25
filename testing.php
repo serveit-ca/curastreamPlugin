@@ -7,9 +7,9 @@ require_once ("objects/databaseManagement.php");
 // $database = new databaseManagement();
  $programs = new program();
 // New Corp
-    error_log("Testing Php");
+    error_log("Testing Php New Log");
 
-    echo phpinfo();
+    //echo phpinfo();
 
 
 

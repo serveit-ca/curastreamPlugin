@@ -201,7 +201,7 @@ echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>
 }
 
 function mempr_add_new_corp($request){
-    $jsonData = wp_remote_retrieve_body($request);
+    $jsonData = get_json_params($request);
     $data = json_decode($jsonData);
     $programs = new program();
     // Check To Ensure it is a Corp Sub
@@ -213,9 +213,10 @@ function mempr_add_new_corp($request){
     $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
     // Assign Group Owner
 
-    error_log("Before Assign To Group");
+    error_log("-------------------------------------------------------");
+    error_log(print_r($data));
     $programs->assignUserToGroup($newGroupId, $data->member->id);
-    error_log("Post Assign To Group");
+    //error_log("Post Assign To Group");
 }
 
 function mempr_add_new_sub_corp($request){
