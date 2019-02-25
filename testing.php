@@ -7,10 +7,9 @@ require_once ("objects/databaseManagement.php");
 // $database = new databaseManagement();
  $programs = new program();
 // New Corp
-    $newCorpId = $programs->newCorp("Corp Name");
-    // New Group
-    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
+    error_log("Testing Php");
 
+    echo phpinfo();
 
 
 

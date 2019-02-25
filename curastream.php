@@ -201,36 +201,43 @@ echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>
 }
 
 function mempr_add_new_corp($request){
-    $data = $request->get_json_params();
+    $jsonData = wp_remote_retrieve_body($request);
+    $data = json_decode($jsonData);
     $programs = new program();
     // Check To Ensure it is a Corp Sub
 
     // New Corp
+    //$corpName = $data['']
     $newCorpId = $programs->newCorp("Corp Name");
     // New Group
     $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
-    // Assign Group Users
+    // Assign Group Owner
+
+    error_log("Before Assign To Group");
+    $programs->assignUserToGroup($newGroupId, $data->member->id);
+    error_log("Post Assign To Group");
 }
 
 function mempr_add_new_sub_corp($request){
     $data = $request->get_json_params();
     $programs = new program();
-    // Check To Ensure it is a Corp Sub
-    // New Group
-    $newGroupId = $programs->newCorpGroup("Corp Name - New Group Name", $data['corpId']);
-    // Assign Group Users
+    //Get Group Id From Json
+
+    //Get User Id From Json
+    
+    // Assign User To Corp Group
+    $programs->assignUserToGroup($groupId, $userId);
 }
 
 function mempr_remove_sub_corp($request){
     $data = $request->get_json_params();
     $programs = new program();
-    // Check To Ensure it is a Corp Sub
+    //Get Group Id From Json
 
-    // New Corp
-    $newCorpId = $programs->newCorp("Corp Name");
-    // New Group
-    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
-    // Assign Group Users
+    //Get User Id From Json
+    
+    // Remove User From Corp Group
+    $programs->removeUserFromGroup($groupId, $userId);
 }
 
 
