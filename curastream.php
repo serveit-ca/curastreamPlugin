@@ -201,10 +201,19 @@ echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>
 }
 
 function mempr_add_new_corp($request){
-    error_log("-------------------------------------------------------");
-     error_log("Error: ".$request->get_body());
-       error_log("-------------------------------------------------------");
-     error_log("Error: ".$request->get_body());
+    $json = file_get_contents('php://input');
+    $input = json_decode($json);
+
+    error_log("-------------------Decode JSON------------------------------------");
+    error_log("Full String: ".$json);
+    error_log( print_r($input, TRUE) );
+     error_log( $input->data->member->id) ;
+    error_log("Error JSON ".json_last_error());
+    // $halfString = end(explode('"member":{"id":',$json));
+    // error_log("Half String: ".$halfString);
+    // $cutString = reset(explode(',',$halfString));
+    // error_log("Cut String: ".$cutString);
+
    // $jsonData = headerRest($request);
     //$data = json_decode($jsonData);
     //$programs = new program();
