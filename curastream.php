@@ -207,7 +207,7 @@ function mempr_add_new_corp($request){
     error_log("-------------------Decode JSON------------------------------------");
     error_log("Full String: ".$json);
     error_log( print_r($input, TRUE) );
-     error_log( $input->data->member->id) ;
+    error_log( $input->data->member->id) ;
     error_log("Error JSON ".json_last_error());
     // $halfString = end(explode('"member":{"id":',$json));
     // error_log("Half String: ".$halfString);
