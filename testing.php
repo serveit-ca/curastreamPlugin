@@ -7,7 +7,7 @@ require_once ("objects/databaseManagement.php");
 // $database = new databaseManagement();
  $programs = new program();
 // New Corp
-    error_log("Testing Php New Log");
+    $programs->changeGroupUserPrivilege(33, 188, 2);
 
     //echo phpinfo();
 

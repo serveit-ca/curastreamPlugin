@@ -2224,6 +2224,42 @@ public function duplicateGeneralProgram($existingProgram){
 
     }
 
+    public function updateMemprIdToCorp($memprId, $corpId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corps";
+
+        if (isset($memprId) && !is_null($memprId)){
+            $wpdb->update($tableName, array(
+            "mempr_id" => $memprId),
+            array( // Where Clause
+            "id" => $corpId));
+        }
+
+    }
+
+    public function getCorpIdByMemprId($memprId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corps";
+
+        $corpId = $wpdb->get_row("SELECT id FROM $tableName WHERE mempr_id = $memprId");
+
+        return $corpId;
+    }
+
+    public function getGroupIdByCorpId($corpId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_groups";
+
+        $groupId = $wpdb->get_row("SELECT group_id FROM $tableName WHERE corp_id = $corpId");
+
+        return $groupId;
+    }
+
+
+
+
+
+
     
 
 

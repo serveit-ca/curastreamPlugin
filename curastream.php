@@ -203,56 +203,55 @@ echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>
 function mempr_add_new_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
+    $programs = new program();
 
-    error_log("-------------------Decode JSON------------------------------------");
-    error_log("Full String: ".$json);
-    error_log( print_r($input, TRUE) );
-    error_log( $input->data->member->id) ;
-    error_log("Error JSON ".json_last_error());
+    // error_log("-------------------Decode JSON------------------------------------");
+    // error_log("Full String: ".$json);
+    // error_log( print_r($input, TRUE) );
+    // error_log( $input->data->member->id) ;
+    // error_log("Error JSON ".json_last_error());
     // $halfString = end(explode('"member":{"id":',$json));
     // error_log("Half String: ".$halfString);
     // $cutString = reset(explode(',',$halfString));
     // error_log("Cut String: ".$cutString);
 
-   // $jsonData = headerRest($request);
-    //$data = json_decode($jsonData);
-    //$programs = new program();
-     
-      //error_log(print_r($data));
     // Check To Ensure it is a Corp Sub
 
     // New Corp
     //$corpName = $data['']
-  //  $newCorpId = $programs->newCorp("Corp Name");
+    $newCorpId = $programs->newCorp("Corp Name");
+    // Add mepr Id to Corp
+    $programs->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
     // New Group
-    //$newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
-    // Assign Group Owner
-
-   
-    //$programs->assignUserToGroup($newGroupId, $data->member->id);
-    //error_log("Post Assign To Group");
+    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
+    // Assign Group Owner   
+    $programs->assignUserToGroup($newGroupId, $input->data->member->id);
+    $programs->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);
 }
 
 function mempr_add_new_sub_corp($request){
-    $data = $request->get_json_params();
+    $json = file_get_contents('php://input');
+    $input = json_decode($json);
     $programs = new program();
-    //Get Group Id From Json
-
-    //Get User Id From Json
-    
-    // Assign User To Corp Group
-    $programs->assignUserToGroup($groupId, $userId);
+    //Get Mempr Corp Id From Json
+    $memprId = $input->data->membership->id;
+    //Get Curastream database Corp Id From memprId
+    $corpId = $programs->getCorpIdByMemprId($memprId);
+    $groupId = $programs->getGroupIdByCorpId($corpId);
+    // Remove User From Corp Group    // Assign User To Corp Group
+    $programs->assignUserToGroup($groupId, $input->data->id);
 }
 
 function mempr_remove_sub_corp($request){
     $data = $request->get_json_params();
     $programs = new program();
-    //Get Group Id From Json
-
-    //Get User Id From Json
-    
+    //Get Mempr Corp Id From Json
+    $memprId = $input->data->membership->id;
+    //Get Curastream database Corp Id From memprId
+    $corpId = $programs->getCorpIdByMemprId($memprId);
+    $groupId = $programs->getGroupIdByCorpId($corpId);
     // Remove User From Corp Group
-    $programs->removeUserFromGroup($groupId, $userId);
+    $programs->removeUserFromGroup($groupId, $input->data->id);
 }
 
 
