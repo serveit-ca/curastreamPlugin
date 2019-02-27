@@ -2243,7 +2243,7 @@ public function duplicateGeneralProgram($existingProgram){
 
         $corpId = $wpdb->get_row("SELECT id FROM $tableName WHERE mempr_id = $memprId");
 
-        return $corpId;
+        return $corpId->id;
     }
 
     public function getGroupIdByCorpId($corpId){
@@ -2252,7 +2252,7 @@ public function duplicateGeneralProgram($existingProgram){
 
         $groupId = $wpdb->get_row("SELECT group_id FROM $tableName WHERE corp_id = $corpId");
 
-        return $groupId;
+        return $groupId->group_id;
     }
 
 

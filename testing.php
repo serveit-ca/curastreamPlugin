@@ -7,8 +7,11 @@ require_once ("objects/databaseManagement.php");
 // $database = new databaseManagement();
  $programs = new program();
 // New Corp
-    $programs->changeGroupUserPrivilege(33, 188, 2);
-
+    $corpId = $programs->getCorpIdByMemprId(6769);
+    echo $corpId;
+    echo "<br> --------------- <br>";
+    $groupId = $programs->getGroupIdByCorpId($corpId);
+    echo $groupId;
     //echo phpinfo();
 
 

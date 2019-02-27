@@ -233,8 +233,11 @@ function mempr_add_new_sub_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
     $programs = new program();
+    error_log("--------------------Add Sub Account ----------------------------------");
     //Get Mempr Corp Id From Json
     $memprId = $input->data->membership->id;
+    
+    error_log($memprId);
     //Get Curastream database Corp Id From memprId
     $corpId = $programs->getCorpIdByMemprId($memprId);
     $groupId = $programs->getGroupIdByCorpId($corpId);
@@ -243,8 +246,10 @@ function mempr_add_new_sub_corp($request){
 }
 
 function mempr_remove_sub_corp($request){
-    $data = $request->get_json_params();
+    $json = file_get_contents('php://input');
+    $input = json_decode($json);
     $programs = new program();
+    error_log("--------------------Remove Sub Account ----------------------------------");
     //Get Mempr Corp Id From Json
     $memprId = $input->data->membership->id;
     //Get Curastream database Corp Id From memprId
