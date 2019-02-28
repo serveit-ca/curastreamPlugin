@@ -242,7 +242,7 @@ function mempr_add_new_sub_corp($request){
     $corpId = $programs->getCorpIdByMemprId($memprId);
     $groupId = $programs->getGroupIdByCorpId($corpId);
     // Remove User From Corp Group    // Assign User To Corp Group
-    $programs->assignUserToGroup($groupId, $input->data->id);
+    $programs->assignUserToGroup($groupId, $input->data->member->id);
 }
 
 function mempr_remove_sub_corp($request){
@@ -256,7 +256,7 @@ function mempr_remove_sub_corp($request){
     $corpId = $programs->getCorpIdByMemprId($memprId);
     $groupId = $programs->getGroupIdByCorpId($corpId);
     // Remove User From Corp Group
-    $programs->removeUserFromGroup($groupId, $input->data->id);
+    $programs->removeUserFromGroup($groupId, $input->data->member->id);
 }
 
 
