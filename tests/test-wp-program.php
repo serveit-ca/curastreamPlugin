@@ -769,7 +769,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $tracking->userViewProgramRecording(1, 37);
     $lastViewedId = $tracking->getLastViewedProgram(1);
     assert($lastViewedId == 37);
-    $this->reset_database
+    $this->reset_database();
 
   }
 
