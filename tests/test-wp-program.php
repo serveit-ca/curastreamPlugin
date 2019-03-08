@@ -1,4 +1,5 @@
 <?php 
+include "../objects/userTracking.php";
 
 class WP_Program_Test extends WP_UnitTestCase
 {
@@ -767,6 +768,15 @@ class WP_Program_Test extends WP_UnitTestCase
     $tracking = new userTracking();
     $tracking->userViewProgramRecording(1, 37);
     $lastViewedId = $tracking->getLastViewedProgram(1);
+    assert($lastViewedId == 37);
+    $this->reset_database
+
+  }
+
+  public function test_user_view_exercise_recording(){
+    $tracking = new userTracking();
+    $tracking->userViewExerciseRecording(1, 37);
+    $lastViewedId = $tracking->getLastViewedExercise(1);
     assert($lastViewedId == 37);
 
   }
