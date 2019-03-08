@@ -756,6 +756,21 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($newVideo->name == "Test Name");
   }
 
+  public function test_user_login_recording(){
+    $tracking = new userTracking();
+    $tracking->userLoginRecording(1);
+    $numLogin = $tracking->getAllUserLogin(1);
+    assert($numLogin == 1);
+  }
+
+  public function test_user_view_program_recording(){
+    $tracking = new userTracking();
+    $tracking->userViewProgramRecording(1, 37);
+    $lastViewedId = $tracking->getLastViewedProgram(1);
+    assert($lastViewedId == 37);
+
+  }
+
 
 }
 
