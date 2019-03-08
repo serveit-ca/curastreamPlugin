@@ -803,8 +803,11 @@ class WP_Program_Test extends WP_UnitTestCase
   public function test_get_all_user_login(){
     $tracking = new userTracking();
     $tracking->userLoginRecording(1);
+    sleep(2);
     $tracking->userLoginRecording(1);
+    sleep(2);
     $tracking->userLoginRecording(1);
+    sleep(2);
     $tracking = new userTracking();
     $numLogin = $tracking->getAllUserLogin(1);
     echo $numLogin;
