@@ -778,6 +778,18 @@ class WP_Program_Test extends WP_UnitTestCase
     $tracking->userViewExerciseRecording(1, 37);
     $lastViewedId = $tracking->getLastViewedExercise(1);
     assert($lastViewedId == 37);
+    $this->reset_database();
+
+  }
+
+  public function test_user_view_program_exercise_recording(){
+    $tracking = new userTracking();
+    $tracking-> userViewProgramExerciseRecording(1, 37, 38);
+    $lastViewedId = $tracking->getLastViewedExercise(1);
+    assert($lastViewedId == 38);
+    $lastViewedId = $tracking->getLastViewedProgram(1);
+    assert($lastViewedId == 37);
+    $this->reset_database();
 
   }
 
