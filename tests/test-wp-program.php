@@ -805,6 +805,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $tracking->userLoginRecording(1);
     $tracking->userLoginRecording(1);
     $tracking->userLoginRecording(1);
+    $tracking = new userTracking();
     $numLogin = $tracking->getAllUserLogin(1);
     assert($numLogin == 3);
   }
