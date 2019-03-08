@@ -5,6 +5,8 @@ Description: Add Programs
 Author: Admin
 */
 // Used for page filtering 
+include("objects/program.php");
+include("objects/userTracking.php");
 include("ajaxSaves.php");
 include("ajaxCustomProgram.php");
 // Used for Ajax Saves to DB 
