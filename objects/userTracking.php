@@ -121,7 +121,7 @@ class userTracking
 	function getLastViewedProgram($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
-		$programLog = $wpdb->get_results("SELECT program_id FROM $tableName WHERE user_id = $userId AND event_type = 1 ORDER BY event_timestamp DESC LIMIT 1");
+		$programLog = $wpdb->get_results("SELECT program_id FROM $tableName WHERE user_id = $userId AND (event_type = 1 OR event_type =3) ORDER BY event_timestamp DESC LIMIT 1");
 		foreach ($programLog as $key) {
 			$progId = $key->program_id;
 		}
@@ -138,7 +138,7 @@ class userTracking
 	function getLastViewedExercise($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
-		$exerciseLog = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId AND event_type = 2 ORDER BY event_timestamp DESC LIMIT 1");
+		$exerciseLog = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId AND (event_type = 2 OR event_type =3)  ORDER BY event_timestamp DESC LIMIT 1");
 		foreach ($exerciseLog as $key) {
 			$exerciseId = $key->exercise_id;
 		}
