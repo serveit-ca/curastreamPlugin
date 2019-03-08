@@ -793,6 +793,22 @@ class WP_Program_Test extends WP_UnitTestCase
 
   }
 
+  public function test_last_user_login(){
+    $tracking = new userTracking();
+    $lastLog = $tracking->getLastUserLogin(1);
+    assert($lastLog == "No Login Recorded");
+    $this->reset_database();
+  }
+
+  public function test_get_all_user_login(){
+    $tracking = new userTracking();
+    $tracking->userLoginRecording(1);
+    $tracking->userLoginRecording(1);
+    $tracking->userLoginRecording(1);
+    $numLogin = $tracking->getAllUserLogin(1);
+    assert($numLogin == 3);
+  }
+
 
 }
 
