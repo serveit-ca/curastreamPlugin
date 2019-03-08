@@ -8,13 +8,13 @@ require_once ("objects/databaseManagement.php");
 $tracking = new userTracking();
 
 
-$tracking->userLoginRecording(5);
-$lastLogin = $tracking->getLastUserLogin(5);
+$tracking->userLoginRecording(3);
+$lastLogin = $tracking->getLastUserLogin(3);
 echo "<br> Last Login:  " . $lastLogin;
-$tracking->userViewProgramRecording(5, 35);
+$tracking->userViewProgramRecording(3, 33);
 
 $tracking = new userTracking();
-$progId = $tracking->getLastViewedProgram(5);
+$progId = $tracking->getLastViewedProgram(3);
 echo "<br> Last Viewed Program:  " . $progId;
 
 

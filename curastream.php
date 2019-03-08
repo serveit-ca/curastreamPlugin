@@ -89,6 +89,13 @@ function add_submenu() {
             '',
             ''
         );
+
+         add_submenu_page('curastreamPlugin','User Metrics','User Metrics',
+            'curaProgEditor',
+            'curastream/userMetrics.php',
+            '',
+            ''
+        );
  
     add_submenu_page('curastreamPlugin','Category Management','Category Management',
         'curaProgEditor',

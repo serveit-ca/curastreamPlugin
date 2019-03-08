@@ -62,6 +62,8 @@ class userTracking
 	}
 
 
+
+
 	//Get last user login function
 	function getLastUserLogin($userId){
 		global $wpdb;
@@ -70,7 +72,12 @@ class userTracking
 		foreach ($lastTime as $key) {
 			$time = $key->event_timestamp;
 		}
-		return $time;
+		if(isset($time)){
+			return $time;
+		}
+		else {
+			return "No Login Recorded";
+		}
 	}
 
 
@@ -86,15 +93,44 @@ class userTracking
 		return $count;
 	}
 
+	//Get Total user program views
+	function getTotalViewedPrograms($userId){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_user_tracking";
+		$programLog = $wpdb->get_results("SELECT program_id FROM $tableName WHERE user_id = $userId AND event_type = 1 ORDER BY event_timestamp DESC");
+		$count = 0;
+		foreach ($programLog as $key) {
+			$count++;
+		}
+		return $count;
+	}
+
+	//Get Total user exercise views
+	function getTotalViewedExercises($userId){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "cura_user_tracking";
+		$exerciseLog = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId AND event_type = 1 ORDER BY event_timestamp DESC");
+		$count = 0;
+		foreach ($exerciseLog as $key) {
+			$count++;
+		}
+		return $count;
+	}
+
 	//Get Last Viewed Program
 	function getLastViewedProgram($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
-		$programLog = $wpdb->get_results("SELECT program_id FROM $tableName WHERE user_id = $userId ORDER BY event_timestamp DESC LIMIT 1");
+		$programLog = $wpdb->get_results("SELECT program_id FROM $tableName WHERE user_id = $userId AND event_type = 1 ORDER BY event_timestamp DESC LIMIT 1");
 		foreach ($programLog as $key) {
 			$progId = $key->program_id;
 		}
-		return $progId;
+		if(isset($progId)){
+			return $progId;
+		}
+		else {
+			return "No Program Viewed";
+		}
 	}
 
 
@@ -102,11 +138,16 @@ class userTracking
 	function getLastViewedExercise($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
-		$exerciseLog = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId ORDER BY event_timestamp DESC LIMIT 1");
+		$exerciseLog = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId AND event_type = 2 ORDER BY event_timestamp DESC LIMIT 1");
 		foreach ($exerciseLog as $key) {
 			$exerciseId = $key->exercise_id;
 		}
-		return $exerciseId;
+		if(isset($exerciseId)){
+			return $exerciseId;
+		}
+		else {
+			return "No Exercise Viewed";
+		}
 	}
 
 	//Get last program view function
