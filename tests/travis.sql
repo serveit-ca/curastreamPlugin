@@ -1284,6 +1284,6 @@ ALTER TABLE `wptests_cura_deleted`
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
   ALTER TABLE `wptests_cura_user_tracking`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+  ADD PRIMARY KEY (`id`);COMMIT;
 
 
