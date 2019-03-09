@@ -7,15 +7,16 @@ require_once ("objects/exercise.php");
 require_once ("objects/databaseManagement.php");
 $tracking = new userTracking();
 
-
-$tracking->userLoginRecording(3);
-$lastLogin = $tracking->getLastUserLogin(3);
-echo "<br> Last Login:  " . $lastLogin;
-$tracking->userViewProgramRecording(3, 33);
-
 $tracking = new userTracking();
-$progId = $tracking->getLastViewedProgram(3);
-echo "<br> Last Viewed Program:  " . $progId;
+    $tracking->userLoginRecording(1);
+    sleep(2);
+    $tracking->userLoginRecording(1);
+    sleep(2);
+    $tracking->userLoginRecording(1);
+    sleep(2);
+    $tracking = new userTracking();
+    $numLogin = $tracking->getAllUserLogin(1);
+    echo "Number of Logins: " .  $numLogin;
 
 
 
