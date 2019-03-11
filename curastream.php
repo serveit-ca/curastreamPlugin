@@ -186,6 +186,7 @@ add_action( 'init', 'add_curastream_user_role');
 function userLoginHandler($data){
     $tracking = new userTracking();
     $user_id = $data['id'];
+    echo "<br> </br>" . $user_id;
     $tracking->userLoginRecording($user_id);
 }
 
