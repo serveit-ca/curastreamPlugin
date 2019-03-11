@@ -130,6 +130,38 @@ function load_wp_media(){
     wp_enqueue_media();
 }
 
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/login/(?P<userid>\d+)/(?P<programid>\d+)', array(
+            'methods' => 'GET',
+            'callback' => array($programs, 'userViewProgramHandler'),
+            ));
+    } );
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/login/(?P<userid>\d+)/(?P<exerciseid>\d+)', array(
+            'methods' => 'GET',
+            'callback' => array($programs, 'userViewExerciseHandler'),
+            ));
+    } );
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/login/(?P<userid>\d+)/(?P<programid>\d+)/(?P<exerciseid>\d+)', array(
+            'methods' => 'GET',
+            'callback' => array($programs, 'userViewExerciseHandler'),
+            ));
+    } );
+
+add_action('rest_api_init', function(){
+    $programs = new program();
+        register_rest_route('curastream/v2', '/login/(?P<id>\d+)', array(
+            'methods' => 'GET',
+            'callback' => array($programs, 'userViewProgramExerciseHandler'),
+            ));
+    } );
+
 add_action( 'admin_menu', 'add_menu');
 add_action( 'admin_menu', 'add_submenu');
 add_action( 'admin_enqueue_scripts', 'load_wp_media' );
@@ -151,12 +183,37 @@ add_action( 'init', 'add_curastream_user_role');
 
 // api functions
 
-/**
- * Grab latest post title by an author!
- *
- * @param array $data Options for the function.
- * @return string|null Post title for the latest,  * or null if none.
- */
+function userLoginHandler($data){
+    $tracking = new userTracking();
+    $user_id = $data['id'];
+    $tracking->userLoginRecording($user_id);
+}
+
+function userViewProgramHandler($data){
+    $tracking = new userTracking();
+    $user_id = $data['userid'];
+    $program_id = $data['programid'];
+    $tracking->userViewProgramRecording($user_id, $program_id);
+
+}
+
+function userViewExerciseHandler($data){
+    $tracking = new userTracking();
+    $user_id = $data['userid'];
+    $exercise_id = $data['exerciseid'];
+    $tracking->userViewProgramRecording($user_id, $exercise_id);
+
+}
+
+function userViewProgramExerciseHandler($data){
+    $tracking = new userTracking();
+    $user_id = $data['userid'];
+    $exercise_id = $data['exerciseid'];
+    $program_id = $data['programid'];
+    $tracking->userViewProgramExerciseRecording($user_id, $program_id, $exercise_id);
+
+}
+
 function curastream_parent_page() {
 echo "<h1>Welcome to the Curastream Plugin</h1>";
 echo "<h3>Here are some useful Links</h3>";
