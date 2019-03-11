@@ -819,7 +819,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $lastLoginNone = $tracking->getLastViewedProgram(1);
     assert($lastLoginNone == "No Program Viewed");
     $tracking->userViewProgramRecording(1,1);
-    $lastLog = $tracking->getLastViewedProgram(1)
+    $lastLog = $tracking->getLastViewedProgram(1);
     assert($lastLog == 1);
     $this->reset_database();
   }
@@ -829,7 +829,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $lastLoginNone = $tracking->getLastViewedExercise(1);
     assert($lastLoginNone == "No Exercise Viewed");
     $tracking->userViewExerciseRecording(1,1);
-    $lastLog = $tracking->getLastViewedExercise(1)
+    $lastLog = $tracking->getLastViewedExercise(1);
     assert($lastLog == 1);
   }
 
