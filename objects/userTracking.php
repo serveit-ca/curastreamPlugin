@@ -52,7 +52,7 @@ class userTracking
 	public function userViewProgramExerciseRecording($userId, $programId, $exerciseId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
-		if (isset($userId) && !is_null($userId) && isset($programId) && !is_null($programId)){
+		if (isset($userId) && !is_null($userId) && isset($programId) && !is_null($programId) && isset($exerciseId) && !is_null($exerciseId)){
 	            $wpdb->insert($tableName, array(
 	            "user_id" => $userId,
 	            "program_id" => $programId,

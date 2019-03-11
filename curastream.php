@@ -131,34 +131,34 @@ function load_wp_media(){
 }
 
 add_action('rest_api_init', function(){
-    $programs = new program();
-        register_rest_route('curastream/v2', '/login/(?P<userid>\d+)/(?P<programid>\d+)', array(
+    
+        register_rest_route('curastream/v2', '/viewprog/(?P<userid>\d+)/(?P<programid>\d+)', array(
             'methods' => 'GET',
-            'callback' => array($programs, 'userViewProgramHandler'),
+            'callback' => 'userViewProgramHandler',
             ));
     } );
 
 add_action('rest_api_init', function(){
-    $programs = new program();
-        register_rest_route('curastream/v2', '/login/(?P<userid>\d+)/(?P<exerciseid>\d+)', array(
+    
+        register_rest_route('curastream/v2', '/viewexercise/(?P<userid>\d+)/(?P<exerciseid>\d+)', array(
             'methods' => 'GET',
-            'callback' => array($programs, 'userViewExerciseHandler'),
+            'callback' => 'userViewExerciseHandler',
             ));
     } );
 
 add_action('rest_api_init', function(){
-    $programs = new program();
-        register_rest_route('curastream/v2', '/login/(?P<userid>\d+)/(?P<programid>\d+)/(?P<exerciseid>\d+)', array(
+    
+        register_rest_route('curastream/v2', '/viewprogexercise/(?P<userid>\d+)/(?P<programid>\d+)/(?P<exerciseid>\d+)', array(
             'methods' => 'GET',
-            'callback' => array($programs, 'userViewExerciseHandler'),
+            'callback' => 'userViewProgramExerciseHandler',
             ));
     } );
 
 add_action('rest_api_init', function(){
-    $programs = new program();
+    
         register_rest_route('curastream/v2', '/login/(?P<id>\d+)', array(
             'methods' => 'GET',
-            'callback' => array($programs, 'userViewProgramExerciseHandler'),
+            'callback' => 'userLoginHandler',
             ));
     } );
 
@@ -202,7 +202,7 @@ function userViewExerciseHandler($data){
     $tracking = new userTracking();
     $user_id = $data['userid'];
     $exercise_id = $data['exerciseid'];
-    $tracking->userViewProgramRecording($user_id, $exercise_id);
+    $tracking->userViewExerciseRecording($user_id, $exercise_id);
 
 }
 
