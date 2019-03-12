@@ -811,7 +811,7 @@ class WP_Program_Test extends WP_UnitTestCase
     $tracking = new userTracking();
     $numLogin = $tracking->getAllUserLogin(1);
     echo $numLogin;
-    assert($numLogin == 3);
+    assert($numLogin == 1);
   }
 
   public function get_last_viewed_program(){
