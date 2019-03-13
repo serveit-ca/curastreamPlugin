@@ -10,93 +10,10 @@ jQuery(document).ready(function() {
 });
 // Table Filtering 
 
-jQuery(document).ready(function(){
-	jQuery('#bodyParts').DataTable({
-		paging: false,
-		 "columns": [
-   	null,
-    null,
-    null,
-     { "searchable": false },
-     { "searchable": false }
-  ]
-	});
-});
 
-jQuery(document).ready(function(){
-	jQuery('#injuryType').DataTable({
-		paging: false,
-		 "columns": [
-   	null,
-    null,
-    null,
-     { "searchable": false },
-     { "searchable": false }
-  ]
-	});
-});
-
-jQuery(document).ready(function(){
-	jQuery('#sportsAndOccupations').DataTable({
-		paging: false,
-		 "columns": [
-   	null,
-    null,
-    null,
-     { "searchable": false },
-     { "searchable": false },
-     { "searchable": false }
-  ]
-	});
-});
-
-jQuery(document).ready(function(){
-	jQuery('#exerciseVideos').DataTable({
-		paging: false,
-		 "columns": [
-   	null,
-    null,
-      { "searchable": false },
-     { "searchable": false },
-     null,
-     null,
-     { "searchable": false }
-  ]
-	});
-});
-jQuery(document).ready(function(){
-	jQuery('#programMetrics').DataTable({
-		paging: false,
-		 "columns": [
-   	null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    { "searchable": false }
-  ]
-	});
-});
-jQuery(document).ready(function(){
-	jQuery('#customProgramMetrics').DataTable({
-		paging: false,
-		 "columns": [
-   	null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    { "searchable": false }
-  ]
-	});
-});
 
 // /////////////Functions used to show and hide all objects
-jQuery(".showHideAll").on('click', function(event){
+jQuery(".showHideAll").live('click', function(event){
 	if(jQuery(this).hasClass("fa-angle-down")){
 		jQuery(this).removeClass("fa-angle-down");
 		jQuery(this).addClass("fa-angle-up");
