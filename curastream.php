@@ -58,8 +58,10 @@ function register_scripts_with_jquery(){
     wp_register_style( 'curastreamStyle', plugins_url( 'assets/css/style.css', __FILE__ ));
     wp_enqueue_style( 'curastreamStyle');
     wp_register_script( 'custom-programUI-script', plugins_url( 'assets/js/customProgramUI.js', __FILE__ ), "", "", true);
+    wp_register_script( 'catagory-management-script', plugins_url( 'assets/js/categoryManagement.js', __FILE__ ), "", "", true);
     // For either a plugin or a theme, you can then enqueue the script:
     wp_enqueue_script( 'custom-programUI-script' );
+    wp_enqueue_script( 'catagory-management-script' );
   
 }
 
