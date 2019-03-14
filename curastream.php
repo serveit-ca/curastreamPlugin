@@ -7,6 +7,10 @@ Author: Admin
 // Used for page filtering 
 include("ajaxSaves.php");
 include("ajaxCustomProgram.php");
+include("rest.php");
+include("objects/program.php");
+include("objects/userTracking.php");
+
 // Used for Ajax Saves to DB 
 function curastream_add_bootstrap_And_Other() 
     {       
@@ -37,17 +41,10 @@ function curastream_add_bootstrap_And_Other()
     }
 add_action('admin_enqueue_scripts', 'curastream_add_bootstrap_And_Other');
 
-add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
-// Add Media Image Script 
-// As you are dealing with plugin settings,
-// I assume you are in admin side
-
 function load_wp_media_files() {
     // Enqueue WordPress media scripts
     wp_enqueue_media();
     wp_enqueue_script( 'wp-api' );
-
-    // Enqueue custom script that will interact with wp.media
   }
 
 add_action( 'admin_enqueue_scripts', 'load_wp_media_files' );
@@ -62,8 +59,9 @@ function register_scripts_with_jquery(){
     // For either a plugin or a theme, you can then enqueue the script:
     wp_enqueue_script( 'custom-programUI-script' );
     wp_enqueue_script( 'catagory-management-script' );
-  
 }
+
+add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
 
 // register_activation_hook( __FILE__, 'Curastream_install');
 function add_menu() {
@@ -75,6 +73,8 @@ function add_menu() {
         2
     );
 }
+add_action( 'admin_menu', 'add_menu');
+
 function add_submenu() {
   
         add_submenu_page('curastreamPlugin','Program Administration','Program Administration',
@@ -118,13 +118,13 @@ function add_submenu() {
     );
     }
 }
+add_action( 'admin_menu', 'add_submenu');
+
+
 
 function load_wp_media(){
     wp_enqueue_media();
 }
-
-add_action( 'admin_menu', 'add_menu');
-add_action( 'admin_menu', 'add_submenu');
 add_action( 'admin_enqueue_scripts', 'load_wp_media' );
 
 function add_curastream_user_role() {
@@ -141,7 +141,17 @@ remove_role('curastreamProgramEditor');
 
 add_action( 'init', 'add_curastream_user_role');
 
+// Used to validate devices before they have an account created
+function checkDeviceToken($device,$token){
+        $d['ios']='BSg&v:ShSB/VCAT]/7Y?[106xO]63IOYpq>d?hs%clOvuFF^7#v6J=lqOSjpPb{w';
+        $d['android']='P+D1M)P8Wa[nh8q{(s$5s[zhkeqi($Cm74~tnGzm$@#5;4c&Qsh6.@Q|n=7*D+Y<';
+        $d['web']='aP^gx|7Z+|P:SOg-`DiW#|FHZ:YbKaHYCcXsg|u.-,)d52(3@tayO(yR>e7m@iT.';
 
+        if($d[$device] == $token){
+            return true;
+        }
+    return false;
+}
 // api functions
 
 /**
@@ -154,6 +164,7 @@ function curastream_parent_page() {
 echo "<h1>Welcome to the Curastream Plugin</h1>";
 echo "<h3>Here are some useful Links</h3>";
 echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>");
+echo ("<ul><li><a href=\"https://curastream.serveit.work/doc/\">JSON Output</a></li></ul>");
 }
 
 function get_body_part() {
@@ -217,7 +228,417 @@ add_action( 'rest_api_init', function () {
         'methods' => 'GET',
         'callback' => 'get_programs',
     ) );
+
+    register_rest_route(
+    'curastream', '/get_logged_in_user_id/',
+    array(
+    'methods'  => 'GET',
+    'callback' => 'get_logged_in_user_id',
+    )
+    );
+    register_rest_route(
+    'curastream', '/afl/',
+    array(
+        'methods'  => 'GET',
+        'callback' => 'authFromLink',
+    )
+);
+    register_rest_route(
+    'curastream', '/add_program_to_user_saved_list_programs/',
+    array(
+    'methods'  => 'POST',
+    'callback' => 'add_program_to_user_saved_list_programs',
+    )
+    );   
+    register_rest_route(
+    'curastream', '/get_list_all_programs_in_user_list/',
+    array(
+    'methods'  => 'GET',
+    'callback' => 'get_list_all_programs_in_user_list',
+    )
+    );
+    register_rest_route(
+    'curastream', '/view_program_details/',
+    array(
+    'methods'  => 'POST',
+    'callback' => 'view_program_details',
+    )
+    );  
+    register_rest_route(
+    'curastream', '/complete_a_program_by_user/',
+    array(
+    'methods'  => 'POST',
+    'callback' => 'complete_a_program_by_user',
+    )
+    );
 } );
+
+//002120
+
+
+function view_program_details($request){
+    
+    $data = headerRest($request);
+    $id = $data['id'];
+    if(isset($id)){
+        $programs = new program();
+        $program = $programs->getProgramById($id);
+    if(isset($program) && !is_null($program))
+    {
+            $phases = array();            
+            $progPhases = $programs->getPhasesByProgramId($program->id);            
+            foreach ($progPhases as $phase) {
+                $exerciseArray = array();
+                $exercises = $programs->getExercisesByPhaseId($phase->id);
+                   foreach ($exercises as $exercise) {
+                        $exerciseContent[] = array(
+                            "id"=>$exercise->id,
+                            "phase_id"=>$exercise->phase_id,
+                            "order_no"=>$exercise->order_no,
+                            "order_field"=>$exercise->order_field,
+                            "name"=>$exercise->name,
+                            "rest"=>$exercise->rest,
+                            "sets_reps"=>$exercise->sets_reps,
+                            "variation"=>$exercise->variation,
+                            "equipment"=>$exercise->equipment,
+                            "special_instructions"=>$exercise->special_instructions,
+                            "exercise_video_url"=>$exercise->exercise_video_url,
+                            "file_url"=>$exercise->file_url,
+                            "file_name"=>$exercise->file_name
+                            );
+                        $exerciseArray[] = $exerciseContent;
+                    }
+                $phaseContent[] = array(
+                    "id"=>$phase->id,
+                    "name"=>$phase->name,
+                    "intro"=>$phase->intro,
+                    "notes"=>$phase->notes,
+                    "exercise"=>$exerciseArray);
+                                     $phases[] = $phaseContent;
+            }
+            $partIdString = $program->body_part;
+            $sportIdString = $program->sportsOccupation;
+            $howIdString = $program->howItHappen;
+            $partIdArray = array();
+            $sportIdArray = array();
+            $howIdArray = array();
+            $partIdArray = explode(',', $partIdString);
+            $sportIdArray = explode(',', $sportIdString);
+            $howIdArray = explode(',', $howIdString);
+            $partNameArray = array();
+            $sportNameArray = array();
+            $howNameArray = array();
+            foreach ($partIdArray as $key ) {
+                $part = $programs->getBodyPartById($key);
+                $partName = $part->name;
+                $partNameArray[] = $partName;
+            }
+            $partNameString = implode(",", $partNameArray);
+            foreach ($sportIdArray as $key ) {
+                $sport = $programs->getSportOccById($key);
+                $sportName = $sport->name;
+                $sportNameArray[] = $sportName;
+            }
+            $sportNameString = implode(",", $sportNameArray);
+            foreach ($howIdArray as $key ) {
+                $how = $programs->getHowItHappenedById($key);
+                $howName = $how->name;
+                $howNameArray[] = $howName;
+            }
+            $howNameString = implode(",", $howNameArray);
+            $programContent = array(
+                "id"=>$program->id,
+                "type"=>$program->type,
+                "name"=>$program->name,
+                "description"=>$program->description,
+                "equipment"=>$program->equipment,
+                "duration"=>$program->duration,
+                "weekly_plan"=>$program->weeklyPlan,
+                "life_style"=>$program->lifeStyle,
+                "assoc_body_part_id"=>$partNameString,
+                "how_it_happen"=>$howNameString,
+                "sports_occupation"=>$sportNameString,
+                "thumbnail"=>$program->thumbnail,
+                "phases" => $phases  
+            );
+        
+    //$content = array('message' => 'Successfully removed program from user list.');
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='success';
+    $result["data"] = $programContent;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;die();
+    }
+        else
+        {
+    $content = array('message' => 'Failed to display program.');
+    //$result["sql"] =$sql;
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='success';
+    $result["data"] = $programContent;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;  
+die();
+        
+    }
+    }
+    else
+    {
+    $content = array('message' => 'All fields are required.');
+    $result["status"] ='fail';
+    $result["data"] = $programContent;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+     echo $respnse; die();
+    }
+    
+}
+function get_list_all_programs_in_user_list()
+{
+      header('Content-Type:application/json;charset=utf8');
+    header('Access-Control-Allow-Origin: *');
+    $data = file_get_contents("php://input");
+    $data = json_decode($data,TRUE);    
+    
+    $current_user = wp_get_current_user();
+    if($current_user->ID!=0)
+    {
+    
+        global $wpdb; // this is how you get access to the database
+        $cura_user_programs = $wpdb->prefix . "cura_user_programs";
+        //$dev_cura_exercise_videos = $wpdb->prefix . "cura_exercise_videos";
+        $sql = "SELECT id,saved_prog_type,saved_prog_dur,saved_prog_id,saved_prog_name,completed FROM $cura_user_programs  where user_id='".$current_user->ID."' and completed='0'";
+        $body_parts = $wpdb->get_results( $sql );
+        $i = 1; 
+        foreach ( $body_parts as $item ) 
+        {
+            /*if($item->saved_prog_dur == 0)
+            $saved_prog_dur = 'Self Paced Program';
+            else
+            $saved_prog_dur = 'Phase Completion';
+*/
+        
+        $progDetails = getProgramInfo($item->saved_prog_id);
+        if(empty($item->saved_prog_name)){
+            $item->saved_prog_name = $progDetails->name;
+        }
+
+        $content[] = array(
+        "id"                =>$item->id,
+        //"user_id"             =>$item->user_id,
+        "saved_prog_type"       =>$item->saved_prog_type,
+        'saved_prog_dur'        =>$item->saved_prog_dur,
+        "program_id"        =>$item->saved_prog_id,
+        'prog_name'=>   $item->saved_prog_name,
+        "program_details"       =>$progDetails,
+        "completed"=>$item->completed
+    
+        /*"name"=>$item->name,
+        'id'=>$item->id,
+        "name"=>$item->name,
+        'id'=>$item->id,
+        "name"=>$item->name,
+        'id'=>$item->id*/
+        );
+        }
+        
+    //$result['sql'] = $sql;
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='success';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse; die();
+    
+    }
+}
+//002120
+function add_program_to_user_saved_list_programs($request)
+{
+    $data = headerRest($request);
+    $current_user = wp_get_current_user();
+
+    // $saved_prog_type = $data['saved_prog_type'];
+    // $saved_prog_dur = $data['saved_prog_dur'];
+    $saved_prog_id = $data['program_id'];
+    // $saved_prog_name = $data['saved_prog_name'];
+
+        
+    
+    if($current_user->ID!=0 && isset($saved_prog_id))
+    {
+    
+        global $wpdb; // this is how you get access to the database
+        $cura_user_programs = $wpdb->prefix . "cura_user_programs";
+        $cura_programs = $wpdb->prefix . "cura_programs";
+        
+        $saved_prog_info = $wpdb->get_results("SELECT * FROM $cura_programs where id = $saved_prog_id");
+
+
+        // return $saved_prog_info;
+
+        $saved_prog_name = $saved_prog_info[0]->name;
+        $saved_prog_type = $saved_prog_info[0]->type;
+        $saved_prog_dur = $saved_prog_info[0]->duration;
+
+        // return array($saved_prog_name, $saved_prog_dur, $saved_prog_type);
+
+        //// Already added or not in favourite List
+        $sql = "SELECT count(id) FROM $cura_user_programs where  USER_ID = '".$current_user->ID."' AND saved_prog_id ='".$saved_prog_id."' ";
+
+        $rowcount = $wpdb->get_var($sql);
+        //$rowcount = $ipquery->num_rows;
+        if($rowcount == 0)
+        {
+            //echo "SELECT MAX(ID) FROM $cura_user_programs"; die();
+        $last_id = $wpdb->get_var( "SELECT MAX(ID) FROM $cura_user_programs" ) + 1 ;
+        
+        $program_data = $wpdb->get_row( "SELECT type,name,duration FROM $cura_programs WHERE id = '".$saved_prog_id."'" );
+        //print_r($program_data);
+        
+        $sql = "INSERT INTO $cura_user_programs SET  ID = '".$last_id."' , USER_ID = '".$current_user->ID."' , saved_prog_id ='".$saved_prog_id."' , saved_prog_name ='".mysqli_real_escape_string($program_data->name)."' , saved_prog_type ='".$program_data->type."' , saved_prog_dur ='".$program_data->duration."' , completed='0' ";
+        // return $sql;
+        // echo $sql;die();
+    //$del =    $wpdb->delete( $dev_cura_user_fav_videos , array( 'id' => $fav_video_id , 'user_id' => $current_user->ID , 'exercise_id' => $exercise_id ) );
+
+        $del = $wpdb->query( $sql );
+        if($del)
+        {
+    $content = array('message' => 'Successfully added prorgam to programs list.');
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='success';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;die();
+        }
+        else
+        {
+        $content = array('message' => 'Failed to add record.');
+    //$result["sql"] =$sql;
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='success';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;  
+die();
+        }
+        }
+        else
+        {
+    $content = array('message' => 'Already exits.');
+    //$result["sql"] =$sql;
+    //$result["user_id"] =$current_user->ID;
+    $result["status"] ='fail';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;  
+die();  
+        }
+
+    
+    }
+    else
+    {
+    $content = array('message' => 'All fields are required.');
+    $result["status"] ='fail';
+    $result["data"] = $content;
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+     echo $respnse; die();
+    }
+
+    
+}
+//002120
+function authFromLink(){
+    $secret_key = defined('JWT_AUTH_SECRET_KEY') ? JWT_AUTH_SECRET_KEY : false;
+    $error=false;
+
+    if (!$secret_key) {
+        //JWT is not configurated properly
+        $error="JWT is not configurated properly";
+    }
+    if(isset($_GET['token'])){
+            $token = $_GET['token'];
+            $token = str_replace(['Bearer ','bearer '," "],"",$token);
+
+            if(isset($_GET['intended_to'])){
+                $intended_to=esc_url($_GET['intended_to']);
+            }else{
+                $intended_to=site_url();
+            }
+            $token = JWT::decode($token, $secret_key, array('HS256'));
+            
+            if ($token->iss != get_bloginfo('url')) {
+                //The iss do not match with this server
+                $error="The iss do not match with this server";
+            }
+            if (isset($token->data->user->id)) {
+                wp_set_auth_cookie($token->data->user->id);
+            }else{
+                //User ID not found in the token
+                $error="User ID not found in the token";
+            }
+            if ( wp_redirect( $intended_to ) ) {
+                exit;
+            }
+    }
+
+    return false;
+}
+//002120
+function get_logged_in_user_id(){
+    header('Content-Type:application/json;charset=utf8');
+    header('Access-Control-Allow-Origin: *');
+
+    
+    $current_user = wp_get_current_user();
+    
+    if($current_user->ID!=0)
+    {
+
+        
+    $u = new MeprUser($current_user->ID);
+    
+    $tmpActive = array();
+
+    $membership_utils = MpdtUtilsFactory::fetch('membership');
+    $memberships = $u->active_product_subscriptions('products');
+    
+
+
+
+    $image_profile = get_user_meta($current_user->ID, 'member-profile', true);
+     
+    
+    $result["user_id"] =$current_user->ID;
+    $result["display_name"] =$current_user->display_name;
+    $result["user_email"] =$current_user->user_email;
+    $result["user_login"] =$current_user->user_login;
+    $result["status"] ='success';
+    
+    $result['active_memberships'] = []; 
+    foreach($memberships as $membership) {
+        $data = $membership_utils->map_vars((array)$membership->rec);
+        $result['active_memberships'][]= array_intersect_key((array)$membership_utils->trim_obj((array)$data),array_flip(['id','title']));
+    }
+
+    
+
+
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;
+
+    die();
+    }
+    else
+    {
+    
+    $result["status"] ='fail';
+    $respnse = json_encode($result,JSON_PRETTY_PRINT);
+    echo $respnse;  
+    die();  
+        
+    }
+
+}
 
 function get_program($data) {
     global $wpdb;
