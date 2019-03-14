@@ -128,8 +128,6 @@ function add_submenu() {
 }
 add_action( 'admin_menu', 'add_submenu');
 
-
-
 function load_wp_media(){
     wp_enqueue_media();
 }
