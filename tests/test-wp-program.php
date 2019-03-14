@@ -1,5 +1,6 @@
 <?php 
 
+
 class WP_Program_Test extends WP_UnitTestCase
 {
       public function setUp()
@@ -754,6 +755,82 @@ class WP_Program_Test extends WP_UnitTestCase
     $programs = new program();
     $newVideo = $programs->getExerciseVideoById($lastid);
     assert($newVideo->name == "Test Name");
+  }
+
+  public function test_user_login_recording(){
+    $tracking = new userTracking();
+    $tracking->userLoginRecording(1);
+    $numLogin = $tracking->getAllUserLogin(1);
+    assert($numLogin == 1);
+  }
+
+  public function test_user_view_program_recording(){
+    $tracking = new userTracking();
+    $tracking->userViewProgramRecording(1, 37);
+    $lastViewedId = $tracking->getLastViewedProgram(1);
+    assert($lastViewedId == 37);
+    $this->reset_database();
+
+  }
+
+  public function test_user_view_exercise_recording(){
+    $tracking = new userTracking();
+    $tracking->userViewExerciseRecording(1, 37);
+    $lastViewedId = $tracking->getLastViewedExercise(1);
+    assert($lastViewedId == 37);
+    $this->reset_database();
+
+  }
+
+  public function test_user_view_program_exercise_recording(){
+    $tracking = new userTracking();
+    $tracking-> userViewProgramExerciseRecording(1, 37, 38);
+    $lastViewedId = $tracking->getLastViewedExercise(1);
+    assert($lastViewedId == 38);
+    $lastViewedId = $tracking->getLastViewedProgram(1);
+    assert($lastViewedId == 37);
+    $this->reset_database();
+
+  }
+
+  public function test_last_user_login(){
+    $tracking = new userTracking();
+    $lastLog = $tracking->getLastUserLogin(1);
+    assert($lastLog == "No Login Recorded");
+    $this->reset_database();
+  }
+
+  // public function test_get_all_user_login(){
+  //   $tracking = new userTracking();
+  //   $tracking->userLoginRecording(1);
+  //   sleep(2);
+  //   $tracking->userLoginRecording(1);
+  //   sleep(2);
+  //   $tracking->userLoginRecording(1);
+  //   sleep(2);
+  //   $tracking = new userTracking();
+  //   $numLogin = $tracking->getAllUserLogin(1);
+  //   echo $numLogin;
+  //   assert($numLogin == 3);
+  // }
+
+  public function get_last_viewed_program(){
+    $tracking = new userTracking();
+    $lastLoginNone = $tracking->getLastViewedProgram(1);
+    assert($lastLoginNone == "No Program Viewed");
+    $tracking->userViewProgramRecording(1,1);
+    $lastLog = $tracking->getLastViewedProgram(1);
+    assert($lastLog == 1);
+    $this->reset_database();
+  }
+
+  public function get_last_viewed_exercise(){
+    $tracking = new userTracking();
+    $lastLoginNone = $tracking->getLastViewedExercise(1);
+    assert($lastLoginNone == "No Exercise Viewed");
+    $tracking->userViewExerciseRecording(1,1);
+    $lastLog = $tracking->getLastViewedExercise(1);
+    assert($lastLog == 1);
   }
 
 

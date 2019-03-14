@@ -1,29 +1,22 @@
 
 <?php
 require_once ("objects/program.php");
+require_once ("objects/userTracking.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 require_once ("objects/databaseManagement.php");
-$database = new databaseManagement();
-$programs = new program();
+$tracking = new userTracking();
 
-
-$database->updateNulls();
-$programs->updateProgram(NULL, NULL, NULL, NULL, NULL, NULL, NULL, "No Body Part Assigned",  NULL, NULL, NULL, NULL, NULL, 179);
-$database->fixProgramBodyParts();
-$database->fixProgramSportsOcc();
-$database->fixProgramHowItHappened();
-
-
-   $count = $programs->getExerciseVideoCount(1);
-   echo $count;
-    
-
-
-  
-print_r(get_role("curastreamProgramEditor2"));  
-echo "<br/>";
-print_r(get_role("subscriber"));
+$tracking = new userTracking();
+    $tracking->userLoginRecording(1);
+    sleep(2);
+    $tracking->userLoginRecording(1);
+    sleep(2);
+    $tracking->userLoginRecording(1);
+    sleep(2);
+    $tracking = new userTracking();
+    $numLogin = $tracking->getAllUserLogin(1);
+    echo "Number of Logins: " .  $numLogin;
 
 
 
