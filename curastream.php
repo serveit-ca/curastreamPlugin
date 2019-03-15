@@ -5,10 +5,17 @@ Description: Add Programs
 Author: Admin
 */
 // Used for page filtering 
+
 include("objects/program.php");
+<<<<<<< HEAD
 include("objects/group.php");
+=======
+include("objects/userTracking.php");
+include("rest.php");
+>>>>>>> 073e40624e0a10e7a39699de36f2f78fe1515871
 include("ajaxSaves.php");
 include("ajaxCustomProgram.php");
+
 // Used for Ajax Saves to DB 
 function curastream_add_bootstrap_And_Other() 
     {       
@@ -39,17 +46,10 @@ function curastream_add_bootstrap_And_Other()
     }
 add_action('admin_enqueue_scripts', 'curastream_add_bootstrap_And_Other');
 
-add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
-// Add Media Image Script 
-// As you are dealing with plugin settings,
-// I assume you are in admin side
-
 function load_wp_media_files() {
     // Enqueue WordPress media scripts
     wp_enqueue_media();
     wp_enqueue_script( 'wp-api' );
-
-    // Enqueue custom script that will interact with wp.media
   }
 
 add_action( 'admin_enqueue_scripts', 'load_wp_media_files' );
@@ -60,10 +60,13 @@ function register_scripts_with_jquery(){
     wp_register_style( 'curastreamStyle', plugins_url( 'assets/css/style.css', __FILE__ ));
     wp_enqueue_style( 'curastreamStyle');
     wp_register_script( 'custom-programUI-script', plugins_url( 'assets/js/customProgramUI.js', __FILE__ ), "", "", true);
+    wp_register_script( 'catagory-management-script', plugins_url( 'assets/js/categoryManagement.js', __FILE__ ), "", "", true);
     // For either a plugin or a theme, you can then enqueue the script:
     wp_enqueue_script( 'custom-programUI-script' );
-  
+    wp_enqueue_script( 'catagory-management-script' );
 }
+
+add_action( 'admin_print_styles', 'register_scripts_with_jquery' );
 
 // register_activation_hook( __FILE__, 'Curastream_install');
 function add_menu() {
@@ -75,6 +78,8 @@ function add_menu() {
         2
     );
 }
+add_action( 'admin_menu', 'add_menu');
+
 function add_submenu() {
   
         add_submenu_page('curastreamPlugin','Program Administration','Program Administration',
@@ -83,122 +88,94 @@ function add_submenu() {
             '',
             ''
         );
-    
-    if( current_user_can('administrator')) { 
-         add_submenu_page('curastreamPlugin','Program Metrics','Program Metrics',
+        if( current_user_can('administrator')) { 
+        add_submenu_page('curastreamPlugin','Program Metrics','Program Metrics',
+                'curaProgEditor',
+                'curastream/programMetrics.php',
+                '',
+                ''
+            );
+
+             add_submenu_page('curastreamPlugin','User Metrics','User Metrics',
+                'curaProgEditor',
+                'curastream/userMetrics.php',
+                '',
+                ''
+            );
+     
+        add_submenu_page('curastreamPlugin','Category Management','Category Management',
             'curaProgEditor',
-            'curastream/programMetrics.php',
+            'curastream/categoryManagement.php',
+            '',
+            ''
+        );   
+        add_submenu_page('curastreamPlugin','Group Management','Group Management',
+            'curaProgEditor',
+            'curastream/groupManagement.php',
             '',
             ''
         );
- 
-    add_submenu_page('curastreamPlugin','Category Management','Category Management',
-        'curaProgEditor',
-        'curastream/categoryManagement.php',
-        '',
-        ''
-    );
-    add_submenu_page('curastreamPlugin','Group Management','Group Management',
-        'curaProgEditor',
-        'curastream/groupManagement.php',
-        '',
-        ''
-    );
-    add_submenu_page('curastreamPlugin','Video Management','Video Management',
-        'curaProgEditor',
-        'curastream/exerciseManagement.php',
-        '',
-        ''
-    );
-    add_submenu_page('curastreamPlugin','Testing','Testing',
-        'curaProgEditor',
-        'curastream/testing.php',
-        '',
-        ''
-    );
-    add_submenu_page('curastreamPlugin','View Dashboard','View Dashboard',
-        'curaProgEditor',
-        get_site_url().'/my-programs',
-        '',
-        ''
-    );
+        add_submenu_page('curastreamPlugin','Video Management','Video Management',
+            'curaProgEditor',
+            'curastream/exerciseManagement.php',
+            '',
+            ''
+        );
+        add_submenu_page('curastreamPlugin','Testing','Testing',
+            'curaProgEditor',
+            'curastream/testing.php',
+            '',
+            ''
+        );
+        add_submenu_page('curastreamPlugin','View Dashboard','View Dashboard',
+            'curaProgEditor',
+            get_site_url().'/my-programs',
+            '',
+            ''
+        );
     }
 }
+add_action( 'admin_menu', 'add_submenu');
+
 
 function load_wp_media(){
     wp_enqueue_media();
 }
-
-// register_rest_route(
-//     'curastream', '/view_program_details/',
-//     array(
-//     'methods'  => 'POST',
-//     'callback' => 'view_program_details',
-//     )
-//     );
+add_action( 'admin_enqueue_scripts', 'load_wp_media' );
 
 
 // Endpoint for memberpress 
     add_action('rest_api_init', function(){
-        register_rest_route('curastream', '/mempr_new_corp/', array(
-            'methods' => 'POST',
-            'callback' => 'mempr_add_new_corp'
-        ));
+
     });
 
     add_action('rest_api_init', function(){
-        register_rest_route('curastream', '/mempr_new_sub_corp/', array(
-            'methods' => 'POST',
-            'callback' => 'mempr_add_new_sub_corp'
-        ));
+
     });
 
     add_action('rest_api_init', function(){
-        register_rest_route('curastream', '/mempr_remove_sub_corp/', array(
-            'methods' => 'POST',
-            'callback' => 'mempr_remove_sub_corp'
-        ));
+
     });
-
-    add_action('rest_api_init', function(){
-    $programs = new program();
-        register_rest_route('curastream', '/view_program_details/', array(
-            'methods' => 'GET',
-            'callback' => 'view_program_details',
-            ));
-    } );
-
-add_action( 'admin_menu', 'add_menu');
-add_action( 'admin_menu', 'add_submenu');
-add_action( 'admin_enqueue_scripts', 'load_wp_media' );
 
 function add_curastream_user_role() {
 remove_role('curastreamProgramEditor');
     add_role('curastreamProgramEditor', 'Curastream Program Editor');
     // echo "Hello World";
-     $role = get_role("curastreamProgramEditor");
-      $role->add_cap( 'read');
-      $role->add_cap('curaProgEditor');
-      $role->add_cap('delete_posts');
-   }
+    $role = get_role("curastreamProgramEditor");
+    $role->add_cap( 'read');
+    $role->add_cap('curaProgEditor');
+    $role->add_cap('delete_posts');
     $role = get_role("administrator");
-      $role->add_cap('curaProgEditor');
+    $role->add_cap('curaProgEditor');
+}
 
 add_action( 'init', 'add_curastream_user_role');
 
-
-// api functions
-
-/**
- * Grab latest post title by an author!
- *
- * @param array $data Options for the function.
- * @return string|null Post title for the latest,  * or null if none.
- */
 function curastream_parent_page() {
 echo "<h1>Welcome to the Curastream Plugin</h1>";
 echo "<h3>Here are some useful Links</h3>";
 echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>");
+<<<<<<< HEAD
 }
 
 function mempr_add_new_corp($request){
@@ -1238,3 +1215,7 @@ register_rest_route( 'curastream/v1', '/full_body_training/', array(
 });
 
 
+=======
+echo ("<ul><li><a href=\"https://curastream.serveit.work/doc/\">JSON Output</a></li></ul>");
+}
+>>>>>>> 073e40624e0a10e7a39699de36f2f78fe1515871

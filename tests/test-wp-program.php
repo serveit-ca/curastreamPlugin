@@ -1,7 +1,7 @@
 <?php 
 
-class WP_Program_Test extends WP_UnitTestCase
-{
+
+class WP_Program_Test extends WP_UnitTestCase{
       public function setUp()
       {
           parent::setUp();
@@ -244,7 +244,7 @@ class WP_Program_Test extends WP_UnitTestCase
       // 	$this->reset_database();
       // }
 
-     public function test_move_phase_order(){
+public function test_move_phase_order(){
      	$programs = new program();
      	//start with an empty program with no phases
      	$newProgId = $programs->createProgram("Test Program for Move Phases");
@@ -261,6 +261,7 @@ class WP_Program_Test extends WP_UnitTestCase
      	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseTwoId);
      	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
      	assert($phaseTwo->order_no == 2);
+
      	//Add a third phase in the first position to the program - Ensure Phase 1 becomes Phase 2 and Phase 2 becomes phase three
      	$phaseThreeId = $programs->createPhase("Test Phase 3 for Move Phases", $newProgId);
      	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
@@ -276,6 +277,7 @@ class WP_Program_Test extends WP_UnitTestCase
      	assert($phaseOne->order_no == 2);
      	assert($phaseTwo->order_no == 3);
      	//Move Back
+
      	$programs->movePhaseOrder($newProgId, $phaseThreeId, 1, 3);
      	$programs = new program();
      	$phaseThree = $programs->getAPhaseById($phaseThreeId);
@@ -311,16 +313,19 @@ class WP_Program_Test extends WP_UnitTestCase
      	assert($phaseTwo->order_no == 2);
      	assert($phaseFour->order_no == 4);
      	//Change phase order from 2 -4
+
      	$programs->movePhaseOrder($newProgId, $phaseTwoId, 2, 4);
      	$phaseThree = $programs->getAPhaseById($phaseThreeId);
      	$phaseOne = $programs->getAPhaseById($phaseOneId);
      	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
      	$phaseFour = $programs->getAPhaseById($phaseFourId);
+
      	assert($phaseThree->order_no == 2);
      	assert($phaseOne->order_no == 1);
      	assert($phaseTwo->order_no == 4);
      	assert($phaseFour->order_no == 3);
      	//move back
+
      	$programs->movePhaseOrder($newProgId, $phaseTwoId, 4, 2);
      	$phaseThree = $programs->getAPhaseById($phaseThreeId);
      	$phaseOne = $programs->getAPhaseById($phaseOneId);
@@ -385,7 +390,7 @@ class WP_Program_Test extends WP_UnitTestCase
       $phaseThree = $programs->getAPhaseById($phaseThreeId);
      	assert($phaseThree->order_no == 1);
      	$this->reset_database();
-     }
+    }
 
      public function test_move_exercise_order(){
   	$programs = new program();
@@ -756,6 +761,83 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($newVideo->name == "Test Name");
   }
 
+
+  public function test_user_login_recording(){
+    $tracking = new userTracking();
+    $tracking->userLoginRecording(1);
+    $numLogin = $tracking->getAllUserLogin(1);
+    assert($numLogin == 1);
+  }
+
+  public function test_user_view_program_recording(){
+    $tracking = new userTracking();
+    $tracking->userViewProgramRecording(1, 37);
+    $lastViewedId = $tracking->getLastViewedProgram(1);
+    assert($lastViewedId == 37);
+    $this->reset_database();
+
+  }
+
+  public function test_user_view_exercise_recording(){
+    $tracking = new userTracking();
+    $tracking->userViewExerciseRecording(1, 37);
+    $lastViewedId = $tracking->getLastViewedExercise(1);
+    assert($lastViewedId == 37);
+    $this->reset_database();
+
+  }
+
+  public function test_user_view_program_exercise_recording(){
+    $tracking = new userTracking();
+    $tracking-> userViewProgramExerciseRecording(1, 37, 38);
+    $lastViewedId = $tracking->getLastViewedExercise(1);
+    assert($lastViewedId == 38);
+    $lastViewedId = $tracking->getLastViewedProgram(1);
+    assert($lastViewedId == 37);
+    $this->reset_database();
+
+  }
+
+  public function test_last_user_login(){
+    $tracking = new userTracking();
+    $lastLog = $tracking->getLastUserLogin(1);
+    assert($lastLog == "No Login Recorded");
+    $this->reset_database();
+  }
+
+  // public function test_get_all_user_login(){
+  //   $tracking = new userTracking();
+  //   $tracking->userLoginRecording(1);
+  //   sleep(2);
+  //   $tracking->userLoginRecording(1);
+  //   sleep(2);
+  //   $tracking->userLoginRecording(1);
+  //   sleep(2);
+  //   $tracking = new userTracking();
+  //   $numLogin = $tracking->getAllUserLogin(1);
+  //   echo $numLogin;
+  //   assert($numLogin == 3);
+  // }
+
+  public function get_last_viewed_program(){
+    $tracking = new userTracking();
+    $lastLoginNone = $tracking->getLastViewedProgram(1);
+    assert($lastLoginNone == "No Program Viewed");
+    $tracking->userViewProgramRecording(1,1);
+    $lastLog = $tracking->getLastViewedProgram(1);
+    assert($lastLog == 1);
+    $this->reset_database();
+  }
+
+  public function get_last_viewed_exercise(){
+    $tracking = new userTracking();
+    $lastLoginNone = $tracking->getLastViewedExercise(1);
+    assert($lastLoginNone == "No Exercise Viewed");
+    $tracking->userViewExerciseRecording(1,1);
+    $lastLog = $tracking->getLastViewedExercise(1);
+    assert($lastLog == 1);
+  }
+
   public function test_new_custom_group(){
     global $wpdb;
     $programs = new program();
@@ -818,8 +900,5 @@ class WP_Program_Test extends WP_UnitTestCase
     $pLevel = $programs->checkUserPrivilege(1,1);
     assert($pLevel == "Owner Level"); 
   }
-
-
 }
-
 ?>

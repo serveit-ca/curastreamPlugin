@@ -30,11 +30,11 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td> <input type="text" placeholder="New Body Part "></td>
+						<td> <input type="text" id="newBodyPartText" placeholder="New Body Part "></td>
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><button>Save</button></td>
+						<td><button class="button-secondary custom-btn" id="newBodyPartSave">Save</button></td>
 					</tr>
 					<?php 
 							foreach ($bodyParts as $key) {
@@ -104,11 +104,11 @@
 					</thead>
 					<tbody>
 					<tr>
-						<td> <input type="text" placeholder="New How it Happened"></td>
+						<td> <input id="newInjuryTypeText"type="text" placeholder="New How it Happened"></td>
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><button>Save</button></td>
+						<td><button id="newInjuryTypeSave" class="button-secondary custom-btn">Save</button></td>
 					</tr>
 					<?php 
 							foreach ($injuries as $key) {
@@ -174,8 +174,8 @@
 				</thead>
 					<tbody>
 					<tr>
-						<td> <input type="text" placeholder="New Sport or Occupation"></td>
-						<td><select>
+						<td> <input id="newSportOccText" type="text" placeholder="New Sport or Occupation"></td>
+						<td><select id="newSportOccType">
 								<option value="sport">Sport</option>
 								<option value="occupation">Occupation</option>
 							</select>
@@ -183,7 +183,7 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><button>Save</button></td>
+						<td><button id="newSportOccSave" class="button-secondary custom-btn">Save</button></td>
 					</tr>
 					<?php 
 							foreach ($sports as $key) {
