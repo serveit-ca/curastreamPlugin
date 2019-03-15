@@ -30,7 +30,8 @@ function prefix_enqueue()
 <body>
 	<?php
 	$programObj = new program();
-		$corpGroups = $programObj->getAllCorpGroups();
+	$groupObj = new group();
+		$corpGroups = $groupObj->getAllCorpGroups();
 	?>
 
 	<h1>Corporate Groups</h1>
@@ -53,7 +54,7 @@ function prefix_enqueue()
 					<tbody>
 					<?php 
 							foreach ($corpGroups as $key) {
-							$groupUsers = $programObj->getUsersByGroupId($key['id']);					
+							$groupUsers = $groupObj->getUsersByGroupId($key['id']);					
 					?>
 							<tr>
 							<td><?php echo $key['name'] ?></td>
@@ -71,14 +72,28 @@ function prefix_enqueue()
 								</div>
 							</td>
 							<td><?php
-								$groupProgs = $programObj->getProgramsByGroupId($key['id']);
+								$groupProgs = $groupObj->getProgramsByGroupId($key['id']);
 								foreach ($groupProgs as $gProg) {
-									$progName = $programObj->getProgramById($gProg);
+									$progName = $progamObj->getProgramById($gProg);
 									echo $progName->name . "<br>";
 								}
 							 ?></td>
 							
-							<td><?php echo $programObj->getCorpAccountByGroupId($key['id']); ?></td>
+							<td><?php
+								$corpId = $groupObj->getCorpAccountByGroupId($key['id']);
+								if($corpId != "No Corp For This Group"){
+									$corp = $groupObj->getCorpById($corpId);
+
+									if(isset($corp->name)){
+										echo $corp->name;
+									}
+									else{
+										echo "Error - No Corp Assigned to Group.";
+									}
+								} 
+								else{
+									echo $corpId;
+								}?></td>
 							
 							<td>
 
@@ -105,7 +120,8 @@ function prefix_enqueue()
 
 	<?php
 	$programObj = new program();
-		$corpGroups = $programObj->getAllCustomGroups();
+	$groupObj = new group();
+		$corpGroups = $groupObj->getAllCustomGroups();
 	?>
 
 	<h1>Custom Groups</h1>
@@ -127,7 +143,7 @@ function prefix_enqueue()
 					<tbody>
 					<?php 
 							foreach ($corpGroups as $key) {
-							$groupUsers = $programObj->getUsersByGroupId($key['id']);					
+							$groupUsers = $groupObj->getUsersByGroupId($key['id']);					
 					?>
 							<tr>
 							<td><?php echo $key['name'] ?></td>
@@ -145,7 +161,7 @@ function prefix_enqueue()
 								</div>
 							</td>
 							<td><?php
-								$groupProgs = $programObj->getProgramsByGroupId($key['id']);
+								$groupProgs = $groupObj->getProgramsByGroupId($key['id']);
 								foreach ($groupProgs as $gProg) {
 									$progName = $programObj->getProgramById($gProg);
 									echo $progName->name . "<br>";

@@ -6,6 +6,7 @@ Author: Admin
 */
 // Used for page filtering 
 include("objects/program.php");
+include("objects/group.php");
 include("ajaxSaves.php");
 include("ajaxCustomProgram.php");
 // Used for Ajax Saves to DB 
@@ -203,7 +204,7 @@ echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>
 function mempr_add_new_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
-    $programs = new program();
+    $groups = new group();
 
     // error_log("-------------------Decode JSON------------------------------------");
     // error_log("Full String: ".$json);
@@ -219,44 +220,44 @@ function mempr_add_new_corp($request){
 
     // New Corp
     //$corpName = $data['']
-    $newCorpId = $programs->newCorp("Corp Name");
+    $newCorpId = $groups->newCorp("Corp Name");
     // Add mepr Id to Corp
-    $programs->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
+    $groups->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
     // New Group
-    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
+    $newGroupId = $groups->newCorpGroup("Corp Name - Default", $newCorpId);
     // Assign Group Owner   
-    $programs->assignUserToGroup($newGroupId, $input->data->member->id);
-    $programs->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);
+    $groups->assignUserToGroup($newGroupId, $input->data->member->id);
+    $groups->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);
 }
 
 function mempr_add_new_sub_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
-    $programs = new program();
+    $groups = new group();
     error_log("--------------------Add Sub Account ----------------------------------");
     //Get Mempr Corp Id From Json
     $memprId = $input->data->membership->id;
     
     error_log($memprId);
     //Get Curastream database Corp Id From memprId
-    $corpId = $programs->getCorpIdByMemprId($memprId);
-    $groupId = $programs->getGroupIdByCorpId($corpId);
+    $corpId = $groups->getCorpIdByMemprId($memprId);
+    $groupId = $groups->getGroupIdByCorpId($corpId);
     // Remove User From Corp Group    // Assign User To Corp Group
-    $programs->assignUserToGroup($groupId, $input->data->member->id);
+    $groups->assignUserToGroup($groupId, $input->data->member->id);
 }
 
 function mempr_remove_sub_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
-    $programs = new program();
+    $groups = new group();
     error_log("--------------------Remove Sub Account ----------------------------------");
     //Get Mempr Corp Id From Json
     $memprId = $input->data->membership->id;
     //Get Curastream database Corp Id From memprId
-    $corpId = $programs->getCorpIdByMemprId($memprId);
-    $groupId = $programs->getGroupIdByCorpId($corpId);
+    $corpId = $groups->getCorpIdByMemprId($memprId);
+    $groupId = $groups->getGroupIdByCorpId($corpId);
     // Remove User From Corp Group
-    $programs->removeUserFromGroup($groupId, $input->data->member->id);
+    $groups->removeUserFromGroup($groupId, $input->data->member->id);
 }
 
 
