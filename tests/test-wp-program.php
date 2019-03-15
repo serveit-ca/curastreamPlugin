@@ -1,8 +1,7 @@
 <?php 
 
 
-class WP_Program_Test extends WP_UnitTestCase
-{
+class WP_Program_Test extends WP_UnitTestCase{
       public function setUp()
       {
           parent::setUp();
@@ -245,7 +244,7 @@ class WP_Program_Test extends WP_UnitTestCase
       // 	$this->reset_database();
       // }
 
-     public function test_move_phase_order(){
+public function test_move_phase_order(){
      	$programs = new program();
      	//start with an empty program with no phases
      	$newProgId = $programs->createProgram("Test Program for Move Phases");
@@ -262,6 +261,7 @@ class WP_Program_Test extends WP_UnitTestCase
      	$programs->updatePhase(NULL, NULL, NULL, NULL, $highestOrder+1, $phaseTwoId);
      	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
      	assert($phaseTwo->order_no == 2);
+
      	//Add a third phase in the first position to the program - Ensure Phase 1 becomes Phase 2 and Phase 2 becomes phase three
      	$phaseThreeId = $programs->createPhase("Test Phase 3 for Move Phases", $newProgId);
      	$highestOrder = $programs->getHighestPhaseOrder($newProgId);
@@ -277,6 +277,7 @@ class WP_Program_Test extends WP_UnitTestCase
      	assert($phaseOne->order_no == 2);
      	assert($phaseTwo->order_no == 3);
      	//Move Back
+
      	$programs->movePhaseOrder($newProgId, $phaseThreeId, 1, 3);
      	$programs = new program();
      	$phaseThree = $programs->getAPhaseById($phaseThreeId);
@@ -312,16 +313,19 @@ class WP_Program_Test extends WP_UnitTestCase
      	assert($phaseTwo->order_no == 2);
      	assert($phaseFour->order_no == 4);
      	//Change phase order from 2 -4
+
      	$programs->movePhaseOrder($newProgId, $phaseTwoId, 2, 4);
      	$phaseThree = $programs->getAPhaseById($phaseThreeId);
      	$phaseOne = $programs->getAPhaseById($phaseOneId);
      	$phaseTwo = $programs->getAPhaseById($phaseTwoId);
      	$phaseFour = $programs->getAPhaseById($phaseFourId);
+
      	assert($phaseThree->order_no == 2);
      	assert($phaseOne->order_no == 1);
      	assert($phaseTwo->order_no == 4);
      	assert($phaseFour->order_no == 3);
      	//move back
+
      	$programs->movePhaseOrder($newProgId, $phaseTwoId, 4, 2);
      	$phaseThree = $programs->getAPhaseById($phaseThreeId);
      	$phaseOne = $programs->getAPhaseById($phaseOneId);
@@ -386,7 +390,7 @@ class WP_Program_Test extends WP_UnitTestCase
       $phaseThree = $programs->getAPhaseById($phaseThreeId);
      	assert($phaseThree->order_no == 1);
      	$this->reset_database();
-     }
+    }
 
      public function test_move_exercise_order(){
   	$programs = new program();
@@ -757,6 +761,7 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($newVideo->name == "Test Name");
   }
 
+
   public function test_user_login_recording(){
     $tracking = new userTracking();
     $tracking->userLoginRecording(1);
@@ -833,7 +838,67 @@ class WP_Program_Test extends WP_UnitTestCase
     assert($lastLog == 1);
   }
 
+  public function test_new_custom_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->newCustomGroup("Test Custom");
+    $tableName = $wpdb->prefix . "cura_groups";
+    $lastId = $wpdb->insert_id;
+    $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
+    assert($newGroup->name == "Test Custom");
+    assert($newGroup->type == 2);
+  }
 
+  public function test_new_corp_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->newCorpGroup("Test Corp");
+    $tableName = $wpdb->prefix . "cura_groups";
+    $lastId = $wpdb->insert_id;
+    $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
+    assert($newGroup->name == "Test Corp");
+    assert($newGroup->type == 1);
+  }
+
+  public function test_assign_user_to_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->assignUserToGroup(1, 1);
+    $user = $programs->getUsersByGroupId(1);
+    assert($user[0] == 1);
+  }
+
+  public function test_remove_user_from_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->removeUserFromGroup(1,1);
+    $user = $programs->getUsersByGroupId(1);
+    assert($user == NULL);
+  }
+
+  public function test_assign_program_to_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->assignProgramToGroup(37,1);
+    $groupProgs = $programs->getProgramsByGroupId(1);
+    assert($groupProgs[0] == 37); 
+  }
+
+  public function test_remove_program_from_group(){
+    global $wpdb;
+    $programs = new program();
+    $programs->removeProgramFromGroup(37,1);
+    $groupProgs = $programs->getProgramsByGroupId(1);
+    assert($groupProgs == NULL); 
+  }
+
+  public function test_change_group_user_privilege(){
+    global $wpdb;
+    $programs = new program();
+    $programs->assignUserToGroup(1,1);
+    $programs->changeGroupUserPrivilege(1,1,2);
+    $pLevel = $programs->checkUserPrivilege(1,1);
+    assert($pLevel == "Owner Level"); 
+  }
 }
-
 ?>

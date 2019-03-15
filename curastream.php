@@ -6,8 +6,6 @@ Author: Admin
 */
 // Used for page filtering 
 
-include("objects/program.php");
-include("objects/userTracking.php");
 include("ajaxSaves.php");
 include("ajaxCustomProgram.php");
 include("objects/program.php");
@@ -106,6 +104,12 @@ function add_submenu() {
             'curastream/categoryManagement.php',
             '',
             ''
+        );   
+        add_submenu_page('curastreamPlugin','Group Management','Group Management',
+            'curaProgEditor',
+            'curastream/groupManagement.php',
+            '',
+            ''
         );
         add_submenu_page('curastreamPlugin','Video Management','Video Management',
             'curaProgEditor',
@@ -127,11 +131,27 @@ function add_submenu() {
         );
     }
 }
+add_action( 'admin_menu', 'add_submenu');
+
 
 function load_wp_media(){
     wp_enqueue_media();
 }
 add_action( 'admin_enqueue_scripts', 'load_wp_media' );
+
+
+// Endpoint for memberpress 
+    add_action('rest_api_init', function(){
+
+    });
+
+    add_action('rest_api_init', function(){
+
+    });
+
+    add_action('rest_api_init', function(){
+
+    });
 
 function add_curastream_user_role() {
 remove_role('curastreamProgramEditor');
@@ -153,5 +173,3 @@ echo "<h3>Here are some useful Links</h3>";
 echo ("<ul><li><a href=\"".get_site_url()."/wp-json/\">JSON Output</a></li></ul>");
 echo ("<ul><li><a href=\"https://curastream.serveit.work/doc/\">JSON Output</a></li></ul>");
 }
-
-?>

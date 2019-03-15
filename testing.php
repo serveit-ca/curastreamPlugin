@@ -5,6 +5,7 @@ require_once ("objects/userTracking.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
 require_once ("objects/databaseManagement.php");
+<<<<<<< HEAD
 $database = new databaseManagement();
 $programs = new program();
 
@@ -26,6 +27,17 @@ $programs = new program();
 //        ));
 //    // var_dump($response);
 //     $data = wp_remote_retrieve_body( $response );
+=======
+// $database = new databaseManagement();
+ $programs = new program();
+// New Corp
+    $corpId = $programs->getCorpIdByMemprId(6769);
+    echo $corpId;
+    echo "<br> --------------- <br>";
+    $groupId = $programs->getGroupIdByCorpId($corpId);
+    echo $groupId;
+    //echo phpinfo();
+>>>>>>> 0ddf845f38dbedd1bade1e548fb7d97b86a23e5e
 
 //     var_dump($data);
 
@@ -40,7 +52,7 @@ $programs = new program();
 // $newProg = $programs->createProgram("Testphp Prog9");
 // $newPhaseId = $programs->createPhase("Testphp Phase2", $newProg);
 
-// $newExerciseId = $programs->createExercise(434, $newPhaseId);
+// $newExerciseId = $programs->createExercise(434, $newPhas eId);
 // $highestOrder = $programs->getHighestExerciseOrder($newPhaseId);
 // echo "HO: " .  $highestOrder;
 // $programs->updateExercise($highestOrder+1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $newExerciseId);

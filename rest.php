@@ -177,30 +177,49 @@ add_action('rest_api_init', function(){
             'methods' => 'GET',
             'callback' => array($programs, 'getAllInjuries'),
             ));
-	register_rest_route('curastream/v2', '/userfavs/(?P<id>\d+)', array(
+	register_rest_route('curastream/v2', '/userfavs/(?P<id>\d+)', 
+		array(
             'methods' => 'POST',
             'callback' => 'getFavoriteExercisesHandler',
             'args' => [
                 'id'],
-            ));
-	register_rest_route('curastream/v2', '/progphases/(?P<id>\d+)', array(
+        ));
+	register_rest_route('curastream/v2', '/progphases/(?P<id>\d+)', 
+		array(
             'methods' => 'POST',
             'callback' => 'getPhasesByProgramIdHandler',
             'args' => [
                 'id'],
-            ));
-    register_rest_route('curastream/v2', '/phaseexercises/(?P<id>\d+)', array(
+        ));
+    register_rest_route('curastream/v2', '/phaseexercises/(?P<id>\d+)', 
+    	array(
             'methods' => 'POST',
             'callback' => 'getExercisesByPhaseIdHandler',
             'args' => [
                 'id'],
-            ));
-    register_rest_route('curastream/v2', '/bodypart/(?P<id>\d+)', array(
+        ));
+    register_rest_route('curastream/v2', '/bodypart/(?P<id>\d+)', 
+    	array(
             'methods' => 'POST',
             'callback' => 'getBodyPartByIdHandler',
             'args' => [
                 'id'],
-            ));
+        ));
+    register_rest_route('curastream/v2', '/mempr_new_sub_corp/', 
+    	array(
+            'methods' => 'POST',
+            'callback' => 'mempr_add_new_sub_corp'
+        ));
+    register_rest_route('curastream/v2', '/mempr_remove_sub_corp/', 
+    	array(
+            'methods' => 'POST',
+            'callback' => 'mempr_remove_sub_corp'
+        ));
+    register_rest_route('curastream/v2', '/mempr_new_corp/', 
+    	array(
+            'methods' => 'POST',
+            'callback' => 'mempr_add_new_corp'
+        ));
 });
 
 // API Functions for Curastream - No Version 
@@ -1383,6 +1402,93 @@ function userViewExerciseHandler($data){
     $exercise_id = $data['exerciseid'];
     $tracking->userViewExerciseRecording($user_id, $exercise_id);
 }
+function getProgramsAssignedToUserHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $user_id = $data['id'];
+    $userProgs = $programs->getProgramsAssignedToUser($user_id);
+    return $userProgs;
+}
+
+function getFavoriteExercisesHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $user_id = $data['id'];
+    $userFavs = $programs->getFavoriteExercises($user_id);
+    return $userFavs;
+}
+
+function getPhasesByProgramIdHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $user_id = $data['id'];
+    $userFavs = $programs->getPhasesByProgramId($user_id);
+    return $userFavs;
+}
+
+function getExercisesByPhaseIdHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $user_id = $data['id'];
+    $userFavs = $programs->getExercisesByPhaseId($user_id);
+    return $userFavs;
+}
+
+function getBodyPartByIdHandler($data){
+    $programs = new program();
+    echo "<br> ID: " . $data['id'];
+    $part_id = $data['id'];
+    $bodyPart = $programs->getBodyPartById($part_id);
+    return $bodyPart;
+}
+
+function mempr_add_new_corp($request){
+    $json = file_get_contents('php://input');
+    $input = json_decode($json);
+    $programs = new program();
+
+
+    // New Corp
+    //$corpName = $data['']
+    $newCorpId = $programs->newCorp("Corp Name");
+    // Add mepr Id to Corp
+    $programs->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
+    // New Group
+    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
+    // Assign Group Owner   
+    $programs->assignUserToGroup($newGroupId, $input->data->member->id);
+    $programs->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);
+}
+
+function mempr_add_new_sub_corp($request){
+    $json = file_get_contents('php://input');
+    $input = json_decode($json);
+    $programs = new program();
+    error_log("--------------------Add Sub Account ----------------------------------");
+    //Get Mempr Corp Id From Json
+    $memprId = $input->data->membership->id;
+    
+    error_log($memprId);
+    //Get Curastream database Corp Id From memprId
+    $corpId = $programs->getCorpIdByMemprId($memprId);
+    $groupId = $programs->getGroupIdByCorpId($corpId);
+    // Remove User From Corp Group    // Assign User To Corp Group
+    $programs->assignUserToGroup($groupId, $input->data->member->id);
+}
+
+function mempr_remove_sub_corp($request){
+    $json = file_get_contents('php://input');
+    $input = json_decode($json);
+    $programs = new program();
+    error_log("--------------------Remove Sub Account ----------------------------------");
+    //Get Mempr Corp Id From Json
+    $memprId = $input->data->membership->id;
+    //Get Curastream database Corp Id From memprId
+    $corpId = $programs->getCorpIdByMemprId($memprId);
+    $groupId = $programs->getGroupIdByCorpId($corpId);
+    // Remove User From Corp Group
+    $programs->removeUserFromGroup($groupId, $input->data->member->id);
+}
 
 // Other Fuctions 
 function checkDeviceToken($device,$token){
@@ -1472,43 +1578,18 @@ function get_exercise_for_phase($phase){
     return $exercises;
 }        
 
-function getProgramsAssignedToUserHandler($data){
-    $programs = new program();
-    echo "<br> ID: " . $data['id'];
-    $user_id = $data['id'];
-    $userProgs = $programs->getProgramsAssignedToUser($user_id);
-    return $userProgs;
-}
+function headerRest($request){
+    header('Content-Type:application/json;charset=utf8');
+    header('Access-Control-Allow-Origin: *');
 
-function getFavoriteExercisesHandler($data){
-    $programs = new program();
-    echo "<br> ID: " . $data['id'];
-    $user_id = $data['id'];
-    $userFavs = $programs->getFavoriteExercises($user_id);
-    return $userFavs;
-}
+    $data = file_get_contents("php://input");
+    $data = json_decode($data,TRUE);    
+    if(empty($data)){
 
-function getPhasesByProgramIdHandler($data){
-    $programs = new program();
-    echo "<br> ID: " . $data['id'];
-    $user_id = $data['id'];
-    $userFavs = $programs->getPhasesByProgramId($user_id);
-    return $userFavs;
-}
-
-function getExercisesByPhaseIdHandler($data){
-    $programs = new program();
-    echo "<br> ID: " . $data['id'];
-    $user_id = $data['id'];
-    $userFavs = $programs->getExercisesByPhaseId($user_id);
-    return $userFavs;
-}
-
-function getBodyPartByIdHandler($data){
-    $programs = new program();
-    echo "<br> ID: " . $data['id'];
-    $part_id = $data['id'];
-    $bodyPart = $programs->getBodyPartById($part_id);
-    return $bodyPart;
+        if(isset($request) && !empty($request->get_params())){
+            $data = $request->get_params();
+        }
+    }
+    return $data;
 }
 ?>
