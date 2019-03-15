@@ -1268,12 +1268,11 @@ ALTER TABLE `wptests_cura_deleted`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
+ALTER TABLE `wptests_cura_deleted`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT; 
 --
 -- AUTO_INCREMENT for table `wptests_cura_deleted`
 --
-<<<<<<< HEAD
-
 
   CREATE TABLE `wptests_cura_user_tracking` (
   `id` int(11) NOT NULL,
@@ -1286,11 +1285,6 @@ ALTER TABLE `wptests_cura_deleted`
 
   ALTER TABLE `wptests_cura_user_tracking`
   ADD PRIMARY KEY (`id`);COMMIT;
-=======
-ALTER TABLE `wptests_cura_deleted`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT; 
->>>>>>> 0ddf845f38dbedd1bade1e548fb7d97b86a23e5e
-
 
 
 CREATE TABLE `wptests_cura_corps_groups` ( `id` int(11) NOT NULL, `group_id` int(11) NOT NULL, `corps_id` int(11) NOT NULL, PRIMARY KEY(`id`))ENGINE=InnoDB DEFAULT CHARSET=utf8;
