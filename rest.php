@@ -1,6 +1,5 @@
-// Used to register all of the rest routes for the Curastream Plugin 
-
 <?php
+// Used to register all of the rest routes for the Curastream Plugin 
 
 add_action('rest_api_init', function(){
 	$programs = new program();
