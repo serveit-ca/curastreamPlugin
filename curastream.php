@@ -6,11 +6,11 @@ Author: Admin
 */
 // Used for page filtering 
 
-include("ajaxSaves.php");
-include("ajaxCustomProgram.php");
 include("objects/program.php");
 include("objects/userTracking.php");
 include("rest.php");
+include("ajaxSaves.php");
+include("ajaxCustomProgram.php");
 
 // Used for Ajax Saves to DB 
 function curastream_add_bootstrap_And_Other() 

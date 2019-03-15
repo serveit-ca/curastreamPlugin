@@ -1,5 +1,4 @@
 <?php 
-require_once ("objects/program.php");
 $programs = new program();
 require_once ("objects/customProgramCreation.php");
 $customCreation = new customProgramCreation();

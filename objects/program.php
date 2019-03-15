@@ -3,6 +3,7 @@ add_action( 'plugins_loaded', array( 'program', 'init' ));
 
 require_once("phase.php");
 require_once("exercise.php");
+
 class program
 {
 public $id;
