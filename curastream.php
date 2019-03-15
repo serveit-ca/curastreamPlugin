@@ -5,13 +5,14 @@ Description: Add Programs
 Author: Admin
 */
 // Used for page filtering 
+
 include("objects/program.php");
 include("objects/userTracking.php");
 include("ajaxSaves.php");
 include("ajaxCustomProgram.php");
-include("rest.php");
 include("objects/program.php");
 include("objects/userTracking.php");
+include("rest.php");
 
 // Used for Ajax Saves to DB 
 function curastream_add_bootstrap_And_Other() 
@@ -126,7 +127,6 @@ function add_submenu() {
         );
     }
 }
-add_action( 'admin_menu', 'add_submenu');
 
 function load_wp_media(){
     wp_enqueue_media();
