@@ -183,7 +183,7 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><button id="newSportOccSave" class="">Save</button></td>
+						<td><button id="newSportOccSave" class="button-secondary custom-btn">Save</button></td>
 					</tr>
 					<?php 
 							foreach ($sports as $key) {

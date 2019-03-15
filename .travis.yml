@@ -9,7 +9,8 @@ notifications:
 branches:
   only:
     - master
-    - databaseOverhaul
+    - userTracking
+    - groupManagement
 
 services:
   - mysql
