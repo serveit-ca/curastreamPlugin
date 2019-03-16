@@ -349,8 +349,8 @@ public function newCustomGroup($groupName){
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         if (isset($minUser) && !is_null($minUser) && isset($maxUser) && !is_null($maxUser) && isset($pricePer) && !is_null($pricePer)){
             $wpdb->insert($tableName, array(
-            "min_user" => $minUser,
-            "max_user" => $maxUser,
+            "min_users" => $minUser,
+            "max_users" => $maxUser,
             "price_per_user" => $pricePer,
             "is_default" => 0));
             $lastid = $wpdb->insert_id;
@@ -363,8 +363,8 @@ public function newCustomGroup($groupName){
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         if (isset($minUser) && !is_null($minUser) && isset($maxUser) && !is_null($maxUser) && isset($pricePer) && !is_null($pricePer)){
             $wpdb->insert($tableName, array(
-            "min_user" => $minUser,
-            "max_user" => $maxUser,
+            "min_users" => $minUser,
+            "max_users" => $maxUser,
             "price_per_user" => $pricePer,
             "is_default" => 1));
             $lastid = $wpdb->insert_id;
@@ -379,19 +379,73 @@ public function newCustomGroup($groupName){
         //Check and update Min User
         if (isset($minUser) && !is_null($maxUser)){
             $wpdb->update($tableName, array(
-            "min_user" => $minUser),
+            "min_users" => $minUser),
+            array( // Where Clause
+            "id" => $tierId));
+        }
+
+        //Check and update Max User
+        if (isset($maxUser) && !is_null($maxUser)){
+            $wpdb->update($tableName, array(
+            "max_users" => $maxUser),
             array( // Where Clause
             "id" => $tierId));
         }
 
         //Check and update Min User
-        if (isset($minUser) && !is_null($maxUser)){
+        if (isset($pricePer) && !is_null($pricePer)){
             $wpdb->update($tableName, array(
-            "min_user" => $minUser),
+            "price_per_user" => $pricePer),
             array( // Where Clause
             "id" => $tierId));
         }
     }
+
+    public function checkTierUserLimits($tierId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_tiers";
+
+        $limits = $wpdb->get_row("SELECT min_users, max_users FROM $tableName WHERE id = $tierId");
+        return $limits;
+    }
+
+    public function getCurrentPricePerUser($tierId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_tiers";
+
+        $price = $wpdb->get_row("SELECT price_per_user FROM $tableName WHERE id = $tierId");
+        return $price->price_per_user;
+    }
+
+    // public function getCurrentPricePerUserByCorp($corpId){
+    //     global $wpdb;
+    //     $tableName = $wpdb->prefix . "cura_corp_tiers";
+
+    //     $price = $wpdb->get_row("SELECT price_per_user FROM $tableName WHERE id = $tierId");
+    //     return $price->price_per_user;
+    // }
+
+    public function getTotalSubscriptionPrice($corpId){
+
+    }
+
+    public function getNumberOfCorpSubAccounts($corpId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_groups";
+
+        $group = $wpdb->get_row("SELECT group_id FROM $tableName WHERE corp_id = $corpId");
+        $groupId = $group->group_id;
+
+        $tableName = $wpdb->prefix . "cura_group_users";
+        $users = $wpbd->get_results("SELECT user_id FROM $tableName WHERE group_id = $groupId");
+        $count = 0;
+        foreach ($users as $key) {
+            $count++;
+        }
+        return $count;
+    }
+
+
 }
 
 ?>
