@@ -1,6 +1,7 @@
 
 <?php
 require_once ("objects/program.php");
+require_once ("objects/group.php");
 require_once ("objects/userTracking.php");
 require_once ("objects/phase.php");
 require_once ("objects/exercise.php");
@@ -8,6 +9,68 @@ require_once ("objects/databaseManagement.php");
 
 $database = new databaseManagement();
 $programs = new program();
+$groups = new group();
+
+//Testing Plan For Pricing
+//Create 5 Default Pricing Tiers
+$groups->newDefaultPricingTier(0, 2, 1);
+//Check Each Tier's Validity
+$isValid = $groups->checkValidTier(2, 3, 4, NULL);
+echo "New Tier Validity: " . $isValid;
+$groups->newDefaultPricingTier(3, 4, 1.5);
+
+$isValid = $groups->checkValidTier(4, 5, 6, NULL);
+echo "New Tier Validity: " . $isValid;
+$groups->newDefaultPricingTier(5, 6, 2);
+
+$isValid = $groups->checkValidTier(6, 7, 8, NULL);
+echo "New Tier Validity: " . $isValid;
+$groups->newDefaultPricingTier(7, 8, 2.5);
+
+$isValid = $groups->checkValidTier(8, 9, 10, 50);
+echo "New Tier Validity: " . $isValid;
+$groups->newDefaultPricingTier(9, 50, 5);
+
+//Assign the Defaults To Corp "25"
+assignAllDefaultsToCorp(25);
+//Make 5 Custom Pricing Tiers
+$groups->newPricingTier(0, 2, 1);
+//Check Each Tier's Validity
+$isValid = $groups->checkValidTier(2, 3, 4, NULL);
+echo "New Tier Validity: " . $isValid;
+$groups->newPricingTier(3, 4, 1.5);
+
+$isValid = $groups->checkValidTier(4, 5, 6, NULL);
+echo "New Tier Validity: " . $isValid;
+$groups->newPricingTier(5, 6, 2);
+
+$isValid = $groups->checkValidTier(6, 7, 8, NULL);
+echo "New Tier Validity: " . $isValid;
+$groups->newPricingTier(7, 8, 2.5);
+
+$isValid = $groups->checkValidTier(8, 9, 10, 50);
+echo "New Tier Validity: " . $isValid;
+$groups->newPricingTier(9, 50, 5);
+
+//Check Each Tier's Validity
+
+	// Have One Fail
+
+//Assign Customs To Corp "26"
+
+//Get Number of Users For Both Corps
+
+//Get Price Per User of Both Corps
+
+//Get Total Price for Both Corps
+
+//Add Enough Users To Group 40 - Increased Tier 
+
+// New Price Per User
+
+// New Total Price
+
+
 
 
 
