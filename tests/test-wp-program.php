@@ -840,8 +840,8 @@ public function test_move_phase_order(){
 
   public function test_new_custom_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->newCustomGroup("Test Custom");
+    $groups = new group();
+    $groups->newCustomGroup("Test Custom");
     $tableName = $wpdb->prefix . "cura_groups";
     $lastId = $wpdb->insert_id;
     $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
@@ -851,8 +851,8 @@ public function test_move_phase_order(){
 
   public function test_new_corp_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->newCorpGroup("Test Corp");
+    $groups = new group();
+    $groups->newCorpGroup("Test Corp");
     $tableName = $wpdb->prefix . "cura_groups";
     $lastId = $wpdb->insert_id;
     $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
@@ -862,43 +862,45 @@ public function test_move_phase_order(){
 
   public function test_assign_user_to_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->assignUserToGroup(1, 1);
-    $user = $programs->getUsersByGroupId(1);
+    $groups = new group();
+    $groups->assignUserToGroup(1, 1);
+    $user = $groups->getUsersByGroupId(1);
     assert($user[0] == 1);
   }
 
   public function test_remove_user_from_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->removeUserFromGroup(1,1);
-    $user = $programs->getUsersByGroupId(1);
+    $groups = new group();
+    $groups->removeUserFromGroup(1,1);
+    $user = $groups->getUsersByGroupId(1);
     assert($user == NULL);
   }
 
   public function test_assign_program_to_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->assignProgramToGroup(37,1);
-    $groupProgs = $programs->getProgramsByGroupId(1);
+    $groups = new group();
+    $groups->assignProgramToGroup(37,1);
+    $groupProgs = $groups->getProgramsByGroupId(1);
     assert($groupProgs[0] == 37); 
   }
 
   public function test_remove_program_from_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->removeProgramFromGroup(37,1);
-    $groupProgs = $programs->getProgramsByGroupId(1);
+    $groups = new group();
+    $groups->removeProgramFromGroup(37,1);
+    $groupProgs = $groups->getProgramsByGroupId(1);
     assert($groupProgs == NULL); 
   }
 
   public function test_change_group_user_privilege(){
     global $wpdb;
-    $programs = new program();
-    $programs->assignUserToGroup(1,1);
-    $programs->changeGroupUserPrivilege(1,1,2);
-    $pLevel = $programs->checkUserPrivilege(1,1);
+    $groups = new group();
+    $groups->assignUserToGroup(1,1);
+    $groups->changeGroupUserPrivilege(1,1,2);
+    $pLevel = $groups->checkUserPrivilege(1,1);
     assert($pLevel == "Owner Level"); 
   }
+
+
 }
 ?>

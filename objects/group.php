@@ -344,6 +344,8 @@ public function newCustomGroup($groupName){
         return $groupId->group_id;
     }
 
+    // Pricing Functions Below
+
     public function newPricingTier($minUser, $maxUser, $pricePer){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
@@ -419,14 +421,15 @@ public function newCustomGroup($groupName){
 
     public function getCurrentPricePerUserByCorp($corpId){
         global $wpdb;
-        $numUsers = getNumberOfCorpSubAccounts($corpId);
+        $numUsers = $this->getNumberOfCorpSubAccounts($corpId);
+        echo "Number of Users within Get Price: " . $numUsers . "<br>";
         $tableName = $wpdb->prefix . "cura_corp_prices";
         $allTiers = $wpdb->get_results("SELECT tier_id FROM $tableName WHERE corp_id = $corpId");
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         $userPrice = 0;
         foreach ($allTiers as $key) {
-            $tier = $wpdb->get_row("SELECT min_users, max_users, price_per_user FROM $tableName WHERE id = $key");
-            if($numUsers > $tier->min_users && $tier->max_users < $numUsers){
+            $tier = $wpdb->get_row("SELECT min_users, max_users, price_per_user FROM $tableName WHERE id = $key->tier_id");
+            if($numUsers > ($tier->min_users-1) && ($tier->max_users+1) > $numUsers){
                 $userPrice = $tier->price_per_user;
             }
         }
@@ -439,9 +442,9 @@ public function newCustomGroup($groupName){
     }
 
     public function getTotalSubscriptionPrice($corpId){
-        $userPrice = getCurrentPricePerUserByCorp($corpId);
-        $numUsers = getNumberOfCorpSubAccounts($corpId);
-        $totalPrice = $userPrice x $numUsers;
+        $userPrice = $this->getCurrentPricePerUserByCorp($corpId);
+        $numUsers = $this->getNumberOfCorpSubAccounts($corpId);
+        $totalPrice = $userPrice * $numUsers;
         return $totalPrice;
     }
 
@@ -453,7 +456,7 @@ public function newCustomGroup($groupName){
         $groupId = $group->group_id;
 
         $tableName = $wpdb->prefix . "cura_group_users";
-        $users = $wpbd->get_results("SELECT user_id FROM $tableName WHERE group_id = $groupId");
+        $users = $wpdb->get_results("SELECT user_id FROM $tableName WHERE group_id = $groupId");
         $count = 0;
         foreach ($users as $key) {
             $count++;
@@ -476,7 +479,7 @@ public function newCustomGroup($groupName){
     }
 
     public function checkValidTier($lastMax, $newMin, $newMax, $nextMin){
-        if($lastMax < $newMin && ($newMin - $lastMax) = 1 && $newMin < $newMax){
+        if($lastMax < $newMin && ($newMin - $lastMax) == 1 && $newMin < $newMax){
             if(isset($nextMin)){
                 if($newMax < $nextMin){
                     return "Valid Tier";
@@ -484,7 +487,8 @@ public function newCustomGroup($groupName){
             }
             else{        
                 return "Valid Tier";
-            }            
+            }
+        }            
         else{
             return "Tier Not Valid";
         }
@@ -514,10 +518,11 @@ public function newCustomGroup($groupName){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         $defaultTiers = $wpdb->get_results("SELECT id FROM $tableName WHERE is_default = 1");
+        $tableName = $wpdb->prefix . "cura_corp_prices";
         foreach ($defaultTiers as $key) {
-            if (isset($key) && !is_null($key) && isset($corpId) && !is_null($corpId)){
+            if (isset($key->id) && !is_null($key->id) && isset($corpId) && !is_null($corpId)){
             $wpdb->insert($tableName, array(
-            "tier_id" => $key,
+            "tier_id" => $key->id,
             "corp_id" => $corpId));            
             }
         }

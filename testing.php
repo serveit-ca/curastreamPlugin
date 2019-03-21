@@ -16,59 +16,83 @@ $groups = new group();
 $groups->newDefaultPricingTier(0, 2, 1);
 //Check Each Tier's Validity
 $isValid = $groups->checkValidTier(2, 3, 4, NULL);
-echo "New Tier Validity: " . $isValid;
+echo "New Tier Validity: " . $isValid . "<br>"; 
 $groups->newDefaultPricingTier(3, 4, 1.5);
 
 $isValid = $groups->checkValidTier(4, 5, 6, NULL);
-echo "New Tier Validity: " . $isValid;
+echo "New Tier Validity: " . $isValid . "<br>";
 $groups->newDefaultPricingTier(5, 6, 2);
 
 $isValid = $groups->checkValidTier(6, 7, 8, NULL);
-echo "New Tier Validity: " . $isValid;
+echo "New Tier Validity: " . $isValid . "<br>";
 $groups->newDefaultPricingTier(7, 8, 2.5);
 
 $isValid = $groups->checkValidTier(8, 9, 10, 50);
-echo "New Tier Validity: " . $isValid;
+echo "New Tier Validity: " . $isValid . "<br>";
 $groups->newDefaultPricingTier(9, 50, 5);
 
 //Assign the Defaults To Corp "25"
-assignAllDefaultsToCorp(25);
+$groups->assignAllDefaultsToCorp(25);
 //Make 5 Custom Pricing Tiers
-$groups->newPricingTier(0, 2, 1);
+$custTier1 = $groups->newPricingTier(0, 2, 5);
 //Check Each Tier's Validity
 $isValid = $groups->checkValidTier(2, 3, 4, NULL);
-echo "New Tier Validity: " . $isValid;
-$groups->newPricingTier(3, 4, 1.5);
+echo "New Tier Validity: " . $isValid . "<br>";
+$custTier2 = $groups->newPricingTier(3, 4, 10);
 
 $isValid = $groups->checkValidTier(4, 5, 6, NULL);
-echo "New Tier Validity: " . $isValid;
-$groups->newPricingTier(5, 6, 2);
+echo "New Tier Validity: " . $isValid . "<br>";
+$custTier3 = $groups->newPricingTier(5, 6, 15);
 
 $isValid = $groups->checkValidTier(6, 7, 8, NULL);
-echo "New Tier Validity: " . $isValid;
-$groups->newPricingTier(7, 8, 2.5);
+echo "New Tier Validity: " . $isValid . "<br>";
+$custTier4 = $groups->newPricingTier(7, 8, 20);
 
 $isValid = $groups->checkValidTier(8, 9, 10, 50);
-echo "New Tier Validity: " . $isValid;
-$groups->newPricingTier(9, 50, 5);
-
-//Check Each Tier's Validity
-
-	// Have One Fail
+echo "New Tier Validity: " . $isValid . "<br>";
+$custTier5 = $groups->newPricingTier(9, 50, 25);
 
 //Assign Customs To Corp "26"
+$groups->assignTierToCorp($custTier1, 26);
+$groups->assignTierToCorp($custTier2, 26);
+$groups->assignTierToCorp($custTier3, 26);
+$groups->assignTierToCorp($custTier4, 26);
+$groups->assignTierToCorp($custTier5, 26);
 
 //Get Number of Users For Both Corps
+$numUsersDefault = $groups->getNumberOfCorpSubAccounts(25);
+$numUsersCustom = $groups->getNumberOfCorpSubAccounts(26);
+
+echo "Number of Users for Default: " . $numUsersDefault  . "<br>";
+echo "Number of Users for Custom: " . $numUsersCustom  . "<br>";
 
 //Get Price Per User of Both Corps
+$priceUsersDefault = $groups->getCurrentPricePerUserByCorp(25);
+$priceUsersCustom = $groups->getCurrentPricePerUserByCorp(26);
+
+echo "Price Per User for Default: " . $priceUsersDefault  . "<br>";
+echo "Price Per User for Custom: " . $priceUsersCustom  . "<br>";
 
 //Get Total Price for Both Corps
+$totalPriceDefault = $groups->getTotalSubscriptionPrice(25);
+$totalPriceCustom = $groups->getTotalSubscriptionPrice(26);
+
+echo "Total Price for Default: " . $totalPriceDefault  . "<br>";
+echo "Total Price for Custom: " . $totalPriceCustom  . "<br>";
 
 //Add Enough Users To Group 40 - Increased Tier 
+$groups->assignUserToGroup(40, 15);
+$groups->assignUserToGroup(40, 16);
+$groups->assignUserToGroup(40, 17);
+$groups->assignUserToGroup(40, 18);
+$groups->assignUserToGroup(40, 19);
 
 // New Price Per User
-
+$newPriceUsersCustom = $groups->getCurrentPricePerUserByCorp(26);
+echo "New Price Per User for Custom: " . $newPriceUsersCustom  . "<br>";
 // New Total Price
+$newTotalPriceCustom = $groups->getTotalSubscriptionPrice(26);
+echo "New Total Price for Custom: " . $newTotalPriceCustom  . "<br>";
 
 
 
