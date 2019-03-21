@@ -6,6 +6,7 @@ Author: Admin
 */
 // Used for page filtering 
 include("objects/program.php");
+include("objects/group.php");
 include("objects/userTracking.php");
 include("rest.php");
 include("ajaxSaves.php");
