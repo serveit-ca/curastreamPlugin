@@ -852,7 +852,7 @@ public function test_move_phase_order(){
   public function test_new_corp_group(){
     global $wpdb;
     $groups = new group();
-    $groups->newCorpGroup("Test Corp");
+    $groups->newCorpGroup("Test Corp", 1);
     $tableName = $wpdb->prefix . "cura_groups";
     $lastId = $wpdb->insert_id;
     $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
