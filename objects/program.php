@@ -1933,7 +1933,7 @@ public function duplicateGeneralProgram($existingProgram){
         
         $body_part = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $bodyPartId");
         
-        return $body_part;
+        return $body_part; 
 
     }
 
