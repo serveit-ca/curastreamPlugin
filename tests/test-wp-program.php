@@ -936,7 +936,7 @@ public function test_move_phase_order(){
     $groups = new group();
     $newTier = $groups->newDefaultPricingTier(0,2,5);
     $groups->updatePricingTier(1, 3, 10, $newTier);
-    $tierPrice = $groups->getCurrentPricerPerUser($newTier);
+    $tierPrice = $groups->getCurrentPricePerUser($newTier);
     assert($tierPrice->price_per_user == 10.00);
   }
 
