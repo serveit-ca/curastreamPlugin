@@ -940,6 +940,18 @@ public function test_move_phase_order(){
     assert($tierPrice == 10.00);
   }
 
+  public function test_check_valid_tier(){
+    global $wpdb;
+    $groups = new group();
+    $isValid = $groups->checkValidTier(1, 2, 3, 4);
+    $isNotValid = $groups->checkValidTier(1,1,2,3);
+    $isAlsoNotValid = $groups->checkValidTier(1,2,3,3);
+    assert($isValid = "Valid Tier");
+    assert($isNotValid = "Tier Not Valid");
+    assert($isAlsoNotValid = "Tier Not Valid");
+
+  }
+
 
 }
 ?>
