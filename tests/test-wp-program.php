@@ -922,6 +922,8 @@ public function test_move_phase_order(){
     assert($userLimits->is_default == 1);
   }
 
+  public function test_update_pricing_tier(){}
+
 
 }
 ?>
