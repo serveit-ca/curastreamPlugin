@@ -946,9 +946,9 @@ public function test_move_phase_order(){
     $isValid = $groups->checkValidTier(1, 2, 3, 4);
     $isNotValid = $groups->checkValidTier(1,1,2,3);
     $isAlsoNotValid = $groups->checkValidTier(1,2,3,3);
-    assert($isValid = "Valid Tier");
-    assert($isNotValid = "Tier Not Valid");
-    assert($isAlsoNotValid = "Tier Not Valid");
+    assert($isValid == "Valid Tier");
+    assert($isNotValid == "Tier Not Valid");
+    assert($isAlsoNotValid == "Tier Not Valid");
     $this->reset_database();
   }
 
@@ -975,6 +975,12 @@ public function test_move_phase_order(){
     assert($totalPrice == 50);
     $groups->assignUserToGroup($newGroup, 6);
     $groups->assignUserToGroup($newGroup, 7);
+    $pricePerUser = $groups->getCurrentPricePerUser($newCorp);
+    assert($pricePerUser == 15.00);
+    $numUsers = $grops->getNumberOfCorpSubAccounts($newCorp);
+    assert($numUsers == 7);
+    $currentCorpTier = $groups->getCorpTier($newCorp);
+    assert($currentCorpTier == $newTierHigh);
 
 
   }
