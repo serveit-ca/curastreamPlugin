@@ -480,7 +480,7 @@ public function newCustomGroup($groupName){
     }
 
     public function checkValidTier($lastMax, $newMin, $newMax, $nextMin){
-        if($lastMax < $newMin && ($newMin - $lastMax) == 1 && $newMax < $newMax && ($nextMin - $newMax) == 1){
+        if($lastMax < $newMin && ($newMin - $lastMax) == 1 && $newMin < $newMax && ($nextMin - $newMax) == 1){
             if(isset($nextMin)){
                 if($newMax < $nextMin){
                     return "Valid Tier";
