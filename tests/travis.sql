@@ -1297,8 +1297,8 @@ CREATE TABLE `wptests_cura_group_programs` ( `id` int(11) NOT NULL, `group_id` i
 
 ALTER TABLE `wptests_cura_user_programs` ADD `group_id` int(11);
 
-CREATE TABLE 'wptests_cura_corp_prices'( 'id' int(11) NOT NULL, 'corp_id' int(11) NOT NULL, 'tier_id' int(11) NOT NULL, PRIMARY KEY ('id'))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `wptests_cura_corp_prices`( `id` int(11) NOT NULL, `corp_id` int(11) NOT NULL, `tier_id` int(11) NOT NULL, PRIMARY KEY (`id`))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE 'wptests_cura_corp_tiers'( 'id' int(11) NOT NULL, 'min_users' int(5) NOT NULL, 'max_users' int(5) NOT NULL, 'price_per_user' numeric(6,2), 'is_default' int(1), PRIMARY KEY (id))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `wptests_cura_corp_tiers`( `id` int(11) NOT NULL, `min_users` int(5) NOT NULL, `max_users` int(5) NOT NULL, `price_per_user` numeric(6,2), `is_default` int(1), PRIMARY KEY (id))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 COMMIT;
