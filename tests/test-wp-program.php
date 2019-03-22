@@ -908,7 +908,7 @@ public function test_move_phase_order(){
     $userLimits = $groups->checkTierUserLimits($newTier);
     assert($userLimits->min_users == 0);
     assert($userLimits->max_users == 2);
-    assert($userLimits->is_default == 0);
+
 
   }
 
@@ -919,7 +919,6 @@ public function test_move_phase_order(){
     $userLimits = $groups->checkTierUserLimits($newTier);
     assert($userLimits->min_users == 0);
     assert($userLimits->max_users == 2);
-    assert($userLimits->is_default == 1);
   }
 
   public function test_update_pricing_tier(){}
