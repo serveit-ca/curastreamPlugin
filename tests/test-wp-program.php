@@ -921,7 +921,24 @@ public function test_move_phase_order(){
     assert($userLimits->max_users == 2);
   }
 
-  public function test_update_pricing_tier(){}
+  public function test_update_pricing_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newDefaultPricingTier(0,2,5);
+    $groups->updatePricingTier(1, 3, 10, $newTier);
+    $userLimits = $groups->checkTierUserLimits($newTier);
+    assert($userLimits->min_users == 1);
+    assert($userLimits->max_users == 3);
+  }
+
+  public function test_get_current_price_per_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newDefaultPricingTier(0,2,5);
+    $groups->updatePricingTier(1, 3, 10, $newTier);
+    $tierPrice = $groups->getCurrentPricerPerUser($newTier);
+    assert($tierPrice->price_per_user == 10.00);
+  }
 
 
 }
