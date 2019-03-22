@@ -901,6 +901,13 @@ public function test_move_phase_order(){
     assert($pLevel == "Owner Level"); 
   }
 
+  public function test_new_pricing_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newPricingTier(0,2,5);
+
+  }
+
 
 }
 ?>
