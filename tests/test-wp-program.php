@@ -949,6 +949,33 @@ public function test_move_phase_order(){
     assert($isValid = "Valid Tier");
     assert($isNotValid = "Tier Not Valid");
     assert($isAlsoNotValid = "Tier Not Valid");
+    $this->reset_database();
+  }
+
+  public function test_corporate_pricing_functions(){ // This Function Will Test Many Functions, Due to the Nature of their workflow.
+    global $wpdb;
+    $groups = new group();
+    //Building Corp For Tests
+    $newCorp = $groups->newCorp("Pricing Test Corp");
+    $newGroup = $groups->newCorpGroup("Pricing Test Group", $newCorp);
+    $groups->assignUserToGroup($newGroup, 1);
+    $groups->assignUserToGroup($newGroup, 2);
+    $groups->assignUserToGroup($newGroup, 3);
+    $groups->assignUserToGroup($newGroup, 4);
+    $groups->assignUserToGroup($newGroup, 5);
+    $newTierLow = $groups->newPricingTier(0,2,5);
+    $newTierMid = $groups->newPricingTier(3,5,10);
+    $newTierHigh = $groups->newPricingTier(6,10,15);
+    $groups->assignTierToCorp($newTierLow, $newCorp);
+    $groups->assignTierToCorp($newTierMid, $newCorp);
+    $groups->assignTierToCorp($newTierHigh, $newCorp);
+    $pricePerUser = $groups->getCurrentPricePerUserByCorp($newCorp);
+    assert($pricePerUser == 10.00);
+    $totalPrice = $groups->getTotalSubscriptionPrice($newCorp);
+    assert($totalPrice == 50);
+    $groups->assignUserToGroup($newGroup, 6);
+    $groups->assignUserToGroup($newGroup, 7);
+
 
   }
 
