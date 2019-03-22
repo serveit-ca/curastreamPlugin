@@ -905,6 +905,8 @@ public function test_move_phase_order(){
     global $wpdb;
     $groups = new group();
     $newTier = $groups->newPricingTier(0,2,5);
+    $userLimits = $groups->checkTierUserLimits($newTier);
+    
 
   }
 
