@@ -906,8 +906,20 @@ public function test_move_phase_order(){
     $groups = new group();
     $newTier = $groups->newPricingTier(0,2,5);
     $userLimits = $groups->checkTierUserLimits($newTier);
-    
+    assert($userLimits->min_users == 0);
+    assert($userLimits->max_users == 2);
+    assert($userLimits->is_default == 0);
 
+  }
+
+  public function test_new_default_pricing_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newDefaultPricingTier(0,2,5);
+    $userLimits = $groups->checkTierUserLimits($newTier);
+    assert($userLimits->min_users == 0);
+    assert($userLimits->max_users == 2);
+    assert($userLimits->is_default == 1);
   }
 
 
