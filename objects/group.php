@@ -453,7 +453,7 @@ public function newCustomGroup($groupName){
         $tableName = $wpdb->prefix . "cura_corp_groups";
 
         $groupId = $wpdb->get_row("SELECT group_id FROM $tableName WHERE corp_id = $corpId");
-        
+        $groupId = $groupId->group_id;
 
         $tableName = $wpdb->prefix . "cura_group_users";
         $users = $wpdb->get_results("SELECT user_id FROM $tableName WHERE group_id = $groupId");
