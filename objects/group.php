@@ -471,7 +471,8 @@ public function newCustomGroup($groupName){
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         $corpTier = 0;
         foreach ($allTiers as $key) {
-            $tier = $wpdb->get_row("SELECT min_users, max_users, id FROM $tableName WHERE id = $key");
+            $tierId = $key->tier_id;
+            $tier = $wpdb->get_row("SELECT min_users, max_users, id FROM $tableName WHERE id = $tierId");
             if($numUsers > $tier->min_users && $tier->max_users < $numUsers){
                 $corpTier = $tier->id;
             }
