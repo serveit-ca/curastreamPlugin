@@ -88,6 +88,12 @@ function add_submenu() {
                 '',
                 ''
             );
+             add_submenu_page('curastreamPlugin','Corporate Pricing','Corporate Pricing',
+                'curaProgEditor',
+                'curastream/corpPricing.php',
+                '',
+                ''
+            );
      
         add_submenu_page('curastreamPlugin','Category Management','Category Management',
             'curaProgEditor',

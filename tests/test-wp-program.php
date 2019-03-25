@@ -996,7 +996,19 @@ public function test_move_phase_order(){
     $groups = new group();
     $numUsers = $groups->getNumberOfCorpSubAccounts($newCorp);
     assert($numUsers == 7);
+    $this->reset_database();
 
+
+  }
+
+  public function test_get_corp_by_tier_id(){
+    global $wpdb;
+    $groups = new group();
+    $newCorp = $groups->newCorp("Pricing Test Corp");
+    $newTier = $groups->newPricingTier(0,2,5);
+    $groups->assignTierToCorp($newTier, $newCorp);
+    $corp = $groups->getCorpByTierId($newTier);
+    assert($corp==$newTier);
 
   }
 

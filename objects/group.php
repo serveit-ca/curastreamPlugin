@@ -59,6 +59,17 @@ public function newCustomGroup($groupName){
         return $corp;
     }
 
+    public function getAllCorps(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corps";
+        $corp = $wpdb->get_results("SELECT id, mempr_id, name FROM $tableName");
+        $allCorps = array();
+        foreach ($corp as $key) {
+            $allCorps[] = $key;
+        }
+        return $allCorps;
+    }
+
     public function getProgramsByGroupId($groupId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_group_programs";
@@ -419,6 +430,28 @@ public function newCustomGroup($groupName){
         return $price->price_per_user;
     }
 
+    public function getAllDefaultPriceTiers(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_tiers";
+        $tiers = $wpdb->get_results("SELECT id, min_users, max_users, price_per_user FROM $tableName WHERE is_default = 1");
+        $allTiers = array();
+        foreach ($tiers as $key) {
+            $allTiers[] = $key;
+        }
+        return $allTiers;
+    }
+
+    public function getAllCustomPriceTiers(){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_tiers";
+        $tiers = $wpdb->get_results("SELECT id, min_users, max_users, price_per_user FROM $tableName WHERE is_default = 0");
+        $allTiers = array();
+        foreach ($tiers as $key) {
+            $allTiers[] = $key;
+        }
+        return $allTiers;
+    }
+
     public function getCurrentPricePerUserByCorp($corpId){
         global $wpdb;
         $numUsers = $this->getNumberOfCorpSubAccounts($corpId);
@@ -529,6 +562,13 @@ public function newCustomGroup($groupName){
             "corp_id" => $corpId));            
             }
         }
+    }
+
+    public function getCorpByTierId($tierId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_corp_prices";
+        $corpId = $wpdb->get_row("SELECT corp_id FROM $tableName WHERE tier_id = $tierId");
+        return $corpId;
     }
 
 
