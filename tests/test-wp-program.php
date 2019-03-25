@@ -991,7 +991,7 @@ public function test_move_phase_order(){
     $groups = new group();
     $groups->assignUserToGroup($newGroup, 7);
     $groups = new group();
-    $pricePerUser = $groups->getCurrentPricePerUser($newCorp);
+    $pricePerUser = $groups->getCurrentPricePerUserByCorp($newCorp);
     assert($pricePerUser == 15.00);
     $groups = new group();
     $numUsers = $grops->getNumberOfCorpSubAccounts($newCorp);
