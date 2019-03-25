@@ -1302,10 +1302,10 @@ CREATE TABLE `wptests_cura_group_users` ( `id` int(11) NOT NULL, `user_id` int(1
 
 ALTER TABLE `wptests_cura_group_users`
   ADD PRIMARY KEY (`id`);
-
--- ALTER TABLE `wptests_cura_group_users`
---   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;COMMIT;
-
+SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_group_users' ;
+ALTER TABLE `wptests_cura_group_users`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;COMMIT;
+SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_group_users' ;
 CREATE TABLE `wptests_cura_group_programs` ( `id` int(11) NOT NULL, `group_id` int(11) NOT NULL, `program_id` int(11) NOT NULL)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `wptests_cura_group_programs`
@@ -1322,7 +1322,10 @@ CREATE TABLE `wptests_cura_corp_tiers`( `id` int(11) NOT NULL, `min_users` int(5
 
 ALTER TABLE `wptests_cura_corp_tiers`
   ADD PRIMARY KEY (`id`);
-
+SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_corp_tiers' ;
+ALTER TABLE `wptests_cura_corp_tiers`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;COMMIT;
+SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_corp_tiers' ;
 INSERT INTO `wptests_cura_group_users` (`id`, `user_id`, `group_id`, `privilege_level`) VALUES
 (0, 1, 1, 0);
 
@@ -1331,7 +1334,7 @@ INSERT INTO `wptests_cura_corp_tiers` (`id`, `min_users`, `max_users`, `price_pe
 
 COMMIT;
 
-SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_group_users' ;
-SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_corp_tiers' ;
+
+
 
 

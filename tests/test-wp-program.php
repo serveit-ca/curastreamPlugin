@@ -953,7 +953,7 @@ public function test_move_phase_order(){
   }
 
   public function test_corporate_pricing_functions(){ // This Function Will Test Many Functions, Due to the Nature of their workflow.
-    echo "Testing the test_corporate_pricing_fucntions"
+    echo "Testing the test_corporate_pricing_fucntions";
     global $wpdb;
     $groups = new group();
     //Building Corp For Tests
