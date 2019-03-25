@@ -466,6 +466,7 @@ public function newCustomGroup($groupName){
 
     public function getCorpTier($corpId){
         global $wpdb;
+        $numUsers = $this->getNumberOfCorpSubAccounts($corpId);
         $tableName = $wpdb->prefix . "cura_corp_prices";
         $allTiers = $wpdb->get_results("SELECT tier_id FROM $tableName WHERE corp_id = $corpId");
         $tableName = $wpdb->prefix . "cura_corp_tiers";
