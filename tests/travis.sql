@@ -1302,6 +1302,7 @@ CREATE TABLE `wptests_cura_group_users` ( `id` int(11) NOT NULL, `user_id` int(1
 
 ALTER TABLE `wptests_cura_group_users`
   ADD PRIMARY KEY (`id`);
+
   ALTER TABLE `wptests_cura_group_users`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;COMMIT;
 
@@ -1323,10 +1324,10 @@ CREATE TABLE `wptests_cura_corp_tiers`( `id` int(11) NOT NULL, `min_users` int(5
 
 ALTER TABLE `wptests_cura_corp_tiers`
   ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `wptests_cura_corp_tiers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;COMMIT;
   
-
 INSERT INTO `wptests_cura_group_users` (`id`, `user_id`, `group_id`, `privilege_level`) VALUES
 (0, 1, 1, 0);
 
@@ -1334,3 +1335,8 @@ INSERT INTO `wptests_cura_corp_tiers` (`id`, `min_users`, `max_users`, `price_pe
 (0, 0, 2, 5, 0);  
 
 COMMIT;
+
+
+
+
+
