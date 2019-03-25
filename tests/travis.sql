@@ -1284,7 +1284,7 @@ ALTER TABLE `wptests_cura_deleted`
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
   ALTER TABLE `wptests_cura_user_tracking`
-  ADD PRIMARY KEY (`id`);COMMIT;
+  ADD PRIMARY KEY (`id`);
 
 
 
@@ -1319,7 +1319,7 @@ CREATE TABLE `wptests_cura_corp_tiers`( `id` int(11) NOT NULL, `min_users` int(5
 
 ALTER TABLE `wptests_cura_corp_tiers`
   ADD PRIMARY KEY (`id`);
-  
+
 INSERT INTO `wptests_cura_group_users` (`id`, `user_id`, `group_id`, `privilege_level`) VALUES
 (0, 1, 1, 0);
 
