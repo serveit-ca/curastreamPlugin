@@ -46,7 +46,7 @@ public function newCustomGroup($groupName){
             $tableName = $wpdb->prefix . "cura_corp_groups";
             $wpdb->insert($tableName, array(
             "group_id" => $lastid,
-            "corp_Id" => $corpId));
+            "corp_id" => $corpId));
             
             return $lastid;
         }
