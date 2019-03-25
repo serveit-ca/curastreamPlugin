@@ -416,7 +416,7 @@ public function newCustomGroup($groupName){
         $tableName = $wpdb->prefix . "cura_corp_tiers";
 
         $price = $wpdb->get_row("SELECT price_per_user FROM $tableName WHERE id = $tierId");
-        return $price->price_per_user;
+        return $price;
     }
 
     public function getCurrentPricePerUserByCorp($corpId){
