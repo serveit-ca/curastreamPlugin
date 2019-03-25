@@ -1303,9 +1303,9 @@ CREATE TABLE `wptests_cura_corp_prices`( `id` int(11) NOT NULL, `corp_id` int(11
 CREATE TABLE `wptests_cura_corp_tiers`( `id` int(11) NOT NULL, `min_users` int(5) NOT NULL, `max_users` int(5) NOT NULL, `price_per_user` numeric(6,2), `is_default` int(1), PRIMARY KEY (id))ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `wptests_cura_group_users` (`id`, `user_id`, `group_id`, `privilege_level`) VALUES
-(1, 1, 1, 0);
+(0, 1, 1, 0);
 
 INSERT INTO `wptests_cura_corp_tiers` (`id`, `min_users`, `max_users`, `price_per_user`,`is_default`) VALUES
-(1, 0, 2, 5, 0);  
+(0, 0, 2, 5, 0);  
 
 COMMIT;
