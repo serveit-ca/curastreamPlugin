@@ -1303,6 +1303,9 @@ CREATE TABLE `wptests_cura_group_users` ( `id` int(11) NOT NULL, `user_id` int(1
 ALTER TABLE `wptests_cura_group_users`
   ADD PRIMARY KEY (`id`);
 
+-- ALTER TABLE `wptests_cura_group_users`
+--   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;COMMIT;
+
 CREATE TABLE `wptests_cura_group_programs` ( `id` int(11) NOT NULL, `group_id` int(11) NOT NULL, `program_id` int(11) NOT NULL)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `wptests_cura_group_programs`
@@ -1327,3 +1330,8 @@ INSERT INTO `wptests_cura_corp_tiers` (`id`, `min_users`, `max_users`, `price_pe
 (0, 0, 2, 5, 0);  
 
 COMMIT;
+
+SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_group_users' ;
+SHOW TABLE STATUS FROM `wordpress_test` WHERE `name` LIKE 'wptests_cura_corp_tiers' ;
+
+
