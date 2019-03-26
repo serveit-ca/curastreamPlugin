@@ -1445,49 +1445,77 @@ function getBodyPartByIdHandler($data){
 function mempr_add_new_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
-    $programs = new program();
+    $groups = new group();
 
 
     // New Corp
     //$corpName = $data['']
-    $newCorpId = $programs->newCorp("Corp Name");
+    $newCorpId = $groups->newCorp("Corp Name");
     // Add mepr Id to Corp
-    $programs->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
+    $groups->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
     // New Group
-    $newGroupId = $programs->newCorpGroup("Corp Name - Default", $newCorpId);
+    $newGroupId = $groups->newCorpGroup("Corp Name - Default", $newCorpId);
     // Assign Group Owner   
-    $programs->assignUserToGroup($newGroupId, $input->data->member->id);
-    $programs->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);
+    $groups->assignUserToGroup($newGroupId, $input->data->member->id);
+    $groups->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);
+    // Assign Default Pricing Tiers to Corp
+    $groups->assignAllDefaultsToCorp($newCorpId);
 }
 
 function mempr_add_new_sub_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
-    $programs = new program();
+    $groups = new group();
     error_log("--------------------Add Sub Account ----------------------------------");
     //Get Mempr Corp Id From Json
     $memprId = $input->data->membership->id;
     
-    error_log($memprId);
+    error_log($memprId);    
     //Get Curastream database Corp Id From memprId
-    $corpId = $programs->getCorpIdByMemprId($memprId);
-    $groupId = $programs->getGroupIdByCorpId($corpId);
-    // Remove User From Corp Group    // Assign User To Corp Group
-    $programs->assignUserToGroup($groupId, $input->data->member->id);
+    $corpId = $groups->getCorpIdByMemprId($memprId);
+    //Get Current Pricing Tier For That Corp
+    $currentTier = $groups->getCurrentPricePerUserByCorp($corpId);
+    $groupId = $groups->getGroupIdByCorpId($corpId);
+    // Assign User To Corp Group
+    $groups->assignUserToGroup($groupId, $input->data->member->id);
+    $newTier = $groups->getCurrentPricePerUserByCorp($corpId);
+    if($newTier == "No Pricing Tier Found"){
+        //This is a Problem, Defaults should be assigned.
+        $groups->assignAllDefaultsToCorp($corpId);
+    }
+    elseif($newTier >= $corpId){
+        //The New Tier is Higher, Update Stripe
+    }
+    else{
+        //Tiers are equal, do nothing
+    }
 }
 
 function mempr_remove_sub_corp($request){
     $json = file_get_contents('php://input');
     $input = json_decode($json);
-    $programs = new program();
+    $groups = new group();
     error_log("--------------------Remove Sub Account ----------------------------------");
     //Get Mempr Corp Id From Json
     $memprId = $input->data->membership->id;
     //Get Curastream database Corp Id From memprId
-    $corpId = $programs->getCorpIdByMemprId($memprId);
-    $groupId = $programs->getGroupIdByCorpId($corpId);
+    $corpId = $groups->getCorpIdByMemprId($memprId);
+    //Get Current Pricing Tier For That Corp
+    $currentTier = $groups->getCurrentPricePerUserByCorp($corpId);
+    $groupId = $groups->getGroupIdByCorpId($corpId);
     // Remove User From Corp Group
-    $programs->removeUserFromGroup($groupId, $input->data->member->id);
+    $groups->removeUserFromGroup($groupId, $input->data->member->id);
+    $newTier = $groups->getCurrentPricePerUserByCorp($corpId);
+    if($newTier == "No Pricing Tier Found"){
+        //This is a Problem, Defaults should be assigned.
+        $groups->assignAllDefaultsToCorp($corpId);
+    }
+    elseif($newTier <= $corpId){
+        //The New Tier is Lower, Update Stripe
+    }
+    else{
+        //Tiers are equal, do nothing
+    }
 }
 
 // Other Fuctions 
