@@ -1008,7 +1008,7 @@ public function test_move_phase_order(){
     $newTier = $groups->newPricingTier(0,2,5);
     $groups->assignTierToCorp($newTier, $newCorp);
     $corp = $groups->getCorpByTierId($newTier);
-    assert($corp->id==$newTier);
+    assert($corp->corp_id==$newTier);
 
   }
 
