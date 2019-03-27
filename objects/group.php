@@ -20,8 +20,8 @@ public function newCustomGroup($groupName){
             $lastid = $wpdb->insert_id;
             return $lastid;
         }
-    }
-    public function newCorp($corpName){
+        }
+public function newCorp($corpName){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
         //$corpName = trim($corpName);
@@ -31,9 +31,9 @@ public function newCustomGroup($groupName){
             $lastid = $wpdb->insert_id;
             return $lastid;
         }
-    }
+        }
 
-    public function newCorpGroup($groupName, $corpId){
+public function newCorpGroup($groupName, $corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_groups";
         $groupName = trim($groupName);
@@ -50,16 +50,16 @@ public function newCustomGroup($groupName){
             
             return $lastid;
         }
-    }
+        }
 
-    public function getCorpById($corpId){
+public function getCorpById($corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
         $corp = $wpdb->get_results("SELECT mempr_id, name FROM $tableName WHERE id = $corpId");
         return $corp;
-    }
+        }
 
-    public function getAllCorps(){
+public function getAllCorps(){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
         $corp = $wpdb->get_results("SELECT id, mempr_id, name FROM $tableName");
@@ -68,9 +68,9 @@ public function newCustomGroup($groupName){
             $allCorps[] = $key;
         }
         return $allCorps;
-    }
+        }
 
-    public function getProgramsByGroupId($groupId){
+public function getProgramsByGroupId($groupId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_group_programs";
         $groupIds = $wpdb->get_results("SELECT program_id FROM $tableName WHERE group_id = $groupId");
@@ -80,9 +80,9 @@ public function newCustomGroup($groupName){
             $progIds[] = $program;
         }
         return $progIds;
-    }
+        }
 
-    public function getUsersByGroupId($groupId){
+public function getUsersByGroupId($groupId){
         global $wpdb;
         $tableNameA = $wpdb->prefix . "cura_user_programs";
         $programUsers = $wpdb->get_results("SELECT DISTINCT user_id FROM $tableNameA WHERE group_id = $groupId", ARRAY_A);
@@ -100,9 +100,9 @@ public function newCustomGroup($groupName){
             }
         }
         return $usersArray;
-    }
+        }
 
-    public function assignUserToGroup($groupId, $userId){
+public function assignUserToGroup($groupId, $userId){
         global $wpdb;
         $progams = new program();
         $tableName = $wpdb->prefix . "cura_group_users";
@@ -128,9 +128,9 @@ public function newCustomGroup($groupName){
             }
             return $lastid;
         }
-    }
+     }
 
-    public function removeUserFromGroup($groupId, $userId){
+public function removeUserFromGroup($groupId, $userId){
         global $wpdb;
         $progams = new program();
         $tableName = $wpdb->prefix . "cura_group_users";
@@ -149,9 +149,9 @@ public function newCustomGroup($groupName){
 
             
         }    
-    }
+        }
 
-    public function checkGroupAssigned($programId, $userId){
+public function checkGroupAssigned($programId, $userId){
         global $wpdb;
         $status = "notGroupAssigned";
         if (isset($programId) && !is_null($programId) && isset($userId) && !is_null($userId)){
@@ -165,9 +165,9 @@ public function newCustomGroup($groupName){
             }
         }
             return $status;
-    }
+        }
 
-    public function assignProgramToGroup($programId, $groupId){
+public function assignProgramToGroup($programId, $groupId){
         global $wpdb;
         $progams = new program();
         $tableName = $wpdb->prefix . "cura_group_programs";
@@ -186,9 +186,9 @@ public function newCustomGroup($groupName){
             }
         }   
         
-    }
+        }
 
-    public function removeProgramFromGroup($programId, $groupId){
+public function removeProgramFromGroup($programId, $groupId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_group_programs";
         if (isset($groupId) && !is_null($groupId) && isset($programId) && !is_null($programId)){
@@ -203,9 +203,9 @@ public function newCustomGroup($groupName){
             }
         } 
 
-    }
+        }
 
-    public function changeGroupUserPrivilege($groupId, $userId, $privilegeLevel){
+public function changeGroupUserPrivilege($groupId, $userId, $privilegeLevel){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_group_users";
         //Check and Update name
@@ -217,9 +217,9 @@ public function newCustomGroup($groupName){
             "group_id" => $groupId));
             echo "User with Id " . $userId . " Privilege Changed to " . $privilegeLevel;
         }
-    }
+        }
 
-    public function checkUserPrivilege($userId, $groupId){
+public function checkUserPrivilege($userId, $groupId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_group_users";
         $privLevel = $wpdb->get_row("SELECT privilege_level FROM $tableName WHERE user_id = $userId AND group_id = $groupId");
@@ -236,9 +236,9 @@ public function newCustomGroup($groupName){
             return "Error: Privilege Level Not Assigned";
         }
 
-    }
+        }
 
-    public function makeGroupAssigned($programId, $groupId, $userId){
+public function makeGroupAssigned($programId, $groupId, $userId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
         //Check and Update name
@@ -249,9 +249,9 @@ public function newCustomGroup($groupName){
             "saved_prog_id" => $programId,
             "user_id" => $userId));
         }
-    }
+        }
 
-    public function getAllCorpGroups(){
+public function getAllCorpGroups(){
         global $wpdb;
         $tableName =  $wpdb->prefix . "cura_groups";
         $corpGroups = $wpdb->get_results("SELECT id, name, type FROM $tableName WHERE type = 1 ORDER BY name");
@@ -264,9 +264,9 @@ public function newCustomGroup($groupName){
             $groups[] = $aGroup;
         }
         return $groups;
-    }
+        }
 
-    public function getAllCustomGroups(){
+public function getAllCustomGroups(){
         global $wpdb;
         $tableName =  $wpdb->prefix . "cura_groups";
         $corpGroups = $wpdb->get_results("SELECT id, name, type FROM $tableName WHERE type = 2 ORDER BY name");
@@ -279,9 +279,9 @@ public function newCustomGroup($groupName){
             $groups[] = $aGroup;
         }
         return $groups;
-    }
+        }
 
-    public function getCorpAccountByGroupId($groupId){
+public function getCorpAccountByGroupId($groupId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_groups";
         $corpId = $wpdb->get_row("SELECT corp_id FROM $tableName WHERE group_id = $groupId");
@@ -291,16 +291,16 @@ public function newCustomGroup($groupName){
         else{
             return "No Corp For This Group";
         }
-    }
+        }
 
-    public function checkGroupType($groupId){
+public function checkGroupType($groupId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_groups";
         $type = $wpdb->get_row("SELECT type FROM $tableName WHERE group_id = $groupId");
         return $type;
-    }
+        }
 
-    public function deleteGroup($groupId){
+public function deleteGroup($groupId){
         global $wpdb;
         // Removes all Users
         $groupUsers = $this->getUsersByGroupId($groupId);
@@ -320,11 +320,9 @@ public function newCustomGroup($groupName){
             $wpdb->delete($tableNameB, array(
                 "group_id" => $groupId));
         }
-    }
+        }   
 
-   
-
-    public function updateMemprIdToCorp($memprId, $corpId){
+public function updateMemprIdToCorp($memprId, $corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
 
@@ -335,29 +333,29 @@ public function newCustomGroup($groupName){
             "id" => $corpId));
         }
 
-    }
+        }
 
-    public function getCorpIdByMemprId($memprId){
+public function getCorpIdByMemprId($memprId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
 
         $corpId = $wpdb->get_row("SELECT id FROM $tableName WHERE mempr_id = $memprId");
 
         return $corpId->id;
-    }
+        }
 
-    public function getGroupIdByCorpId($corpId){
+public function getGroupIdByCorpId($corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_groups";
 
         $groupId = $wpdb->get_row("SELECT group_id FROM $tableName WHERE corp_id = $corpId");
 
         return $groupId->group_id;
-    }
+        }
 
     // Pricing Functions Below
 
-    public function newPricingTier($minUser, $maxUser, $pricePer){
+public function newPricingTier($minUser, $maxUser, $pricePer){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         if (isset($minUser) && !is_null($minUser) && isset($maxUser) && !is_null($maxUser) && isset($pricePer) && !is_null($pricePer)){
@@ -369,9 +367,9 @@ public function newCustomGroup($groupName){
             $lastid = $wpdb->insert_id;
             return $lastid;
         }
-    }
+        }
 
-    public function newDefaultPricingTier($minUser, $maxUser, $pricePer){
+public function newDefaultPricingTier($minUser, $maxUser, $pricePer){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         if (isset($minUser) && !is_null($minUser) && isset($maxUser) && !is_null($maxUser) && isset($pricePer) && !is_null($pricePer)){
@@ -383,9 +381,9 @@ public function newCustomGroup($groupName){
             $lastid = $wpdb->insert_id;
             return $lastid;
         }
-    }
+        }
 
-    public function updatePricingTier($minUser, $maxUser, $pricePer, $tierId){
+public function updatePricingTier($minUser, $maxUser, $pricePer, $tierId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
 
@@ -412,25 +410,25 @@ public function newCustomGroup($groupName){
             array( // Where Clause
             "id" => $tierId));
         }
-    }
+        }
 
-    public function checkTierUserLimits($tierId){
+public function checkTierUserLimits($tierId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
 
         $limits = $wpdb->get_row("SELECT min_users, max_users FROM $tableName WHERE id = $tierId");
         return $limits;
-    }
+        }
 
-    public function getCurrentPricePerUser($tierId){
+public function getCurrentPricePerUser($tierId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
 
         $price = $wpdb->get_row("SELECT price_per_user FROM $tableName WHERE id = $tierId");
         return $price->price_per_user;
-    }
+        }
 
-    public function getAllDefaultPriceTiers(){
+public function getAllDefaultPriceTiers(){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         $tiers = $wpdb->get_results("SELECT id, min_users, max_users, price_per_user FROM $tableName WHERE is_default = 1");
@@ -439,9 +437,9 @@ public function newCustomGroup($groupName){
             $allTiers[] = $key;
         }
         return $allTiers;
-    }
+        }
 
-    public function getAllCustomPriceTiers(){
+public function getAllCustomPriceTiers(){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         $tiers = $wpdb->get_results("SELECT id, min_users, max_users, price_per_user FROM $tableName WHERE is_default = 0");
@@ -450,9 +448,9 @@ public function newCustomGroup($groupName){
             $allTiers[] = $key;
         }
         return $allTiers;
-    }
+        }
 
-    public function getCurrentPricePerUserByCorp($corpId){
+public function getCurrentPricePerUserByCorp($corpId){
         global $wpdb;
         $numUsers = $this->getNumberOfCorpSubAccounts($corpId);
         echo "Number of Users within Get Price: " . $numUsers . "<br>";
@@ -472,16 +470,16 @@ public function newCustomGroup($groupName){
         else{
             return $userPrice;
         }
-    }
+        }
 
-    public function getTotalSubscriptionPrice($corpId){
+public function getTotalSubscriptionPrice($corpId){
         $userPrice = $this->getCurrentPricePerUserByCorp($corpId);
         $numUsers = $this->getNumberOfCorpSubAccounts($corpId);
         $totalPrice = $userPrice * $numUsers;
         return $totalPrice;
-    }
+        }
 
-    public function getNumberOfCorpSubAccounts($corpId){
+public function getNumberOfCorpSubAccounts($corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_groups";
 
@@ -495,9 +493,9 @@ public function newCustomGroup($groupName){
             $count++;
         }
         return $count;
-    }
+        }
 
-    public function getCorpTier($corpId){
+public function getCorpTier($corpId){
         global $wpdb;
         $numUsers = $this->getNumberOfCorpSubAccounts($corpId);
         $tableName = $wpdb->prefix . "cura_corp_prices";
@@ -512,9 +510,9 @@ public function newCustomGroup($groupName){
             }
         }
         return $corpTier;
-    }
+        }
 
-    public function checkValidTier($lastMax, $newMin, $newMax, $nextMin){
+public function checkValidTier($lastMax, $newMin, $newMax, $nextMin){
         if($lastMax < $newMin && ($newMin - $lastMax) == 1 && $newMin < $newMax && ($nextMin - $newMax) == 1){
             if(isset($nextMin)){
                 if($newMax < $nextMin){
@@ -528,9 +526,9 @@ public function newCustomGroup($groupName){
         else{
             return "Tier Not Valid";
         }
-    }
+        }
 
-    public function assignTierToCorp($tierId, $corpId){
+public function assignTierToCorp($tierId, $corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_prices";
         if (isset($tierId) && !is_null($tierId) && isset($corpId) && !is_null($corpId)){
@@ -540,17 +538,17 @@ public function newCustomGroup($groupName){
             $lastid = $wpdb->insert_id;
             return $lastid;
         }
-    }
+        }
 
-    public function removeTierFromCorp($tierId, $corpId){
+public function removeTierFromCorp($tierId, $corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_prices";
         $wpdb->delete($tableName, array(
                 "tier_id" => $tierId,
                 "corp_id" => $corpId));
-    }
+        }
 
-    public function assignAllDefaultsToCorp($corpId){
+public function assignAllDefaultsToCorp($corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_tiers";
         $defaultTiers = $wpdb->get_results("SELECT id FROM $tableName WHERE is_default = 1");
@@ -562,14 +560,14 @@ public function newCustomGroup($groupName){
             "corp_id" => $corpId));            
             }
         }
-    }
+     }
 
-    public function getCorpByTierId($tierId){
+public function getCorpByTierId($tierId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corp_prices";
         $corpId = $wpdb->get_row("SELECT corp_id FROM $tableName WHERE tier_id = $tierId");
         return $corpId;
-    }
+     }
 
 
 

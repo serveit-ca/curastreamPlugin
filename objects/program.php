@@ -37,12 +37,12 @@ public $tempUserId;
 
 
     public  function __construct() {
-    }
+        }
 
     public static function init() {
        $class = __CLASS__;
        new $class;
-   }
+        }
 
     public function printError($wpdb){
     	
@@ -53,7 +53,7 @@ public $tempUserId;
     		$error = "No Error";
     	}
     	return $error;
-    }
+        }
 
     	// Get Program By Id
 	public function getProgramById($programId){
@@ -79,7 +79,7 @@ public $tempUserId;
         $this->tempUserId = $programs['tempUserId'];
         $this->status = $this->checkAssigned($programs["id"], $programs['tempUserId']);
 		return $this;
-	}
+	   }
 
 
 	public function checkCurrent($userId, $programId){
@@ -91,7 +91,7 @@ public $tempUserId;
 	    	$current = true;
 		}
 		return $current;
-    }
+        }
 
 	public function checkCompleted($userId, $programId){
    		global $wpdb;
@@ -103,7 +103,7 @@ public $tempUserId;
 	    	$completed = true;
 		}
 		return $completed;
-    }
+        }
     // Get all Programs From Database
     public function getAllPrograms(){
     	global $wpdb;
@@ -130,7 +130,7 @@ public $tempUserId;
 			$programs[] = $program;
         }
 			return $programs;
-    }
+        }
 
        // Get all Programs From Database
     public function getAllCustomPrograms(){
@@ -158,7 +158,7 @@ public $tempUserId;
             $programs[] = $program;
         }
             return $programs;
-    }
+        }
 
     public function getAllActiveGenericPrograms($userId){
         global $wpdb;
@@ -187,7 +187,7 @@ public $tempUserId;
             $programs[] = $program;
         }
             return $programs;
-    }
+        }
 
     public function getAllGenericPrograms(){
         global $wpdb;
@@ -214,7 +214,7 @@ public $tempUserId;
             $programs[] = $program;
         }
             return $programs;
-    }
+        }
 
     // Get all Exercises From Database
     public function getAllExercises(){
@@ -241,7 +241,7 @@ public $tempUserId;
 			$exercies[] = $anExercise;
         }
 			return $exercies;
-    }
+        }
 
     	// Gets all Body Parts returns as assoc array
 
@@ -252,51 +252,51 @@ public $tempUserId;
         
         $body_parts = $wpdb->get_results("SELECT id, name FROM $tableName ORDER BY name");
         return $body_parts;
-    }
+        }
 
-    function getAllInjuries(){
+    public function getAllInjuries(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_how_it_happened";
         $injuries = $wpdb->get_results( "SELECT id, name FROM $tableName ORDER BY name");
         return $injuries;
-    }
+     }
 
-    function getAllSports(){
+    public function getAllSports(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_sport_occupation";
         $sports = $wpdb->get_results("SELECT id, name FROM $tableName WHERE type like 'sport' ORDER BY name");
     
         return $sports;
-    }
+        }
 
-    function getAllOccupations(){
+    public function getAllOccupations(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_sport_occupation";
         $occupations = $wpdb->get_results("SELECT id, name FROM $tableName WHERE type like 'occupation' ORDER BY name");
     
         return $occupations;
-    }
+        }
 
-    function getAllSportsOccupations(){
+    public function getAllSportsOccupations(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_sport_occupation";
         $sports_occupations = $wpdb->get_results("SELECT id, name, type FROM $tableName ORDER BY name");
     
         return $sports_occupations;
-    }
+        }
 
-    function getAllCategories(){
+    public function getAllCategories(){
         global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_body_parts";
         $sql = "SELECT DISTINCT(category_name) FROM dev_cura_exercise_videos ORDER BY category_name;";
         $categories = $wpdb->get_results( $sql );
         return $categories;
-    }
+        }
 
 
       
     
- // Get all Exercises From Database
+    // Get all Exercises From Database
     public function getAllExerciseVideos($userId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_exercise_videos";
@@ -316,7 +316,7 @@ public $tempUserId;
             $exercies[] = $anExercise;
         }
             return $exercies;
-    }
+        }
 
     public function getExerciseVideoById($videoId){
         global $wpdb;
@@ -332,7 +332,7 @@ public $tempUserId;
             $anExercise->category = $exerciseResults->category_name;
             $anExercise->thumbnail = $exerciseResults->videoThumbnail;
             return $anExercise;
-    }
+        }
 
 
 
@@ -356,7 +356,7 @@ public $tempUserId;
             $exercies[] = $anExercise;
         }
             return $exercies;
-    }
+        }
 
 
     // Gets a Single Exercise by That Exercises Id
@@ -386,11 +386,9 @@ public $tempUserId;
 			$anExercise->file_name = $exerciseResults['file_name'];
 			$anExercise->thumbnail = $exerciseResults['videoThumbnail'];
 			
-			return $anExercise;
-        
-			
-    }
-     public function getAnExerciseByVideoId($exerciseId){
+			return $anExercise;		
+        }
+    public function getAnExerciseByVideoId($exerciseId){
         global $wpdb;
         $tableNameA = $wpdb->prefix . "cura_exercises e";
         $tableNameB = $wpdb->prefix . "cura_exercise_videos v";
@@ -416,10 +414,8 @@ public $tempUserId;
             $anExercise->file_name = $exerciseResults['file_name'];
             $anExercise->thumbnailUrl = $exerciseResults['videoThumbnail'];
             
-            return $anExercise;
-        
-            
-    }
+            return $anExercise;          
+     }
 
     // Gets All Phases from Database and retrun an array of phase objects
     public function getAllPhases(){
@@ -439,7 +435,7 @@ public $tempUserId;
 			$phases[] = $phase;
         }
 			return $phases;
-	}
+	   }
     
 
     //Gets All Phases for a Given Program
@@ -480,7 +476,7 @@ public $tempUserId;
 			$aPhase->notes = $row['notes'];
 			$aPhase->order_no = $row['order_no'];
 			return $aPhase;
-    }
+        }
 
     //Gets All Phases for a Given Program
     public function getExercisesByPhaseId($phaseId){
@@ -532,28 +528,28 @@ public $tempUserId;
    		 	return $lastId;
    		 
    		 }
-    }
+        }
 
     
-public function createExerciseByName($name, $phaseId){
-	global $wpdb;
-    	$tableName = $wpdb->prefix . "cura_exercises";
-    	$wpdb->insert($tableName, array(
-    		"name" => $name,
-    		"phase_id" => $phaseId,
-    		));
-    	  $lastId = $wpdb->insert_id;
+    public function createExerciseByName($name, $phaseId){
+    	global $wpdb;
+        $tableName = $wpdb->prefix . "cura_exercises";
+        $wpdb->insert($tableName, array(
+        	"name" => $name,
+        	"phase_id" => $phaseId,
+        	));
+        	$lastId = $wpdb->insert_id;
 
-    	if($this->printError($wpdb) != "No Error"){
-    		$error = $this->printError($wpdb);
-    		return $error;
-   		 }
-   		 else{
-			  return $lastId;
-   		 
-         
-   		 }
-}
+        	if($this->printError($wpdb) != "No Error"){
+        		$error = $this->printError($wpdb);
+        		return $error;
+       		 }
+       		 else{
+    			  return $lastId;
+       		 
+             
+       		 }
+        }
     public function createExercise($exerciseId, $phaseId){
     	global $wpdb;
     	$tableName = $wpdb->prefix . "cura_exercise_videos";
@@ -577,7 +573,7 @@ public function createExerciseByName($name, $phaseId){
 			  return $lastId;
    		 
    		 }
-    }
+        }
 
     public function createPhase($phaseName, $progId){
     	global $wpdb;
@@ -596,7 +592,7 @@ public function createExerciseByName($name, $phaseId){
    		 	$newPhase = $wpdb->get_row("SELECT id FROM $tableName ORDER BY id DESC LIMIT 0,1");
 			return $newPhase->id;
    		 }
-    }
+        }
 
     public function makeCustom($programId){
     	global $wpdb;
@@ -608,7 +604,7 @@ public function createExerciseByName($name, $phaseId){
     	 	"id" => $programId));
 
     	return "Success: Program with Id: " . $programId . " Made Custom";
-    }
+        }
 
     public function makeGeneral($programId){
     	global $wpdb;
@@ -621,7 +617,7 @@ public function createExerciseByName($name, $phaseId){
     	 	"id" => $programId));
 
     	return "Success: Program with Id: " . $programId . " Made Custom";
-    }
+        }
 
     //Checks Each argument to see if it is set, and if so updates the program row in the database with this information
     public function updateProgram($name, $type, $description, $equipment, $duration, $weekly_plan, $life_style, $assoc_body_part_id,  $how_it_happen, $sports_occupation, $thumbnail, $state, $tempUserId, $programId){
@@ -743,7 +739,7 @@ public function createExerciseByName($name, $phaseId){
    		 
    		 }
 
-    }
+        }
 
     //Checks Each argument to see if it is set, and if so updates the program row in the database with this information
     public function updateExercise($order_no, $phase_id, $order_field, $name, $rest, $sets_reps, $variation, $equipment, $special_instructions, $exercise_video_url, $file_url, $file_name, $exercise_video_id, $exerciseId){
@@ -853,7 +849,7 @@ public function createExerciseByName($name, $phaseId){
    		 	return "Success: Exercise with Id: " . $exerciseId . " Update";
    		 
    		 }
-    }
+     }
 
     public function updatePhase($name, $duration, $intro, $notes, $order_no, $phaseId){
 
@@ -909,7 +905,7 @@ public function createExerciseByName($name, $phaseId){
    		 	return "Success: Phase with Id: " . $phaseId . " Deleted";
    		 
    		 }
-    }
+        }
 
     public function deleteExercise($exerciseId){
     	global $wpdb;
@@ -928,7 +924,7 @@ public function createExerciseByName($name, $phaseId){
    		 
    		 }
 
-    }
+        }
 
     public function deletePhase($phaseId){
     	global $wpdb;
@@ -947,7 +943,7 @@ public function createExerciseByName($name, $phaseId){
    		 
    		 }
 
-    }
+        }
 
     public function deleteProgram($programId){
     	global $wpdb;
@@ -966,9 +962,9 @@ public function createExerciseByName($name, $phaseId){
    		 
    		 }
 
-    }
+        }
 
-public function duplicateGeneralProgram($existingProgram){
+    public function duplicateGeneralProgram($existingProgram){
     	global $wpdb;
     	//Get Original Program
     	$originalProgram = $this->getProgramById($existingProgram);
@@ -995,7 +991,7 @@ public function duplicateGeneralProgram($existingProgram){
     		 } 
     	}
     	return $newProgramId;
-    }
+        }
     public function duplicateCustomProgram($oldProgId, $userId){
     	global $wpdb;
     	//Get Original Program
@@ -1028,7 +1024,7 @@ public function duplicateGeneralProgram($existingProgram){
     		 } 
     	}
     	return $newProgramId;
-    }
+        }
 
 	public function movePhaseOrder($programId, $phaseId, $initialOrder, $finalOrder){
         //Get All Phases By Prod Id
@@ -1072,7 +1068,7 @@ public function duplicateGeneralProgram($existingProgram){
         //Assign Phase to be Moved Final Order_No
         $this->updatePhase(NULL, NULL, NULL, NULL, $finalOrder, $phaseId);
         return "Success Phase Moved"; 
-    }
+        }
 
 	public function moveExerciseOrder($phaseId, $exerciseId, $initialOrder, $finalOrder){
 		//Get All Exercises By Prod Id
@@ -1114,7 +1110,7 @@ public function duplicateGeneralProgram($existingProgram){
 		//Assign exercise to be Moved Final Order_No
 		$this->updateExercise($finalOrder, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $exerciseId);
 		return "Success exercise Moved"; 
-	}
+	   }
 
 	public function moveExerciseToNewPhase($exerciseId, $targetPhaseId, $targetPosition){
 		global $wpdb;
@@ -1132,7 +1128,7 @@ public function duplicateGeneralProgram($existingProgram){
 		// Move Exercise if Needed 
 		$this->moveExerciseOrder($targetPhaseId, $exerciseId, $highestNewOrder+1, $targetPosition);
 		return $exercise;
-	}
+	   }
 
 	public function deletePhaseUpdateOrder($programId, $phaseId, $initialOrder){
 		global $wpdb;
@@ -1151,7 +1147,7 @@ public function duplicateGeneralProgram($existingProgram){
     		"id" => $phaseId
     	));
     	return "Phase Id: " . $phaseId . " Deleted";
-	}
+	   }
 
 	public function deleteExerciseUpdateOrder($phaseId, $exerciseId, $initialOrder){
 		global $wpdb;
@@ -1163,7 +1159,7 @@ public function duplicateGeneralProgram($existingProgram){
 		$wpdb->delete($tableName, array(
     		"id" => $exerciseId
     	));
-	}
+	   }
 
 	public function deleteProgramUpdateOrder($programId){
 		global $wpdb;
@@ -1187,7 +1183,7 @@ public function duplicateGeneralProgram($existingProgram){
    		 	return "Success: Program with Id: " . $programId . " Deleted";
    		 
    		 }
-	}
+	   }
 
 
 	public function getHighestPhaseOrder($programId){
@@ -1196,7 +1192,7 @@ public function duplicateGeneralProgram($existingProgram){
 		// Reorder This Phase to The Top
 		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE program_id = $programId ORDER BY order_no DESC LIMIT 1");
 		return $finalOrder->order_no;
-	}
+	   }
 
 	public function getHighestExerciseOrder($phaseId){
 		global $wpdb;
@@ -1204,7 +1200,7 @@ public function duplicateGeneralProgram($existingProgram){
 		// Reorder This Exercise to the Top
 		$finalOrder = $wpdb->get_row("SELECT order_no FROM $tableName WHERE phase_id = $phaseId ORDER BY order_no DESC LIMIT 1", ARRAY_A);
 		return $finalOrder['order_no'];
-	}
+	   }
 
 	public function assignProgramToUser($programId, $userId){
 		global $wpdb;
@@ -1218,7 +1214,7 @@ public function duplicateGeneralProgram($existingProgram){
     		"saved_prog_name" => $program->name
     		));
 		return "Success: Program with Id: " . $programId . " Assigned to user with Id " . $userId;
-	}
+	   }
     public function removeProgramFromUser($programId, $userId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
@@ -1228,7 +1224,7 @@ public function duplicateGeneralProgram($existingProgram){
         ));
         
         return "Success: Program with Id: " . $programId . " removed from user with Id " . $userId;
-    }
+        }
 
     public function getProgramStatus($programId, $userId){
         global $wpdb;
@@ -1279,7 +1275,7 @@ public function duplicateGeneralProgram($existingProgram){
             return "Error: This Program Does Not Exist";
         }
         
-    }
+        }
 
     public function getGeneralProgramsAssignedToUser($userId){
         global $wpdb;
@@ -1316,7 +1312,7 @@ public function duplicateGeneralProgram($existingProgram){
         }
             return $programs;
 
-    }
+        }
 
     public function getCustomProgramsAssignedToUser($userId){
         global $wpdb;
@@ -1353,7 +1349,7 @@ public function duplicateGeneralProgram($existingProgram){
         }
             return $programs;
 
-    }
+        }
 
     public function getGeneralCompletedProgramsAssignedToUser($userId){
         global $wpdb;
@@ -1390,7 +1386,7 @@ public function duplicateGeneralProgram($existingProgram){
         }
             return $programs;
 
-    }
+        }
 
     public function getCustomCompletedProgramsAssignedToUser($userId){
         global $wpdb;
@@ -1427,7 +1423,7 @@ public function duplicateGeneralProgram($existingProgram){
         }
             return $programs;
 
-    }
+        }
 
     public function getFavoriteExercises($userId){
         global $wpdb;
@@ -1443,7 +1439,7 @@ public function duplicateGeneralProgram($existingProgram){
            $exercises[] = $exercise;
         }
         return $exercises;
-    }
+        }
 
     public function updateProgramAssignedToUser($programObj, $userId){
         global $wpdb;
@@ -1452,29 +1448,30 @@ public function duplicateGeneralProgram($existingProgram){
         $updateInfo = $wpdb->get_row("SELECT saved_prog_name, saved_prog_dur, saved_prog_type, completed FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programObj->id", ARRAY_A);
         if (is_null($updateInfo)){
 
-        } else{
+        } 
+        else{
         $programObj->name = $updateInfo['saved_prog_name'];
         $programObj->duration = $updateInfo['saved_prog_dur'];
         $programObj->type = $updateInfo['saved_prog_type'];
         $programObj->completed = $updateInfo['completed'];
-    }
+        }
         return $programObj;
-    }
+        }
     public function checkAssigned($programId, $userId){
         global $wpdb;
         $status = "notAssigned";
-    if (isset($programId) && !is_null($programId) && isset($userId) && !is_null($userId)){
-        $tableName = $wpdb->prefix . "cura_user_programs";
+        if (isset($programId) && !is_null($programId) && isset($userId) && !is_null($userId)){
+            $tableName = $wpdb->prefix . "cura_user_programs";
 
-        $updateInfo = $wpdb->get_row("SELECT saved_prog_name, saved_prog_dur, saved_prog_type, completed FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programId", ARRAY_A);
-        if (is_null($updateInfo)){
-            $status="notAssigned";
-        } else{
-            $status="Assigned";
+            $updateInfo = $wpdb->get_row("SELECT saved_prog_name, saved_prog_dur, saved_prog_type, completed FROM $tableName WHERE user_id = $userId AND saved_prog_id = $programId", ARRAY_A);
+            if (is_null($updateInfo)){
+                $status="notAssigned";
+            } else{
+                $status="Assigned";
+            }
         }
-    }
         return $status;
-    }
+        }
 
     public function getAssignedCountByProgramId($programId){
         global $wpdb;
@@ -1485,7 +1482,7 @@ public function duplicateGeneralProgram($existingProgram){
             $assignedCount++;
         }
         return $assignedCount;
-    }
+        }
 
     public function getAssignedNotCompletedCountByProgramId($programId){
         global $wpdb;
@@ -1496,7 +1493,7 @@ public function duplicateGeneralProgram($existingProgram){
             $assignedCount++;
         }
         return $assignedCount;
-    }
+        }
 
 
     public function getAssignedCompletedCountByProgramId($programId){
@@ -1508,7 +1505,7 @@ public function duplicateGeneralProgram($existingProgram){
             $assignedCount++;
         }
         return $assignedCount;
-    }
+        }
 
     public function getProgramStateById($programId){
         global $wpdb;
@@ -1523,13 +1520,13 @@ public function duplicateGeneralProgram($existingProgram){
         else{
             return "Program State Unknown";
         }
-    }
+        }
 
     public function checkStaleness($programId){
         global $wpdb;
         $assignedCount = $this->getAssignedCountByProgramId($programId);
         return $assignedCount;
-    }
+        }
 
     public function getProgramUsersById($programId){
         global $wpdb;
@@ -1549,7 +1546,7 @@ public function duplicateGeneralProgram($existingProgram){
             }
         }
         return $usersArray;
-    }
+        }
 
     public function recordUserDeletion($userId, $programId){
         global $wpdb;
@@ -1565,7 +1562,7 @@ public function duplicateGeneralProgram($existingProgram){
         else{
             echo "This user does not have that program assigned";
         }
-    }
+        }
 
     public function getProgramDeletionById($programId){
         global $wpdb;
@@ -1581,7 +1578,7 @@ public function duplicateGeneralProgram($existingProgram){
         else{
             return 0;
         }
-    }
+        }
 
     public function getProgramUserDeletionById($programId){
         global $wpdb;
@@ -1602,7 +1599,7 @@ public function duplicateGeneralProgram($existingProgram){
         }
         return $usersArray;
 
-    }
+        }
 
     public function checkUserExistsForUserPrograms(){
         global $wpdb;
@@ -1638,7 +1635,7 @@ public function duplicateGeneralProgram($existingProgram){
             echo $wasDeleted;
         }
         return count($fixedDeleted);
-    }
+        }
     public function deleteUserProgram($userId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_user_programs";
@@ -1654,7 +1651,7 @@ public function duplicateGeneralProgram($existingProgram){
          
          }
 
-    }
+        }
 
     public function updateBodyPart($name, $partId){
         global $wpdb;
@@ -1667,7 +1664,7 @@ public function duplicateGeneralProgram($existingProgram){
             array( // Where Clause
             "id" => $partId));
         }
-    }
+        }
 
     public function updateSportsAndOccupation($name, $type, $sportId){
         global $wpdb;
@@ -1688,7 +1685,7 @@ public function duplicateGeneralProgram($existingProgram){
             array( // Where Clause
             "id" => $sportId));
         }
-    }
+        }
 
     public function updateHowItHappened($name, $causeId){
         global $wpdb;
@@ -1701,7 +1698,7 @@ public function duplicateGeneralProgram($existingProgram){
             array( // Where Clause
             "id" => $causeId));
         }
-    }
+        }
 
     public function newBodyPart($name){
         global $wpdb;
@@ -1710,7 +1707,7 @@ public function duplicateGeneralProgram($existingProgram){
             $wpdb->insert($tableName, array(
             "name" => $name));
         }
-    }
+        }
 
     public function newSport($name){
         global $wpdb;
@@ -1720,7 +1717,7 @@ public function duplicateGeneralProgram($existingProgram){
             "name" => $name,
             "type" => "sport"));
         }
-    }
+        }
 
     public function newOccupation($name){
         global $wpdb;
@@ -1730,7 +1727,7 @@ public function duplicateGeneralProgram($existingProgram){
             "name" => $name,
             "type" => "occupation"));
         }
-    }
+        }
 
     public function newHowItHappened($name){
         global $wpdb;
@@ -1738,7 +1735,7 @@ public function duplicateGeneralProgram($existingProgram){
         if (isset($name) && !is_null($name)){
             $wpdb->insert($tableName, array(
             "name" => $name));       }
-    }
+        }
 
     
 
@@ -1758,7 +1755,7 @@ public function duplicateGeneralProgram($existingProgram){
             }
         }
         return $programsIncluded;
-    }
+        }
 
     public function getSportOccById($sportId){
         global $wpdb;
@@ -1768,7 +1765,7 @@ public function duplicateGeneralProgram($existingProgram){
         
         return $sport_occ;
 
-    }
+        }
 
     public function getProgramsBySportOcc($sportId){
         global $wpdb;
@@ -1787,7 +1784,7 @@ public function duplicateGeneralProgram($existingProgram){
             }
         }
         return $programsIncluded;
-    }
+        }
 
     public function getHowItHappenedById($injuryId){
         global $wpdb;
@@ -1797,7 +1794,7 @@ public function duplicateGeneralProgram($existingProgram){
         
         return $injury;
 
-    }
+        }
 
     public function getProgramsByHowItHappened($injuryId){
         global $wpdb;
@@ -1816,7 +1813,7 @@ public function duplicateGeneralProgram($existingProgram){
             }
         }
         return $programsIncluded;
-    }
+        }
 
     public function getExerciseVideoCount($videoId){
         global $wpdb;
@@ -1830,7 +1827,7 @@ public function duplicateGeneralProgram($existingProgram){
 
         return $count;
 
-    }
+        }
 
     public function getProgramsByExerciseVideo($videoId){
         global $wpdb;
@@ -1847,7 +1844,7 @@ public function duplicateGeneralProgram($existingProgram){
             }
         }
         return $progNames;
-    }
+        }
 
     public function createExerciseVideo($name, $url){
        global $wpdb;
@@ -1860,7 +1857,7 @@ public function duplicateGeneralProgram($existingProgram){
            $lastid = $wpdb->insert_id;
            return $lastid;
         }
-    }
+        }
 
     public function updateExerciseVideo($name, $url, $videoId){
         global $wpdb;
@@ -1880,28 +1877,7 @@ public function duplicateGeneralProgram($existingProgram){
             array( // Where Clause
             "id" => $videoId));
         }
-    }
-
-    public function getBodyPartIdByName($partName){
-        global $wpdb;
-        $tableName = $wpdb->prefix . "cura_body_parts";
-        $partName = trim($partName);
-        $partId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$partName\"");
-        if (isset($partId->id) && !is_null($partId->id)){
-            return $partId->id;
         }
-        else{
-            echo "That Part is Null or Doesn't Exist";
-        }
-    }
-
-    public function getSportOccIdByName($sportName){
-        global $wpdb;
-        $tableName = $wpdb->prefix . "cura_sport_occupation";
-        $sportName = trim($sportName);
-        $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
-        return $sportId->id;
-    }
     public function deleteExerciseVideo($exerciseVideoId){
        global $wpdb;
        $tableName = $wpdb->prefix . "cura_exercise_videos";
@@ -1917,7 +1893,29 @@ public function duplicateGeneralProgram($existingProgram){
         else{
            return "Success: Exercise with Id: " . $exerciseId . " Deleted";
         }
-    }
+        }
+
+    public function getBodyPartIdByName($partName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";
+        $partName = trim($partName);
+        $partId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$partName\"");
+        if (isset($partId->id) && !is_null($partId->id)){
+            return $partId->id;
+        }
+        else{
+            echo "That Part is Null or Doesn't Exist";
+        }
+        }
+
+    public function getSportOccIdByName($sportName){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_sport_occupation";
+        $sportName = trim($sportName);
+        $sportId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$sportName\"");
+        return $sportId->id;
+        }
+    
 
     public function getHowItHappenedIdByName($injuryName){
         global $wpdb;
@@ -1925,9 +1923,9 @@ public function duplicateGeneralProgram($existingProgram){
         $injuryName = trim($injuryName);
         $injuryId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$injuryName\"");
         return $injuryId->id;
-    }
+        }
 
-     public function getBodyPartById($bodyPartId){
+    public function getBodyPartById($bodyPartId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_body_parts";    
         
@@ -1935,7 +1933,7 @@ public function duplicateGeneralProgram($existingProgram){
         
         return $body_part; 
 
-    }
+        }
 
     
 

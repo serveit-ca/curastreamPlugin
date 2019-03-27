@@ -134,7 +134,7 @@ add_action('rest_api_init', function(){
 		));
  
 
-	// API Calls for Curastream - Version 2 
+	// API Calls for Curastream - Version 2  - https://github.com/serveit-ca/curastreamPlugin/wiki/Curastream-API-Documents
 	register_rest_route('curastream/v2', '/login/(?P<id>\d+)', 
 		array(
             'methods' => 'GET',
@@ -161,29 +161,29 @@ add_action('rest_api_init', function(){
             'callback' => 'getProgramsAssignedToUserHandler',
             'args' => [
                 'id'],
-            ));
+            )); 
 	register_rest_route('curastream/v2', '/bodyparts', 
 		array(
             'methods' => 'GET',
             'callback' => array($programs, 'getAllBodyParts'),
-            ));
+            )); 
 	register_rest_route('curastream/v2', '/sportoccs', 
 		array(
             'methods' => 'GET',
             'callback' => array($programs, 'getAllSportsOccupations'),
-            ));
+            )); 
 	register_rest_route('curastream/v2', '/howithappeneds', 
 		array(
             'methods' => 'GET',
             'callback' => array($programs, 'getAllInjuries'),
-            ));
+            )); 
 	register_rest_route('curastream/v2', '/userfavs/(?P<id>\d+)', 
 		array(
             'methods' => 'POST',
             'callback' => 'getFavoriteExercisesHandler',
             'args' => [
                 'id'],
-        ));
+        )); 
 	register_rest_route('curastream/v2', '/progphases/(?P<id>\d+)', 
 		array(
             'methods' => 'POST',
