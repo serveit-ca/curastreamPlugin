@@ -33,9 +33,8 @@ class databaseManagement{
             echo "<br>" . $finalIds . " added to: " . $key->name;
         	}
 		}		
-	}
-
-	//Might be broken, needs tested again. 
+		}
+	
 	public function fixProgramSportsOcc(){
 		global $wpdb;
 		$programs = new program();
@@ -63,7 +62,7 @@ class databaseManagement{
             echo "<br>" . $finalIds . " added to: " . $key->name;
         	}
 		}		
-	}
+		}
 
 	public function fixProgramHowItHappened(){
 		global $wpdb;
@@ -92,7 +91,7 @@ class databaseManagement{
             echo "<br>" . $finalIds . " added to: " . $key->name;
         	}
 		}		
-	}
+		}
 
 	public function updateNulls(){
 		global $wpdb;

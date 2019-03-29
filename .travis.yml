@@ -10,7 +10,7 @@ branches:
   only:
     - master
     - userTracking
-    - groupManagement
+    - pricingUpdates
 
 services:
   - mysql

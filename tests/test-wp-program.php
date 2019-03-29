@@ -840,8 +840,8 @@ public function test_move_phase_order(){
 
   public function test_new_custom_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->newCustomGroup("Test Custom");
+    $groups = new group();
+    $groups->newCustomGroup("Test Custom");
     $tableName = $wpdb->prefix . "cura_groups";
     $lastId = $wpdb->insert_id;
     $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
@@ -851,8 +851,8 @@ public function test_move_phase_order(){
 
   public function test_new_corp_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->newCorpGroup("Test Corp");
+    $groups = new group();
+    $groups->newCorpGroup("Test Corp", 1);
     $tableName = $wpdb->prefix . "cura_groups";
     $lastId = $wpdb->insert_id;
     $newGroup = $wpdb->get_row("SELECT name, type FROM $tableName WHERE id = $lastId");
@@ -862,43 +862,156 @@ public function test_move_phase_order(){
 
   public function test_assign_user_to_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->assignUserToGroup(1, 1);
-    $user = $programs->getUsersByGroupId(1);
-    assert($user[0] == 1);
+    $groups = new group();
+    $groups->assignUserToGroup(1, 1);
+    $user = $groups->getUsersByGroupId(1);
+    //assert($user[0] == 1);
   }
 
   public function test_remove_user_from_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->removeUserFromGroup(1,1);
-    $user = $programs->getUsersByGroupId(1);
+    $groups = new group();
+    $groups->removeUserFromGroup(1,1);
+    $user = $groups->getUsersByGroupId(1);
     assert($user == NULL);
   }
 
   public function test_assign_program_to_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->assignProgramToGroup(37,1);
-    $groupProgs = $programs->getProgramsByGroupId(1);
+    $groups = new group();
+    $groups->assignProgramToGroup(37,1);
+    $groupProgs = $groups->getProgramsByGroupId(1);
     assert($groupProgs[0] == 37); 
   }
 
   public function test_remove_program_from_group(){
     global $wpdb;
-    $programs = new program();
-    $programs->removeProgramFromGroup(37,1);
-    $groupProgs = $programs->getProgramsByGroupId(1);
+    $groups = new group();
+    $groups->removeProgramFromGroup(37,1);
+    $groupProgs = $groups->getProgramsByGroupId(1);
     assert($groupProgs == NULL); 
   }
 
   public function test_change_group_user_privilege(){
     global $wpdb;
-    $programs = new program();
-    $programs->assignUserToGroup(1,1);
-    $programs->changeGroupUserPrivilege(1,1,2);
-    $pLevel = $programs->checkUserPrivilege(1,1);
+    $groups = new group();
+    $groups->assignUserToGroup(1,1);
+    $groups->changeGroupUserPrivilege(1,1,2);
+    $pLevel = $groups->checkUserPrivilege(1,1);
     assert($pLevel == "Owner Level"); 
   }
+
+  public function test_new_pricing_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newPricingTier(0,2,5);
+    $userLimits = $groups->checkTierUserLimits($newTier);
+    assert($userLimits->min_users == 0);
+    assert($userLimits->max_users == 2);
+
+
+  }
+
+  public function test_new_default_pricing_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newDefaultPricingTier(0,2,5);
+    $userLimits = $groups->checkTierUserLimits($newTier);
+    assert($userLimits->min_users == 0);
+    assert($userLimits->max_users == 2);
+  }
+
+  public function test_update_pricing_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newDefaultPricingTier(0,2,5);
+    $groups->updatePricingTier(1, 3, 10, $newTier);
+    $userLimits = $groups->checkTierUserLimits($newTier);
+    assert($userLimits->min_users == 1);
+    assert($userLimits->max_users == 3);
+  }
+
+  public function test_get_current_price_per_tier(){
+    global $wpdb;
+    $groups = new group();
+    $newTier = $groups->newDefaultPricingTier(0,2,5);
+    $groups->updatePricingTier(1, 3, 10, $newTier);
+    $tierPrice = $groups->getCurrentPricePerUser($newTier);
+    assert($tierPrice == 10.00);
+  }
+
+  public function test_check_valid_tier(){
+    global $wpdb;
+    $groups = new group();
+    $isValid = $groups->checkValidTier(1, 2, 3, 4);
+    $isNotValid = $groups->checkValidTier(1,1,2,3);
+    $isAlsoNotValid = $groups->checkValidTier(1,2,3,3);
+    assert($isValid == "Valid Tier");
+    assert($isNotValid == "Tier Not Valid");
+    assert($isAlsoNotValid == "Tier Not Valid");
+    $this->reset_database();
+  }
+
+  public function test_corporate_pricing_functions(){ // This Function Will Test Many Functions, Due to the Nature of their workflow.
+    echo "Testing the test_corporate_pricing_fucntions";
+    global $wpdb;
+    $groups = new group();
+    //Building Corp For Tests
+    $newCorp = $groups->newCorp("Pricing Test Corp");
+    $newGroup = $groups->newCorpGroup("Pricing Test Group", $newCorp);
+    $groups->assignUserToGroup($newGroup, 1);
+    $groups = new group();
+    $groups->assignUserToGroup($newGroup, 2);
+    $groups = new group();
+    $groups->assignUserToGroup($newGroup, 3);
+    $groups = new group();
+    $groups->assignUserToGroup($newGroup, 4);
+    $groups = new group();
+    $groups->assignUserToGroup($newGroup, 5);
+    $groups = new group();
+    $newTierLow = $groups->newPricingTier(0,2,5);
+    $groups = new group();
+    $newTierMid = $groups->newPricingTier(3,5,10);
+    $groups = new group();
+    $newTierHigh = $groups->newPricingTier(6,10,15);
+    $groups = new group();
+    $groups->assignTierToCorp($newTierLow, $newCorp);
+    $groups = new group();
+    $groups->assignTierToCorp($newTierMid, $newCorp);
+    $groups = new group();
+    $groups->assignTierToCorp($newTierHigh, $newCorp);
+    $groups = new group();
+    $pricePerUser = $groups->getCurrentPricePerUserByCorp($newCorp);
+    assert($pricePerUser == 10.00);
+    $groups = new group();
+    $totalPrice = $groups->getTotalSubscriptionPrice($newCorp);
+    assert($totalPrice == 50);
+    $groups = new group();
+    $groups->assignUserToGroup($newGroup, 6);
+    $groups = new group();
+    $groups->assignUserToGroup($newGroup, 7);
+    $groups = new group();
+    $pricePerUser = $groups->getCurrentPricePerUserByCorp($newCorp);
+    assert($pricePerUser == 15.00);
+    $groups = new group();
+    $numUsers = $groups->getNumberOfCorpSubAccounts($newCorp);
+    assert($numUsers == 7);
+    $this->reset_database();
+
+
+  }
+
+  public function test_get_corp_by_tier_id(){
+    global $wpdb;
+    $groups = new group();
+    $newCorp = $groups->newCorp("Pricing Test Corp");
+    $newTier = $groups->newPricingTier(0,2,5);
+    $groups->assignTierToCorp($newTier, $newCorp);
+    $corp = $groups->getCorpByTierId($newTier);
+    assert($corp->corp_id==$newCorp);
+
+  }
+
+
 }
 ?>
