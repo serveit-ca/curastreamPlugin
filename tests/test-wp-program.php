@@ -698,7 +698,14 @@ public function test_move_phase_order(){
       assert($key->id == $expectedProgs[$count]);
       $count++;
     }
-  }
+  }  
+
+public function test_get_Body_Part_Names_By_Ids(){
+    $programs = new program();
+    $body_parts = $programs->getBodyPartNamesByIds(1,15,5,13);
+   // echo "nathanError".$body_parts;
+    //  assert($body_parts == "knee,shoulder,elbow,ankle-foot");
+    }
 
   public function test_get_programs_by_sport_occ(){
     $programs = new program();

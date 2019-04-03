@@ -285,31 +285,7 @@ echo "<h3>Testing the User Creation on the staging</h3>";
 
     echo "<h3>Testing the User Creation on the Production</h3>";
    
-     $apiQueryURL = "https://www.curastream.com/wp-json/mp/v1/members?device_name=web&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.&email=testing%40serveit.ca&";
-     $jsonBody = json_encode(array(
-          "email" => 'testing@serveit.ca',
-          "username" => "Nathan Test",
-          "first_name" =>  "Nathan",
-          "last_name" => "Tymos",
-          "password" => "Bacon123!",
-          "address" => array(
-            "mepr-address-one" => "2277 Galloway Pl",
-            "mepr-address-two" => "",
-            "mepr-address-city" => "Kamloops",
-            "mepr-address-state" => "BC",
-            "mepr-address-zip" => "V1S1K3",
-            "mepr-address-country" => "Canada"
-            ),
-          "transaction" => array(
-            "membership" => "4214",
-            "amount" => "9.99",
-            "gateway" => "manual",
-            "status" => "complete",
-            "tax_class" => "114be7fea4d3dd0cf2e88a8fa9a56d4ea741efbabd07d61d08cf0810be2254fd",
-            "tax_desc" => "Testing A Transaction"
-            )
-          )
-       );
+     $apiQueryURL = "https://www.curastream.com/wp-json/mp/v1/members?device_name=web&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.&email=testing%40serveit.ca&username=testUser&first_name=TestUser&last_name=DeleteMe&password=bacon123!";
      echo $jsonBody;
     $response = wp_remote_post($apiQueryURL, array(
         'method' => 'POST',
