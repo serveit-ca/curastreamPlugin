@@ -372,7 +372,7 @@ function get_list_all_programs_in_user_list(){
         $i = 1; 
         foreach ( $body_parts as $item ) 
         {
-        $progDetails = $programs->getProgramById($item->saved_prog_id);
+        $progDetails = $programs->getProgramInfo($item->saved_prog_id);
         if(empty($item->saved_prog_name)){
             $item->saved_prog_name = $progDetails->name;
         }
@@ -1620,5 +1620,22 @@ function headerRest($request){
         }
     }
     return $data;
+}
+
+function getProgramInfo($id){
+    global $wpdb; // this is how you get access to the database
+    $dev_cura_programs = $wpdb->prefix . "cura_programs";
+    $sql = "select name,description,thumbnail FROM ".$dev_cura_programs."  where  id='".$id."'";
+    //return    $sql;
+        
+     $result = $wpdb->get_row( $sql );
+     //return $result->thumbnail;
+     
+    if(!empty($result))
+    {
+        return $result;
+    }else{
+        return 'n/a';
+    }
 }
 ?>
