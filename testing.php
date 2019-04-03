@@ -11,7 +11,7 @@ $database = new databaseManagement();
 $programs = new program();
 $groups = new group();
 
-
+echo ($programs->getBodyPartNamesByIds(1,15,5,13));
 // $database->updateNulls();
 //$programs->updateProgram(NULL, NULL, NULL, NULL, NULL, NULL, NULL, "No Body Part Assigned",  NULL, NULL, NULL, NULL, NULL, 179);
 // $database->fixProgramBodyParts();
