@@ -372,7 +372,7 @@ function get_list_all_programs_in_user_list(){
         $i = 1; 
         foreach ( $body_parts as $item ) 
         {
-        $progDetails = $programs->getProgramInfo($item->saved_prog_id);
+        $progDetails = getProgramInfo($item->saved_prog_id);
         if(empty($item->saved_prog_name)){
             $item->saved_prog_name = $progDetails->name;
         }
