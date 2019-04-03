@@ -1,5 +1,6 @@
 <?php
 // Used to register all of the rest routes for the Curastream Plugin 
+use \Firebase\JWT\JWT;
 
 add_action('rest_api_init', function(){
 	$programs = new program();
@@ -370,7 +371,7 @@ function get_list_all_programs_in_user_list(){
         $i = 1; 
         foreach ( $body_parts as $item ) 
         {
-        $progDetails = getProgramInfo($item->saved_prog_id);
+        $progDetails = $program->getProgramById($item->saved_prog_id);
         if(empty($item->saved_prog_name)){
             $item->saved_prog_name = $progDetails->name;
         }
