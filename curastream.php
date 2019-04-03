@@ -119,6 +119,12 @@ function add_submenu() {
             '',
             ''
         );
+        add_submenu_page('curastreamPlugin','API Testing','API Testing',
+            'curaProgEditor',
+            'curastream/testing_API.php',
+            '',
+            ''
+        );
         add_submenu_page('curastreamPlugin','View Dashboard','View Dashboard',
             'curaProgEditor',
             get_site_url().'/my-programs',

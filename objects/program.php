@@ -250,21 +250,21 @@ public $tempUserId;
         $tableName = $wpdb->prefix . "cura_body_parts";
         
         
-        $body_parts = $wpdb->get_results("SELECT id, name FROM $tableName ORDER BY name");
+        $body_parts = $wpdb->get_results("SELECT id, name FROM $tableName where name NOT LIKE '%No Body Part Assigned%' ORDER BY name");
         return $body_parts;
         }
 
     public function getAllInjuries(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_how_it_happened";
-        $injuries = $wpdb->get_results( "SELECT id, name FROM $tableName ORDER BY name");
+        $injuries = $wpdb->get_results( "SELECT id, name FROM $tableName where name NOT LIKE '%No How It Happened Assigned%' ORDER BY name");
         return $injuries;
      }
 
     public function getAllSports(){
     	global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_sport_occupation";
-        $sports = $wpdb->get_results("SELECT id, name FROM $tableName WHERE type like 'sport' ORDER BY name");
+        $sports = $wpdb->get_results("SELECT id, name FROM $tableName WHERE type like 'sport' and name NOT LIKE '%No Sport Assigned%' ORDER BY name");
     
         return $sports;
         }
@@ -288,7 +288,7 @@ public $tempUserId;
     public function getAllCategories(){
         global $wpdb; // this is how you get access to the database
         $tableName = $wpdb->prefix . "cura_body_parts";
-        $sql = "SELECT DISTINCT(category_name) FROM dev_cura_exercise_videos ORDER BY category_name;";
+        $sql = "SELECT DISTINCT(category_name) FROM dev_cura_exercise_videos WHERE category_name !='' ORDER BY category_name;";
         $categories = $wpdb->get_results( $sql );
         return $categories;
         }
@@ -1925,15 +1925,23 @@ public $tempUserId;
         return $injuryId->id;
         }
 
-    public function getBodyPartById($bodyPartId){
+    public function getBodyPartNamesByIds($bodyPartIds){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_body_parts";    
-        
-        $body_part = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $bodyPartId");
-        
-        return $body_part; 
-
+        $body_parts = $wpdb->get_results("SELECT id, name FROM $tableName");
+        $body_parts_name = "";
+        $namesToGet = explode(',',$bodyPartIds);
+        //var_dump($namesToGet);
+        foreach ($namesToGet as $aId){
+            foreach ($body_parts as $body_part){
+                if($body_part->id == $aId){
+                    $body_parts_name .= str_replace(' ','-',strtolower($body_part->name.","));
+                }
+            }
         }
+        $all_body_parts_name = rtrim($body_parts_name,", ");
+    return $all_body_parts_name; 
+    }
 
     
 
