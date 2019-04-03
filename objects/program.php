@@ -1924,6 +1924,15 @@ public $tempUserId;
         $injuryId = $wpdb->get_row("SELECT id FROM $tableName WHERE name LIKE \"$injuryName\"");
         return $injuryId->id;
         }
+    
+    public function getBodyPartById($bodyPartId){
+        global $wpdb;
+        $tableName = $wpdb->prefix . "cura_body_parts";    
+        
+        $body_part = $wpdb->get_row("SELECT name FROM $tableName WHERE id = $bodyPartId");
+        
+        return $body_part; 
+        }
 
     public function getBodyPartNamesByIds($bodyPartIds){
         global $wpdb;
