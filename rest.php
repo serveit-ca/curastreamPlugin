@@ -3,7 +3,6 @@
 use \Firebase\JWT\JWT;
 
 
-<?php
 require_once("objects/phase.php");
 require_once("objects/exercise.php");
 
