@@ -1,11 +1,15 @@
+<?php
 // Used to register all of the rest routes for the Curastream Plugin 
+use \Firebase\JWT\JWT;
+
 
 <?php
 require_once("objects/phase.php");
 require_once("objects/exercise.php");
 
+$programs = new program();
+
 add_action('rest_api_init', function(){
-	$programs = new program();
 	// API Calls for Curastream - No Version 
 	register_rest_route('curastream', '/get_logged_in_user_id/',
 	    array(
@@ -1620,5 +1624,22 @@ function headerRest($request){
         }
     }
     return $data;
+}
+
+function getProgramInfo($id){
+    global $wpdb; // this is how you get access to the database
+    $dev_cura_programs = $wpdb->prefix . "cura_programs";
+    $sql = "select name,description,thumbnail FROM ".$dev_cura_programs."  where  id='".$id."'";
+    //return    $sql;
+        
+     $result = $wpdb->get_row( $sql );
+     //return $result->thumbnail;
+     
+    if(!empty($result))
+    {
+        return $result;
+    }else{
+        return 'n/a';
+    }
 }
 ?>

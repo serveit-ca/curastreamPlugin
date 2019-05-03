@@ -108,7 +108,7 @@ class customProgramCreation {
 								 			break;
 								 		}
 								 	}
-								 ?><input type="checkbox" name="bodypart" value="<?php echo $body_part->name;?>" <?php if($injuredParts){?> checked="checked"<?php } ?>> <?php echo $body_part->name;?></input>
+								 ?><input type="checkbox" name="bodypart" value="<?php echo $body_part->id;?>" <?php if($injuredParts){?> checked="checked"<?php } ?>> <?php echo $body_part->name;?></input>
 								<?php } ?>
 						</div>
 
@@ -123,7 +123,7 @@ class customProgramCreation {
 								 			break;
 								 		}
 								 	}
-								?><input type="checkbox" name="howithappened" value="<?php echo $howItHappened->name;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $howItHappened->name;?></input>
+								?><input type="checkbox" name="howithappened" value="<?php echo $howItHappened->id;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $howItHappened->name;?></input>
 								<?php } ?>
 						</div>
 						<div id="sportsAndOccupationGroup"class="form-group <?php if($programObject->type == "Rehab" || $programObject->type == "Prevention"){ echo "hidden";}?>">
@@ -138,7 +138,7 @@ class customProgramCreation {
 								 			break;
 								 		}
 								 	}
-									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $sportsOccupation->name;?></input>	
+									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->id;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $sportsOccupation->name;?></input>	
 								<?php } ?>
 							<div class="labelTxt"><br /></div>
 							<div class="labelTxt"> Occupations </div>
@@ -152,7 +152,7 @@ class customProgramCreation {
 								 			break;
 								 		}
 								 	}
-									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->name;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $sportsOccupation->name;?></input>	
+									?><input type="checkbox" name="sportsandoccupation" value="<?php echo $sportsOccupation->id;?>" <?php if($itHappens){?> checked="checked"<?php } ?> > <?php echo $sportsOccupation->name;?></input>	
 								<?php } ?>
 						</div>	
 					</div>

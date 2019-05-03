@@ -240,6 +240,7 @@ echo "<h2>API Connections - Token & Validation</h2>";
 //     }
 // echo "<h3>Testing the User Creation on the staging</h3>";
    
+<<<<<<< HEAD
 //      $apiQueryURL = "https://curastream.serveit.work/wp-json/mp/v1/members";
 //      $jsonBody = json_encode(array(
 //           "device_name" => "web",
@@ -277,6 +278,26 @@ echo "<h2>API Connections - Token & Validation</h2>";
 //     $data = wp_remote_retrieve_body( $response );
 //    // echo "Data  ";
 //    var_dump($data);
+=======
+     $apiQueryURL = "https://www.curastream.com/wp-json/mp/v1/members?device_name=web&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.&email=testing%40serveit.ca&username=testUser&first_name=TestUser&last_name=DeleteMe&password=bacon123!";
+     echo $jsonBody;
+    $response = wp_remote_post($apiQueryURL, array(
+        'method' => 'POST',
+        'body'=>$jsonBody
+    ));
+     //echo "Response  ";
+    //print_r($response);
+    $data = wp_remote_retrieve_body( $response );
+   // echo "Data  ";
+   var_dump($data);
+
+         if(wp_remote_retrieve_response_code( $response ) == 200){ echo( "<div class='alertSuccess'><br/><br/><br/>Success Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+    }else {
+      echo( "<div class='alertError'><br/><br/><br/>Error Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+    }
+
+//     echo "<h3>Getting the Program Info </h3>";
+>>>>>>> 646d77be7678ff47c8354e30ea880f3a41a92d42
 
 //          if(wp_remote_retrieve_response_code( $response ) == 200){ echo( "<div class='alertSuccess'><br/><br/><br/>Success Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
 //     }else {
