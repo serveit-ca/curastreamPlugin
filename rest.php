@@ -1,6 +1,8 @@
 // Used to register all of the rest routes for the Curastream Plugin 
 
 <?php
+require_once("objects/phase.php");
+require_once("objects/exercise.php");
 
 add_action('rest_api_init', function(){
 	$programs = new program();
@@ -409,30 +411,29 @@ function view_program_details($request){
                 $exerciseArray = array();
                 $exercises = $programs->getExercisesByPhaseId($phase->id);
                    foreach ($exercises as $exercise) {
-                        $exerciseContent[] = array(
-                            "id"=>$exercise->id,
-                            "phase_id"=>$exercise->phase_id,
-                            "order_no"=>$exercise->order_no,
-                            "order_field"=>$exercise->order_field,
-                            "name"=>$exercise->name,
-                            "rest"=>$exercise->rest,
-                            "sets_reps"=>$exercise->sets_reps,
-                            "variation"=>$exercise->variation,
-                            "equipment"=>$exercise->equipment,
-                            "special_instructions"=>$exercise->special_instructions,
-                            "exercise_video_url"=>$exercise->exercise_video_url,
-                            "file_url"=>$exercise->file_url,
-                            "file_name"=>$exercise->file_name
-                            );
-                        $exerciseArray[] = $exerciseContent;
+                        $jsonExercise = new exercise();
+                            $jsonExercise->id = $exercise->id;
+                            $jsonExercise->phase_id = $exercise->phase_id;
+                            $jsonExercise->order_no = $exercise->order_no;
+                            $jsonExercise->order_field = $exercise->order_field;
+                            $jsonExercise->name = $exercise->name;
+                            $jsonExercise->rest = $exercise->rest;
+                            $jsonExercise->sets_reps = $exercise->sets_reps;
+                            $jsonExercise->variation = $exercise->variation;
+                            $jsonExercise->equipment = $exercise->equipment;
+                            $jsonExercise->special_instructions>$exercise->special_instructions;
+                            $jsonExercise->exercise_video_url = $exercise->exercise_video_url;
+                            $jsonExercise->file_url = $exercise->file_url;
+                            $jsonExercise->file_name = $exercise->file_name;
+                        $exerciseArray[] = $jsonExercise;
                     }
-                $phaseContent[] = array(
-                    "id"=>$phase->id,
-                    "name"=>$phase->name,
-                    "intro"=>$phase->intro,
-                    "notes"=>$phase->notes,
-                    "exercise"=>$exerciseArray);
-                                     $phases[] = $phaseContent;
+                    $jsonPhase = new phase();
+                    $jsonPhase->id=$phase->id;
+                    $jsonPhase->name=$phase->name;
+                    $jsonPhase->intro=$phase->intro;
+                    $jsonPhase->notes=$phase->notes;
+                    $jsonPhase->exercise=$exerciseArray;
+                    $phases[] = $jsonPhase;
             }
             $partIdString = $program->body_part;
             $sportIdString = $program->sportsOccupation;
