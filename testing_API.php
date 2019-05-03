@@ -195,96 +195,90 @@ echo "<h2>API Connections - Token & Validation</h2>";
 //     }else {
 //       echo( "<div class='alertError'><br/><br/><br/>Error Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
 //     }
-echo "<h2>User Registration & Transaction Creation</h2>";
-echo "<h3>Testing the User Creation on the dev</h3>";
+// echo "<h2>User Registration & Transaction Creation</h2>";
+// echo "<h3>Testing the User Creation on the dev</h3>";
    
-     $apiQueryURL = "http://curastream.test/wp-json/mp/v1/members?device_name=web&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.&email=testing%40serveit.ca&";
-     $jsonBody = json_encode(array(
-         "email" => "testing@serveit.ca",
-          "username" => "Nathan Test",
-          "first_name" =>  "Nathan",
-          "last_name" => "Tymos",
-          "password" => "Bacon123!",
-          "address" => array(
-            "mepr-address-one" => "2277 Galloway Pl",
-            "mepr-address-two" => "",
-            "mepr-address-city" => "Kamloops",
-            "mepr-address-state" => "BC",
-            "mepr-address-zip" => "V1S1K3",
-            "mepr-address-country" => "Canada"
-            ),
-          "transaction" => array(
-            "membership" => "4214",
-            "amount" => "9.99",
-            "gateway" => "manual",
-            "status" => "complete",
-            "tax_class" => "114be7fea4d3dd0cf2e88a8fa9a56d4ea741efbabd07d61d08cf0810be2254fd",
-            "tax_desc" => "Testing A Transaction"
-            )
-          )
-       );
-     echo $jsonBody;
-    $response = wp_remote_post($apiQueryURL, array(
-        'method' => 'POST',
-        'body'=>$jsonBody
-    ));
-     //echo "Response  ";
-    //print_r($response);
-    $data = wp_remote_retrieve_body( $response );
-   // echo "Data  ";
-   var_dump($data);
+//      $apiQueryURL = "http://curastream.test/wp-json/mp/v1/members?device_name=web&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.&email=testing%40serveit.ca&";
+//      $jsonBody = json_encode(array(
+//          "email" => "testing@serveit.ca",
+//           "username" => "Nathan Test",
+//           "first_name" =>  "Nathan",
+//           "last_name" => "Tymos",
+//           "password" => "Bacon123!",
+//           "address" => array(
+//             "mepr-address-one" => "2277 Galloway Pl",
+//             "mepr-address-two" => "",
+//             "mepr-address-city" => "Kamloops",
+//             "mepr-address-state" => "BC",
+//             "mepr-address-zip" => "V1S1K3",
+//             "mepr-address-country" => "Canada"
+//             ),
+//           "transaction" => array(
+//             "membership" => "4214",
+//             "amount" => "9.99",
+//             "gateway" => "manual",
+//             "status" => "complete",
+//             "tax_class" => "114be7fea4d3dd0cf2e88a8fa9a56d4ea741efbabd07d61d08cf0810be2254fd",
+//             "tax_desc" => "Testing A Transaction"
+//             )
+//           )
+//        );
+//      echo $jsonBody;
+//     $response = wp_remote_post($apiQueryURL, array(
+//         'method' => 'POST',
+//         'body'=>$jsonBody
+//     ));
+//      //echo "Response  ";
+//     //print_r($response);
+//     $data = wp_remote_retrieve_body( $response );
+//    // echo "Data  ";
+//    var_dump($data);
 
-         if(wp_remote_retrieve_response_code( $response ) == 200){ echo( "<div class='alertSuccess'><br/><br/><br/>Success Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
-    }else {
-      echo( "<div class='alertError'><br/><br/><br/>Error Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
-    }
-echo "<h3>Testing the User Creation on the staging</h3>";
+//          if(wp_remote_retrieve_response_code( $response ) == 200){ echo( "<div class='alertSuccess'><br/><br/><br/>Success Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+//     }else {
+//       echo( "<div class='alertError'><br/><br/><br/>Error Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+//     }
+// echo "<h3>Testing the User Creation on the staging</h3>";
    
-     $apiQueryURL = "https://curastream.serveit.work/wp-json/mp/v1/members";
-     $jsonBody = json_encode(array(
-          "device_name" => "web",
-          "device_token" => "aP^gx|7Z+|P:SOg-`DiW#|FHZ:YbKaHYCcXsg|u.-,)d52(3@tayO(yR>e7m@iT",
-          "user_email" => "testing@serveit.ca",
-          "username" => "Nathan Test",
-          "first_name" =>  "Nathan",
-          "last_name" => "Tymos",
-          "password" => "Bacon123!",
-          "address" => array(
-            "mepr-address-one" => "2277 Galloway Pl",
-            "mepr-address-two" => "",
-            "mepr-address-city" => "Kamloops",
-            "mepr-address-state" => "BC",
-            "mepr-address-zip" => "V1S1K3",
-            "mepr-address-country" => "Canada"
-            ),
-          "transaction" => array(
-            "membership" => "4214",
-            "amount" => "9.99",
-            "gateway" => "manual",
-            "status" => "complete",
-            "tax_class" => "114be7fea4d3dd0cf2e88a8fa9a56d4ea741efbabd07d61d08cf0810be2254fd",
-            "tax_desc" => "Testing A Transaction"
-            )
-          )
-       );
-     echo $jsonBody;
-    $response = wp_remote_post($apiQueryURL, array(
-        'method' => 'POST',
-        'body'=>$jsonBody
-    ));
-     //echo "Response  ";
-    //print_r($response);
-    $data = wp_remote_retrieve_body( $response );
-   // echo "Data  ";
-   var_dump($data);
-
-         if(wp_remote_retrieve_response_code( $response ) == 200){ echo( "<div class='alertSuccess'><br/><br/><br/>Success Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
-    }else {
-      echo( "<div class='alertError'><br/><br/><br/>Error Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
-    }
-
-    echo "<h3>Testing the User Creation on the Production</h3>";
-   
+<<<<<<< HEAD
+//      $apiQueryURL = "https://curastream.serveit.work/wp-json/mp/v1/members";
+//      $jsonBody = json_encode(array(
+//           "device_name" => "web",
+//           "device_token" => "aP^gx|7Z+|P:SOg-`DiW#|FHZ:YbKaHYCcXsg|u.-,)d52(3@tayO(yR>e7m@iT",
+//           "user_email" => "testing@serveit.ca",
+//           "username" => "Nathan Test",
+//           "first_name" =>  "Nathan",
+//           "last_name" => "Tymos",
+//           "password" => "Bacon123!",
+//           "address" => array(
+//             "mepr-address-one" => "2277 Galloway Pl",
+//             "mepr-address-two" => "",
+//             "mepr-address-city" => "Kamloops",
+//             "mepr-address-state" => "BC",
+//             "mepr-address-zip" => "V1S1K3",
+//             "mepr-address-country" => "Canada"
+//             ),
+//           "transaction" => array(
+//             "membership" => "4214",
+//             "amount" => "9.99",
+//             "gateway" => "manual",
+//             "status" => "complete",
+//             "tax_class" => "114be7fea4d3dd0cf2e88a8fa9a56d4ea741efbabd07d61d08cf0810be2254fd",
+//             "tax_desc" => "Testing A Transaction"
+//             )
+//           )
+//        );
+//      echo $jsonBody;
+//     $response = wp_remote_post($apiQueryURL, array(
+//         'method' => 'POST',
+//         'body'=>$jsonBody
+//     ));
+//      //echo "Response  ";
+//     //print_r($response);
+//     $data = wp_remote_retrieve_body( $response );
+//    // echo "Data  ";
+//    var_dump($data);
+=======
      $apiQueryURL = "https://www.curastream.com/wp-json/mp/v1/members?device_name=web&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.&email=testing%40serveit.ca&username=testUser&first_name=TestUser&last_name=DeleteMe&password=bacon123!";
      echo $jsonBody;
     $response = wp_remote_post($apiQueryURL, array(
@@ -303,19 +297,70 @@ echo "<h3>Testing the User Creation on the staging</h3>";
     }
 
 //     echo "<h3>Getting the Program Info </h3>";
+>>>>>>> 646d77be7678ff47c8354e30ea880f3a41a92d42
 
-//     $apiQueryURL = "http://curastream.test/wp-json/curastream/view_program_details/";
+//          if(wp_remote_retrieve_response_code( $response ) == 200){ echo( "<div class='alertSuccess'><br/><br/><br/>Success Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+//     }else {
+//       echo( "<div class='alertError'><br/><br/><br/>Error Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+//     }
 
-//     $jsonBody = json_encode(array("id"=>"37"));
-// echo $jsonBody;
+//     echo "<h3>Testing the User Creation on the Production</h3>";
+   
+//      $apiQueryURL = "https://www.curastream.com/wp-json/mp/v1/members?device_name=web&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.&email=testing%40serveit.ca&";
+//      $jsonBody = json_encode(array(
+//           "email" => 'testing@serveit.ca',
+//           "username" => "Nathan Test",
+//           "first_name" =>  "Nathan",
+//           "last_name" => "Tymos",
+//           "password" => "Bacon123!",
+//           "address" => array(
+//             "mepr-address-one" => "2277 Galloway Pl",
+//             "mepr-address-two" => "",
+//             "mepr-address-city" => "Kamloops",
+//             "mepr-address-state" => "BC",
+//             "mepr-address-zip" => "V1S1K3",
+//             "mepr-address-country" => "Canada"
+//             ),
+//           "transaction" => array(
+//             "membership" => "4214",
+//             "amount" => "9.99",
+//             "gateway" => "manual",
+//             "status" => "complete",
+//             "tax_class" => "114be7fea4d3dd0cf2e88a8fa9a56d4ea741efbabd07d61d08cf0810be2254fd",
+//             "tax_desc" => "Testing A Transaction"
+//             )
+//           )
+//        );
+//      echo $jsonBody;
 //     $response = wp_remote_post($apiQueryURL, array(
 //         'method' => 'POST',
-//         'body' => $jsonBody,
+//         'body'=>$jsonBody
 //     ));
-//    // var_dump($response);
+//      //echo "Response  ";
+//     //print_r($response);
 //     $data = wp_remote_retrieve_body( $response );
+//    // echo "Data  ";
+//    var_dump($data);
 
-//     var_dump($data);
+//          if(wp_remote_retrieve_response_code( $response ) == 200){ echo( "<div class='alertSuccess'><br/><br/><br/>Success Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+//     }else {
+//       echo( "<div class='alertError'><br/><br/><br/>Error Code: ".wp_remote_retrieve_response_code( $response )."</div>"); 
+//     }
+
+    echo "<h3>Getting the Program Info </h3>";
+
+    $apiQueryURL = "http://curastream.test/wp-json/curastream/view_program_details/";
+
+    $jsonBody = json_encode(array("id"=>"37"));
+echo $jsonBody;
+    $response = wp_remote_post($apiQueryURL, array(
+        'method' => 'POST',
+        'body' => $jsonBody,
+    ));
+   // var_dump($response);
+    $data = wp_remote_retrieve_body( $response );
+
+    var_dump($data);
 ?>
 
 
