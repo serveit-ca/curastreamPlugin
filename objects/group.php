@@ -55,14 +55,14 @@ public function newCorpGroup($groupName, $corpId){
 public function getCorpById($corpId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
-        $corp = $wpdb->get_results("SELECT mempr_id, name FROM $tableName WHERE id = $corpId");
+        $corp = $wpdb->get_results("SELECT name, instruction_text, logo, company_email, company_phone FROM $tableName WHERE id = $corpId");
         return $corp;
         }
 
 public function getAllCorps(){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
-        $corp = $wpdb->get_results("SELECT id, mempr_id, name FROM $tableName");
+        $corp = $wpdb->get_results("SELECT id, name FROM $tableName");
         $allCorps = array();
         foreach ($corp as $key) {
             $allCorps[] = $key;
@@ -320,29 +320,8 @@ public function deleteGroup($groupId){
             $wpdb->delete($tableNameB, array(
                 "group_id" => $groupId));
         }
-        }   
+    }   
 
-public function updateMemprIdToCorp($memprId, $corpId){
-        global $wpdb;
-        $tableName = $wpdb->prefix . "cura_corps";
-
-        if (isset($memprId) && !is_null($memprId)){
-            $wpdb->update($tableName, array(
-            "mempr_id" => $memprId),
-            array( // Where Clause
-            "id" => $corpId));
-        }
-
-        }
-
-public function getCorpIdByMemprId($memprId){
-        global $wpdb;
-        $tableName = $wpdb->prefix . "cura_corps";
-
-        $corpId = $wpdb->get_row("SELECT id FROM $tableName WHERE mempr_id = $memprId");
-
-        return $corpId->id;
-        }
 
 public function getGroupIdByCorpId($corpId){
         global $wpdb;
