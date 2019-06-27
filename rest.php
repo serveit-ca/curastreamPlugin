@@ -1385,7 +1385,7 @@ function mark_phase_active(){
 
 // API Functions for Curastream - Version 2
 
-function newCorpUser($data){
+function new_corp_user($data){
     //Check user email Unique
 
     //New Memberpress 
