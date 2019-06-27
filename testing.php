@@ -10,8 +10,13 @@ require_once ("objects/databaseManagement.php");
 $database = new databaseManagement();
 $programs = new program();
 $groups = new group();
+$user = new userTracking();
 
-echo ($programs->getBodyPartNamesByIds("1,15,5,13"));
+
+$exists = $user->checkUserEmailExists("victor@serveit.ca");
+echo " Should Exist : " . $exists;
+$exists = $user->checkUserEmailExists("e@t.org");
+echo " Should Not Exist : " . $exists;
 // echo ($programs->getBodyPartNamesByIds(15,5,13));
 
 // $programs->getBodyPartNamesByIds(1,15,5,13);

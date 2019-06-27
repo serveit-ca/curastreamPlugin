@@ -65,7 +65,7 @@ class userTracking
 
 
 	//Get last user login function
-	function getLastUserLogin($userId){
+	public function getLastUserLogin($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
 		$lastTime = $wpdb->get_results("SELECT event_timestamp FROM $tableName WHERE event_type = 0 AND user_id = $userId ORDER BY event_timestamp DESC LIMIT 1");
@@ -82,7 +82,7 @@ class userTracking
 
 
 	//Get total user logins
-	function getAllUserLogin($userId){
+	public function getAllUserLogin($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
 		$userLog = $wpdb->get_results("SELECT id FROM $tableName WHERE user_id = $userId");
@@ -106,7 +106,7 @@ class userTracking
 	}
 
 	//Get Total user exercise views
-	function getTotalViewedExercises($userId){
+	public function getTotalViewedExercises($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
 		$exerciseLog = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId AND event_type = 1 ORDER BY event_timestamp DESC");
@@ -118,7 +118,7 @@ class userTracking
 	}
 
 	//Get Last Viewed Program
-	function getLastViewedProgram($userId){
+	public function getLastViewedProgram($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
 		$programLog = $wpdb->get_results("SELECT program_id FROM $tableName WHERE user_id = $userId AND (event_type = 1 OR event_type =3) ORDER BY event_timestamp DESC LIMIT 1");
@@ -135,7 +135,7 @@ class userTracking
 
 
 	//Get Last Viewed Exercise
-	function getLastViewedExercise($userId){
+	public function getLastViewedExercise($userId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
 		$exerciseLog = $wpdb->get_results("SELECT exercise_id FROM $tableName WHERE user_id = $userId AND (event_type = 2 OR event_type =3)  ORDER BY event_timestamp DESC LIMIT 1");
@@ -151,7 +151,7 @@ class userTracking
 	}
 
 	//Get last program view function
-	function getLastProgramView($programId){
+	public function getLastProgramView($programId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
 		$programLog = $wpdb->get_results("SELECT event_timestamp FROM $tableName WHERE program_id = $programId ORDER BY event_timestamp DESC LIMIT 1");
@@ -163,7 +163,7 @@ class userTracking
 
 
 	//Get last exercise viewed function
-	function getLastExerciseView($exerciseId){
+	public function getLastExerciseView($exerciseId){
 		global $wpdb;
 		$tableName = $wpdb->prefix . "cura_user_tracking";
 		$exerciseLog = $wpdb->get_results("SELECT event_timestamp FROM $tableName WHERE exercise_id = $exerciseId ORDER BY event_timestamp DESC LIMIT 1");
@@ -171,6 +171,19 @@ class userTracking
 			$time = $key->event_timestamp;
 		}
 		return $time;
+	}
+
+	public function checkUserEmailExists($email){
+		global $wpdb;
+		$tableName = $wpdb->prefix . "users";
+		$userEmails = $wpdb->get_results("SELECT user_email FROM $tableName");
+		$emailExists = 0;
+		foreach ($userEmails as $row) {
+			if($email == $row->user_email){
+				$emailExists = 1;
+			}
+		}
+		return $emailExists;
 	}
 }
 

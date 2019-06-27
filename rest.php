@@ -225,6 +225,12 @@ add_action('rest_api_init', function(){
             'methods' => 'POST',
             'callback' => 'mempr_add_new_corp'
         ));
+
+    register_rest_route('curastream/v2', '/new_corp_user/', 
+        array(
+            'methods' => 'POST',
+            'callback' => 'new_corp_user'
+        ));
 });
 
 // API Functions for Curastream - No Version 
@@ -1377,7 +1383,19 @@ function mark_phase_active(){
     }
 }
 
-// API Functions for Curastream - Version 2 
+// API Functions for Curastream - Version 2
+
+function newCorpUser($data){
+    //Check user email Unique
+
+    //New Memberpress 
+
+    // Add programes based on select
+
+    //Send Welcome Email
+
+    //Show Instructions 
+} 
 function userLoginHandler($data){
     $tracking = new userTracking();
     $user_id = $data['id'];
