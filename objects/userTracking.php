@@ -181,6 +181,7 @@ class userTracking
 		foreach ($userEmails as $row) {
 			if($email == $row->user_email){
 				$emailExists = 1;
+				break;
 			}
 		}
 		return $emailExists;
