@@ -5,6 +5,7 @@ use \Firebase\JWT\JWT;
 
 require_once("objects/phase.php");
 require_once("objects/exercise.php");
+require_once("objects/group.php");
 
 $programs = new program();
 
@@ -1387,14 +1388,20 @@ function mark_phase_active(){
 
 function new_corp_user($data){
     //Check user email Unique
+    $tracking = new userTracking();
+    $userExist = $tracking->checkUserEmailExists($data['email']);
+    if($userExist == 0){
+        //New Memberpress ???
 
-    //New Memberpress 
+        // Add programs based on select
 
-    // Add programes based on select
 
-    //Send Welcome Email
+        //Send Welcome Email
 
-    //Show Instructions 
+        //Show Instructions 
+    }
+
+    
 } 
 function userLoginHandler($data){
     $tracking = new userTracking();

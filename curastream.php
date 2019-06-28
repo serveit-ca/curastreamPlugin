@@ -131,6 +131,12 @@ function add_submenu() {
             '',
             ''
         );
+        add_submenu_page('curastreamPlugin','Corporate Accounts','Corporate Accounts',
+            'curaProgEditor',
+            'curastream/corpCreation.php',
+            '',
+            ''
+        );
     }
 }
 add_action( 'admin_menu', 'add_submenu');
