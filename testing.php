@@ -13,10 +13,12 @@ $groups = new group();
 $user = new userTracking();
 
 
-$exists = $user->checkUserEmailExists("victor@serveit.ca");
-echo " Should Exist : " . $exists;
-$exists = $user->checkUserEmailExists("e@t.org");
-echo " Should Not Exist : " . $exists;
+echo "Create Corp Test: <br>";
+$corpId = $groups->newCorp("Test Company", "Go Workout", "test.ca", "e@t.ca", "12345678901", $groups->random_str(16));
+echo $corpId . "<br>";
+$corpLink = $groups->getCorpSignUpLinkById($corpId);
+echo $corpLink;
+
 // echo ($programs->getBodyPartNamesByIds(15,5,13));
 
 // $programs->getBodyPartNamesByIds(1,15,5,13);

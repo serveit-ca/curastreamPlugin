@@ -47,7 +47,7 @@ function prefix_enqueue()
                 <label for="company-phone">Company Phone: </label>
                 <input type="text" name="company-phone" id="company-phone">
                 <label for="auth-token">Auth Token: </label>
-                <input type="text" name="auth-token" disabled="true" value="<?php $randAuth ?>">
+                <input type="text" name="auth-token" disabled="true" value="<?php echo $randAuth ?>">
 
                 <button type="submit" id="new-corp-submit">Submit</button>
 

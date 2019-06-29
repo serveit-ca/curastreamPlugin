@@ -22,13 +22,18 @@ public function newCustomGroup($groupName){
         }
     }
 
-public function newCorp($corpName){
+public function newCorp($corpName, $instruction, $logoUrl, $companyEmail, $companyPhone, $authToken){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_corps";
         //$corpName = trim($corpName);
         if (isset($corpName) && !is_null($corpName)){
             $wpdb->insert($tableName, array(
-            "name" => $corpName));
+            "name" => $corpName,
+            "instruction_text" => $instruction,
+            "logo" => $logoUrl,
+            "company_email" => $companyEmail,
+            "company_phone" => $companyPhone,
+            "auth" => $authToken));
             $lastid = $wpdb->insert_id;
             return $lastid;
         }
@@ -67,6 +72,18 @@ public function getCorpByName($corpName){
         $corp = $wpdb->get_results("SELECT name, id, instruction_text, logo, company_email, company_phone, auth FROM $tableName WHERE name = '$corpName'");
         $corp = $corp[0];
         return $corp;
+}
+
+public function getCorpSignUpLinkById($corpId){
+    global $wpdb;
+    $tableName = $wpdb->prefix . "cura_corps";
+    $corp = $wpdb->get_results("SELECT name, auth FROM $tableName WHERE id = $corpId");
+    foreach ($corp as $row) {
+        $corpName = $row->name;
+        $corpAuth = $row->auth;
+    }
+    $corpLink = get_site_url() . "/c/?c=" . $corpName . "&auth=" . $corpAuth;
+    return $corpLink;
 }
 
 public function getAllCorps(){
