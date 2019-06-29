@@ -179,8 +179,9 @@ class userTracking
 		$userEmails = $wpdb->get_results("SELECT user_email FROM $tableName");
 		$emailExists = 0;
 		foreach ($userEmails as $row) {
-			if($email == $row->user_email){
+			if(strtolower($email) == strtolower($row->user_email)){
 				$emailExists = 1;
+				break;
 			}
 		}
 		return $emailExists;

@@ -6,6 +6,7 @@ use \Firebase\JWT\JWT;
 require_once("objects/phase.php");
 require_once("objects/exercise.php");
 require_once("objects/group.php");
+require_once("objects/userTracking.php");
 
 $programs = new program();
 
@@ -231,6 +232,11 @@ add_action('rest_api_init', function(){
         array(
             'methods' => 'POST',
             'callback' => 'new_corp_user'
+        ));
+    register_rest_route('curastream/v2', '/check_unique_user/', 
+        array(
+            'methods' => 'POST',
+            'callback' => 'check_unique_user'
         ));
 });
 
@@ -1400,9 +1406,16 @@ function new_corp_user($data){
 
         //Show Instructions 
     }
+}
 
-    
-} 
+function check_unique_user($request){
+    $data = headerRest($request);
+    $tracking = new userTracking();
+    $userExist = $tracking->checkUserEmailExists($data['email']);
+    return $userExist;
+}
+
+
 function userLoginHandler($data){
     $tracking = new userTracking();
     $user_id = $data['id'];
