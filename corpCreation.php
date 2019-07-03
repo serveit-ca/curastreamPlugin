@@ -53,5 +53,35 @@ function prefix_enqueue()
 
             </form>
         </div>
+
+        <div class="tableCorps">
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="corpAccounts" class="table table-bordered">    
+                        <thead>
+                            <tr>
+                                <th id= "corpId">Corp Id</th>
+                                <th id= "corpAccount">Corporate Account</th>
+                                <th id= "companyLink">Sign-Up Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php 
+                                $corps = $group->getAllCorps();
+                                foreach ($corps as $key) {                    
+                        ?>
+                            <tr>
+                                <td><?php echo $key->id ?></td>
+                                <td><?php echo $key->name ?></td>
+                                <td><?php echo $group->getCorpSignUpLinkById($key->id);?></td>
+                            </tr>
+
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

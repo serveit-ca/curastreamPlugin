@@ -587,7 +587,7 @@ public function getCorpByTierId($tierId){
  *                         to select from
  * @return string
  */
-public function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*')
+public function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^')
 {
     $pieces = [];
     $max = mb_strlen($keyspace, '8bit') - 1;

@@ -1395,16 +1395,56 @@ function mark_phase_active(){
 function new_corp_user($data){
     //Check user email Unique
     $tracking = new userTracking();
+    $programs = new program();
     $userExist = $tracking->checkUserEmailExists($data['email']);
     if($userExist == 0){
         //New Memberpress ???
+        $memUrl = get_site_url() . "/wp-json/mp/v1/members";
+        $memprResponse = wp_remote_post($memUrl, array(
+            'method' => 'POST',
+            'username' => $data['email'],
+            'email' => $data['email'],
+            'first_name' => $data['fname'],
+            'last_name' => $data['lname'],
+            'mepr-address-one' => '123 Test St.',
+            'mepr-address-city' => 'Kamloops',
+            'mepr-address-state' => 'BC',
+            'mepr-address-country' => 'Canada'
+            ));
+        $memprData = json_decode(wp_remote_retrieve_body($memprResponse));
 
         // Add programs based on select
+        if($data['workoutTypes'] == 'general'){
 
+            $programs->assignProgramToUser(37, $memprData->id);
+            $programs->assignProgramToUser(66, $memprData->id);
+            $programs->assignProgramToUser(51, $memprData->id);
+        }
+
+        else if($data['workoutTypes'] == 'weight'){
+
+            $programs->assignProgramToUser(37, $memprData->id);
+            $programs->assignProgramToUser(66, $memprData->id);
+            $programs->assignProgramToUser(51, $memprData->id);
+        }
+
+        else if($data['workoutTypes'] == 'injury'){
+
+            $programs->assignProgramToUser(37, $memprData->id);
+            $programs->assignProgramToUser(66, $memprData->id);
+            $programs->assignProgramToUser(51, $memprData->id);
+        }
+        else if($data['workoutTypes'] == 'sport'){
+
+            $programs->assignProgramToUser(37, $memprData->id);
+            $programs->assignProgramToUser(66, $memprData->id);
+            $programs->assignProgramToUser(51, $memprData->id);
+        }
 
         //Send Welcome Email
 
-        //Show Instructions 
+
+
     }
 }
 
