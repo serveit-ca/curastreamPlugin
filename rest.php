@@ -1395,7 +1395,7 @@ function mark_phase_active(){
 function new_corp_user($request){
     $data = headerRest($request);
     echo ("Starting new_corp_user function");
-    echo $data['email'];
+    //echo $data['email'];
     //Check user email Unique
     $tracking = new userTracking();
     $programs = new program();
@@ -1406,6 +1406,8 @@ function new_corp_user($request){
         $memUrl = get_site_url() . "/wp-json/mp/v1/members";
         $memprResponse = wp_remote_post($memUrl, array(
             'method' => 'POST',
+            'device_token' => 'aP^gx|7Z+|P:SOg-`DiW#|FHZ:YbKaHYCcXsg|u.-,)d52(3@tayO(yR>e7m@iT',
+            'device_name' => 'web',
             'username' => $data['email'],
             'email' => $data['email'],
             'first_name' => $data['fname'],
@@ -1416,6 +1418,7 @@ function new_corp_user($request){
             'mepr-address-country' => 'Canada'
             ));
         $memprData = json_decode(wp_remote_retrieve_body($memprResponse));
+        var_dump($memprData);
 
         // Add programs based on select
         if($data['workoutTypes'] == 'general'){
