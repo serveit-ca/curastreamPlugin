@@ -1392,11 +1392,16 @@ function mark_phase_active(){
 
 // API Functions for Curastream - Version 2
 
-function new_corp_user($data){
+function new_corp_user($request){
+    $data = file_get_contents('php://input');
+    echo ("Starting new_corp_user function");
+    var_dump($data);
+
     //Check user email Unique
     $tracking = new userTracking();
     $programs = new program();
     $userExist = $tracking->checkUserEmailExists($data['email']);
+
     if($userExist == 0){
         //New Memberpress ???
         $memUrl = get_site_url() . "/wp-json/mp/v1/members";
@@ -1442,10 +1447,8 @@ function new_corp_user($data){
         }
 
         //Send Welcome Email
-
-
-
     }
+    return "End of Function";
 }
 
 function check_unique_user($request){
