@@ -1393,10 +1393,9 @@ function mark_phase_active(){
 // API Functions for Curastream - Version 2
 
 function new_corp_user($request){
-    $data = file_get_contents('php://input');
+    $data = headerRest($request);
     echo ("Starting new_corp_user function");
-    var_dump($data);
-
+    echo $data['email'];
     //Check user email Unique
     $tracking = new userTracking();
     $programs = new program();
