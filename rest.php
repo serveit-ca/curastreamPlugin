@@ -238,6 +238,12 @@ add_action('rest_api_init', function(){
             'methods' => 'POST',
             'callback' => 'check_unique_user'
         ));
+
+    register_rest_route('curastream/v2', '/cura_new_corp/', 
+        array(
+            'methods' => 'POST',
+            'callback' => 'cura_new_corp'
+        ));
 });
 
 // API Functions for Curastream - No Version 
@@ -1399,6 +1405,7 @@ function new_corp_user($request){
     //Check user email Unique
     $tracking = new userTracking();
     $programs = new program();
+    $groups = new group();
     $userExist = $tracking->checkUserEmailExists($data['email']);
 
     var_dump($data['email']);
@@ -1424,6 +1431,7 @@ function new_corp_user($request){
             'method' => 'POST'            
             ));
         $memprData = wp_remote_retrieve_body($memprResponse);
+        var_dump($memprData);
         $memprData = json_decode($memprData);  
         var_dump($memprData);
 
@@ -1456,8 +1464,28 @@ function new_corp_user($request){
         }
 
         //Send Welcome Email
+
+        // Assign to Corp Group
+
+        $groups->assignUserToGroup($data['groupId'], $memprData->id);
     }
     return "End of Function";
+}
+
+function cura_new_corp($request){
+    $data = headerRest($request);
+    $groups = new group();
+
+    $corpName = $data['corp-name'];
+    $corpInstructionText = $data['instruction-text'];
+    $companyLogoUrl = $data['logo-url'];
+    $companyEmail = $data['company-email'];
+    $companyPhone = $data['company-phone'];
+    $companyAuth = $data['auth-token'];
+
+    $newCorpId = $groups->newCorp($corpName, $corpInstructionText, $logoUrl, $companyEmail, $companyPhone, $companyAuth);
+    $newGroupId = $groups->newCorpGroup($corpName, $newCorpId);
+
 }
 
 function check_unique_user($request){
@@ -1541,14 +1569,15 @@ function mempr_add_new_corp($request){
     $input = json_decode($json);
     $groups = new group();
 
+    var_dump($input);
 
     // New Corp
-    //$corpName = $data['']
-    $newCorpId = $groups->newCorp("Corp Name");
+    $corpName = $input->data->name;
+    $newCorpId = $groups->newCorp($corpName);
     // Add mepr Id to Corp
     $groups->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
     // New Group
-    $newGroupId = $groups->newCorpGroup("Corp Name - Default", $newCorpId);
+    $newGroupId = $groups->newCorpGroup($corpName . " - Default", $newCorpId);
     // Assign Group Owner   
     $groups->assignUserToGroup($newGroupId, $input->data->member->id);
     $groups->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);

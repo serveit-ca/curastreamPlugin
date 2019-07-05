@@ -62,6 +62,7 @@ function prefix_enqueue()
                         <thead>
                             <tr>
                                 <th id= "corpId">Corp Id</th>
+                                <th id= "groupId">Group Id</th>
                                 <th id= "corpAccount">Corporate Account</th>
                                 <th id= "companyLink">Sign-Up Link</th>
                             </tr>
@@ -73,6 +74,16 @@ function prefix_enqueue()
                         ?>
                             <tr>
                                 <td><?php echo $key->id ?></td>
+                                <td><?php
+                                    $groupId = $group->getGroupIdByCorpId($key->id);
+                                    if (!is_null($groupId)) {
+                                        echo $groupId;
+                                    }
+                                    else{
+                                        echo "No Group Found";
+                                    }
+
+                                 ?></td>
                                 <td><?php echo $key->name ?></td>
                                 <td><?php echo $group->getCorpSignUpLinkById($key->id);?></td>
                             </tr>
