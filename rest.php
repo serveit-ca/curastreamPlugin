@@ -1414,11 +1414,7 @@ function new_corp_user($request){
         $postVar .= "&username=" . $data['email'];
         $postVar .= "&first_name=" . $data['fname'];
         $postVar .= "&last_name=" . $data['lname'];
-        $postVar .= "&mepr-address-one=" . $data['address'];
-        $postVar .= "&mepr-address-city=" . $data['city'];
-        $postVar .= "&mepr-address-state=" . $data['state'];
-        $postVar .= "&mepr-address-country=" . $data['country'];
-        $postVar .= "&mepr-address-zip=" . $data['postal'];
+
 
 
         //New Memberpress Member
@@ -1428,6 +1424,7 @@ function new_corp_user($request){
             'method' => 'POST'            
             ));
         $memprData = wp_remote_retrieve_body($memprResponse);
+        $memprData = json_decode($memprData);  
         var_dump($memprData);
 
         // Add programs based on select
