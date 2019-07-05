@@ -1401,23 +1401,33 @@ function new_corp_user($request){
     $programs = new program();
     $userExist = $tracking->checkUserEmailExists($data['email']);
 
+    var_dump($data['email']);
+
     if($userExist == 0){
-        //New Memberpress ???
-        $memUrl = get_site_url() . "/wp-json/mp/v1/members";
+        //Building URL for Memberpress get
+        $postVar = "";
+        $postVar .= "/wp-json/mp/v1/members?";
+        $postVar .= "device_name=web";
+        $postVar .= "&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.";
+        $postVar .= "&email=" . $data['email'];
+        $postVar .= "&password=" . $data['password'];
+        $postVar .= "&username=" . $data['email'];
+        $postVar .= "&first_name=" . $data['fname'];
+        $postVar .= "&last_name=" . $data['lname'];
+        $postVar .= "&mepr-address-one=" . $data['address'];
+        $postVar .= "&mepr-address-city=" . $data['city'];
+        $postVar .= "&mepr-address-state=" . $data['state'];
+        $postVar .= "&mepr-address-country=" . $data['country'];
+        $postVar .= "&mepr-address-zip=" . $data['postal'];
+
+
+        //New Memberpress Member
+        $memUrl = get_site_url() . $postVar;
+        echo $memUrl;
         $memprResponse = wp_remote_post($memUrl, array(
-            'method' => 'POST',
-            'device_token' => 'aP^gx|7Z+|P:SOg-`DiW#|FHZ:YbKaHYCcXsg|u.-,)d52(3@tayO(yR>e7m@iT',
-            'device_name' => 'web',
-            'username' => $data['email'],
-            'email' => $data['email'],
-            'first_name' => $data['fname'],
-            'last_name' => $data['lname'],
-            'mepr-address-one' => '123 Test St.',
-            'mepr-address-city' => 'Kamloops',
-            'mepr-address-state' => 'BC',
-            'mepr-address-country' => 'Canada'
+            'method' => 'POST'            
             ));
-        $memprData = json_decode(wp_remote_retrieve_body($memprResponse));
+        $memprData = wp_remote_retrieve_body($memprResponse);
         var_dump($memprData);
 
         // Add programs based on select
