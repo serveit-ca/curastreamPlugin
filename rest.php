@@ -1436,31 +1436,32 @@ function new_corp_user($request){
         var_dump($memprData);
 
         // Add programs based on select
-        if($data['workoutTypes'] == 'general'){
+        if($data['workoutTypes'] == 'mobility'){
 
-            $programs->assignProgramToUser(37, $memprData->id);
-            $programs->assignProgramToUser(66, $memprData->id);
-            $programs->assignProgramToUser(51, $memprData->id);
+            $programs->assignProgramToUser(78, $memprData->id);
+            $programs->assignProgramToUser(114, $memprData->id);
+            $programs->assignProgramToUser(47, $memprData->id);
         }
 
-        else if($data['workoutTypes'] == 'weight'){
+        else if($data['workoutTypes'] == 'athletic'){
 
-            $programs->assignProgramToUser(37, $memprData->id);
-            $programs->assignProgramToUser(66, $memprData->id);
-            $programs->assignProgramToUser(51, $memprData->id);
+            $programs->assignProgramToUser(137, $memprData->id);
+            $programs->assignProgramToUser(122, $memprData->id);
+            $programs->assignProgramToUser(127, $memprData->id);
         }
 
+        else if($data['workoutTypes'] == 'body'){
+
+            $programs->assignProgramToUser(48, $memprData->id);
+            $programs->assignProgramToUser(53, $memprData->id);
+            $programs->assignProgramToUser(178, $memprData->id);
+        }
         else if($data['workoutTypes'] == 'injury'){
 
-            $programs->assignProgramToUser(37, $memprData->id);
-            $programs->assignProgramToUser(66, $memprData->id);
-            $programs->assignProgramToUser(51, $memprData->id);
-        }
-        else if($data['workoutTypes'] == 'sport'){
-
-            $programs->assignProgramToUser(37, $memprData->id);
-            $programs->assignProgramToUser(66, $memprData->id);
-            $programs->assignProgramToUser(51, $memprData->id);
+            $programs->assignProgramToUser(45, $memprData->id);
+            $programs->assignProgramToUser(92, $memprData->id);
+            $programs->assignProgramToUser(64, $memprData->id);
+            $programs->assignProgramToUser(54, $memprData->id);
         }
 
         //Send Welcome Email

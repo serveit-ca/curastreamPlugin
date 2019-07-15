@@ -63,7 +63,7 @@ function prefix_enqueue()
 							$sports_occ = explode(',', $key->sportsOccupation);
 					?>
 							<tr>
-							<td><?php echo $key->name ?></td>	
+							<td><?php echo $key->name . " - " . $key->id ?></td>	
 							<td><?php echo  $key->type ?></td>	
 							<td><?php
 
