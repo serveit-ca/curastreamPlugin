@@ -1004,7 +1004,7 @@ public function test_get_Body_Part_Names_By_Ids(){
     $numUsers = $groups->getNumberOfCorpSubAccounts($newCorp);
     assert($numUsers == 7);
     $corpLink = $groups->getCorpSignUpLinkById($newCorp);
-    assert($corpLink == get_site_url() . "/c/?c=" . "Pricing Test Corp" . "&auth=" . $suthToken);
+    assert($corpLink == get_site_url() . "/c/?c=" . "Pricing Test Corp" . "&auth=" . $authToken);
     $this->reset_database();
 
 
