@@ -1287,7 +1287,7 @@ ALTER TABLE `wptests_cura_deleted`
   ADD PRIMARY KEY (`id`);
 
 
-CREATE TABLE `wptests_cura_corps`( `id` int(11) NOT NULL, `mempr_id int` int(11) NOT NULL, `name` varchar(55) NOT NULL)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `wptests_cura_corps`( `id` int(11) NOT NULL, `instruction_text` text NOT NULL, `logo` text NOT NULL, `company_email` varchar(255) NOT NULL, `company_phone` varchar(15) NOT NULL, `name` varchar(55) NOT NULL, `auth` varchar(16) NOT NULL)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE `wptests_cura_corps`
   ADD PRIMARY KEY (`id`);
 
