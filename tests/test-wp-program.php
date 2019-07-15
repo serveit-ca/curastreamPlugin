@@ -1003,6 +1003,8 @@ public function test_get_Body_Part_Names_By_Ids(){
     $groups = new group();
     $numUsers = $groups->getNumberOfCorpSubAccounts($newCorp);
     assert($numUsers == 7);
+    $corpLink = $groups->getCorpSignUpLinkById($newCorp);
+    assert($corpLink == get_site_url() . "/c/?c=" . $corpName . "&auth=" . $suthToken);
     $this->reset_database();
 
 
