@@ -1005,6 +1005,14 @@ public function test_get_Body_Part_Names_By_Ids(){
     assert($numUsers == 7);
     $corpLink = $groups->getCorpSignUpLinkById($newCorp);
     assert($corpLink == get_site_url() . "/c/?c=" . "Pricing Test Corp" . "&auth=" . $authToken);
+    $corpInfo = $groups->getCorpByName("Pricing Test Corp");
+    assert($corpInfo->name = "Pricing Test Cor");
+    assert($corpInfo->instruction_text = "Pricing Test Corp");
+    assert($corpInfo->logo = "Pricing Test Corp");
+    assert($corpInfo->company_email = "Pricing Test Corp");
+    assert($corpInfo->company_phone = "Pricing Test Corp");
+    assert($corpInfo->auth = $authToken);
+
     $this->reset_database();
 
 
