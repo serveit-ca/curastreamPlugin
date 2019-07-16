@@ -46,6 +46,7 @@ function prefix_enqueue()
 				<table id="programMetrics" class="table table-bordered">	
 					<thead>
 						<tr>
+					<th id= "name">Program ID</th>
 					<th id= "name">Program Name</th>
 					<th id= "type">Program Type</th>
 					<th id= "state">State</th>
@@ -63,7 +64,8 @@ function prefix_enqueue()
 							$sports_occ = explode(',', $key->sportsOccupation);
 					?>
 							<tr>
-							<td><?php echo $key->name . " - " . $key->id ?></td>	
+							<td><?php echo  $key->id ?></td>
+							<td><?php echo $key->name ?></td>	
 							<td><?php echo  $key->type ?></td>	
 							<td><?php
 

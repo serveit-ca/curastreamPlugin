@@ -95,14 +95,9 @@ function prefix_enqueue()
 									echo $corpId;
 								}?></td>
 							
-							<td>
-
-								<a href="" target="_blank">
-									<div class="deleteGroup smallProgramBtn">
-										Delete Group
-									</div>
-								</a>
-
+							<td>			
+								<button class="deleteGroup smallProgramBtn " id="<?php echo $key['id'] ?>">Delete Group</button>
+								<button class="addProgram btn btn-primary" data-toggle="modal" data-target="#add-program-modal" id="<?php echo $key['id'] ?>">Add Programs</button>
 							</td>
 							</tr>
 						<?php  
@@ -112,13 +107,12 @@ function prefix_enqueue()
 			</div>
 		</div>
 	</div>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+	<!-- Modal -->
 
-	<?php
+
+
+
+	<!-- <?php
 	$programObj = new program();
 	$groupObj = new group();
 		$corpGroups = $groupObj->getAllCustomGroups();
@@ -185,9 +179,36 @@ function prefix_enqueue()
 				</table>
 			</div>
 		</div>
-	</div>
-
+	</div> -->
+	<div class="modal fade" id="add-program-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	// $( document ).ready(function() {
+ //    	$(".addProgram").click(function (){
+ //    		var id = $(this).attr('id');
+    		
+ //    	});
+	// });
+</script>
 </body>
 </html>
+
 	
 <?php prefix_enqueue(); ?>
