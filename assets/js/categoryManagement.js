@@ -222,9 +222,9 @@ jQuery('#newSportOccSave').live('click', function(event){
 jQuery(".updatePartButton").live('click', function(event){
 		if(JS_DEBUG){console.log("Starting to Update a Part Name");}
 		// Get the Name 
-		var partId = jQuery(this).attr('data-exerciseId');
+		var partId = jQuery(this).attr('data-partId');
 		console.log("Part Id"+partId);
-		var nameID = "#updateName"+partId;
+		var newName = jQuery("#updateName"+partId).val();
 		console.log("New Name"+newName);
 		var categoryType = jQuery(this).attr('data-type')
 
@@ -267,6 +267,6 @@ jQuery(".updatePartButton").live('click', function(event){
 				}
 			});
 			}else{
-				alert("Please enter a new Exercise Name or a new Vimeo URL");
+				alert("Please enter a new Part Name");
 		}
 	}); 
