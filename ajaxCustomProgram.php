@@ -566,3 +566,30 @@ require_once ("objects/exercise.php");
 	    }
 	   	add_action( 'wp_ajax_deleteAExerciseVideo', 'deleteAExerciseVideo');
 	    add_action( 'wp_ajax_nopriv_deleteAExerciseVideo', 'deleteAExerciseVideo');
+
+	    function updateBodyPart(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$programs->updateBodyPart($_POST['name'], $_POST['partId']);
+	    	wp_die();	
+	    }
+	   	add_action( 'wp_ajax_updateBodyPart', 'updateBodyPart');
+	    add_action( 'wp_ajax_nopriv_updateBodyPart', 'updateBodyPart');
+
+	    function updateHowItHappened(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$programs->updateHowItHappened($_POST['name'], $_POST['partId']);
+	    	wp_die();	
+	    }
+	   	add_action( 'wp_ajax_updateHowItHappened', 'updateHowItHappened');
+	    add_action( 'wp_ajax_nopriv_updateHowItHappened', 'updateHowItHappened');
+
+	    function updateSportsAndOccupation(){
+	    	global $programs;
+	    	global $customCreation;
+	    	$programs->updateSportsAndOccupation($_POST['name'], NULL, $_POST['partId']);
+	    	wp_die();	
+	    }
+	   	add_action( 'wp_ajax_updateSportsAndOccupation', 'updateSportsAndOccupation');
+	    add_action( 'wp_ajax_nopriv_updateSportsAndOccupation', 'updateSportsAndOccupation');

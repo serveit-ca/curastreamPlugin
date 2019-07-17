@@ -1891,7 +1891,7 @@ public $tempUserId;
            return $error;
         }
         else{
-           return "Success: Exercise with Id: " . $exerciseId . " Deleted";
+           return "Success: Exercise Video with Id: " . $exerciseVideoId . " Deleted";
         }
         }
 

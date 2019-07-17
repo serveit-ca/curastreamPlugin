@@ -1559,9 +1559,12 @@ jQuery(".deleteVideoExercise").on('click', function(event){
 				// jQuery("#addNewExerciseName").val('');
 				// jQuery("#addNewExerciseVideo").val('');
 				//location.reload();
-				}else{
+				location.reload();
+				}
+			else{
 					console.log("Error deleting an Exercise");
 				}
+				
 			}
 		});
 		}else{

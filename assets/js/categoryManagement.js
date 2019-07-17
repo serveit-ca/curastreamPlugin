@@ -219,3 +219,54 @@ jQuery('#newSportOccSave').live('click', function(event){
 	 	});
 		}
 	});
+jQuery(".updatePartButton").on('click', function(event){
+		if(JS_DEBUG){console.log("Starting to Update an Injury Name");}
+		// Get the Name 
+		var partId = jQuery(this).attr('data-exerciseId');
+		console.log("Part Id"+exerciseVideoId);
+		var nameID = "#updateName"+exerciseVideoId;
+		console.log("New Name"+newName);
+		var categoryType = jQuery(this).attr('data-type')
+
+		if(newName.trim() !=""){		
+			if(categoryType == "Body"){
+				var data = {
+				'action': 'updateBodyPart',
+				'partId': exerciseVideoId,
+				'name': newName,
+				};
+			}
+			elseif(categoryType == "Injury"){
+				var data = {
+				'action': 'updateHowItHappened',
+				'partId': exerciseVideoId,
+				'name': newName,
+				};
+			}
+			elseif(categoryType == "Sport"){
+				var data = {
+				'action': 'updateSportsAndOccupation',
+				'partId': exerciseVideoId,
+				'name': newName,
+				};
+			}
+
+			// Post to Ajax
+			jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+				// This should be returnin"g HTML object 
+					//console.log("Data: "+ data);
+					//console.log("Results: "+ response);
+				// Find the HTML Object where we want to load the form into 
+				if(response !=null){	
+				// Find the table body tag 
+				console.log(response);
+					location.reload();
+					}else{
+						console.log("Error Updating Part");
+					}
+				}
+			});
+			}else{
+				alert("Please enter a new Exercise Name or a new Vimeo URL");
+		}
+	}); 
