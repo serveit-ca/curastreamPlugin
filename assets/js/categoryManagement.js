@@ -219,12 +219,12 @@ jQuery('#newSportOccSave').live('click', function(event){
 	 	});
 		}
 	});
-jQuery(".updatePartButton").on('click', function(event){
-		if(JS_DEBUG){console.log("Starting to Update an Injury Name");}
+jQuery(".updatePartButton").live('click', function(event){
+		if(JS_DEBUG){console.log("Starting to Update a Part Name");}
 		// Get the Name 
 		var partId = jQuery(this).attr('data-exerciseId');
-		console.log("Part Id"+exerciseVideoId);
-		var nameID = "#updateName"+exerciseVideoId;
+		console.log("Part Id"+partId);
+		var nameID = "#updateName"+partId;
 		console.log("New Name"+newName);
 		var categoryType = jQuery(this).attr('data-type')
 
@@ -232,21 +232,21 @@ jQuery(".updatePartButton").on('click', function(event){
 			if(categoryType == "Body"){
 				var data = {
 				'action': 'updateBodyPart',
-				'partId': exerciseVideoId,
+				'partId': partId,
 				'name': newName,
 				};
 			}
-			elseif(categoryType == "Injury"){
+			else if(categoryType == "Injury"){
 				var data = {
 				'action': 'updateHowItHappened',
-				'partId': exerciseVideoId,
+				'partId': partId,
 				'name': newName,
 				};
 			}
-			elseif(categoryType == "Sport"){
+			else if(categoryType == "Sport"){
 				var data = {
 				'action': 'updateSportsAndOccupation',
-				'partId': exerciseVideoId,
+				'partId': partId,
 				'name': newName,
 				};
 			}

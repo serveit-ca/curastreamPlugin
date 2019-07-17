@@ -1593,7 +1593,7 @@ jQuery(".updateExerciseVideo").on('click', function(event){
 				'url': newURL,
 				};
 			}
-			elseif(newName.trim() =="" && newURL.trim() !=""){
+			else if(newName.trim() =="" && newURL.trim() !=""){
 				var data = {
 				'action': 'updateAExerciseVideo',
 				'videoId': exerciseVideoId,
@@ -1601,7 +1601,7 @@ jQuery(".updateExerciseVideo").on('click', function(event){
 				'url': newURL,
 				};
 			}
-			elseif(newName.trim() !="" && newURL.trim() ==""){
+			else if(newName.trim() !="" && newURL.trim() ==""){
 				var data = {
 				'action': 'updateAExerciseVideo',
 				'videoId': exerciseVideoId,
