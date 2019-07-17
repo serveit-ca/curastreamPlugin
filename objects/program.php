@@ -1679,7 +1679,7 @@ public $tempUserId;
         }
 
         //Check and Update type
-        if (isset($name) && !is_null($name)){
+        if (isset($type) && !is_null($type)){
             $wpdb->update($tableName, array(
             "type" => $type),
             array( // Where Clause
