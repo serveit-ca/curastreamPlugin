@@ -1,9 +1,11 @@
 <?php 
+
+
 //include "objects/program.php";
 function prefix_enqueue() 
 {    
     // JS
-    wp_register_script('prefix_bootstrap0', '//code.jquery.com/jquery-3.3.1.slim.min.js');
+    wp_register_script('prefix_bootstrap0', '//code.jquery.com/jquery-3.3.1.min.js');
     wp_register_script('prefix_bootstrap1', '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
     wp_register_script('prefix_bootstrap2', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
 
@@ -18,6 +20,16 @@ function prefix_enqueue()
     // CSS
     wp_register_style('prefix_bootstrap', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
     wp_enqueue_style('prefix_bootstrap');
+}
+if(isset($_POST['programId']) && isset($_POST['groupId'])){
+	$groups = new group();
+	$groups->assignProgramToGroup($_POST['programId'], $_POST['groupId']);
+
+}
+if(isset($_POST['deleteGroup']) && isset($_POST['groupId'])){
+	$groups = new group();
+	$groups->deleteGroup($_POST['groupId']);
+
 }
 
  ?>
@@ -36,7 +48,8 @@ function prefix_enqueue()
 	<?php
 	$programObj = new program();
 	$groupObj = new group();
-		$corpGroups = $groupObj->getAllCorpGroups();
+	$corpGroups = $groupObj->getAllCorpGroups();
+	$allProgs = $programObj->getAllGenericPrograms();
 	?>
 
 	<h1>Corporate Groups</h1>
@@ -66,23 +79,28 @@ function prefix_enqueue()
 							<td><?php echo count($groupUsers) ?></td>	
 							<td>
 								<i class="showHideAll fas fa-2x fa-angle-down"></i>
-								<div class="hidden showData">
-							<ul><?php //echo "user names"
-								$programUsers = $programObj->getProgramUsersById($key['id']);
-								foreach ($programUsers as $aUser) {
-									echo("<li>" .$aUser."</li>");
-								}
-								?>					
-							</ul>
-								</div>
+									<div class="hidden showData">
+										<ul><?php //echo "user names"
+												$programUsers = $programObj->getProgramUsersById($key['id']);
+												foreach ($programUsers as $aUser) {
+													echo("<li>" .$aUser."</li>");
+												}
+											?>					
+										</ul>
+									</div>
 							</td>
-							<td><?php
-								$groupProgs = $groupObj->getProgramsByGroupId($key['id']);
-								foreach ($groupProgs as $gProg) {
-									$progName = $progamObj->getProgramById($gProg);
-									echo $progName->name . "<br>";
-								}
-							 ?></td>
+							<td>
+								<i class="showHideAll fas fa-2x fa-angle-down"></i>
+									<div  id="prog-list-<?php echo $key['id']?>" class="hidden showData">
+										<?php
+											$groupProgs = $groupObj->getProgramsByGroupId($key['id']);
+											foreach ($groupProgs as $gProg) {
+												$progName = $programObj->getProgramById($gProg);
+												echo $progName->name . "<br>";
+											}
+									 	?>
+								 	</div>							 	
+							 </td>
 							
 							<td><?php
 								$corpId = $groupObj->getCorpAccountByGroupId($key['id']);
@@ -101,8 +119,8 @@ function prefix_enqueue()
 								}?></td>
 							
 							<td>			
-								<button class="deleteGroup smallProgramBtn " id="<?php echo $key['id'] ?>">Delete Group</button>
-								<button class="addProgram btn btn-primary" data-toggle="modal" data-target="#add-program-modal" id="<?php echo $key['id'] ?>">Add Programs</button>
+								<button class="deleteGroup btn btn-danger " data-toggle="modal" data-target="#delete-group-modal" id="<?php echo $key['id'] ?>">Delete Group</button>
+								<button class="addProgram btn btn-primary" data-toggle="modal" data-target="#add-program-modal" id="<?php echo $key['id'] ?>">Add Program</button>
 							</td>
 							</tr>
 						<?php  
@@ -186,31 +204,98 @@ function prefix_enqueue()
 		</div>
 	</div> -->
 	<div class="modal fade" id="add-program-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Add a Program</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form id="add-program-form" method="POST" action="">
+	        	<select id="program-option">
+	        		<?php
+	        			foreach ($allProgs as $prog) { ?>
+	        				<option value="<?php echo $prog->id ?>"> <?php echo $prog->name ?></option>
+	        		<?php	}
+	        		?>
+	        	</select>    	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-success">Save changes</button>
+	        </form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="delete-group-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Delete Group?</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        Are you sure you want to delete thus group? (This cannot be un-done!) 	
+	      </div>
+	      <div class="modal-footer">
+	      	<form id="delete-group-form" method="POST" action="">
+	        	<button type="submit" class="btn btn-danger">Delete Group</button>
+	        </form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 <script type="text/javascript">
-	// $( document ).ready(function() {
- //    	$(".addProgram").click(function (){
- //    		var id = $(this).attr('id');
-    		
- //    	});
-	// });
+	$( document ).ready(function() {
+    	$(".addProgram").click(function (){
+    		id = $(this).attr('id');    		
+    	});
+    	$(".deleteGroup").click(function (){
+    		id = $(this).attr('id');    		
+    	});
+    	$("#add-program-form").submit(function(e) {
+
+    		e.preventDefault();
+
+    		var form = $(this);
+    		var url = form.attr('action');
+
+    		var programName = $("#program-option option:selected").text();
+    		var progId = $("#program-option option:selected").val();
+    		var tdId = "prog-list-".concat(id);
+
+    		$('#'+tdId).append(programName + "<br>");
+
+    		$.post(url, {programId: progId, groupId: id});
+
+
+    	});
+
+    	$("#delete-group-form").submit(function(e) {
+
+    		e.preventDefault();
+    		console.log("Delete Submit");
+    		var form = $(this);
+    		var url = form.attr('action');
+
+    		console.log(id);
+
+    		$.post(url, {groupId: id, deleteGroup: "1"});
+
+    		location.reload(true);
+
+    	});
+
+
+
+
+	});
 </script>
 </body>
 </html>

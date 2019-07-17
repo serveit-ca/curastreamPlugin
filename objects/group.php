@@ -323,7 +323,7 @@ public function getCorpAccountByGroupId($groupId){
 public function checkGroupType($groupId){
         global $wpdb;
         $tableName = $wpdb->prefix . "cura_groups";
-        $type = $wpdb->get_row("SELECT type FROM $tableName WHERE group_id = $groupId");
+        $type = $wpdb->get_row("SELECT type FROM $tableName WHERE id = $groupId");
         return $type;
     }
 
@@ -332,21 +332,27 @@ public function deleteGroup($groupId){
         // Removes all Users
         $groupUsers = $this->getUsersByGroupId($groupId);
         foreach ($groupUsers as $key) {
-            $this->removeUserFromGroup($key);
+            $this->removeUserFromGroup($groupId, $key);
         }
         // Removes all programs
         $groupProgs = $this->getProgramsByGroupId($groupId);
         foreach ($groupProgs as $key) {
-            $this->removeProgramFromGroup($key);
+            $this->removeProgramFromGroup($key, $groupId);
         }
         // Removes from Corp Group Table
         $groupType = $this->checkGroupType($groupId);
         if($groupType == 1){
-            // Is a Corp. Group, delete it.
+            // Is a Corp. Group, delete the corp-group relation.
             $tableNameB = $wpdb->prefix . "cura_corp_groups";
             $wpdb->delete($tableNameB, array(
                 "group_id" => $groupId));
         }
+
+        // Delete the Group
+
+        $tableNameA = $wpdb->prefix . "cura_groups";
+        $wpdb->delete($tableNameA, array(
+                "id" => $groupId));
     }   
 
 
