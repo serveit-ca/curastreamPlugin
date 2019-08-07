@@ -10,8 +10,15 @@ require_once ("objects/databaseManagement.php");
 $database = new databaseManagement();
 $programs = new program();
 $groups = new group();
+$user = new userTracking();
 
-echo ($programs->getBodyPartNamesByIds("1,15,5,13"));
+
+echo "Create Corp Test: <br>";
+$corpId = $groups->newCorp("Test Company", "Go Workout", "test.ca", "e@t.ca", "12345678901", $groups->random_str(16));
+echo $corpId . "<br>";
+$corpLink = $groups->getCorpSignUpLinkById($corpId);
+echo $corpLink;
+
 // echo ($programs->getBodyPartNamesByIds(15,5,13));
 
 // $programs->getBodyPartNamesByIds(1,15,5,13);

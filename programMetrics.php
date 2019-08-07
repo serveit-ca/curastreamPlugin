@@ -2,16 +2,20 @@
 //include "objects/program.php";
 function prefix_enqueue() 
 {       
-    // JS
-    wp_register_script('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js');
+	wp_register_script('prefix_bootstrap0', '//code.jquery.com/jquery-3.3.1.slim.min.js');
+    wp_register_script('prefix_bootstrap1', '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
+    wp_register_script('prefix_bootstrap2', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
+
     wp_register_script('loadUI', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
     wp_register_script('loadselect2', site_url('/wp-content/plugins/Curastream/select2/dist/js/select2.min.js'));
-    wp_enqueue_script('prefix_bootstrap');
+    wp_enqueue_script('prefix_bootstrap0');
+    wp_enqueue_script('prefix_bootstrap1');
+    wp_enqueue_script('prefix_bootstrap2');
     wp_enqueue_script('loadUI');
     wp_enqueue_script('loadselect2');
 
     // CSS
-    wp_register_style('prefix_bootstrap', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
+    wp_register_style('prefix_bootstrap', '//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
     wp_enqueue_style('prefix_bootstrap');
 }
 
@@ -46,6 +50,7 @@ function prefix_enqueue()
 				<table id="programMetrics" class="table table-bordered">	
 					<thead>
 						<tr>
+					<th id= "name">Program ID</th>
 					<th id= "name">Program Name</th>
 					<th id= "type">Program Type</th>
 					<th id= "state">State</th>
@@ -63,6 +68,7 @@ function prefix_enqueue()
 							$sports_occ = explode(',', $key->sportsOccupation);
 					?>
 							<tr>
+							<td><?php echo  $key->id ?></td>
 							<td><?php echo $key->name ?></td>	
 							<td><?php echo  $key->type ?></td>	
 							<td><?php

@@ -219,3 +219,54 @@ jQuery('#newSportOccSave').live('click', function(event){
 	 	});
 		}
 	});
+jQuery(".updatePartButton").live('click', function(event){
+		if(JS_DEBUG){console.log("Starting to Update a Part Name");}
+		// Get the Name 
+		var partId = jQuery(this).attr('data-partId');
+		console.log("Part Id"+partId);
+		var newName = jQuery("#updateName"+partId).val();
+		console.log("New Name"+newName);
+		var categoryType = jQuery(this).attr('data-type')
+
+		if(newName.trim() !=""){		
+			if(categoryType == "Body"){
+				var data = {
+				'action': 'updateBodyPart',
+				'partId': partId,
+				'name': newName,
+				};
+			}
+			else if(categoryType == "Injury"){
+				var data = {
+				'action': 'updateHowItHappened',
+				'partId': partId,
+				'name': newName,
+				};
+			}
+			else if(categoryType == "Sport"){
+				var data = {
+				'action': 'updateSportsAndOccupation',
+				'partId': partId,
+				'name': newName,
+				};
+			}
+
+			// Post to Ajax
+			jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+				// This should be returnin"g HTML object 
+					//console.log("Data: "+ data);
+					//console.log("Results: "+ response);
+				// Find the HTML Object where we want to load the form into 
+				if(response !=null){	
+				// Find the table body tag 
+				console.log(response);
+					location.reload();
+					}else{
+						console.log("Error Updating Part");
+					}
+				}
+			});
+			}else{
+				alert("Please enter a new Part Name");
+		}
+	}); 

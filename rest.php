@@ -5,6 +5,8 @@ use \Firebase\JWT\JWT;
 
 require_once("objects/phase.php");
 require_once("objects/exercise.php");
+require_once("objects/group.php");
+require_once("objects/userTracking.php");
 
 $programs = new program();
 
@@ -224,6 +226,23 @@ add_action('rest_api_init', function(){
     	array(
             'methods' => 'POST',
             'callback' => 'mempr_add_new_corp'
+        ));
+
+    register_rest_route('curastream/v2', '/new_corp_user/', 
+        array(
+            'methods' => 'POST',
+            'callback' => 'new_corp_user'
+        ));
+    register_rest_route('curastream/v2', '/check_unique_user/', 
+        array(
+            'methods' => 'POST',
+            'callback' => 'check_unique_user'
+        ));
+
+    register_rest_route('curastream/v2', '/cura_new_corp/', 
+        array(
+            'methods' => 'POST',
+            'callback' => 'cura_new_corp'
         ));
 });
 
@@ -1377,7 +1396,107 @@ function mark_phase_active(){
     }
 }
 
-// API Functions for Curastream - Version 2 
+// API Functions for Curastream - Version 2
+
+function new_corp_user($request){
+    $data = headerRest($request);
+    echo ("Starting new_corp_user function");
+    //echo $data['email'];
+    //Check user email Unique
+    $tracking = new userTracking();
+    $programs = new program();
+    $groups = new group();
+    $userExist = $tracking->checkUserEmailExists($data['email']);
+
+    var_dump($data['email']);
+
+    if($userExist == 0){
+        //Building URL for Memberpress get
+        $postVar = "";
+        $postVar .= "/wp-json/mp/v1/members?";
+        $postVar .= "device_name=web";
+        $postVar .= "&device_token=aP%5Egx%7C7Z%2B%7CP%3ASOg-%60DiW%23%7CFHZ%3AYbKaHYCcXsg%7Cu.-%2C)d52(3%40tayO(yR%3Ee7m%40iT.";
+        $postVar .= "&email=" . $data['email'];
+        $postVar .= "&password=" . $data['password'];
+        $postVar .= "&username=" . $data['email'];
+        $postVar .= "&first_name=" . $data['fname'];
+        $postVar .= "&last_name=" . $data['lname'];
+
+
+
+        //New Memberpress Member
+        $memUrl = get_site_url() . $postVar;
+        echo $memUrl;
+        $memprResponse = wp_remote_post($memUrl, array(
+            'method' => 'POST'            
+            ));
+        $memprData = wp_remote_retrieve_body($memprResponse);
+        var_dump($memprData);
+        $memprData = json_decode($memprData);  
+        var_dump($memprData);
+
+        // Add programs based on select
+        if($data['workoutTypes'] == 'mobility'){
+
+            $programs->assignProgramToUser(78, $memprData->id);
+            $programs->assignProgramToUser(114, $memprData->id);
+            $programs->assignProgramToUser(47, $memprData->id);
+        }
+
+        else if($data['workoutTypes'] == 'athletic'){
+
+            $programs->assignProgramToUser(137, $memprData->id);
+            $programs->assignProgramToUser(122, $memprData->id);
+            $programs->assignProgramToUser(127, $memprData->id);
+        }
+
+        else if($data['workoutTypes'] == 'body'){
+
+            $programs->assignProgramToUser(48, $memprData->id);
+            $programs->assignProgramToUser(53, $memprData->id);
+            $programs->assignProgramToUser(178, $memprData->id);
+        }
+        else if($data['workoutTypes'] == 'injury'){
+
+            $programs->assignProgramToUser(45, $memprData->id);
+            $programs->assignProgramToUser(92, $memprData->id);
+            $programs->assignProgramToUser(64, $memprData->id);
+            $programs->assignProgramToUser(54, $memprData->id);
+        }
+
+        //Send Welcome Email
+
+        // Assign to Corp Group
+
+        $groups->assignUserToGroup($data['groupId'], $memprData->id);
+    }
+    return "End of Function";
+}
+
+function cura_new_corp($request){
+    $data = headerRest($request);
+    $groups = new group();
+
+    $corpName = $data['corp-name'];
+    $corpInstructionText = $data['instruction-text'];
+    $companyLogoUrl = $data['logo-url'];
+    $companyEmail = $data['company-email'];
+    $companyPhone = $data['company-phone'];
+    $companyAuth = $data['auth-token'];
+
+    $newCorpId = $groups->newCorp($corpName, $corpInstructionText, $logoUrl, $companyEmail, $companyPhone, $companyAuth);
+    $newGroupId = $groups->newCorpGroup($corpName, $newCorpId);
+
+}
+
+function check_unique_user($request){
+    $data = headerRest($request);
+    $tracking = new userTracking();
+    $userExist = $tracking->checkUserEmailExists($data['email']);
+    return $userExist;
+}
+
+
 function userLoginHandler($data){
     $tracking = new userTracking();
     $user_id = $data['id'];
@@ -1451,14 +1570,15 @@ function mempr_add_new_corp($request){
     $input = json_decode($json);
     $groups = new group();
 
+    var_dump($input);
 
     // New Corp
-    //$corpName = $data['']
-    $newCorpId = $groups->newCorp("Corp Name");
+    $corpName = $input->data->name;
+    $newCorpId = $groups->newCorp($corpName);
     // Add mepr Id to Corp
     $groups->updateMemprIdToCorp($input->data->membership->id, $newCorpId);
     // New Group
-    $newGroupId = $groups->newCorpGroup("Corp Name - Default", $newCorpId);
+    $newGroupId = $groups->newCorpGroup($corpName . " - Default", $newCorpId);
     // Assign Group Owner   
     $groups->assignUserToGroup($newGroupId, $input->data->member->id);
     $groups->changeGroupUserPrivilege($newGroupId, $input->data->member->id, 2);

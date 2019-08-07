@@ -43,7 +43,7 @@
 							<tr>
 								<td><?php echo $key->name ?></td>	
 								<td>
-									<input type="text" placeholder="Update <?php echo $key->name ?> ">
+									<input type="text" class="updateName" id="updateName<?php echo $key->id?>" placeholder="Update <?php echo $key->name ?> ">
 								</td>
 								<td>
 									<?php echo count($partPrograms); ?>
@@ -69,8 +69,8 @@
 								</div>
 								</td>
 								<td>
-									<button>Save</button>
-									<button>Delete</button>
+									<button class="custom-btn updatePartButton" data-partId="<?php echo $key->id?>" data-type="Body">Save</button>
+									<button class="custom-btn deletePartButton" data-partId="<?php echo $key->id?>" data-type="Body">Delete</button>
 								</td>
 							</tr>
 						<?php } ?>
@@ -117,7 +117,7 @@
 							<tr>
 								<td><?php echo $key->name ?></td>	
 								<td>
-									<input type="text" placeholder="Update <?php echo $key->name ?> ">
+									<input type="text" class="updateName" id="updateName<?php echo $key->id?>" placeholder="Update <?php echo $key->name ?> ">
 								</td>
 								<td><?php echo count($injuryPrograms); ?></td>
 								<td>
@@ -139,8 +139,8 @@
 									</div>
 								</td>
 								<td>
-									<button>Save</button>
-									<button>Delete</button>
+									<button class="custom-btn updatePartButton" data-partId="<?php echo $key->id?>" data-type="Injury">Save</button>
+									<button class="custom-btn deletePartButton" data-partId="<?php echo $key->id?>" data-type="Injury">Delete</button>
 								</td>
 							</tr>
 						<?php } ?>
@@ -193,7 +193,7 @@
 								<td><?php echo $key->name ?></td>
 								<td><?php echo $key->type ?> <button>Toggle Type</button></td>	
 								<td>
-									<input type="text" placeholder="Update <?php echo $key->name ?> ">
+									<input type="text" class="updateName" id="updateName<?php echo $key->id?>" placeholder="Update <?php echo $key->name ?> ">
 								</td>
 								<td><?php echo count($sportPrograms); ?></td>
 								<td>
@@ -215,8 +215,8 @@
 									</div>
 									</td>
 								<td>
-									<button>Save</button>
-									<button>Delete</button>
+									<button class="custom-btn updatePartButton" data-partId="<?php echo $key->id?>" data-type="Sport">Save</button>
+									<button class="custom-btn deletePartButton" data-partId="<?php echo $key->id?>" data-type="Sport">Delete</button>
 								</td>
 							</tr>
 						<?php } ?>

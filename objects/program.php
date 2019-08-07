@@ -1679,7 +1679,7 @@ public $tempUserId;
         }
 
         //Check and Update type
-        if (isset($name) && !is_null($name)){
+        if (isset($type) && !is_null($type)){
             $wpdb->update($tableName, array(
             "type" => $type),
             array( // Where Clause
@@ -1864,14 +1864,14 @@ public $tempUserId;
          $tableName = $wpdb->prefix . "cura_exercise_videos";
 
         //Check and Update name
-        if (isset($name) && !is_null($name)){
+        if (isset($name) && !is_null($name) && $name != ""){
             $wpdb->update($tableName, array(
             "name" => $name),
             array( // Where Clause
             "id" => $videoId));
         }
         //Check and Update url
-        if (isset($url) && !is_null($url)){
+        if (isset($url) && !is_null($url) && $url != ""){
             $wpdb->update($tableName, array(
             "url" => $url),
             array( // Where Clause
@@ -1891,7 +1891,7 @@ public $tempUserId;
            return $error;
         }
         else{
-           return "Success: Exercise with Id: " . $exerciseId . " Deleted";
+           return "Success: Exercise Video with Id: " . $exerciseVideoId . " Deleted";
         }
         }
 

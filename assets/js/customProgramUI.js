@@ -1559,9 +1559,12 @@ jQuery(".deleteVideoExercise").on('click', function(event){
 				// jQuery("#addNewExerciseName").val('');
 				// jQuery("#addNewExerciseVideo").val('');
 				//location.reload();
-				}else{
+				location.reload();
+				}
+			else{
 					console.log("Error deleting an Exercise");
 				}
+				
 			}
 		});
 		}else{
@@ -1576,39 +1579,57 @@ jQuery(".updateExerciseVideo").on('click', function(event){
 		var exerciseVideoId = jQuery(this).attr('data-exerciseId');
 		console.log("Exercise Id"+exerciseVideoId);
 		var nameID = "#updateName"+exerciseVideoId;
-		var newName = jQuery(nameID).val();
 		console.log("New Name"+newName);
 		var urlID = "#updateUrl"+exerciseVideoId;
 		var newURL = jQuery(urlID).val();
 		console.log("New URL"+newURL);
 
-		if(newName.trim() !="" || newURL.trim() !=""){
-			var data = {
-			'action': 'updateAExerciseVideo',
-			'videoId': exerciseVideoId,
-			'name': newName,
-			'url': newURL,
-			};
-		// Post to Ajax
-		jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
-			// This should be returnin"g HTML object 
-				//console.log("Data: "+ data);
-				//console.log("Results: "+ response);
-			// Find the HTML Object where we want to load the form into 
-			if(response !=null){	
-			// Find the table body tag 
-			console.log(response);
-				// jQuery(".addExerciseRow").after("<tr role='row'><td>"+exerciseName+"</td><td><input type='text' placeholder='Update"+exerciseName+"'></td><td><a href='"+exerciseURL+"'>"+exerciseURL+"</a></td><td><input type='text' placeholder='Update Url'></td><td>0</td><td><i class='showHideAll fas fa-2x fa-angle-down'></i></td><td><button class='custom-btn' data-exerciseId='"+response+"'>Save</button><button class='custom-btn' data-exerciseId='"+response+"'>Delete</button></td>");
-			// add a row 
-				// jQuery("#addNewExerciseName").val('');
-				// jQuery("#addNewExerciseVideo").val('');
-				location.reload();
-				}else{
-					console.log("Error deleting an Exercise");
-				}
+		if(newName.trim() !="" || newURL.trim() !=""){		
+			if(newName.trim() !="" && newURL.trim() !=""){
+				var data = {
+				'action': 'updateAExerciseVideo',
+				'videoId': exerciseVideoId,
+				'name': newName,
+				'url': newURL,
+				};
 			}
-		});
-		}else{
-			alert("Please enter a new Exercise Name or a new Vimeo URL");
+			else if(newName.trim() =="" && newURL.trim() !=""){
+				var data = {
+				'action': 'updateAExerciseVideo',
+				'videoId': exerciseVideoId,
+				'name': null,
+				'url': newURL,
+				};
+			}
+			else if(newName.trim() !="" && newURL.trim() ==""){
+				var data = {
+				'action': 'updateAExerciseVideo',
+				'videoId': exerciseVideoId,
+				'name': newName,
+				'url': null,
+				};
+			}
+
+			// Post to Ajax
+			jQuery.ajax({type:'POST', data, url:window.location.origin+'/wp-admin/admin-ajax.php', success:function( response ){
+				// This should be returnin"g HTML object 
+					//console.log("Data: "+ data);
+					//console.log("Results: "+ response);
+				// Find the HTML Object where we want to load the form into 
+				if(response !=null){	
+				// Find the table body tag 
+				console.log(response);
+					// jQuery(".addExerciseRow").after("<tr role='row'><td>"+exerciseName+"</td><td><input type='text' placeholder='Update"+exerciseName+"'></td><td><a href='"+exerciseURL+"'>"+exerciseURL+"</a></td><td><input type='text' placeholder='Update Url'></td><td>0</td><td><i class='showHideAll fas fa-2x fa-angle-down'></i></td><td><button class='custom-btn' data-exerciseId='"+response+"'>Save</button><button class='custom-btn' data-exerciseId='"+response+"'>Delete</button></td>");
+				// add a row 
+					// jQuery("#addNewExerciseName").val('');
+					// jQuery("#addNewExerciseVideo").val('');
+					location.reload();
+					}else{
+						console.log("Error deleting an Exercise");
+					}
+				}
+			});
+			}else{
+				alert("Please enter a new Exercise Name or a new Vimeo URL");
 		}
 	}); 

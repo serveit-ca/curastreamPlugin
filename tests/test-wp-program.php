@@ -963,7 +963,8 @@ public function test_get_Body_Part_Names_By_Ids(){
     global $wpdb;
     $groups = new group();
     //Building Corp For Tests
-    $newCorp = $groups->newCorp("Pricing Test Corp");
+    $authToken = $groups->random_str(16);
+    $newCorp = $groups->newCorp("Pricing Test Corp", "Go Workout", "testlogo.ca", "testemail@test.ca", "12345678901", $authToken);
     $newGroup = $groups->newCorpGroup("Pricing Test Group", $newCorp);
     $groups->assignUserToGroup($newGroup, 1);
     $groups = new group();
@@ -1002,6 +1003,16 @@ public function test_get_Body_Part_Names_By_Ids(){
     $groups = new group();
     $numUsers = $groups->getNumberOfCorpSubAccounts($newCorp);
     assert($numUsers == 7);
+    $corpLink = $groups->getCorpSignUpLinkById($newCorp);
+    assert($corpLink == get_site_url() . "/c/?c=" . "Pricing Test Corp" . "&auth=" . $authToken);
+    $corpInfo = $groups->getCorpByName("Pricing Test Corp");
+    assert($corpInfo->name = "Pricing Test Corp");
+    assert($corpInfo->instruction_text = "Pricing Test Corp");
+    assert($corpInfo->logo = "Pricing Test Corp");
+    assert($corpInfo->company_email = "Pricing Test Corp");
+    assert($corpInfo->company_phone = "Pricing Test Corp");
+    assert($corpInfo->auth = $authToken);
+
     $this->reset_database();
 
 
@@ -1010,7 +1021,8 @@ public function test_get_Body_Part_Names_By_Ids(){
   public function test_get_corp_by_tier_id(){
     global $wpdb;
     $groups = new group();
-    $newCorp = $groups->newCorp("Pricing Test Corp");
+    $authToken = $groups->random_str(16);
+    $newCorp = $groups->newCorp("Pricing Test Corp", "Go Workout", "testlogo.ca", "testemail@test.ca", "12345678901", $authToken);
     $newTier = $groups->newPricingTier(0,2,5);
     $groups->assignTierToCorp($newTier, $newCorp);
     $corp = $groups->getCorpByTierId($newTier);

@@ -9,8 +9,7 @@ notifications:
 branches:
   only:
     - master
-    - userTracking
-    - pricingUpdates
+    - b2b_groups
 
 services:
   - mysql
